@@ -50,16 +50,41 @@ Each of these was run by hand on this machine, against the live internet:
    than leaving stale findings behind — which is why the shipped index came from a clean
    1 300-repo crawl after the second fix, not from the earlier runs.
 
-## Exact next steps (for the owner, from the phone)
+## Published — all shipping steps DONE (2026-08-08)
 
-1. `git init && git add -A && git commit -m "feat: Breakage Radar v1.0.0"`.
-2. `gh repo create Booyaka101/hass-breakage-radar --public --source=. --push`.
-3. Repository **Settings → Pages → Source: Deploy from a branch → `main` / `/docs`**.
-   The board then lives at `https://booyaka101.github.io/hass-breakage-radar/`.
-4. Confirm the `Validate` workflow is green (pytest × 3, hassfest, HACS, index schema).
-5. `gh release create v1.0.0 --generate-notes`.
-6. Open the PR to `hacs/default` adding `Booyaka101/hass-breakage-radar` to the
-   `integration` list. (The agent must not publish, so this is the owner's step.)
+| Step | Status |
+|------|--------|
+| Public repo | ✅ <https://github.com/Booyaka101/hass-breakage-radar> — MIT, 8 topics, description + homepage |
+| GitHub Pages from `main` `/docs` | ✅ live, HTTP 200 — <https://booyaka101.github.io/hass-breakage-radar/> |
+| Published index | ✅ <https://booyaka101.github.io/hass-breakage-radar/index.json> serving schema 1 |
+| `Validate` workflow | ✅ green — pytest 3.12/3.13/3.14, hassfest, HACS validation, index schema |
+| Release | ✅ [v1.0.1](https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.0.1) (v1.0.0 also tagged) |
+| `hacs/default` PR | ✅ **[hacs/default#9839](https://github.com/hacs/default/pull/9839)** — open, MERGEABLE, 1-line diff, all 9 HACS checks green. Awaiting maintainer review. |
+
+### Three problems only publishing could surface
+
+1. **`aiohttp` was never stubbed.** `tests/conftest.py` stood in for every
+   `homeassistant` symbol but not `aiohttp`, which is installed on the build machine
+   and absent on a bare runner. All three pytest jobs failed at collection. Fixed in
+   the first CI commit.
+2. **HACS requires brand assets.** 8/9 HACS checks passed immediately; the miss was
+   brands. A 256×256 radar icon/logo is now generated (stdlib `zlib`+`struct`) at
+   `custom_components/breakage_radar/brand/`.
+3. **`hacs/default` rejects a second `manifest.json` anywhere in the repo.** Their
+   `scripts/helpers/integration_path.py` walks the *whole* clone for `*manifest.json`
+   and exits if it does not find exactly one. The two scanner fixtures each shipped
+   one, so the PR's Hassfest job died in 37 ms with a bare `exit code 1` — invisible
+   from our own hassfest, which passes because it is pointed at one path. Fixture
+   manifests are now built in `tmp_path`, and
+   `test_manifest_json_is_unique_in_the_repository` guards the invariant. This is what
+   v1.0.1 exists for.
+
+### Remaining (not blocking, not mine to do)
+
+* Wait for a `hacs/default` maintainer to merge #9839 — after that Breakage Radar
+  appears in every HACS install with no "custom repository" step.
+* The daily `Crawl` workflow fires at 03:17 UTC and will widen coverage past the
+  1 300 repositories in the shipped index on its own.
 
 ## Known limitations carried into v1 (documented in README, not hidden)
 
