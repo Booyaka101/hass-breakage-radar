@@ -43,11 +43,34 @@ class FakeCoordinator:
 # --------------------------------------------------------------------------- #
 
 
-def test_discover_installed_reads_domain_and_version(fixtures_dir):
+def test_discover_installed_reads_domain_and_version(tmp_path):
+    # Built here rather than committed: hacs/default's validation walks the whole
+    # repository for `*manifest.json` and requires exactly one, so a fixture
+    # manifest on disk breaks HACS inclusion.
+    component = tmp_path / "fixture_tracker"
+    component.mkdir()
+    (component / "manifest.json").write_text(
+        json.dumps({"domain": "fixture_tracker", "version": "0.1.0"}), encoding="utf-8"
+    )
+    assert discover_installed(str(tmp_path)) == {"fixture_tracker": "0.1.0"}
+
+
+def test_discover_installed_falls_back_to_the_directory_name(fixtures_dir):
+    """A component directory with no manifest still counts as installed."""
     installed = discover_installed(
         str(fixtures_dir / "true_positive" / "custom_components")
     )
-    assert installed == {"fixture_tracker": "0.1.0"}
+    assert installed == {"fixture_tracker": ""}
+
+
+def test_manifest_json_is_unique_in_the_repository(repo_root):
+    """hacs/default rejects a repository containing more than one manifest.json."""
+    found = [
+        p.relative_to(repo_root).as_posix()
+        for p in repo_root.rglob("*manifest.json")
+        if ".cache" not in p.parts and "build" not in p.parts
+    ]
+    assert found == ["custom_components/breakage_radar/manifest.json"], found
 
 
 def test_discover_installed_on_a_missing_directory_is_empty(tmp_path):
