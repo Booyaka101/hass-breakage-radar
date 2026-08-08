@@ -165,6 +165,22 @@ def _install_homeassistant_stubs() -> None:
     issue_registry.async_create_issue = async_create_issue
     issue_registry.async_delete_issue = async_delete_issue
 
+    try:
+        import aiohttp  # noqa: F401
+    except ImportError:
+        # Home Assistant always ships aiohttp; a bare CI runner does not.
+        aiohttp_stub = module("aiohttp")
+
+        class ClientError(Exception):
+            pass
+
+        class ClientTimeout:
+            def __init__(self, total=None):
+                self.total = total
+
+        aiohttp_stub.ClientError = ClientError
+        aiohttp_stub.ClientTimeout = ClientTimeout
+
     aiohttp_client = module("homeassistant.helpers.aiohttp_client")
     aiohttp_client.async_get_clientsession = lambda hass: None
 
