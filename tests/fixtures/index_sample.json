@@ -1,0 +1,66 @@
+{
+ "schema": 1,
+ "generated_utc": "2026-08-08T09:00:00Z",
+ "index_url": "https://booyaka101.github.io/hass-breakage-radar/index.json",
+ "core_version": "2026.9",
+ "coverage": {
+  "catalog_total": 3,
+  "repos_scanned": 3,
+  "repos_affected": 1,
+  "repos_clean": 1,
+  "repos_unreachable": 1,
+  "findings_total": 1,
+  "rules_published": 1,
+  "rules_matchable": 1
+ },
+ "releases": {
+  "2027.5": [
+   "fixture_tracker"
+  ]
+ },
+ "rules": [
+  {
+   "id": "legacy-device-tracker-platform",
+   "kind": "moduledef",
+   "symbol": "setup_scanner",
+   "message": "Implements the legacy (non-config-entry) device tracker platform API, removed in the Home Assistant 2027.5 release.",
+   "breaks_in": "2027.5",
+   "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
+   "origin": "manual",
+   "confidence": "high",
+   "matchable": true,
+   "hits": 1,
+   "repos_hit": 1
+  }
+ ],
+ "integrations": [
+  {
+   "full_name": "example/fixture-tracker",
+   "domain": "fixture_tracker",
+   "domains": [
+    "fixture_tracker"
+   ],
+   "version": "0.1.0",
+   "ref": "refs/tags/0.1.0",
+   "stargazers_count": 3,
+   "repo_url": "https://github.com/example/fixture-tracker",
+   "scanned_utc": "2026-08-08T08:00:00Z",
+   "earliest_breaks_in": "2027.5",
+   "findings": [
+    {
+     "rule_id": "legacy-device-tracker-platform",
+     "breaks_in": "2027.5",
+     "file": "custom_components/fixture_tracker/device_tracker.py",
+     "line": 12,
+     "confidence": "high"
+    }
+   ]
+  }
+ ],
+ "clean_domains": [
+  "lookalike_tracker"
+ ],
+ "unreachable_domains": [
+  "gone_away"
+ ]
+}

@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hass-breakage-radar"
+version = "1.0.0"
+description = "Find out which of your Home Assistant custom integrations stop working, and in which future release."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+authors = [{ name = "Booyaka101" }]
+keywords = [
+  "home-assistant",
+  "hacs",
+  "custom-integration",
+  "deprecation",
+  "static-analysis",
+  "breaking-changes",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Home Automation",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.urls]
+Homepage = "https://github.com/Booyaka101/hass-breakage-radar"
+Board = "https://booyaka101.github.io/hass-breakage-radar/"
+Index = "https://booyaka101.github.io/hass-breakage-radar/index.json"
+Issues = "https://github.com/Booyaka101/hass-breakage-radar/issues"
+
+[project.scripts]
+breakage-radar-extract-rules = "tools.extract_rules:main"
+breakage-radar-catalog = "tools.catalog:main"
+breakage-radar-scan = "tools.scan:main"
+breakage-radar-build-index = "tools.build_index:main"
+
+[tool.setuptools]
+packages = ["tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+filterwarnings = ["error::DeprecationWarning:tools.*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]

@@ -1,0 +1,74 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Weekly, so upstream hassfest/HACS rule changes surface before a user hits them.
+    - cron: "43 5 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: pytest (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --disable-pip-version-check --quiet pytest
+      - run: python -m pytest
+
+  hassfest:
+    name: hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    name: HACS validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
+        with:
+          category: integration
+
+  index-schema:
+    name: index schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Validate the published index against schema 1
+        run: |
+          python - <<'PY'
+          import json, sys
+          from pathlib import Path
+          sys.path.insert(0, ".")
+          from tools.build_index import validate_index
+          payload = json.loads(Path("docs/index.json").read_text(encoding="utf-8"))
+          problems = validate_index(payload)
+          for problem in problems:
+              print("::error::" + problem)
+          if problems:
+              raise SystemExit(f"{len(problems)} schema violation(s)")
+          coverage = payload["coverage"]
+          print(
+              f"index OK: {coverage['repos_scanned']} scanned, "
+              f"{coverage['repos_affected']} affected, "
+              f"{coverage['findings_total']} findings"
+          )
+          PY

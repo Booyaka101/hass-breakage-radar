@@ -1,0 +1,2253 @@
+{
+  "schema": 1,
+  "generated_utc": "2026-08-08T04:55:25Z",
+  "core_ref": "dev",
+  "core_version": "2026.9",
+  "core_tarball_sha256": "3b8456c44b40d34c116b74000ec581a1d4f02798d63a1d69596b59e6072d36f9",
+  "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
+  "extractor_python": "3.14",
+  "counts": {
+    "total": 139,
+    "future": 81,
+    "matchable_future": 32,
+    "core_files_scanned": 9865,
+    "core_files_unparsed": 0,
+    "from_core_ast": 114,
+    "from_manual": 10,
+    "from_blog": 15
+  },
+  "unparsed_core_files": [],
+  "rules": [
+    {
+      "id": "core-issue-raise-mirrored-entries-2022.10",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2022.10",
+      "source": "homeassistant/components/bayesian/issues.py:17",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L17"
+    },
+    {
+      "id": "core-issue-raise-no-prob-given-false-2022.10",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2022.10",
+      "source": "homeassistant/components/bayesian/issues.py:34",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L34"
+    },
+    {
+      "id": "core-issue-async-setup-entry-2022.12",
+      "kind": "issue",
+      "symbol": "BINARY_SENSOR_DOMAIN",
+      "message": "BINARY_SENSOR_DOMAIN",
+      "breaks_in": "2022.12",
+      "source": "homeassistant/components/rainmachine/binary_sensor.py:107",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 3,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/rainmachine/binary_sensor.py#L107"
+    },
+    {
+      "id": "core-issue-create-issues-2023.1",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2023.1",
+      "source": "homeassistant/components/kitchen_sink/__init__.py:193",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/kitchen_sink/__init__.py#L193"
+    },
+    {
+      "id": "core-issue-handle-deprecated-gender-2024.10",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2024.10",
+      "source": "homeassistant/components/cloud/tts.py:590",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L590"
+    },
+    {
+      "id": "core-issue-handle-deprecated-voice-2024.8",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2024.8",
+      "source": "homeassistant/components/cloud/tts.py:621",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L621"
+    },
+    {
+      "id": "core-issue-deprecated-platform-2024.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2024.9",
+      "source": "homeassistant/components/cloud/tts.py:246",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L246"
+    },
+    {
+      "id": "core-issue-async-attach-trigger-2025.1",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2025.1",
+      "source": "homeassistant/components/nanoleaf/device_trigger.py:64",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/nanoleaf/device_trigger.py#L64"
+    },
+    {
+      "id": "core-prose-calls-for-integration-with-title-and-entry-id-during",
+      "kind": "prose",
+      "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
+      "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
+      "breaks_in": "2025.1",
+      "source": "homeassistant/config_entries.py:1441",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1441"
+    },
+    {
+      "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
+      "kind": "prose",
+      "symbol": "does not use FlowResultType enum for data entry flow result type",
+      "message": "does not use FlowResultType enum for data entry flow result type",
+      "breaks_in": "2025.1",
+      "source": "homeassistant/data_entry_flow.py:507",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L507"
+    },
+    {
+      "id": "core-issue-huelight-async-turn-on-2025.10",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2025.10",
+      "source": "homeassistant/components/hue/v2/light.py:264",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hue/v2/light.py#L264"
+    },
+    {
+      "id": "core-prose-returns-none-from-backupagent-async-get-backup",
+      "kind": "prose",
+      "symbol": "returns None from BackupAgent.async_get_backup",
+      "message": "returns None from BackupAgent.async_get_backup",
+      "breaks_in": "2025.10",
+      "source": "homeassistant/components/backup/http.py:70",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 4,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/backup/http.py#L70"
+    },
+    {
+      "id": "blog-recorder-statistics-api-changes-2025.11",
+      "kind": "prose",
+      "symbol": "recorder statistics api changes",
+      "message": "Not specifying the new_unit_class is deprecated and will stop working in Home Assistant Core 2025.11.",
+      "breaks_in": "2025.11",
+      "source": "https://developers.home-assistant.io/blog/2025/10/16/recorder-statistics-api-changes/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
+      "id": "core-issue-configentries-async-update-issues-2025.11",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2025.11",
+      "source": "homeassistant/config_entries.py:2970",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2970"
+    },
+    {
+      "id": "blog-area-squared-units-2025.12",
+      "kind": "prose",
+      "symbol": "area squared units",
+      "message": "Backward compatibility ​ The AREA_SQUARE_METERS constant has been deprecated and will be removed in Home Assistant 2025.12 .",
+      "breaks_in": "2025.12",
+      "source": "https://developers.home-assistant.io/blog/2024/12/26/area-squared-units/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
+      "id": "core-call-async-get-or-create",
+      "kind": "call",
+      "symbol": "async_get_or_create",
+      "message": "calls `device_registry.async_get_or_create` referencing a non existing `via_device` {...}, with device info: {...}",
+      "breaks_in": "2025.12",
+      "source": "homeassistant/helpers/device_registry.py:1985",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_get_or_create"
+        ],
+        "modules": [
+          "homeassistant.helpers.device_registry"
+        ]
+      },
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L1985"
+    },
+    {
+      "id": "core-issue-homeassistant-components-ring-binary-sensor-py-2025.4",
+      "kind": "issue",
+      "symbol": "",
+      "message": "uses ``, deprecated and removed in Home Assistant 2025.4.",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/components/ring/binary_sensor.py:52",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/binary_sensor.py#L52"
+    },
+    {
+      "id": "core-issue-homeassistant-components-ring-sensor-py-2025.4",
+      "kind": "issue",
+      "symbol": "",
+      "message": "uses ``, deprecated and removed in Home Assistant 2025.4.",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/components/ring/sensor.py:202",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 6,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/sensor.py#L202"
+    },
+    {
+      "id": "core-issue-homeassistant-components-ring-switch-py-2025.4",
+      "kind": "issue",
+      "symbol": "",
+      "message": "uses ``, deprecated and removed in Home Assistant 2025.4.",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/components/ring/switch.py:62",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/switch.py#L62"
+    },
+    {
+      "id": "core-issue-homeassistant-components-tplink-button-py-2025.4",
+      "kind": "issue",
+      "symbol": "",
+      "message": "uses ``, deprecated and removed in Home Assistant 2025.4.",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/components/tplink/button.py:37",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/tplink/button.py#L37"
+    },
+    {
+      "id": "core-prose-calls-async-add-job-which-should-be-reviewed-against-https-developers-home",
+      "kind": "prose",
+      "symbol": "calls `async_add_job`, which should be reviewed against https://developers.home-...",
+      "message": "calls `async_add_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/core.py:645",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L645"
+    },
+    {
+      "id": "core-prose-calls-async-run-job-which-should-be-reviewed-against-https-developers-home",
+      "kind": "prose",
+      "symbol": "calls `async_run_job`, which should be reviewed against https://developers.home-...",
+      "message": "calls `async_run_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/core.py:975",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L975"
+    },
+    {
+      "id": "core-call-async-add-hass-job",
+      "kind": "call",
+      "symbol": "async_add_hass_job",
+      "message": "calls `async_add_hass_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/04/07/deprecate_add_hass_job for replacement options",
+      "breaks_in": "2025.5",
+      "source": "homeassistant/core.py:701",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_add_hass_job"
+        ],
+        "modules": [
+          "homeassistant.core"
+        ]
+      },
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L701"
+    },
+    {
+      "id": "core-prose-calls-async-listen-once-with-run-immediately",
+      "kind": "prose",
+      "symbol": "calls `async_listen_once` with run_immediately",
+      "message": "calls `async_listen_once` with run_immediately",
+      "breaks_in": "2025.5",
+      "source": "homeassistant/core.py:1799",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1799"
+    },
+    {
+      "id": "core-prose-calls-async-listen-with-run-immediately",
+      "kind": "prose",
+      "symbol": "calls `async_listen` with run_immediately",
+      "message": "calls `async_listen` with run_immediately",
+      "breaks_in": "2025.5",
+      "source": "homeassistant/core.py:1729",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1729"
+    },
+    {
+      "id": "core-issue-templatecameraentity-report-issue-2025.6",
+      "kind": "issue",
+      "symbol": "self._hass",
+      "message": "self._hass",
+      "breaks_in": "2025.6",
+      "source": "homeassistant/components/camera/__init__.py:1047",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/camera/__init__.py#L1047"
+    },
+    {
+      "id": "core-issue-get-controller-2025.8",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2025.8",
+      "source": "homeassistant/components/heos/services.py:139",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/heos/services.py#L139"
+    },
+    {
+      "id": "core-prose-chatlog-async-update-llm-data",
+      "kind": "prose",
+      "symbol": "ChatLog.async_update_llm_data",
+      "message": "ChatLog.async_update_llm_data",
+      "breaks_in": "2026.1",
+      "source": "homeassistant/components/conversation/chat_log.py:662",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L662"
+    },
+    {
+      "id": "blog-deprecate-hass-argument-service-helpers-2026.10",
+      "kind": "prose",
+      "symbol": "deprecate hass argument service helpers",
+      "message": "Support for the hass argument will be removed in Home Assistant 2026.10.",
+      "breaks_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-call-async-extract-config-entry-ids",
+      "kind": "call",
+      "symbol": "async_extract_config_entry_ids",
+      "message": "passes `hass` to `async_extract_config_entry_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/helpers/service.py:418",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_hass_argument",
+        "names": [
+          "async_extract_config_entry_ids"
+        ],
+        "modules": [
+          "homeassistant.helpers.service"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418"
+    },
+    {
+      "id": "core-call-async-extract-entities",
+      "kind": "call",
+      "symbol": "async_extract_entities",
+      "message": "passes `hass` to `async_extract_entities`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/helpers/service.py:364",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_hass_argument",
+        "names": [
+          "async_extract_entities"
+        ],
+        "modules": [
+          "homeassistant.helpers.service"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L364"
+    },
+    {
+      "id": "core-call-async-extract-entity-ids",
+      "kind": "call",
+      "symbol": "async_extract_entity_ids",
+      "message": "passes `hass` to `async_extract_entity_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/helpers/service.py:403",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_hass_argument",
+        "names": [
+          "async_extract_entity_ids"
+        ],
+        "modules": [
+          "homeassistant.helpers.service"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L403"
+    },
+    {
+      "id": "core-call-extract-entity-ids",
+      "kind": "call",
+      "symbol": "extract_entity_ids",
+      "message": "passes `hass` to `extract_entity_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/helpers/service.py:351",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_hass_argument",
+        "names": [
+          "extract_entity_ids"
+        ],
+        "modules": [
+          "homeassistant.helpers.service"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L351"
+    },
+    {
+      "id": "core-call-verify-domain-control",
+      "kind": "call",
+      "symbol": "verify_domain_control",
+      "message": "passes `hass` to `verify_domain_control`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/helpers/service.py:1020",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_hass_argument",
+        "names": [
+          "verify_domain_control"
+        ],
+        "modules": [
+          "homeassistant.helpers.service"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L1020"
+    },
+    {
+      "id": "core-issue-async-setup-platform-2026.10",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/components/decora_wifi/light.py:57",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 4,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L57"
+    },
+    {
+      "id": "core-issue-deprecate-yaml-issue-2026.10",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.10",
+      "source": "homeassistant/components/picotts/issue.py:12",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/picotts/issue.py#L12"
+    },
+    {
+      "id": "blog-recorder-statistics-api-changes-2026.11",
+      "kind": "prose",
+      "symbol": "recorder statistics api changes",
+      "message": "Not specifying the unit_class is deprecated and will stop working in Home Assistant Core 2026.11.",
+      "breaks_in": "2026.11",
+      "source": "https://developers.home-assistant.io/blog/2025/10/16/recorder-statistics-api-changes/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-call-async-add-external-statistics-missing-unit-class",
+      "kind": "call",
+      "symbol": "async_add_external_statistics(missing unit_class)",
+      "message": "doesn't specify unit_class when calling async_add_external_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2890",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_kwarg",
+        "names": [
+          "async_add_external_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "kwarg": "unit_class"
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2890"
+    },
+    {
+      "id": "core-call-async-import-statistics-missing-mean-type",
+      "kind": "call",
+      "symbol": "async_import_statistics(missing mean_type)",
+      "message": "doesn't specify mean_type when calling async_import_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2847",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_kwarg",
+        "names": [
+          "async_import_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "kwarg": "mean_type"
+      },
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2847"
+    },
+    {
+      "id": "core-call-async-import-statistics-missing-unit-class",
+      "kind": "call",
+      "symbol": "async_import_statistics(missing unit_class)",
+      "message": "doesn't specify unit_class when calling async_import_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2853",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_kwarg",
+        "names": [
+          "async_import_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "kwarg": "unit_class"
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2853"
+    },
+    {
+      "id": "core-call-async-update-statistics-metadata-missing-unit-class",
+      "kind": "call",
+      "symbol": "async_update_statistics_metadata(missing unit_class)",
+      "message": "doesn't specify unit_class when calling async_update_statistics_metadata",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:990",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_kwarg",
+        "names": [
+          "async_update_statistics_metadata"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "kwarg": "unit_class"
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L990"
+    },
+    {
+      "id": "core-issue-async-setup-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/shopping_list/__init__.py:50",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/shopping_list/__init__.py#L50"
+    },
+    {
+      "id": "core-issue-async-setup-async-check-deprecation-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/homeassistant/__init__.py:459",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L459"
+    },
+    {
+      "id": "core-issue-async-setup-platform-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/pjlink/media_player.py:56",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L56"
+    },
+    {
+      "id": "core-issue-deprecated-dismiss-action-call-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/html5/issue.py:42",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L42"
+    },
+    {
+      "id": "core-issue-deprecated-notify-action-call-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/html5/issue.py:22",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L22"
+    },
+    {
+      "id": "core-issue-repair-issue-cleanup-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/fritz/button.py:82",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L82"
+    },
+    {
+      "id": "core-issue-repair-issue-firmware-update-2026.11",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/fritz/button.py:109",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L109"
+    },
+    {
+      "id": "core-classbase-targetselectordata",
+      "kind": "classbase",
+      "symbol": "TargetSelectorData",
+      "message": "TargetSelection",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/helpers/target.py:106",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "classbase",
+        "bases": [
+          "TargetSelectorData"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L106"
+    },
+    {
+      "id": "core-issue-check-deprecated-fan-speed-entity-2026.12",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/components/lg_thinq/number.py:191",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lg_thinq/number.py#L191"
+    },
+    {
+      "id": "core-issue-create-issue-yaml-migration-2026.12",
+      "kind": "issue",
+      "symbol": "",
+      "message": "uses ``, deprecated and removed in Home Assistant 2026.12.",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/components/rflink/utils.py:33",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/rflink/utils.py#L33"
+    },
+    {
+      "id": "core-issue-normalize-partial-options-data-2026.12",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/components/hassio/services.py:96",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hassio/services.py#L96"
+    },
+    {
+      "id": "core-issue-opnsenseconfigflow-abort-import-2026.12",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/components/opnsense/config_flow.py:298",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L298"
+    },
+    {
+      "id": "core-issue-opnsenseconfigflow-async-step-import-2026.12",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/components/opnsense/config_flow.py:221",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L221"
+    },
+    {
+      "id": "core-prose-has-an-update-listener-and-should-use-it-for-scheduling-a-reload",
+      "kind": "prose",
+      "symbol": "has an update listener and should use it for scheduling a reload",
+      "message": "has an update listener and should use it for scheduling a reload",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/config_entries.py:3161",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3161"
+    },
+    {
+      "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
+      "kind": "prose",
+      "symbol": "passes a non-string value of type {...} as {...} to the device registry",
+      "message": "passes a non-string value of type {...} as {...} to the device registry",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/helpers/device_registry.py:316",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L316"
+    },
+    {
+      "id": "core-prose-temperatureconverter-convert-interval",
+      "kind": "prose",
+      "symbol": "TemperatureConverter.convert_interval",
+      "message": "TemperatureDeltaConverter.convert",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/util/unit_conversion.py:872",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L872"
+    },
+    {
+      "id": "blog-service-info-2026.2",
+      "kind": "prose",
+      "symbol": "service info",
+      "message": "Relocate dhcp/ssdp/usb/zeroconf ServiceInfo models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at m...",
+      "breaks_in": "2026.2",
+      "source": "https://developers.home-assistant.io/blog/2025/01/15/service-info/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
+      "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
+      "kind": "prose",
+      "symbol": "creates a config entry when another entry with the same unique ID exists",
+      "message": "creates a config entry when another entry with the same unique ID exists",
+      "breaks_in": "2026.3",
+      "source": "homeassistant/config_entries.py:1791",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1791"
+    },
+    {
+      "id": "blog-frontend-component-updates-2026-4-2026.5",
+      "kind": "prose",
+      "symbol": "frontend component updates 2026.4",
+      "message": "ha-input is the successor of ha-textfield ha-textfield API stays but the component is migrated to use ha-input internally and will be removed in 2026.5 Also replaces ha-outlined-text-field ha-input-search replaces search-input and search-input-outlined ha-input-multi replaces ha-multi-textfield ha-input-copy replaces copy-textfield This component also introduces new semantic theme variables for...",
+      "breaks_in": "2026.5",
+      "source": "https://developers.home-assistant.io/blog/2026/03/25/frontend-component-updates-2026.4/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
+      "id": "core-issue-async-setup-platform-2026.6",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.6",
+      "source": "homeassistant/components/openevse/sensor.py:389",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L389"
+    },
+    {
+      "id": "core-issue-async-setup-platform-2026.7",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.7",
+      "source": "homeassistant/components/openevse/sensor.py:405",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 3,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L405"
+    },
+    {
+      "id": "core-issue-bluesoundplayer-async-bluesound-join-2026.7",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2026.7",
+      "source": "homeassistant/components/bluesound/media_player.py:483",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluesound/media_player.py#L483"
+    },
+    {
+      "id": "core-issue-bluesoundplayer-async-bluesound-unjoin-2026.7",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2026.7",
+      "source": "homeassistant/components/bluesound/media_player.py:507",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluesound/media_player.py#L507"
+    },
+    {
+      "id": "core-issue-data-async-check-for-not-normalized-usernames-2026.7",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2026.7",
+      "source": "homeassistant/auth/providers/homeassistant.py:134",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/auth/providers/homeassistant.py#L134"
+    },
+    {
+      "id": "core-issue-deprecate-timeout-2026.7",
+      "kind": "issue",
+      "symbol": "service.hass",
+      "message": "service.hass",
+      "breaks_in": "2026.7",
+      "source": "homeassistant/components/telegram_bot/__init__.py:666",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L666"
+    },
+    {
+      "id": "blog-media-player-standby-state-deprecated-2026.8",
+      "kind": "prose",
+      "symbol": "media player standby state deprecated",
+      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at most on...",
+      "breaks_in": "2026.8",
+      "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
+      "id": "blog-updated-pattern-for-helpers-linking-to-devices-2026.8",
+      "kind": "prose",
+      "symbol": "updated pattern for helpers linking to devices",
+      "message": "Adding the helper config entry to another integration's device is no longer supported and will stop working in Home Assistant Core 2026.8.",
+      "breaks_in": "2026.8",
+      "source": "https://developers.home-assistant.io/blog/2025/07/18/updated-pattern-for-helpers-linking-to-devices/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
+      "id": "core-issue-async-create-yaml-mode-repair-2026.8",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/lovelace/__init__.py:474",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lovelace/__init__.py#L474"
+    },
+    {
+      "id": "core-issue-async-get-service-2026.8",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/telegram/notify.py:56",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram/notify.py#L56"
+    },
+    {
+      "id": "core-issue-async-setup-2026.8",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/waterfurnace/__init__.py:63",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/waterfurnace/__init__.py#L63"
+    },
+    {
+      "id": "core-issue-samsungtventity-async-turn-on-2026.8",
+      "kind": "issue",
+      "symbol": "self.hass",
+      "message": "self.hass",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/samsungtv/entity.py:98",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/samsungtv/entity.py#L98"
+    },
+    {
+      "id": "core-prose-is-explicitly-setting-attr-max-color-temp-kelvin-to-none-when-it-should-be",
+      "kind": "prose",
+      "symbol": "is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be...",
+      "message": "is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/light/__init__.py:852",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L852"
+    },
+    {
+      "id": "core-prose-is-explicitly-setting-attr-min-color-temp-kelvin-to-none-when-it-should-be",
+      "kind": "prose",
+      "symbol": "is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be...",
+      "message": "is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/light/__init__.py:832",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L832"
+    },
+    {
+      "id": "core-prose-is-setting-the-battery-supported-feature-which-has-been-deprecated-integration",
+      "kind": "prose",
+      "symbol": "is setting the battery supported feature which has been deprecated. Integration ...",
+      "message": "is setting the battery supported feature which has been deprecated. Integration {...} should remove this as part of migrating the battery level and icon to a sensor",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/vacuum/__init__.py:293",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/vacuum/__init__.py#L293"
+    },
+    {
+      "id": "core-prose-is-setting-the-which-has-been-deprecated-integration-should-impleme",
+      "kind": "prose",
+      "symbol": "is setting the {...} which has been deprecated. Integration {...} should impleme...",
+      "message": "is setting the {...} which has been deprecated. Integration {...} should implement a sensor instead with a correct device class and link it to the same device",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/vacuum/__init__.py:269",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/vacuum/__init__.py#L269"
+    },
+    {
+      "id": "core-issue-action-called-without-config-entry-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/duckdns/issue.py:12",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/duckdns/issue.py#L12"
+    },
+    {
+      "id": "core-issue-async-create-deprecated-yaml-issue-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/influxdb/issue.py:21",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/influxdb/issue.py#L21"
+    },
+    {
+      "id": "core-issue-async-import-yaml-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/splunk/__init__.py:114",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/splunk/__init__.py#L114"
+    },
+    {
+      "id": "core-issue-async-setup-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/ness_alarm/__init__.py:107",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ness_alarm/__init__.py#L107"
+    },
+    {
+      "id": "core-issue-async-setup-entry-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/flexit_bacnet/switch.py:90",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/flexit_bacnet/switch.py#L90"
+    },
+    {
+      "id": "core-issue-async-setup-platform-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/orvibo/switch.py:78",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L78"
+    },
+    {
+      "id": "core-issue-async-setup-render-image-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/openai_conversation/__init__.py:90",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L90"
+    },
+    {
+      "id": "core-issue-async-setup-send-prompt-2026.9",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/openai_conversation/__init__.py:141",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L141"
+    },
+    {
+      "id": "core-issue-warn-chat-id-migration-2026.9",
+      "kind": "issue",
+      "symbol": "service.hass",
+      "message": "service.hass",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/components/telegram_bot/__init__.py:913",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L913"
+    },
+    {
+      "id": "core-prose-deviceentry-suggested-area",
+      "kind": "prose",
+      "symbol": "DeviceEntry.suggested_area",
+      "message": "code which ignores suggested_area",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/helpers/device_registry.py:592",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L592"
+    },
+    {
+      "id": "core-prose-passes-a-suggested-area-to-device-registry-async-update-device",
+      "kind": "prose",
+      "symbol": "passes a suggested_area to device_registry.async_update device",
+      "message": "passes a suggested_area to device_registry.async_update device",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/helpers/device_registry.py:2580",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2580"
+    },
+    {
+      "id": "core-call-async-register-info",
+      "kind": "call",
+      "symbol": "async_register_info",
+      "message": "calls system_health.async_register_info, which is deprecated; add a system_health platform instead",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/system_health/__init__.py:55",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_register_info"
+        ],
+        "modules": [
+          "homeassistant.components.system_health"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/system_health/__init__.py#L55"
+    },
+    {
+      "id": "core-issue-async-deprecate-yaml-issue-2027.1",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/smtp/issue.py:23",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/smtp/issue.py#L23"
+    },
+    {
+      "id": "core-issue-async-setup-entry-2027.1",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/mqtt/__init__.py:527",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L527"
+    },
+    {
+      "id": "core-issue-async-setup-scanner-2027.1",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/swisscom/device_tracker.py:34",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/swisscom/device_tracker.py#L34"
+    },
+    {
+      "id": "core-issue-create-deprecated-behavior-issue-2027.1",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/helpers/trigger.py:332",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger.py#L332"
+    },
+    {
+      "id": "core-call-async-generate-entity-id",
+      "kind": "call",
+      "symbol": "async_generate_entity_id",
+      "message": "calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/helpers/entity_registry.py:1287",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_generate_entity_id"
+        ],
+        "modules": [
+          "homeassistant.helpers.entity_registry"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1287"
+    },
+    {
+      "id": "core-call-async-render-no-api-prompt",
+      "kind": "call",
+      "symbol": "async_render_no_api_prompt",
+      "message": "an empty string",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/helpers/llm.py:56",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_render_no_api_prompt"
+        ],
+        "modules": [
+          "homeassistant.helpers.llm"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L56"
+    },
+    {
+      "id": "core-issue-async-import-2027.2",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/components/aqualogic/__init__.py:61",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/aqualogic/__init__.py#L61"
+    },
+    {
+      "id": "core-issue-async-load-config-2027.2",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/components/http/config.py:222",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 3,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L222"
+    },
+    {
+      "id": "core-issue-deprecate-2027.2",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/components/netatmo/services.py:27",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L27"
+    },
+    {
+      "id": "core-issue-deprecated-event-bus-2027.2",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/components/html5/issue.py:62",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L62"
+    },
+    {
+      "id": "core-prose-sets-a-group-attribute-on-entity-which-is-not-a-group-instance",
+      "kind": "prose",
+      "symbol": "sets a `group` attribute on entity {...} which is not a `Group` instance",
+      "message": "sets a `group` attribute on entity {...} which is not a `Group` instance",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/helpers/entity.py:1559",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1559"
+    },
+    {
+      "id": "core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit",
+      "kind": "prose",
+      "symbol": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entit...",
+      "message": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/helpers/entity_platform.py:891",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L891"
+    },
+    {
+      "id": "blog-labs-async-listen-deprecation-2027.3",
+      "kind": "prose",
+      "symbol": "labs async listen deprecation",
+      "message": "async_listen will be removed in Home Assistant 2027.3.",
+      "breaks_in": "2027.3",
+      "source": "https://developers.home-assistant.io/blog/2026/02/16/labs-async-listen-deprecation/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-issue-deprecated-notify-action-call-2027.3",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.3",
+      "source": "homeassistant/components/smtp/issue.py:59",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/smtp/issue.py#L59"
+    },
+    {
+      "id": "core-prose-calls-async-listen-which-is-deprecated-use-async-subscribe-preview-feature",
+      "kind": "prose",
+      "symbol": "calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` ...",
+      "message": "calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` instead",
+      "breaks_in": "2027.3",
+      "source": "homeassistant/components/labs/helpers.py:92",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/labs/helpers.py#L92"
+    },
+    {
+      "id": "blog-doorbell-standard-event-type-2027.4",
+      "kind": "prose",
+      "symbol": "doorbell standard event type",
+      "message": "Doorbell entities that do not include DoorbellEventType.RING will log a deprecation warning and will stop working in Home Assistant 2027.4 .",
+      "breaks_in": "2027.4",
+      "source": "https://developers.home-assistant.io/blog/2026/04/15/doorbell-standard-event-type/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "blog-entity-id-mismatched-domain-deprecated-2027.5",
+      "kind": "prose",
+      "symbol": "entity id mismatched domain deprecated",
+      "message": "Setting an entity ID with the wrong domain will log a deprecation warning and will stop working in Home Assistant 2027.5 .",
+      "breaks_in": "2027.5",
+      "source": "https://developers.home-assistant.io/blog/2026/04/07/entity-id-mismatched-domain-deprecated/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "blog-legacy-device-tracker-deprecation-2027.5",
+      "kind": "prose",
+      "symbol": "legacy device tracker deprecation",
+      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at mo...",
+      "breaks_in": "2027.5",
+      "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-issue-async-setup-integration-async-see-service-2027.5",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/device_tracker/legacy.py:236",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L236"
+    },
+    {
+      "id": "core-prose-sets-an-entity-id-with-wrong-domain-expected-domain-is",
+      "kind": "prose",
+      "symbol": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
+      "message": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/helpers/entity_platform.py:908",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L908"
+    },
+    {
+      "id": "legacy-device-tracker-platform",
+      "kind": "moduledef",
+      "symbol": "setup_scanner",
+      "message": "Implements the legacy (non-config-entry) device tracker platform API. 'The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.' Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity).",
+      "breaks_in": "2027.5",
+      "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "https://developers.home-assistant.io/docs/core/entity/device-tracker",
+      "match": {
+        "type": "moduledef",
+        "names": [
+          "setup_scanner",
+          "async_setup_scanner",
+          "get_scanner",
+          "async_get_scanner"
+        ],
+        "files": [
+          "device_tracker.py"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "legacy-device-tracker-scanner-class",
+      "kind": "classbase",
+      "symbol": "DeviceScanner",
+      "message": "Subclasses homeassistant.components.device_tracker.DeviceScanner, part of the legacy device tracker platform API removed in Home Assistant 2027.5. Migrate to ScannerEntity on a config entry.",
+      "breaks_in": "2027.5",
+      "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "https://developers.home-assistant.io/docs/core/entity/device-tracker",
+      "match": {
+        "type": "classbase",
+        "bases": [
+          "DeviceScanner"
+        ],
+        "files": [
+          "device_tracker.py"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "core-call-flowhandler-show-advanced-options",
+      "kind": "call",
+      "symbol": "FlowHandler.show_advanced_options",
+      "message": "a user friendly way to present additional options in the UI, for example a section",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/data_entry_flow.py:646",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "show_advanced_options"
+        ],
+        "modules": [
+          "homeassistant.data_entry_flow"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L646"
+    },
+    {
+      "id": "core-classbase-infraredentitydescription",
+      "kind": "classbase",
+      "symbol": "InfraredEntityDescription",
+      "message": "homeassistant.components.infrared.InfraredEmitterEntityDescription",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/infrared/entity.py:181",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "classbase",
+        "bases": [
+          "InfraredEntityDescription"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/infrared/entity.py#L181"
+    },
+    {
+      "id": "core-prose-infraredentity",
+      "kind": "prose",
+      "symbol": "InfraredEntity",
+      "message": "homeassistant.components.infrared.InfraredEmitterEntity",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/infrared/entity.py:189",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/infrared/entity.py#L189"
+    },
+    {
+      "id": "core-prose-that-calls-the-mqtt-publish-api-with-none-for-qos-or-retain-the-qos-argumen",
+      "kind": "prose",
+      "symbol": "that calls the MQTT publish API with `None` for qos or retain. The `qos` argumen...",
+      "message": "that calls the MQTT publish API with `None` for qos or retain. The `qos` argument must be an `int`, and the `retain` argument must be a `bool`",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/mqtt/client.py:199",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L199"
+    },
+    {
+      "id": "blog-device-tracker-changes-2027.7",
+      "kind": "prose",
+      "symbol": "device tracker changes",
+      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at most one sub...",
+      "breaks_in": "2027.7",
+      "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-call-get-astral-location",
+      "kind": "call",
+      "symbol": "get_astral_location",
+      "message": "homeassistant.helpers.sun.get_astral_observer",
+      "breaks_in": "2027.7",
+      "source": "homeassistant/helpers/sun.py:20",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "get_astral_location"
+        ],
+        "modules": [
+          "homeassistant.helpers.sun"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L20"
+    },
+    {
+      "id": "core-call-get-location-astral-event-next",
+      "kind": "call",
+      "symbol": "get_location_astral_event_next",
+      "message": "homeassistant.helpers.sun.get_observer_astral_event_next",
+      "breaks_in": "2027.7",
+      "source": "homeassistant/helpers/sun.py:60",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "get_location_astral_event_next"
+        ],
+        "modules": [
+          "homeassistant.helpers.sun"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L60"
+    },
+    {
+      "id": "device-tracker-battery-level",
+      "kind": "attr",
+      "symbol": "battery_level",
+      "message": "'The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.' Expose the battery as a separate sensor entity with device_class battery instead.",
+      "breaks_in": "2027.7",
+      "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "attr",
+        "names": [
+          "battery_level"
+        ],
+        "files": [
+          "device_tracker.py"
+        ],
+        "in_class_base": [
+          "TrackerEntity",
+          "ScannerEntity",
+          "BaseTrackerEntity"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "device-tracker-location-name",
+      "kind": "attr",
+      "symbol": "location_name",
+      "message": "'The location_name property of TrackerEntity has been deprecated, and will stop working in Home Assistant Core 2027.7.' Set the entity state from latitude/longitude and let Home Assistant resolve the zone.",
+      "breaks_in": "2027.7",
+      "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "attr",
+        "names": [
+          "location_name"
+        ],
+        "files": [
+          "device_tracker.py"
+        ],
+        "in_class_base": [
+          "TrackerEntity",
+          "BaseTrackerEntity"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "async-initialize-triggers-home-assistant-start",
+      "kind": "call",
+      "symbol": "async_initialize_triggers(home_assistant_start=...)",
+      "message": "'The dedicated home_assistant_start flag of async_initialize_triggers is deprecated and will be removed in Home Assistant Core 2027.8.' Listen for the homeassistant_started event from the trigger itself instead.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_kwarg",
+        "names": [
+          "async_initialize_triggers"
+        ],
+        "kwargs": [
+          "home_assistant_start"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
+      "kind": "prose",
+      "symbol": "async initialize triggers home assistant start deprecated",
+      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a singl...",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "duplicate_of_matchable_release": true,
+      "expired": false
+    },
+    {
+      "id": "blog-device-registry-single-config-entry-2027.8",
+      "kind": "prose",
+      "symbol": "device registry single config entry",
+      "message": "Unless noted otherwise, deprecated functionality remains supported until Home Assistant Core 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-call-async-device-info-to-link-from-device-id",
+      "kind": "call",
+      "symbol": "async_device_info_to_link_from_device_id",
+      "message": "calls async_device_info_to_link_from_device_id, which is deprecated and always returns None: a device_info carrying another device's identifiers implicitly added the caller's config entry to that device, which a single-config-entry device can't represent. Set entity.device_entry to the target device instead",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device.py:68",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_device_info_to_link_from_device_id"
+        ],
+        "modules": [
+          "homeassistant.helpers.device"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device.py#L68"
+    },
+    {
+      "id": "core-call-async-device-info-to-link-from-entity",
+      "kind": "call",
+      "symbol": "async_device_info_to_link_from_entity",
+      "message": "calls async_device_info_to_link_from_entity, which is deprecated and always returns None: a device_info carrying another device's identifiers implicitly added the caller's config entry to that device, which a single-config-entry device can't represent. Set entity.device_entry = async_entity_id_to_device(hass, source_entity_id) instead",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device.py:47",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_device_info_to_link_from_entity"
+        ],
+        "modules": [
+          "homeassistant.helpers.device"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device.py#L47"
+    },
+    {
+      "id": "core-call-async-handle-source-entity-changes-add-helper-config-entry-to-device",
+      "kind": "call",
+      "symbol": "async_handle_source_entity_changes(add_helper_config_entry_to_device=...)",
+      "message": "calls async_handle_source_entity_changes with add_helper_config_entry_to_device, which no longer has any effect",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/helper_integration.py:51",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_kwarg",
+        "names": [
+          "async_handle_source_entity_changes"
+        ],
+        "modules": [
+          "homeassistant.helpers.helper_integration"
+        ],
+        "kwargs": [
+          "add_helper_config_entry_to_device"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/helper_integration.py#L51"
+    },
+    {
+      "id": "core-call-async-remove-helper-config-entry-from-source-device",
+      "kind": "call",
+      "symbol": "async_remove_helper_config_entry_from_source_device",
+      "message": "homeassistant.helpers.helper_integration.async_remove_helper_devices",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/helper_integration.py:289",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_remove_helper_config_entry_from_source_device"
+        ],
+        "modules": [
+          "homeassistant.helpers.helper_integration"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/helper_integration.py#L289"
+    },
+    {
+      "id": "core-call-async-remove-stale-devices-links-keep-current-device",
+      "kind": "call",
+      "symbol": "async_remove_stale_devices_links_keep_current_device",
+      "message": "calls async_remove_stale_devices_links_keep_current_device, which is deprecated and does nothing: a device belongs to a single config entry, so a helper no longer adds its config entry to another device. Call homeassistant.helpers.helper_integration.async_remove_helper_devices with remove_all_devices=True instead",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device.py:118",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_remove_stale_devices_links_keep_current_device"
+        ],
+        "modules": [
+          "homeassistant.helpers.device"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device.py#L118"
+    },
+    {
+      "id": "core-call-async-remove-stale-devices-links-keep-entity-device",
+      "kind": "call",
+      "symbol": "async_remove_stale_devices_links_keep_entity_device",
+      "message": "calls async_remove_stale_devices_links_keep_entity_device, which is deprecated and does nothing: a device belongs to a single config entry, so a helper no longer adds its config entry to the source device. Call homeassistant.helpers.helper_integration.async_remove_helper_devices with remove_all_devices=True instead",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device.py:93",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_remove_stale_devices_links_keep_entity_device"
+        ],
+        "modules": [
+          "homeassistant.helpers.device"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device.py#L93"
+    },
+    {
+      "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
+      "kind": "prose",
+      "symbol": "assigns an existing device to a different config subentry, by calling `async_get...",
+      "message": "assigns an existing device to a different config subentry, by calling `async_get_or_create` or by adding entities from several subentries that share a device; this silently moves the device. A device belongs to one subentry - keep a shared device in a single subentry, or move it with `async_update_device`",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device_registry.py:1947",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L1947"
+    },
+    {
+      "id": "core-prose-attempts-to-attach-a-device-to-an-entity",
+      "kind": "prose",
+      "symbol": "attempts to attach a device to an entity {...}",
+      "message": "attempts to attach a device to an entity {...}",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/entity_platform.py:844",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L844"
+    },
+    {
+      "id": "core-prose-passes-home-assistant-start-to-async-initialize-triggers-which-is-deprecate",
+      "kind": "prose",
+      "symbol": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecate...",
+      "message": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecated and will be removed in Home Assistant 2027.8; the parameter no longer has any effect",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/trigger.py:1837",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger.py#L1837"
+    },
+    {
+      "id": "core-prose-passes-the-id-of-a-pre-migration-composite-device-as-via-device-id-pass",
+      "kind": "prose",
+      "symbol": "passes the id of a pre-migration composite device {...} as `via_device_id`; pass...",
+      "message": "passes the id of a pre-migration composite device {...} as `via_device_id`; pass the id of a single device instead, e.g. one returned by async_get_device_by_identifier",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device_registry.py:1689",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L1689"
+    },
+    {
+      "id": "core-prose-sets-disabled-by-to-deviceentrydisabler-config-entry-the-enabled-config-en",
+      "kind": "prose",
+      "symbol": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config en...",
+      "message": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config entry {...}",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device_registry.py:2392",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2392"
+    },
+    {
+      "id": "core-prose-sets-disabled-by-to-none-the-disabled-config-entry",
+      "kind": "prose",
+      "symbol": "sets disabled_by to None {...} the disabled config entry {...}",
+      "message": "sets disabled_by to None {...} the disabled config entry {...}",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/helpers/device_registry.py:2381",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2381"
+    },
+    {
+      "id": "device-entry-config-entries",
+      "kind": "attr",
+      "symbol": "DeviceEntry.config_entries",
+      "message": "DeviceEntry.config_entries is deprecated -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Removed in Home Assistant Core 2027.8. Not auto-detected: the attribute name 'config_entries' is also the ubiquitous hass.config_entries, so a static matcher would fire on nearly every integration. Check by hand if your code reads .config_entries off a DeviceEntry.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "low",
+      "replacement": "DeviceEntry.config_entry_id",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "device-entry-primary-config-entry",
+      "kind": "attr",
+      "symbol": "DeviceEntry.primary_config_entry",
+      "message": "DeviceEntry.primary_config_entry is deprecated and removed in Home Assistant Core 2027.8 -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Devices are now restricted to a single config entry.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "DeviceEntry.config_entry_id",
+      "match": {
+        "type": "attr_access",
+        "names": [
+          "primary_config_entry",
+          "config_entries_subentries"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "device-info-via-device",
+      "kind": "call",
+      "symbol": "via_device",
+      "message": "DeviceInfo['via_device'] and DeviceRegistry.async_get_or_create(via_device=...) are deprecated -- 'Deprecated, use via_device_id instead.' Removed in Home Assistant Core 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "via_device_id",
+      "match": {
+        "type": "call_kwarg",
+        "names": [
+          "DeviceInfo",
+          "async_get_or_create"
+        ],
+        "kwargs": [
+          "via_device"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "device-registry-async-get-device",
+      "kind": "call",
+      "symbol": "DeviceRegistry.async_get_device",
+      "message": "DeviceRegistry.async_get_device() is deprecated -- 'Identifiers and connections are only unique per config entry.' Removed in Home Assistant Core 2027.8; use async_get_device_by_identifier() or async_get_device_by_connection().",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "medium",
+      "replacement": "async_get_device_by_identifier() / async_get_device_by_connection()",
+      "match": {
+        "type": "call",
+        "names": [
+          "async_get_device"
+        ],
+        "modules": [
+          "homeassistant.helpers.device_registry"
+        ],
+        "allow_unresolved_attribute": true
+      },
+      "matchable": true,
+      "expired": false
+    },
+    {
+      "id": "device-registry-config-entry-mutation-params",
+      "kind": "call",
+      "symbol": "DeviceRegistry.async_update_device(add_config_entry_id=...)",
+      "message": "'The add_config_entry_id, add_config_subentry_id, remove_config_entry_id and remove_config_subentry_id parameters are all deprecated.' Removed in Home Assistant Core 2027.8; use new_config_entry_id / new_config_subentry_id.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "new_config_entry_id / new_config_subentry_id",
+      "match": {
+        "type": "call_kwarg",
+        "names": [
+          "async_update_device"
+        ],
+        "modules": [
+          "homeassistant.helpers.device_registry"
+        ],
+        "allow_unresolved_attribute": true,
+        "kwargs": [
+          "add_config_entry_id",
+          "add_config_subentry_id",
+          "remove_config_entry_id",
+          "remove_config_subentry_id"
+        ]
+      },
+      "matchable": true,
+      "expired": false
+    }
+  ],
+  "blog_merged_utc": "2026-08-08T04:56:29Z"
+}

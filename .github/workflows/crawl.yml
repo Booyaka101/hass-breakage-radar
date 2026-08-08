@@ -1,0 +1,87 @@
+name: Crawl and publish index
+
+on:
+  schedule:
+    # 03:17 UTC daily -- off the hour so it does not pile onto GitHub's busiest minute.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Repositories to scan in this run"
+        required: false
+        default: "400"
+      force:
+        description: "Rescan repositories even if nothing changed"
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: crawl
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          # Home Assistant's dev branch tracks the newest CPython syntax
+          # (2026.9 dev already uses PEP 758 `except A, B:`), so the rule
+          # extractor needs an interpreter at least as new as core's.
+          python-version: "3.14"
+
+      - name: Cache the Home Assistant core tarball
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: core-dev-${{ github.run_id }}
+          restore-keys: core-dev-
+
+      - name: Refresh the core tarball
+        run: rm -f .cache/core-dev.tar.gz
+
+      - name: Extract rules from Home Assistant core
+        run: python tools/extract_rules.py
+
+      - name: Merge blog and hand-curated rules
+        run: python tools/blog_rules.py
+
+      - name: Fetch the HACS catalogue
+        run: python tools/catalog.py
+
+      - name: Scan a slice of the catalogue
+        run: |
+          python tools/scan.py \
+            --limit "${{ github.event.inputs.limit || '400' }}" \
+            ${{ github.event.inputs.force == 'true' && '--force' || '' }}
+
+      - name: Build the public index
+        run: python tools/build_index.py
+
+      - name: Run the test suite against the fresh data
+        run: |
+          python -m pip install --disable-pip-version-check --quiet pytest
+          python -m pytest
+
+      - name: Commit the refreshed index and crawl state
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/rules.json data/catalog.json data/findings.json \
+                  state/crawl.json docs/index.json docs/index.html docs/.nojekyll
+          if git diff --cached --quiet; then
+            echo "No index changes to commit."
+            exit 0
+          fi
+          SCANNED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_scanned'])")
+          AFFECTED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_affected'])")
+          git commit -m "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
+          git push

@@ -1,0 +1,30 @@
+# Crawler working files -- large, regenerable, never committed.
+.cache/
+*.tar.gz
+!tests/fixtures/*.tar.gz
+*.part
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.env
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

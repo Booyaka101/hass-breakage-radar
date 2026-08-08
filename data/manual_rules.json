@@ -1,0 +1,186 @@
+{
+  "_comment": [
+    "Hand-curated rules. Every entry is traceable to a developers.home-assistant.io post",
+    "or to a file in home-assistant/core, quoted in the 'message' and linked in 'source'.",
+    "These exist because the announcement is prose only -- there is no report_usage() call",
+    "in core carrying a string-literal breaks_in_ha_version for them, so tools/extract_rules.py",
+    "cannot find them automatically.",
+    "Rules with matchable=false ship as information only: they appear on the board so a user",
+    "knows the release is coming, but the crawler will not claim a repo is affected.",
+    "Curation policy (see README 'How rules are chosen'): a matcher is only enabled when the",
+    "symbol is specific enough that a hit is almost certainly the deprecated API, and the",
+    "measured hit-rate across the real crawl is plausible rather than universal."
+  ],
+  "rules": [
+    {
+      "id": "legacy-device-tracker-platform",
+      "kind": "moduledef",
+      "symbol": "setup_scanner",
+      "message": "Implements the legacy (non-config-entry) device tracker platform API. 'The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.' Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity).",
+      "breaks_in": "2027.5",
+      "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "https://developers.home-assistant.io/docs/core/entity/device-tracker",
+      "match": {
+        "type": "moduledef",
+        "names": [
+          "setup_scanner",
+          "async_setup_scanner",
+          "get_scanner",
+          "async_get_scanner"
+        ],
+        "files": ["device_tracker.py"]
+      }
+    },
+    {
+      "id": "legacy-device-tracker-scanner-class",
+      "kind": "classbase",
+      "symbol": "DeviceScanner",
+      "message": "Subclasses homeassistant.components.device_tracker.DeviceScanner, part of the legacy device tracker platform API removed in Home Assistant 2027.5. Migrate to ScannerEntity on a config entry.",
+      "breaks_in": "2027.5",
+      "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "https://developers.home-assistant.io/docs/core/entity/device-tracker",
+      "match": {
+        "type": "classbase",
+        "bases": ["DeviceScanner"],
+        "files": ["device_tracker.py"]
+      }
+    },
+    {
+      "id": "device-tracker-battery-level",
+      "kind": "attr",
+      "symbol": "battery_level",
+      "message": "'The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.' Expose the battery as a separate sensor entity with device_class battery instead.",
+      "breaks_in": "2027.7",
+      "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "attr",
+        "names": ["battery_level"],
+        "files": ["device_tracker.py"],
+        "in_class_base": [
+          "TrackerEntity",
+          "ScannerEntity",
+          "BaseTrackerEntity"
+        ]
+      }
+    },
+    {
+      "id": "device-tracker-location-name",
+      "kind": "attr",
+      "symbol": "location_name",
+      "message": "'The location_name property of TrackerEntity has been deprecated, and will stop working in Home Assistant Core 2027.7.' Set the entity state from latitude/longitude and let Home Assistant resolve the zone.",
+      "breaks_in": "2027.7",
+      "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "attr",
+        "names": ["location_name"],
+        "files": ["device_tracker.py"],
+        "in_class_base": ["TrackerEntity", "BaseTrackerEntity"]
+      }
+    },
+    {
+      "id": "async-initialize-triggers-home-assistant-start",
+      "kind": "call",
+      "symbol": "async_initialize_triggers(home_assistant_start=...)",
+      "message": "'The dedicated home_assistant_start flag of async_initialize_triggers is deprecated and will be removed in Home Assistant Core 2027.8.' Listen for the homeassistant_started event from the trigger itself instead.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["async_initialize_triggers"],
+        "kwargs": ["home_assistant_start"]
+      }
+    },
+    {
+      "id": "device-entry-primary-config-entry",
+      "kind": "attr",
+      "symbol": "DeviceEntry.primary_config_entry",
+      "message": "DeviceEntry.primary_config_entry is deprecated and removed in Home Assistant Core 2027.8 -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Devices are now restricted to a single config entry.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "DeviceEntry.config_entry_id",
+      "match": {
+        "type": "attr_access",
+        "names": ["primary_config_entry", "config_entries_subentries"]
+      }
+    },
+    {
+      "id": "device-registry-config-entry-mutation-params",
+      "kind": "call",
+      "symbol": "DeviceRegistry.async_update_device(add_config_entry_id=...)",
+      "message": "'The add_config_entry_id, add_config_subentry_id, remove_config_entry_id and remove_config_subentry_id parameters are all deprecated.' Removed in Home Assistant Core 2027.8; use new_config_entry_id / new_config_subentry_id.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "new_config_entry_id / new_config_subentry_id",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["async_update_device"],
+        "modules": ["homeassistant.helpers.device_registry"],
+        "allow_unresolved_attribute": true,
+        "kwargs": [
+          "add_config_entry_id",
+          "add_config_subentry_id",
+          "remove_config_entry_id",
+          "remove_config_subentry_id"
+        ]
+      }
+    },
+    {
+      "id": "device-info-via-device",
+      "kind": "call",
+      "symbol": "via_device",
+      "message": "DeviceInfo['via_device'] and DeviceRegistry.async_get_or_create(via_device=...) are deprecated -- 'Deprecated, use via_device_id instead.' Removed in Home Assistant Core 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "via_device_id",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["DeviceInfo", "async_get_or_create"],
+        "kwargs": ["via_device"]
+      }
+    },
+    {
+      "id": "device-registry-async-get-device",
+      "kind": "call",
+      "symbol": "DeviceRegistry.async_get_device",
+      "message": "DeviceRegistry.async_get_device() is deprecated -- 'Identifiers and connections are only unique per config entry.' Removed in Home Assistant Core 2027.8; use async_get_device_by_identifier() or async_get_device_by_connection().",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "medium",
+      "replacement": "async_get_device_by_identifier() / async_get_device_by_connection()",
+      "match": {
+        "type": "call",
+        "names": ["async_get_device"],
+        "modules": ["homeassistant.helpers.device_registry"],
+        "allow_unresolved_attribute": true
+      }
+    },
+    {
+      "id": "device-entry-config-entries",
+      "kind": "attr",
+      "symbol": "DeviceEntry.config_entries",
+      "message": "DeviceEntry.config_entries is deprecated -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Removed in Home Assistant Core 2027.8. Not auto-detected: the attribute name 'config_entries' is also the ubiquitous hass.config_entries, so a static matcher would fire on nearly every integration. Check by hand if your code reads .config_entries off a DeviceEntry.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "origin": "manual",
+      "confidence": "low",
+      "replacement": "DeviceEntry.config_entry_id"
+    }
+  ]
+}
