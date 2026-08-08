@@ -9,6 +9,7 @@ its logic.
 from __future__ import annotations
 
 import json
+import re
 
 import pytest
 
@@ -264,7 +265,9 @@ def test_manifest_is_hacs_and_hassfest_shaped(repo_root):
         assert key in manifest, f"manifest.json is missing {key!r}"
     assert manifest["domain"] == "breakage_radar"
     assert manifest["requirements"] == [], "the integration must have no runtime deps"
-    assert manifest["version"] == "1.0.0"
+    pyproject = (repo_root / "pyproject.toml").read_text(encoding="utf-8")
+    declared = re.search(r'^version = "([^"]+)"', pyproject, re.M).group(1)
+    assert manifest["version"] == declared, "manifest and pyproject versions must agree"
 
 
 def test_translations_match_strings(repo_root):
