@@ -4,6 +4,19 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.2.1 — 2026-08-12
+
+* **The `imminent` date estimate now uses Home Assistant's actual published
+  schedule.** 1.2.0 claimed Home Assistant "publishes release numbers, not
+  dates" and estimated each release as the 1st of its month. Both were wrong:
+  the [release FAQ](https://www.home-assistant.io/faq/release/) states a new
+  version is released **on the first Wednesday of every month**, and that rule
+  matches all eight 2026 releases to the day (the 1st-of-month estimate was 23
+  days of accumulated error over the same eight). The estimator now computes
+  the first Wednesday, a test pins it against every real 2026 release date,
+  and the wrong claim is corrected in the README and issue text. `broken_now`
+  was never affected — it never used the date estimate.
+
 ## 1.2.0 — 2026-08-11
 
 ### Three levels instead of one wall of warnings

@@ -24,8 +24,8 @@ FETCH_TIMEOUT: Final = 30
 MAX_DETAILS: Final = 100
 
 #: A deadline this close gets its own alert instead of being summarised with
-#: the rest. Home Assistant ships monthly, landing between the 1st and the 7th,
-#: so 30 days is "the next release, or the one after if it is early".
+#: the rest. Home Assistant releases on the first Wednesday of every month
+#: (home-assistant.io/faq/release/), so 30 days means "the next release".
 ALERT_WINDOW_DAYS: Final = 30
 
 ISSUE_ID: Final = "integrations_affected"

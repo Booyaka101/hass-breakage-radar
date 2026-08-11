@@ -170,10 +170,12 @@ grouped and summarised, and a card only appears when there is something to do th
 month: update the integration, replace it, or raise it upstream while the maintainer
 still has time.
 
-Home Assistant ships monthly, landing between the 1st and the 7th, so a release label
-maps to a month. The estimate uses the 1st — up to six days early, never late.
-`broken_now` never relies on that estimate: it is decided by comparing your running
-version to the deadline, so it stays exact even if a release slips. Upgrading past a
+Home Assistant [releases on the first Wednesday of every
+month](https://www.home-assistant.io/faq/release/), so a release label maps to an exact
+expected date — the rule matches all eight 2026 releases to the day, and a test pins
+that. It is computed rather than fetched, so a one-off rescheduled release would shift
+it; `broken_now` never relies on it either way — it is decided by comparing your
+running version to the deadline. Upgrading past a
 deadline makes a finding *more* visible, never less.
 
 Each issue links to the board and clears itself — when an updated version no longer
@@ -543,10 +545,11 @@ real package is used instead.
   crawler parses with 3.14, so the index side never has this gap.
 * **`DeviceEntry.config_entries` is informational only.** `config_entries` is also
   `hass.config_entries`, which every integration touches, so no matcher ships for it.
-* **`imminent` is an estimate, `broken_now` is not.** Home Assistant publishes release
-  *numbers*, not dates, so the 30-day window is derived from its monthly cadence and can
-  be a few days early. Whether a deadline has already *passed* is decided by version
-  comparison alone, so that half is exact.
+* **`imminent` is computed from the release schedule, `broken_now` is not.** The
+  first-Wednesday rule is Home Assistant's published schedule and has been exact all
+  year, but it is applied locally, not fetched — a release moved for a one-off reason
+  would shift the window by a few days. Whether a deadline has already *passed* is
+  decided by version comparison alone, so that half can never be wrong.
 * **Integrations only.** HACS plugins, themes and AppDaemon apps are out of scope for v1.
 * **No automatic fixing.** v1 tells you what breaks and when; it does not rewrite code.
 

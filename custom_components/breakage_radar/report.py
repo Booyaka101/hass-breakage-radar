@@ -10,7 +10,7 @@ module only decides what the two of them add up to.
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from typing import Any
 
 from .const import ALERT_WINDOW_DAYS, MAX_DETAILS, SUPPORTED_SCHEMA
@@ -18,22 +18,25 @@ from .rules_engine import is_future, parse_version
 
 
 def release_estimated_date(release: str) -> date | None:
-    """Approximate calendar date of a Home Assistant release label.
+    """Expected calendar date of a Home Assistant release label.
 
-    Home Assistant ships monthly and lands between the 1st and the 7th, so
-    ``"2027.5"`` is early May 2027. The 1st of the month is used deliberately:
-    it can be up to six days early and is never late, which is the right bias
-    for a deadline warning. Returns ``None`` for anything unparseable, and
-    callers treat that as "no date opinion" rather than guessing.
+    Home Assistant's published schedule: "A new stable version of Home
+    Assistant is released on the first Wednesday of every month"
+    (home-assistant.io/faq/release/). Measured against the eight 2026.x
+    releases, that rule was exact every time. It is computed here rather than
+    fetched, so a one-off rescheduled release would shift the estimate; the
+    ``broken_now`` level never depends on it. Returns ``None`` for anything
+    unparseable, and callers treat that as "no date opinion" rather than
+    guessing.
     """
     parts = release.split(".")
     if len(parts) < 2:
         return None
     try:
-        year, month = int(parts[0]), int(parts[1])
-        return date(year, month, 1)
+        first = date(int(parts[0]), int(parts[1]), 1)
     except ValueError:
         return None
+    return first + timedelta(days=(2 - first.weekday()) % 7)
 
 
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
