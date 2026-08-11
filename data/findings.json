@@ -37702,9 +37702,6587 @@
       "domains": [
         "sofabaton_x1s"
       ]
+    },
+    "mac-lucky/pushward-hass": {
+      "domain": "pushward",
+      "version": "v0.40.0",
+      "ref": "refs/tags/v0.40.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:13Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 18,
+      "findings": [],
+      "domains": [
+        "pushward"
+      ]
+    },
+    "mac8005/xiaozhi-mcp-ha": {
+      "domain": "xiaozhi_mcp",
+      "version": "v0.0.25",
+      "ref": "refs/tags/v0.0.25",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:15Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 105,
+      "findings": [],
+      "domains": [
+        "xiaozhi_mcp"
+      ]
+    },
+    "maciej-or/hikvision_next": {
+      "domain": "hikvision_next",
+      "version": "v1.1.1",
+      "ref": "refs/tags/v1.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:15Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 215,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/hikvision_next/hikvision_device.py",
+          "line": 108,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "hikvision_next"
+      ]
+    },
+    "macsatcom/totalkredit-ha": {
+      "domain": "totalkredit",
+      "version": "v0.9.6",
+      "ref": "refs/tags/v0.9.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:16Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "totalkredit"
+      ]
+    },
+    "macxq/foxess-ha": {
+      "domain": "foxess",
+      "version": "v0.48",
+      "ref": "refs/tags/v0.48",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:16Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 212,
+      "findings": [],
+      "domains": [
+        "foxess"
+      ]
+    },
+    "madpilot/hass-amber-electric": {
+      "domain": "amberelectric",
+      "version": "",
+      "ref": "refs/heads/master",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:17Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 26,
+      "findings": [],
+      "domains": [
+        "amberelectric"
+      ]
+    },
+    "madslundt/huligennem_ha": {
+      "domain": "huligennem",
+      "version": "v1.1.3",
+      "ref": "refs/tags/v1.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:17Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "huligennem"
+      ]
+    },
+    "maeek/ha-aux-cloud": {
+      "domain": "aux_cloud",
+      "version": "v1.0.14",
+      "ref": "refs/tags/v1.0.14",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:18Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 81,
+      "findings": [],
+      "domains": [
+        "aux_cloud"
+      ]
+    },
+    "magicbear/schneider_selogic": {
+      "domain": "schneider_selogic",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:18Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "schneider_selogic"
+      ]
+    },
+    "magiczoom2/HA-Leneda-Power": {
+      "domain": "leneda",
+      "version": "1.0.13",
+      "ref": "refs/tags/1.0.13",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:19Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 13,
+      "findings": [
+        {
+          "rule_id": "core-call-async-import-statistics-missing-mean-type",
+          "breaks_in": "2026.11",
+          "file": "custom_components/leneda/sensor.py",
+          "line": 192,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/leneda/sensor.py",
+          "line": 192,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-mean-type",
+          "breaks_in": "2026.11",
+          "file": "custom_components/leneda/sensor.py",
+          "line": 287,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/leneda/sensor.py",
+          "line": 287,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "leneda"
+      ]
+    },
+    "magikh0e/ha-medication-reminder": {
+      "domain": "medication_reminder",
+      "version": "v0.29.0",
+      "ref": "refs/tags/v0.29.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:19Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 25,
+      "findings": [],
+      "domains": [
+        "medication_reminder"
+      ]
+    },
+    "maginawin/ha-azoula-smart": {
+      "domain": "sunricher_azoula",
+      "version": "v0.1.1",
+      "ref": "refs/tags/v0.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:20Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/sunricher_azoula/__init__.py",
+          "line": 55,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "sunricher_azoula"
+      ]
+    },
+    "maginawin/ha-dali-center": {
+      "domain": "dali_center",
+      "version": "v0.14.0",
+      "ref": "refs/tags/v0.14.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:21Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/button.py",
+          "line": 121,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/event.py",
+          "line": 106,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/light.py",
+          "line": 194,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/sensor.py",
+          "line": 136,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/sensor.py",
+          "line": 184,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/services.py",
+          "line": 165,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dali_center/switch.py",
+          "line": 72,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "dali_center"
+      ]
+    },
+    "majorfrog/qvantum_modbus": {
+      "domain": "qvantum_modbus",
+      "version": "2026.5.2",
+      "ref": "refs/tags/2026.5.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:21Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "qvantum_modbus"
+      ]
+    },
+    "make-all/infrared-light": {
+      "domain": "infrared_light",
+      "version": "2026.6.0",
+      "ref": "refs/tags/2026.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:22Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "infrared_light"
+      ]
+    },
+    "make-all/metlink-nz": {
+      "domain": "metlink",
+      "version": "1.1.3",
+      "ref": "refs/tags/1.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:22Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 16,
+      "findings": [],
+      "domains": [
+        "metlink"
+      ]
+    },
+    "makefu/ha_stadtbibliothek": {
+      "domain": "stadtbibliothek",
+      "version": "v1.2.1",
+      "ref": "refs/tags/v1.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:23Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "stadtbibliothek"
+      ]
+    },
+    "malicaeus/Wigle-Stats-HA": {
+      "domain": "wigle",
+      "version": "v2.2.1",
+      "ref": "refs/tags/v2.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:23Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "wigle"
+      ]
+    },
+    "mallewski/ha-multical_21": {
+      "domain": "multical_21",
+      "version": "v2.2.5",
+      "ref": "refs/tags/v2.2.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:24Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "multical_21"
+      ]
+    },
+    "mamo-nick/chmi_hydrology": {
+      "domain": "chmi_hydrology",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:24Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "chmi_hydrology"
+      ]
+    },
+    "mampfes/ha_bayernluefter": {
+      "domain": "bayernluefter",
+      "version": "2.0.2",
+      "ref": "refs/tags/2.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:25Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 28,
+      "findings": [],
+      "domains": [
+        "bayernluefter"
+      ]
+    },
+    "mampfes/ha_epex_spot": {
+      "domain": "epex_spot",
+      "version": "4.1.0",
+      "ref": "refs/tags/4.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:25Z",
+      "files_scanned": 24,
+      "syntax_errors": 0,
+      "stargazers_count": 318,
+      "findings": [],
+      "domains": [
+        "epex_spot"
+      ]
+    },
+    "mampfes/ha_freeair_connect": {
+      "domain": "freeair_connect",
+      "version": "2.1.0",
+      "ref": "refs/tags/2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:25Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 23,
+      "findings": [],
+      "domains": [
+        "freeair_connect"
+      ]
+    },
+    "mampfes/hacs_dwd_pollenflug": {
+      "domain": "dwd_pollenflug",
+      "version": "1.0.4",
+      "ref": "refs/tags/1.0.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:26Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 144,
+      "findings": [],
+      "domains": [
+        "dwd_pollenflug"
+      ]
+    },
+    "mampfes/hacs_waste_collection_schedule": {
+      "domain": "waste_collection_schedule",
+      "version": "v2.32.0",
+      "ref": "refs/tags/v2.32.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:26Z",
+      "files_scanned": 1014,
+      "syntax_errors": 0,
+      "stargazers_count": 2170,
+      "findings": [],
+      "domains": [
+        "waste_collection_schedule"
+      ]
+    },
+    "mandarons/ha-bouncie": {
+      "domain": "bouncie",
+      "version": "0.8.3",
+      "ref": "refs/tags/0.8.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:44Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 47,
+      "findings": [],
+      "domains": [
+        "bouncie"
+      ]
+    },
+    "mandinger/fork-ha-octopus-spain": {
+      "domain": "octopus_spain_fork",
+      "version": "v20260803.1",
+      "ref": "refs/tags/v20260803.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:44Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [
+        {
+          "rule_id": "core-call-async-update-statistics-metadata-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/octopus_spain_fork/sensor.py",
+          "line": 1406,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-update-statistics-metadata-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/octopus_spain_fork/sensor.py",
+          "line": 1414,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "octopus_spain_fork"
+      ]
+    },
+    "mandinger/lowi-spain": {
+      "domain": "lowi_spain",
+      "version": "v0.2.4",
+      "ref": "refs/tags/v0.2.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:45Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "lowi_spain"
+      ]
+    },
+    "manjotsc/ha-fota_teltonika": {
+      "domain": "fota_teltonika",
+      "version": "1.0.2",
+      "ref": "refs/tags/1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:45Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "fota_teltonika"
+      ]
+    },
+    "manjotsc/ha-kore_wireless": {
+      "domain": "kore_wireless",
+      "version": "1.0.8",
+      "ref": "refs/tags/1.0.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:46Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "kore_wireless"
+      ]
+    },
+    "manjotsc/ha-quebec_fuel": {
+      "domain": "quebec_fuel",
+      "version": "1.0.2",
+      "ref": "refs/tags/1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:46Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "quebec_fuel"
+      ]
+    },
+    "manjotsc/ha-simbase": {
+      "domain": "simbase",
+      "version": "2.1.0",
+      "ref": "refs/tags/2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:47Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "simbase"
+      ]
+    },
+    "manjotsc/ha-tvassist": {
+      "domain": "tv_assist",
+      "version": "1.0.0",
+      "ref": "refs/tags/1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:48Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "tv_assist"
+      ]
+    },
+    "manjotsc/ha-tvoverlay_ui": {
+      "domain": "tvoverlay_ui",
+      "version": "1.0.9",
+      "ref": "refs/tags/1.0.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:48Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 14,
+      "findings": [],
+      "domains": [
+        "tvoverlay_ui"
+      ]
+    },
+    "manjotsc/ha-twilio_sms_ui": {
+      "domain": "twilio_sms_ui",
+      "version": "1.0.3",
+      "ref": "refs/tags/1.0.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:48Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "twilio_sms_ui"
+      ]
+    },
+    "mannotfood/healthsync": {
+      "domain": "healthsync",
+      "version": "v0.7.0",
+      "ref": "refs/tags/v0.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:49Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "healthsync"
+      ]
+    },
+    "manos/HomeAssistant-Lippert-OneControl-Integration": {
+      "domain": "lippert_onecontrol",
+      "version": "v0.3.2",
+      "ref": "refs/tags/v0.3.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:49Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "lippert_onecontrol"
+      ]
+    },
+    "marccatalano/ha-powerpanel-cloud": {
+      "domain": "powerpanel_cloud",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:50Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "powerpanel_cloud"
+      ]
+    },
+    "marcelwestrahome/home-assistant-niu-component": {
+      "domain": "niu",
+      "version": "2.1.8",
+      "ref": "refs/tags/2.1.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:50Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 67,
+      "findings": [],
+      "domains": [
+        "niu"
+      ]
+    },
+    "marcoboers/home-assistant-quatt": {
+      "domain": "quatt",
+      "version": "2.0.0",
+      "ref": "refs/tags/2.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:50Z",
+      "files_scanned": 33,
+      "syntax_errors": 0,
+      "stargazers_count": 58,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/quatt/__init__.py",
+          "line": 445,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/quatt/entity.py",
+          "line": 173,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "quatt"
+      ]
+    },
+    "marcolivierarsenault/moonraker-home-assistant": {
+      "domain": "moonraker",
+      "version": "1.13.4",
+      "ref": "refs/tags/1.13.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:53Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 484,
+      "findings": [
+        {
+          "rule_id": "device-entry-primary-config-entry",
+          "breaks_in": "2027.8",
+          "file": "custom_components/moonraker/__init__.py",
+          "line": 302,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-entry-primary-config-entry",
+          "breaks_in": "2027.8",
+          "file": "custom_components/moonraker/__init__.py",
+          "line": 303,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "moonraker"
+      ]
+    },
+    "marcovolt/homeassistant-binance": {
+      "domain": "binance",
+      "version": "v1.0.9",
+      "ref": "refs/tags/v1.0.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:54Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "binance"
+      ]
+    },
+    "marcschmiedchen/home-assistant-wolf_ism8": {
+      "domain": "wolf",
+      "version": "v4.2",
+      "ref": "refs/tags/v4.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:54Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 55,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/wolf/__init__.py",
+          "line": 84,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "wolf"
+      ]
+    },
+    "mariusz-ostoja-swierczynski/tech-controllers": {
+      "domain": "tech",
+      "version": "v2.8.2",
+      "ref": "refs/tags/v2.8.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:55Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 140,
+      "findings": [],
+      "domains": [
+        "tech"
+      ]
+    },
+    "markaggar/Water-Monitor": {
+      "domain": "water_monitor",
+      "version": "v1.3.2",
+      "ref": "refs/tags/v1.3.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:56Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 61,
+      "findings": [],
+      "domains": [
+        "water_monitor"
+      ]
+    },
+    "markaggar/ha-media-index": {
+      "domain": "media_index",
+      "version": "v1.9.2",
+      "ref": "refs/tags/v1.9.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:57Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 17,
+      "findings": [],
+      "domains": [
+        "media_index"
+      ]
+    },
+    "markfrancisonly/ha-cameralux": {
+      "domain": "cameralux",
+      "version": "v2.1.0",
+      "ref": "refs/tags/v2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:58Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "cameralux"
+      ]
+    },
+    "markgdev/home-assistant_OctopusAgile": {
+      "domain": "octopusagile",
+      "version": "v0.1.1",
+      "ref": "refs/tags/v0.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:59Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 91,
+      "findings": [],
+      "domains": [
+        "octopusagile"
+      ]
+    },
+    "markuzzi/somfy_cul_integration": {
+      "domain": "somfy_cul",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:59Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "somfy_cul"
+      ]
+    },
+    "markvader/ha-rpi_rf": {
+      "domain": "rpi_rf",
+      "version": "2022.9.1",
+      "ref": "refs/tags/2022.9.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:53:59Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 37,
+      "findings": [],
+      "domains": [
+        "rpi_rf"
+      ]
+    },
+    "markvader/sonic": {
+      "domain": "sonic",
+      "version": "v0.2.4",
+      "ref": "refs/tags/v0.2.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:00Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 15,
+      "findings": [],
+      "domains": [
+        "sonic"
+      ]
+    },
+    "marnixt/PowerClimate": {
+      "domain": "powerclimate",
+      "version": "v0.6.0",
+      "ref": "refs/tags/v0.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:00Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "powerclimate"
+      ]
+    },
+    "marotoweb/home-assistant-vacuum-viomise": {
+      "domain": "viomise",
+      "version": "v2026.4.20",
+      "ref": "refs/tags/v2026.4.20",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:01Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 24,
+      "findings": [],
+      "domains": [
+        "viomise"
+      ]
+    },
+    "marq24/ha-bosch-ebike-flow": {
+      "domain": "bosch_ebike",
+      "version": "2026.8.0",
+      "ref": "refs/tags/2026.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:02Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 17,
+      "findings": [
+        {
+          "rule_id": "core-call-async-import-statistics-missing-mean-type",
+          "breaks_in": "2026.11",
+          "file": "custom_components/bosch_ebike/sensor.py",
+          "line": 91,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/bosch_ebike/sensor.py",
+          "line": 91,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "bosch_ebike"
+      ]
+    },
+    "marq24/ha-evcc": {
+      "domain": "evcc_intg",
+      "version": "2026.8.4",
+      "ref": "refs/tags/2026.8.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:03Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 451,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/evcc_intg/__init__.py",
+          "line": 414,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "evcc_intg"
+      ]
+    },
+    "marq24/ha-fordconnect-query": {
+      "domain": "fordconnect_query",
+      "version": "2026.7.0",
+      "ref": "refs/tags/2026.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:04Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 66,
+      "findings": [],
+      "domains": [
+        "fordconnect_query"
+      ]
+    },
+    "marq24/ha-fordpass": {
+      "domain": "fordpass",
+      "version": "2026.7.4",
+      "ref": "refs/tags/2026.7.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:05Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 382,
+      "findings": [],
+      "domains": [
+        "fordpass"
+      ]
+    },
+    "marq24/ha-goecharger-api2": {
+      "domain": "goecharger_api2",
+      "version": "2026.8.3",
+      "ref": "refs/tags/2026.8.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:07Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 206,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/goecharger_api2/__init__.py",
+          "line": 353,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "goecharger_api2"
+      ]
+    },
+    "marq24/ha-senec-v3": {
+      "domain": "senec",
+      "version": "2026.8.3",
+      "ref": "refs/tags/2026.8.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:08Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 125,
+      "findings": [],
+      "domains": [
+        "senec"
+      ]
+    },
+    "marq24/ha-tibber-pulse-local": {
+      "domain": "tibber_local",
+      "version": "2026.7.2",
+      "ref": "refs/tags/2026.7.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:11Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 273,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/tibber_local/__init__.py",
+          "line": 209,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "tibber_local"
+      ]
+    },
+    "marq24/ha-waterkotte": {
+      "domain": "waterkotte_heatpump",
+      "version": "2026.8.0",
+      "ref": "refs/tags/2026.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:12Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 28,
+      "findings": [],
+      "domains": [
+        "waterkotte_heatpump"
+      ]
+    },
+    "marsh4200/mhub": {
+      "domain": "mhub",
+      "version": "v0.2.0",
+      "ref": "refs/tags/v0.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:14Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/mhub/button.py",
+          "line": 344,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/mhub/media_player.py",
+          "line": 184,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/mhub/sensor.py",
+          "line": 154,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "mhub"
+      ]
+    },
+    "martinarva/dynamic_energy_cost": {
+      "domain": "dynamic_energy_cost",
+      "version": "v1.2.2",
+      "ref": "refs/tags/v1.2.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:14Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 194,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dynamic_energy_cost/__init__.py",
+          "line": 197,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/dynamic_energy_cost/__init__.py",
+          "line": 227,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "dynamic_energy_cost"
+      ]
+    },
+    "martindell/ha-entity-notes": {
+      "domain": "entity_notes",
+      "version": "v3.3.11",
+      "ref": "refs/tags/v3.3.11",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:15Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 33,
+      "findings": [],
+      "domains": [
+        "entity_notes"
+      ]
+    },
+    "martindybal/taphome-homeassistant": {
+      "domain": "taphome",
+      "version": "",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:54:16Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 16,
+      "findings": [],
+      "error": "no downloadable ref for martindybal/taphome-homeassistant: 404 for https://codeload.github.com/martindybal/taphome-homeassistant/tar.gz/refs/heads/master"
+    },
+    "martinhoyer/ha-pre-hdo": {
+      "domain": "pre_hdo",
+      "version": "v1.1.1",
+      "ref": "refs/tags/v1.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:16Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "pre_hdo"
+      ]
+    },
+    "martinstafford/daikin_d3net": {
+      "domain": "daikin_d3net",
+      "version": "v1.8.0",
+      "ref": "refs/tags/v1.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:16Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 15,
+      "findings": [],
+      "domains": [
+        "daikin_d3net"
+      ]
+    },
+    "martinwoodward/haharvst": {
+      "domain": "harvst",
+      "version": "v0.2.1",
+      "ref": "refs/tags/v0.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:17Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "harvst"
+      ]
+    },
+    "masaccio/ha-kingspan-watchman-sensit": {
+      "domain": "kingspan_watchman_sensit",
+      "version": "v2.0.1",
+      "ref": "refs/tags/v2.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:17Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 21,
+      "findings": [],
+      "domains": [
+        "kingspan_watchman_sensit"
+      ]
+    },
+    "mash2k3/qingping_cgs1": {
+      "domain": "qingping_cgs1",
+      "version": "v1.2.9",
+      "ref": "refs/tags/v1.2.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:18Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 114,
+      "findings": [],
+      "domains": [
+        "qingping_cgs1"
+      ]
+    },
+    "mastalir1980/ha-2N-intercom": {
+      "domain": "2n_intercom",
+      "version": "v1.3.1",
+      "ref": "refs/tags/v1.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:19Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "2n_intercom"
+      ]
+    },
+    "mastertape/z906-ir-remote-ha": {
+      "domain": "z906_ir_remote_ha",
+      "version": "v1.1.1",
+      "ref": "refs/tags/v1.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:20Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "z906_ir_remote_ha"
+      ]
+    },
+    "matbott/ha-inumet-uruguay": {
+      "domain": "inumet_uruguay",
+      "version": "3.4.1",
+      "ref": "refs/tags/3.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:20Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "inumet_uruguay"
+      ]
+    },
+    "matbott/home_assistant_Spritmonitor": {
+      "domain": "spritmonitor",
+      "version": "4.6.0",
+      "ref": "refs/tags/4.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:21Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [],
+      "domains": [
+        "spritmonitor"
+      ]
+    },
+    "matfroh/abl_emh1_modbus": {
+      "domain": "ev_charger_modbus",
+      "version": "v.2.1.1",
+      "ref": "refs/tags/v.2.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:21Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "ev_charger_modbus"
+      ]
+    },
+    "matfroh/sax_battery_ha": {
+      "domain": "sax_battery",
+      "version": "v0.2.3.5.1",
+      "ref": "refs/tags/v0.2.3.5.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:22Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 14,
+      "findings": [],
+      "domains": [
+        "sax_battery"
+      ]
+    },
+    "mathieu-mp/homeassistant-intex-spa": {
+      "domain": "intex_spa",
+      "version": "0.4.1",
+      "ref": "refs/tags/0.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:23Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 59,
+      "findings": [],
+      "domains": [
+        "intex_spa"
+      ]
+    },
+    "matt-richardson/home-assistant-bus-minder": {
+      "domain": "busminder",
+      "version": "v1.4.3",
+      "ref": "refs/tags/v1.4.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:23Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "busminder"
+      ]
+    },
+    "matt-richardson/home-assistant-firefly-cloud": {
+      "domain": "firefly_cloud",
+      "version": "v0.6.2",
+      "ref": "refs/tags/v0.6.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:24Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "firefly_cloud"
+      ]
+    },
+    "matt-richardson/home-assistant-qustodio": {
+      "domain": "qustodio",
+      "version": "v2.1.0",
+      "ref": "refs/tags/v2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:24Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/qustodio/entity.py",
+          "line": 139,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "qustodio"
+      ]
+    },
+    "matt-volp/trafford-bin-collection": {
+      "domain": "trafford_bin_collection",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:25Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "trafford_bin_collection"
+      ]
+    },
+    "mattbratt/iss_track": {
+      "domain": "iss_track",
+      "version": "v1.1.4",
+      "ref": "refs/tags/v1.1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:25Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "iss_track"
+      ]
+    },
+    "mattbratt/pc_ships": {
+      "domain": "pc_ships",
+      "version": "v0.2.6",
+      "ref": "refs/tags/v0.2.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:26Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "pc_ships"
+      ]
+    },
+    "matterbury/Brisbane-Bin-Day": {
+      "domain": "bin_day",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:27Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "bin_day"
+      ]
+    },
+    "mattrayner/pod-point-home-assistant-component": {
+      "domain": "pod_point",
+      "version": "2.0.7",
+      "ref": "refs/tags/2.0.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:27Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 40,
+      "findings": [],
+      "domains": [
+        "pod_point"
+      ]
+    },
+    "mawinkler/astroweather": {
+      "domain": "astroweather",
+      "version": "v0.80.0",
+      "ref": "refs/tags/v0.80.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:28Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 148,
+      "findings": [],
+      "domains": [
+        "astroweather"
+      ]
+    },
+    "maxbeizer/homeassistant-nes": {
+      "domain": "nes",
+      "version": "v0.1.0",
+      "ref": "refs/tags/v0.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:29Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "nes"
+      ]
+    },
+    "maxfok/nimbus-climate-scheduler": {
+      "domain": "nimbus_climate_scheduler",
+      "version": "v0.2.15",
+      "ref": "refs/tags/v0.2.15",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:29Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "nimbus_climate_scheduler"
+      ]
+    },
+    "maxi07/PicoW-Neopixel-Homeassistant-Integration": {
+      "domain": "picow_neopixel",
+      "version": "v1.2.0",
+      "ref": "refs/tags/v1.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:30Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "picow_neopixel"
+      ]
+    },
+    "maximedeprince/ha-ilife": {
+      "domain": "ilife",
+      "version": "v0.4.0",
+      "ref": "refs/tags/v0.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:30Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "ilife"
+      ]
+    },
+    "maybetaken/Solar_Manager": {
+      "domain": "solar_manager",
+      "version": "v0.2.0",
+      "ref": "refs/tags/v0.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:31Z",
+      "files_scanned": 32,
+      "syntax_errors": 0,
+      "stargazers_count": 13,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/solar_manager/plugins/base_device.py",
+          "line": 198,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "solar_manager"
+      ]
+    },
+    "mayerwin/HA-Merge-Sensor-History": {
+      "domain": "merge_sensor_history",
+      "version": "v1.2.16",
+      "ref": "refs/tags/v1.2.16",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:32Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 50,
+      "findings": [
+        {
+          "rule_id": "core-call-async-import-statistics-missing-mean-type",
+          "breaks_in": "2026.11",
+          "file": "custom_components/merge_sensor_history/__init__.py",
+          "line": 1760,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/merge_sensor_history/__init__.py",
+          "line": 1760,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "merge_sensor_history"
+      ]
+    },
+    "mayerwin/HA-Real-Last-Changed-Reported-Seen-Sensors": {
+      "domain": "real_last_sensors",
+      "version": "v1.4.3",
+      "ref": "refs/tags/v1.4.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:32Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "real_last_sensors"
+      ]
+    },
+    "mb-software/homeassistant-powerbrain": {
+      "domain": "powerbrain",
+      "version": "0.7.0",
+      "ref": "refs/tags/0.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:32Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 20,
+      "findings": [],
+      "domains": [
+        "powerbrain"
+      ]
+    },
+    "mbillow/ha-chargepoint": {
+      "domain": "chargepoint",
+      "version": "v1.4.0",
+      "ref": "refs/tags/v1.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:33Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 81,
+      "findings": [],
+      "domains": [
+        "chargepoint"
+      ]
+    },
+    "mbuchber/ha_heliotherm": {
+      "domain": "ha_heliotherm",
+      "version": "v1.0.43",
+      "ref": "refs/tags/v1.0.43",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:33Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 26,
+      "findings": [],
+      "domains": [
+        "ha_heliotherm"
+      ]
+    },
+    "mcapmari/ha-djv_meter": {
+      "domain": "djv_meter",
+      "version": "v1.2.0",
+      "ref": "refs/tags/v1.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:34Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "djv_meter"
+      ]
+    },
+    "mcgeezy/relaytv-ha": {
+      "domain": "relaytv",
+      "version": "v0.4.0",
+      "ref": "refs/tags/v0.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:35Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "relaytv"
+      ]
+    },
+    "mchwalisz/home-assistant-senec": {
+      "domain": "senec",
+      "version": "2.1.1",
+      "ref": "refs/tags/2.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:36Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 47,
+      "findings": [],
+      "domains": [
+        "senec"
+      ]
+    },
+    "mclare/grizzl_e-for-HA": {
+      "domain": "grizzl_e",
+      "version": "v1.5",
+      "ref": "refs/tags/v1.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:36Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 28,
+      "findings": [],
+      "domains": [
+        "grizzl_e"
+      ]
+    },
+    "mcolyer/home-assistant-anova-nano": {
+      "domain": "anova_nano",
+      "version": "v0.8.0",
+      "ref": "refs/tags/v0.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:36Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [],
+      "domains": [
+        "anova_nano"
+      ]
+    },
+    "mderasse/ha-bopi-integration": {
+      "domain": "bopi",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:37Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "bopi"
+      ]
+    },
+    "mdeweerd/zha-toolkit": {
+      "domain": "zha_toolkit",
+      "version": "v1.2.1",
+      "ref": "refs/tags/v1.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:37Z",
+      "files_scanned": 22,
+      "syntax_errors": 0,
+      "stargazers_count": 300,
+      "findings": [],
+      "domains": [
+        "zha_toolkit"
+      ]
+    },
+    "mejmo/hass-flybox-component": {
+      "domain": "flybox",
+      "version": "v1.0.4",
+      "ref": "refs/tags/v1.0.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:38Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "flybox"
+      ]
+    },
+    "meltingice1337/tedee_ble": {
+      "domain": "tedee_ble",
+      "version": "v0.1.15",
+      "ref": "refs/tags/v0.1.15",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:38Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/tedee_ble/coordinator.py",
+          "line": 868,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "tedee_ble"
+      ]
+    },
+    "memphi2/ha-unifi-drive": {
+      "domain": "unifi_unas",
+      "version": "v0.8.6",
+      "ref": "refs/tags/v0.8.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:39Z",
+      "files_scanned": 60,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/unifi_unas/__init__.py",
+          "line": 388,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "unifi_unas"
+      ]
+    },
+    "merlijntishauser/unifi-network-maps-ha": {
+      "domain": "unifi_network_map",
+      "version": "v0.5.8",
+      "ref": "refs/tags/v0.5.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:41Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 30,
+      "findings": [],
+      "domains": [
+        "unifi_network_map"
+      ]
+    },
+    "metbril/home-assistant-brandstofprijzen": {
+      "domain": "brandstofprijzen",
+      "version": "v0.6.0",
+      "ref": "refs/tags/v0.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:42Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "brandstofprijzen"
+      ]
+    },
+    "mguyard/hass-diagral": {
+      "domain": "diagral",
+      "version": "v1.3.3",
+      "ref": "refs/tags/v1.3.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:43Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 14,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/diagral/coordinator.py",
+          "line": 87,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "diagral"
+      ]
+    },
+    "mguyard/hass-iopool": {
+      "domain": "iopool",
+      "version": "v1.3.1",
+      "ref": "refs/tags/v1.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:43Z",
+      "files_scanned": 28,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "iopool"
+      ]
+    },
+    "mholzi/beatify": {
+      "domain": "beatify",
+      "version": "v4.2.0",
+      "ref": "refs/tags/v4.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:45Z",
+      "files_scanned": 61,
+      "syntax_errors": 0,
+      "stargazers_count": 217,
+      "findings": [],
+      "domains": [
+        "beatify"
+      ]
+    },
+    "mholzi/quizify": {
+      "domain": "quizify",
+      "version": "v1.6.1",
+      "ref": "refs/tags/v1.6.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:48Z",
+      "files_scanned": 43,
+      "syntax_errors": 0,
+      "stargazers_count": 16,
+      "findings": [],
+      "domains": [
+        "quizify"
+      ]
+    },
+    "michael-adler/ha-ocpp-relay": {
+      "domain": "ha_ocpp_relay",
+      "version": "v0.3.2",
+      "ref": "refs/tags/v0.3.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:50Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "ha_ocpp_relay"
+      ]
+    },
+    "michaeldwan/ha-cloudflare-ai-gateway": {
+      "domain": "cloudflare_ai_gateway",
+      "version": "v2026.04.0",
+      "ref": "refs/tags/v2026.04.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:51Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [],
+      "domains": [
+        "cloudflare_ai_gateway"
+      ]
+    },
+    "michaellunzer/Home-Assistant-Custom-Component-Fortnite": {
+      "domain": "fortnite",
+      "version": "v2.1.0",
+      "ref": "refs/tags/v2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:52Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "fortnite"
+      ]
+    },
+    "mickeyschwab/haven-hass": {
+      "domain": "haven_lighting",
+      "version": "0.4.1",
+      "ref": "refs/tags/0.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:52Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/haven_lighting/light.py",
+          "line": 54,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "haven_lighting"
+      ]
+    },
+    "micpub/homeassistant-wanas": {
+      "domain": "wanas",
+      "version": "0.1.9",
+      "ref": "refs/tags/0.1.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:52Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "wanas"
+      ]
+    },
+    "microd2/ha-motorline-mconnect": {
+      "domain": "motorline_mconnect",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:53Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "motorline_mconnect"
+      ]
+    },
+    "microteq/email_notifier": {
+      "domain": "email_notifier",
+      "version": "v0.1.2",
+      "ref": "refs/tags/v0.1.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:54Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "email_notifier"
+      ]
+    },
+    "microteq/whatsigram_messenger": {
+      "domain": "whatsigram_messenger",
+      "version": "v0.1.9",
+      "ref": "refs/tags/v0.1.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:54Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 68,
+      "findings": [],
+      "domains": [
+        "whatsigram_messenger"
+      ]
+    },
+    "midstar/heatmiser_wifi_ha": {
+      "domain": "heatmiser_wifi",
+      "version": "",
+      "ref": "refs/heads/main",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:55Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "heatmiser_wifi"
+      ]
+    },
+    "miguelangellv/ha-awtrix": {
+      "domain": "awtrix",
+      "version": "v0.7.0",
+      "ref": "refs/tags/v0.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:55Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 66,
+      "findings": [],
+      "domains": [
+        "awtrix"
+      ]
+    },
+    "miguelangellv/ha-balance-neto": {
+      "domain": "balance_neto",
+      "version": "V25.10",
+      "ref": "refs/tags/V25.10",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:55Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 66,
+      "findings": [],
+      "domains": [
+        "balance_neto"
+      ]
+    },
+    "miguelangellv/ha-gas-station-spain": {
+      "domain": "gas_station_spain",
+      "version": "v2.3.1",
+      "ref": "refs/tags/v2.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:55Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 59,
+      "findings": [],
+      "domains": [
+        "gas_station_spain"
+      ]
+    },
+    "miguelangellv/ha-input-stats": {
+      "domain": "input_stats",
+      "version": "V1.1",
+      "ref": "refs/tags/V1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:56Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 19,
+      "findings": [],
+      "domains": [
+        "input_stats"
+      ]
+    },
+    "miguelangellv/ha-octopus-spain": {
+      "domain": "octopus_spain",
+      "version": "v1.3.1",
+      "ref": "refs/tags/v1.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:56Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 58,
+      "findings": [],
+      "domains": [
+        "octopus_spain"
+      ]
+    },
+    "miguelangellv/ha-tarifa-20td": {
+      "domain": "tarifa_20td",
+      "version": "v2.2.2",
+      "ref": "refs/tags/v2.2.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:56Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 47,
+      "findings": [],
+      "domains": [
+        "tarifa_20td"
+      ]
+    },
+    "mike-goldfinger/ha-warema-wms": {
+      "domain": "warema_wms",
+      "version": "v1.7.0",
+      "ref": "refs/tags/v1.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:57Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/binary_sensor.py",
+          "line": 121,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/binary_sensor.py",
+          "line": 163,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/button.py",
+          "line": 83,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/config_flow.py",
+          "line": 1334,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/cover.py",
+          "line": 293,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/light.py",
+          "line": 135,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/sensor.py",
+          "line": 266,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/sensor.py",
+          "line": 306,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/sensor.py",
+          "line": 355,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/sensor.py",
+          "line": 406,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/sensor.py",
+          "line": 458,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/warema_wms/sensor.py",
+          "line": 516,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "warema_wms"
+      ]
+    },
+    "mike-nott/mcp-assist": {
+      "domain": "mcp_assist",
+      "version": "v0.17.2",
+      "ref": "refs/tags/v0.17.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:58Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 100,
+      "findings": [],
+      "domains": [
+        "mcp_assist"
+      ]
+    },
+    "mike-nott/smart-announcements": {
+      "domain": "smart_announcements",
+      "version": "v0.8.3",
+      "ref": "refs/tags/v0.8.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:54:59Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "smart_announcements"
+      ]
+    },
+    "mike81gr/deddie-metering": {
+      "domain": "deddie_metering",
+      "version": "v2.0.0a",
+      "ref": "refs/tags/v2.0.0a",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:00Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 52,
+      "findings": [],
+      "domains": [
+        "deddie_metering"
+      ]
+    },
+    "mikelawrence/senseme-hacs": {
+      "domain": "senseme",
+      "version": "v2.2.5",
+      "ref": "refs/tags/v2.2.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:01Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 20,
+      "findings": [],
+      "domains": [
+        "senseme"
+      ]
+    },
+    "milanhin/pv_curtailment": {
+      "domain": "pv_curtailment",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:01Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "pv_curtailment"
+      ]
+    },
+    "milanhin/sdac_elia": {
+      "domain": "sdac_elia",
+      "version": "v3.0.2",
+      "ref": "refs/tags/v3.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:02Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "sdac_elia"
+      ]
+    },
+    "mill1000/midea-ac-py": {
+      "domain": "midea_ac",
+      "version": "2026.7.2",
+      "ref": "refs/tags/2026.7.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:02Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 496,
+      "findings": [],
+      "domains": [
+        "midea_ac"
+      ]
+    },
+    "mindors/hass-mindor-cloud": {
+      "domain": "mindor_cloud",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:02Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/mindor_cloud/__init__.py",
+          "line": 73,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "mindor_cloud"
+      ]
+    },
+    "mineshaftgap/jax-stream": {
+      "domain": "jax_stream",
+      "version": "v1.3.1",
+      "ref": "refs/tags/v1.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:03Z",
+      "files_scanned": 21,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "jax_stream"
+      ]
+    },
+    "miraiehomeassistant/ha-panasonic-miraie": {
+      "domain": "panasonic_cloud",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:04Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 15,
+      "findings": [],
+      "domains": [
+        "panasonic_cloud"
+      ]
+    },
+    "mirkin-pixel/ha-unique-waterontharders": {
+      "domain": "unique_waterontharder",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:05Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "unique_waterontharder"
+      ]
+    },
+    "mirko-sommer/homeassistant-rnv": {
+      "domain": "rnv",
+      "version": "v1.4.0",
+      "ref": "refs/tags/v1.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:05Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 24,
+      "findings": [],
+      "domains": [
+        "rnv"
+      ]
+    },
+    "mishasyrbu/ha-sunset-predictor": {
+      "domain": "sunset_predictor",
+      "version": "v1.2.1",
+      "ref": "refs/tags/v1.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:06Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "sunset_predictor"
+      ]
+    },
+    "miyosmart/miyocube-homeassistant-custom-component": {
+      "domain": "miyocube",
+      "version": "1.1.0",
+      "ref": "refs/tags/1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:06Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "miyocube"
+      ]
+    },
+    "mjcumming/wiim": {
+      "domain": "wiim",
+      "version": "v1.0.95",
+      "ref": "refs/tags/v1.0.95",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:07Z",
+      "files_scanned": 26,
+      "syntax_errors": 0,
+      "stargazers_count": 126,
+      "findings": [],
+      "domains": [
+        "wiim"
+      ]
+    },
+    "mkirsten/lydbro-hass": {
+      "domain": "lydbro",
+      "version": "v0.2.6",
+      "ref": "refs/tags/v0.2.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:08Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/lydbro/coordinator.py",
+          "line": 149,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "lydbro"
+      ]
+    },
+    "mkuthan/solis-cloud-control": {
+      "domain": "solis_cloud_control",
+      "version": "v2.21.0",
+      "ref": "refs/tags/v2.21.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:08Z",
+      "files_scanned": 22,
+      "syntax_errors": 0,
+      "stargazers_count": 62,
+      "findings": [],
+      "domains": [
+        "solis_cloud_control"
+      ]
+    },
+    "mletenay/home-assistant-goodwe-inverter": {
+      "domain": "goodwe",
+      "version": "v0.9.9.31",
+      "ref": "refs/tags/v0.9.9.31",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:09Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 227,
+      "findings": [],
+      "domains": [
+        "goodwe"
+      ]
+    },
+    "mmillmor/geo_home": {
+      "domain": "geo_home",
+      "version": "v1.16.0",
+      "ref": "refs/tags/v1.16.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:09Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 31,
+      "findings": [],
+      "domains": [
+        "geo_home"
+      ]
+    },
+    "mmillmor/octopus_agile_window_finder": {
+      "domain": "octopus_agile_window_finder",
+      "version": "1.0.2",
+      "ref": "refs/tags/1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:10Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "octopus_agile_window_finder"
+      ]
+    },
+    "moag1000/beurer_daylight_lamps": {
+      "domain": "beurer_daylight_lamps",
+      "version": "v1.36.4",
+      "ref": "refs/tags/v1.36.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:10Z",
+      "files_scanned": 21,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/beurer_daylight_lamps/therapy_hub.py",
+          "line": 64,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "beurer_daylight_lamps"
+      ]
+    },
+    "moarph/homeassistant_berner_torantriebe": {
+      "domain": "bernerbox",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:11Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "bernerbox"
+      ]
+    },
+    "moehrem/DiveraControl": {
+      "domain": "diveracontrol",
+      "version": "v1.4.1",
+      "ref": "refs/tags/v1.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:12Z",
+      "files_scanned": 24,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "diveracontrol"
+      ]
+    },
+    "moerk-o/SolsticeHub": {
+      "domain": "solstice_season",
+      "version": "v1.5.1",
+      "ref": "refs/tags/v1.5.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:13Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [],
+      "domains": [
+        "solstice_season"
+      ]
+    },
+    "moerk-o/WhenHub": {
+      "domain": "whenhub",
+      "version": "v3.0.0",
+      "ref": "refs/tags/v3.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:13Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "whenhub"
+      ]
+    },
+    "mojo17/ha-enova-power": {
+      "domain": "enova_power",
+      "version": "v0.5.10",
+      "ref": "refs/tags/v0.5.10",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:14Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [
+        {
+          "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/enova_power/statistics.py",
+          "line": 609,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "enova_power"
+      ]
+    },
+    "monty68/uniled": {
+      "domain": "uniled",
+      "version": "2.2.6",
+      "ref": "refs/tags/2.2.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:14Z",
+      "files_scanned": 42,
+      "syntax_errors": 0,
+      "stargazers_count": 135,
+      "findings": [],
+      "domains": [
+        "uniled"
+      ]
+    },
+    "moox-it/hass-moox-track": {
+      "domain": "moox_track",
+      "version": "2.0.2",
+      "ref": "refs/tags/2.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:16Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "moox_track"
+      ]
+    },
+    "moralmunky/Home-Assistant-Mail-And-Packages": {
+      "domain": "mail_and_packages",
+      "version": "0.5.21",
+      "ref": "refs/tags/0.5.21",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:16Z",
+      "files_scanned": 27,
+      "syntax_errors": 0,
+      "stargazers_count": 865,
+      "findings": [],
+      "domains": [
+        "mail_and_packages"
+      ]
+    },
+    "morosanmihail/HA-LondonTfL": {
+      "domain": "london_tfl",
+      "version": "v0.8.13",
+      "ref": "refs/tags/v0.8.13",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:18Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 41,
+      "findings": [],
+      "domains": [
+        "london_tfl"
+      ]
+    },
+    "morotsgurka/garo-gctrl-homeassistant": {
+      "domain": "webel_gctrl",
+      "version": "V0.1.3",
+      "ref": "refs/tags/V0.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:19Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "webel_gctrl"
+      ]
+    },
+    "moryoav/ha-addons": {
+      "domain": "whatsapp",
+      "version": "v1.4.32",
+      "ref": "refs/tags/v1.4.32",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:19Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "whatsapp"
+      ]
+    },
+    "moryoav/ha-anylist": {
+      "domain": "anylist",
+      "version": "v0.4.7",
+      "ref": "refs/tags/v0.4.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:20Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "anylist"
+      ]
+    },
+    "moryoav/ha-gwm_ora": {
+      "domain": "gwm_ora",
+      "version": "v0.6.1",
+      "ref": "refs/tags/v0.6.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:20Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "gwm_ora"
+      ]
+    },
+    "moryoav/ha-knob-navigation": {
+      "domain": "knob_swipe_navigation",
+      "version": "v0.3.9",
+      "ref": "refs/tags/v0.3.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:21Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "knob_swipe_navigation"
+      ]
+    },
+    "moryoav/ha-panda": {
+      "domain": "panda_esl",
+      "version": "v0.1.16",
+      "ref": "refs/tags/v0.1.16",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:21Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "panda_esl"
+      ]
+    },
+    "moryoav/home-assistant-codex": {
+      "domain": "codex_cli",
+      "version": "v0.1.39",
+      "ref": "refs/tags/v0.1.39",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:26Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "codex_cli"
+      ]
+    },
+    "mossipcams/autosnooze": {
+      "domain": "autosnooze",
+      "version": "v0.2.27",
+      "ref": "refs/tags/v0.2.27",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:26Z",
+      "files_scanned": 24,
+      "syntax_errors": 0,
+      "stargazers_count": 39,
+      "findings": [],
+      "domains": [
+        "autosnooze"
+      ]
+    },
+    "mousehome-net/keba_one_ev": {
+      "domain": "keba_one_ev",
+      "version": "v1.5.0",
+      "ref": "refs/tags/v1.5.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:27Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "keba_one_ev"
+      ]
+    },
+    "mpross512/ha-immich-frame": {
+      "domain": "immich_frame",
+      "version": "v1.0",
+      "ref": "refs/tags/v1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:27Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "immich_frame"
+      ]
+    },
+    "mr-deamon/publibike_stations": {
+      "domain": "publibike",
+      "version": "v2.1.0",
+      "ref": "refs/tags/v2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:28Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "publibike"
+      ]
+    },
+    "mrebbert/1komma5-ha": {
+      "domain": "onekommafive",
+      "version": "v0.1.52",
+      "ref": "refs/tags/v0.1.52",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:28Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/onekommafive/entity.py",
+          "line": 68,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/onekommafive/entity.py",
+          "line": 190,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "onekommafive"
+      ]
+    },
+    "mretallack/ukfuelfinder-ha": {
+      "domain": "ukfuelfinder",
+      "version": "v1.6.0",
+      "ref": "refs/tags/v1.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:29Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 15,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/ukfuelfinder/coordinator.py",
+          "line": 214,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/ukfuelfinder/coordinator.py",
+          "line": 218,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "ukfuelfinder"
+      ]
+    },
+    "mrhedstrom/ha-tibber-pulse-mqtt": {
+      "domain": "tibber_pulse_mqtt",
+      "version": "v0.4.1",
+      "ref": "refs/tags/v0.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:29Z",
+      "files_scanned": 21,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "tibber_pulse_mqtt"
+      ]
+    },
+    "mrk-its/homeassistant-blitzortung": {
+      "domain": "blitzortung",
+      "version": "v1.7.0",
+      "ref": "refs/tags/v1.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:30Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 341,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/blitzortung/sensor.py",
+          "line": 241,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "blitzortung"
+      ]
+    },
+    "mrverrall/philips-heater-coap": {
+      "domain": "philips_heater_coap",
+      "version": "v1.8",
+      "ref": "refs/tags/v1.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:31Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "philips_heater_coap"
+      ]
+    },
+    "msp1974/ViewAssist_Companion_App": {
+      "domain": "vaca",
+      "version": "v0.12.1",
+      "ref": "refs/tags/v0.12.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:31Z",
+      "files_scanned": 21,
+      "syntax_errors": 0,
+      "stargazers_count": 451,
+      "findings": [],
+      "domains": [
+        "vaca"
+      ]
+    },
+    "msvinth/ha-vinorage": {
+      "domain": "vinorage",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:32Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "vinorage"
+      ]
+    },
+    "msvisser/remeha_home": {
+      "domain": "remeha_home",
+      "version": "v0.1.18",
+      "ref": "refs/tags/v0.1.18",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:32Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 113,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/remeha_home/coordinator.py",
+          "line": 169,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/remeha_home/coordinator.py",
+          "line": 182,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "remeha_home"
+      ]
+    },
+    "mswilson/cummins-hass-integration": {
+      "domain": "cummins_generator",
+      "version": "v0.3.0",
+      "ref": "refs/tags/v0.3.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:32Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "cummins_generator"
+      ]
+    },
+    "mtheli/braava_240_ble": {
+      "domain": "braava_240_ble",
+      "version": "v0.3.1",
+      "ref": "refs/tags/v0.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:32Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "braava_240_ble"
+      ]
+    },
+    "mtheli/isdt_air_ble": {
+      "domain": "isdt_air_ble",
+      "version": "v0.9.3",
+      "ref": "refs/tags/v0.9.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:33Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/isdt_air_ble/__init__.py",
+          "line": 152,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/isdt_air_ble/coordinator.py",
+          "line": 1042,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/isdt_air_ble/helpers.py",
+          "line": 24,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/isdt_air_ble/helpers.py",
+          "line": 43,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "isdt_air_ble"
+      ]
+    },
+    "mtheli/philips_shaver": {
+      "domain": "philips_shaver",
+      "version": "v0.26.0",
+      "ref": "refs/tags/v0.26.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:34Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 23,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/__init__.py",
+          "line": 110,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/__init__.py",
+          "line": 121,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/__init__.py",
+          "line": 129,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/__init__.py",
+          "line": 173,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/coordinator.py",
+          "line": 723,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/coordinator.py",
+          "line": 1224,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/entity.py",
+          "line": 124,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_shaver/update.py",
+          "line": 92,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "philips_shaver"
+      ]
+    },
+    "mtheli/philips_sonicare_ble": {
+      "domain": "philips_sonicare_ble",
+      "version": "v0.25.0",
+      "ref": "refs/tags/v0.25.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:35Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 44,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/__init__.py",
+          "line": 85,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/__init__.py",
+          "line": 95,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/__init__.py",
+          "line": 103,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/__init__.py",
+          "line": 130,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/coordinator.py",
+          "line": 645,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/coordinator.py",
+          "line": 1075,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/entity.py",
+          "line": 119,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/entity.py",
+          "line": 147,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/philips_sonicare_ble/update.py",
+          "line": 92,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "philips_sonicare_ble"
+      ]
+    },
+    "mudape/iphonedetect": {
+      "domain": "iphonedetect",
+      "version": "2.5.0",
+      "ref": "refs/tags/2.5.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:37Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 641,
+      "findings": [],
+      "domains": [
+        "iphonedetect"
+      ]
+    },
+    "muhlba91/onyx-homeassistant-integration": {
+      "domain": "hella_onyx",
+      "version": "v12.0.3",
+      "ref": "refs/tags/v12.0.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:38Z",
+      "files_scanned": 19,
+      "syntax_errors": 0,
+      "stargazers_count": 12,
+      "findings": [],
+      "domains": [
+        "hella_onyx"
+      ]
+    },
+    "mukaschultze/ha-must-inverter": {
+      "domain": "must_inverter",
+      "version": "v0.2.5",
+      "ref": "refs/tags/v0.2.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:38Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 68,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/must_inverter/diagnostics.py",
+          "line": 77,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "must_inverter"
+      ]
+    },
+    "mullerdavid/hass_GreeExt": {
+      "domain": "gree_ext",
+      "version": "",
+      "ref": "refs/heads/master",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:39Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 18,
+      "findings": [],
+      "domains": [
+        "gree_ext"
+      ]
+    },
+    "mutilator/Clockwork": {
+      "domain": "clockwork",
+      "version": "1.2.5",
+      "ref": "refs/tags/1.2.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:39Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "clockwork"
+      ]
+    },
+    "mutilator/homeassistant-iqua-softener": {
+      "domain": "iqua_softener",
+      "version": "2.3.1",
+      "ref": "refs/tags/2.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:40Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [],
+      "domains": [
+        "iqua_softener"
+      ]
+    },
+    "mutilator/homeassistant-zone-label-trigger": {
+      "domain": "zone_label_trigger",
+      "version": "1.0.2",
+      "ref": "refs/tags/1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:41Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "zone_label_trigger"
+      ]
+    },
+    "muxa/home-assistant-niwa-tides": {
+      "domain": "niwa_tides",
+      "version": "v1.1.3",
+      "ref": "refs/tags/v1.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:41Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 10,
+      "findings": [],
+      "domains": [
+        "niwa_tides"
+      ]
+    },
+    "mvdwetering/huesyncbox": {
+      "domain": "huesyncbox",
+      "version": "v3.0.0",
+      "ref": "refs/tags/v3.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:41Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 155,
+      "findings": [],
+      "domains": [
+        "huesyncbox"
+      ]
+    },
+    "mvdwetering/yamaha_ynca": {
+      "domain": "yamaha_ynca",
+      "version": "v9.6.0",
+      "ref": "refs/tags/v9.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:42Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 109,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/yamaha_ynca/media_player.py",
+          "line": 166,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/yamaha_ynca/migrations.py",
+          "line": 337,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "yamaha_ynca"
+      ]
+    },
+    "mweinelt/ha-prometheus-sensor": {
+      "domain": "prometheus_sensor",
+      "version": "1.3.1",
+      "ref": "refs/tags/1.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:42Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 62,
+      "findings": [],
+      "domains": [
+        "prometheus_sensor"
+      ]
+    },
+    "mwolter805/meshcore-ha-chat": {
+      "domain": "meshcore_chat",
+      "version": "v0.3.1",
+      "ref": "refs/tags/v0.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:43Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/meshcore_chat/ws_api.py",
+          "line": 873,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "meshcore_chat"
+      ]
+    },
+    "mxshmh/ha-metric": {
+      "domain": "hametric",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:44Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "hametric"
+      ]
+    },
+    "myTselection/Carbu_com": {
+      "domain": "carbu_com",
+      "version": "12.0.2",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:44Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 40,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/Carbu_com: 404 for https://codeload.github.com/myTselection/Carbu_com/tar.gz/refs/heads/master"
+    },
+    "myTselection/CityParking": {
+      "domain": "cityparking",
+      "version": "0.9.1",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:45Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/CityParking: 404 for https://codeload.github.com/myTselection/CityParking/tar.gz/refs/heads/master"
+    },
+    "myTselection/EVChargingStations": {
+      "domain": "evchargingstations",
+      "version": "0.2.1",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:45Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/EVChargingStations: 404 for https://codeload.github.com/myTselection/EVChargingStations/tar.gz/refs/heads/master"
+    },
+    "myTselection/MyEnergy": {
+      "domain": "myenergy",
+      "version": "4.0.0",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:46Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 22,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/MyEnergy: 404 for https://codeload.github.com/myTselection/MyEnergy/tar.gz/refs/heads/master"
+    },
+    "myTselection/bibliotheek_be": {
+      "domain": "bibliotheek_be",
+      "version": "3.3.1",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:46Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 26,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/bibliotheek_be: 404 for https://codeload.github.com/myTselection/bibliotheek_be/tar.gz/refs/heads/master"
+    },
+    "myTselection/delhaize_ha": {
+      "domain": "delhaize_ha",
+      "version": "1.2.11",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:47Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/delhaize_ha: 404 for https://codeload.github.com/myTselection/delhaize_ha/tar.gz/refs/heads/master"
+    },
+    "myTselection/pixometer": {
+      "domain": "pixometer",
+      "version": "2.1.5",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:47Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/pixometer: 404 for https://codeload.github.com/myTselection/pixometer/tar.gz/refs/heads/master"
+    },
+    "myTselection/smartschool_ha": {
+      "domain": "smartschool",
+      "version": "2.3.1",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:48Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/smartschool_ha: 404 for https://codeload.github.com/myTselection/smartschool_ha/tar.gz/refs/heads/master"
+    },
+    "myTselection/telenet_telemeter": {
+      "domain": "telenet_telemeter",
+      "version": "4.0.1",
+      "ref": "",
+      "status": "unreachable",
+      "scanned_utc": "2026-08-11T03:55:48Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 39,
+      "findings": [],
+      "error": "no downloadable ref for myTselection/telenet_telemeter: 404 for https://codeload.github.com/myTselection/telenet_telemeter/tar.gz/refs/heads/master"
+    },
+    "myhades/ha-clash-controller": {
+      "domain": "clash_controller",
+      "version": "v0.2.1",
+      "ref": "refs/tags/v0.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:49Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 38,
+      "findings": [],
+      "domains": [
+        "clash_controller"
+      ]
+    },
+    "myhomeiot/DahuaVTO": {
+      "domain": "dahua_vto",
+      "version": "1.0.9",
+      "ref": "refs/tags/1.0.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:49Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 210,
+      "findings": [],
+      "domains": [
+        "dahua_vto"
+      ]
+    },
+    "myny-git/smappee_ev": {
+      "domain": "smappee_ev",
+      "version": "2026.8.0",
+      "ref": "refs/tags/2026.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:50Z",
+      "files_scanned": 41,
+      "syntax_errors": 0,
+      "stargazers_count": 33,
+      "findings": [
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/smappee_ev/registry.py",
+          "line": 32,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/smappee_ev/runtime_devices.py",
+          "line": 30,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/smappee_ev/runtime_devices.py",
+          "line": 64,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/smappee_ev/runtime_devices.py",
+          "line": 81,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "smappee_ev"
+      ]
+    },
+    "n-IA-hane/esphome-intercom": {
+      "domain": "intercom_native",
+      "version": "v2026.8.0",
+      "ref": "",
+      "status": "error",
+      "scanned_utc": "2026-08-11T03:55:52Z",
+      "files_scanned": 0,
+      "syntax_errors": 0,
+      "stargazers_count": 206,
+      "findings": [],
+      "error": "RuntimeError: n-IA-hane/esphome-intercom@refs/tags/v2026.8.0 is 106 MB; skipping"
+    },
+    "naked-head/ha-ilmeteo": {
+      "domain": "ilmeteo",
+      "version": "v1.1.4",
+      "ref": "refs/tags/v1.1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:56Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "ilmeteo"
+      ]
+    },
+    "natekspencer/ha-atmo": {
+      "domain": "atmo",
+      "version": "1.0.2",
+      "ref": "refs/tags/1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:56Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 10,
+      "findings": [],
+      "domains": [
+        "atmo"
+      ]
+    },
+    "natekspencer/ha-bedjet": {
+      "domain": "bedjet",
+      "version": "2.0.2",
+      "ref": "refs/tags/2.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:57Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 78,
+      "findings": [],
+      "domains": [
+        "bedjet"
+      ]
+    },
+    "natekspencer/ha-krado": {
+      "domain": "krado",
+      "version": "0.3.4",
+      "ref": "refs/tags/0.3.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:57Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "krado"
+      ]
+    },
+    "natekspencer/ha-oasis-control": {
+      "domain": "oasis_mini",
+      "version": "2.2.8",
+      "ref": "refs/tags/2.2.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:57Z",
+      "files_scanned": 27,
+      "syntax_errors": 0,
+      "stargazers_count": 45,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/oasis_mini/coordinator.py",
+          "line": 148,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/oasis_mini/coordinator.py",
+          "line": 152,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "oasis_mini"
+      ]
+    },
+    "natekspencer/ha-planta": {
+      "domain": "planta",
+      "version": "1.1.0",
+      "ref": "refs/tags/1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:58Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 48,
+      "findings": [],
+      "domains": [
+        "planta"
+      ]
+    },
+    "natekspencer/ha-pura": {
+      "domain": "pura",
+      "version": "1.6.1",
+      "ref": "refs/tags/1.6.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:58Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 52,
+      "findings": [],
+      "domains": [
+        "pura"
+      ]
+    },
+    "natekspencer/ha-vestaboard": {
+      "domain": "vestaboard",
+      "version": "1.6.2",
+      "ref": "refs/tags/1.6.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:59Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 31,
+      "findings": [],
+      "domains": [
+        "vestaboard"
+      ]
+    },
+    "natekspencer/ha-vivint": {
+      "domain": "vivint",
+      "version": "2025.8.1",
+      "ref": "refs/tags/2025.8.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:55:59Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 103,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/vivint/__init__.py",
+          "line": 85,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/vivint/__init__.py",
+          "line": 92,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/vivint/__init__.py",
+          "line": 150,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/vivint/hub.py",
+          "line": 164,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/vivint/hub.py",
+          "line": 198,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "vivint"
+      ]
+    },
+    "nathanmarlor/foxess_modbus": {
+      "domain": "foxess_modbus",
+      "version": "v1.15.0",
+      "ref": "refs/tags/v1.15.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:00Z",
+      "files_scanned": 57,
+      "syntax_errors": 0,
+      "stargazers_count": 324,
+      "findings": [],
+      "domains": [
+        "foxess_modbus"
+      ]
+    },
+    "nb3rt/Aquilo-HomeAssistant": {
+      "domain": "aquilo",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:01Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "aquilo"
+      ]
+    },
+    "nbogojevic/homeassistant-midea-air-appliances-lan": {
+      "domain": "midea_dehumidifier_lan",
+      "version": "v0.9.7",
+      "ref": "refs/tags/v0.9.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:02Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 480,
+      "findings": [],
+      "domains": [
+        "midea_dehumidifier_lan"
+      ]
+    },
+    "ndesgranges/bing-wallpaper": {
+      "domain": "bing_wallpaper",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:02Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "bing_wallpaper"
+      ]
+    },
+    "ndesgranges/simple-plant": {
+      "domain": "simple_plant",
+      "version": "v2.0.0",
+      "ref": "refs/tags/v2.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:03Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 33,
+      "findings": [],
+      "domains": [
+        "simple_plant"
+      ]
+    },
+    "ndom91/homeassistant-checkly": {
+      "domain": "checkly",
+      "version": "",
+      "ref": "refs/heads/main",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:03Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/checkly/__init__.py",
+          "line": 112,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "checkly"
+      ]
+    },
+    "nedevski/hass_athletic_fitness_bulgaria": {
+      "domain": "athletic_fitness_bg",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:03Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "athletic_fitness_bg"
+      ]
+    },
+    "nedevski/hass_kat_bulgaria": {
+      "domain": "kat_bulgaria",
+      "version": "v2.2.0",
+      "ref": "refs/tags/v2.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:04Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 19,
+      "findings": [],
+      "domains": [
+        "kat_bulgaria"
+      ]
+    },
+    "nelbs/solaredge-forecast": {
+      "domain": "solaredge_forecast",
+      "version": "1.0.5",
+      "ref": "refs/tags/1.0.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:04Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "solaredge_forecast"
+      ]
+    },
+    "nemesa/ha-tcl-home-unofficial-integration": {
+      "domain": "tcl_home_unofficial",
+      "version": "3.16.0",
+      "ref": "refs/tags/3.16.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:04Z",
+      "files_scanned": 40,
+      "syntax_errors": 0,
+      "stargazers_count": 95,
+      "findings": [],
+      "domains": [
+        "tcl_home_unofficial"
+      ]
+    },
+    "nemiro-TECH/correios_tracker_ha": {
+      "domain": "correios_tracker",
+      "version": "v.0.1.2",
+      "ref": "refs/tags/v.0.1.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:06Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/correios_tracker/__init__.py",
+          "line": 88,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "correios_tracker"
+      ]
+    },
+    "neon9809/FiberHome-CPE-HA": {
+      "domain": "fiberhome_cpe",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:06Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "fiberhome_cpe"
+      ]
+    },
+    "neon9809/cuk-wifi-ha": {
+      "domain": "cuk_wifi_ha",
+      "version": "v0.2.0",
+      "ref": "refs/tags/v0.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:07Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "cuk_wifi_ha"
+      ]
+    },
+    "netsoft-ruidias/ha-custom-component-precoscombustiveis": {
+      "domain": "precoscombustiveis",
+      "version": "v2.1.5",
+      "ref": "refs/tags/v2.1.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:07Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 32,
+      "findings": [],
+      "domains": [
+        "precoscombustiveis"
+      ]
+    },
+    "neuhausf/ha-solar-manager-forecast": {
+      "domain": "solar_manager_forecast",
+      "version": "0.1.5",
+      "ref": "refs/tags/0.1.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:08Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "solar_manager_forecast"
+      ]
+    },
+    "never-dry/NeverDry": {
+      "domain": "never_dry",
+      "version": "v0.11.0",
+      "ref": "refs/tags/v0.11.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:08Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 45,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/never_dry/config_flow.py",
+          "line": 893,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/never_dry/sensor.py",
+          "line": 250,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "never_dry"
+      ]
+    },
+    "nexhome-org/nexhome-homeassistant-component": {
+      "domain": "nexhome",
+      "version": "v1.1.16",
+      "ref": "refs/tags/v1.1.16",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:09Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 47,
+      "findings": [],
+      "domains": [
+        "nexhome"
+      ]
+    },
+    "nfeuerhelm/ha-proj-viewsonic": {
+      "domain": "viewsonic_projector",
+      "version": "v1.0.2",
+      "ref": "refs/tags/v1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:10Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "viewsonic_projector"
+      ]
+    },
+    "ngoc-minh-do/ha-nescafe-ble": {
+      "domain": "nescafe_ble",
+      "version": "v0.1.3",
+      "ref": "refs/tags/v0.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:10Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "nescafe_ble"
+      ]
+    },
+    "ngocjohn/lunar-phase": {
+      "domain": "lunar_phase",
+      "version": "v0.3.0",
+      "ref": "refs/tags/v0.3.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:11Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 60,
+      "findings": [],
+      "domains": [
+        "lunar_phase"
+      ]
+    },
+    "nick2525/broadlink_s1c_s2c": {
+      "domain": "broadlink_s1c",
+      "version": "",
+      "ref": "refs/heads/master",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:11Z",
+      "files_scanned": 1,
+      "syntax_errors": 0,
+      "stargazers_count": 12,
+      "findings": [],
+      "domains": [
+        "broadlink_s1c"
+      ]
+    },
+    "nickknissen/hass-monta": {
+      "domain": "monta",
+      "version": "2.4.0",
+      "ref": "refs/tags/2.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:12Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 36,
+      "findings": [],
+      "domains": [
+        "monta"
+      ]
+    },
+    "nickneos/HA_harmony_climate_component": {
+      "domain": "harmony_ac",
+      "version": "v0.2.1",
+      "ref": "refs/heads/master",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:12Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 31,
+      "findings": [],
+      "domains": [
+        "harmony_ac"
+      ]
+    },
+    "nicois/foxess-control": {
+      "domain": "foxess_control",
+      "version": "v1.0.21",
+      "ref": "refs/tags/v1.0.21",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:13Z",
+      "files_scanned": 35,
+      "syntax_errors": 0,
+      "stargazers_count": 16,
+      "findings": [],
+      "domains": [
+        "foxess_control"
+      ]
+    },
+    "nicole-ashley/homeassistant-goldair-climate": {
+      "domain": "goldair_climate",
+      "version": "0.1.3",
+      "ref": "refs/tags/0.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:15Z",
+      "files_scanned": 30,
+      "syntax_errors": 0,
+      "stargazers_count": 18,
+      "findings": [],
+      "domains": [
+        "goldair_climate"
+      ]
+    },
+    "nicx17/unstats": {
+      "domain": "unstats",
+      "version": "v1.2.0",
+      "ref": "refs/tags/v1.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:15Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "unstats"
+      ]
+    },
+    "niddu85/home-assistant-navimow": {
+      "domain": "navimow",
+      "version": "v0.2.0",
+      "ref": "refs/tags/v0.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:16Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [],
+      "domains": [
+        "navimow"
+      ]
+    },
+    "nielash/cloneassistant": {
+      "domain": "rclone",
+      "version": "v0.1.0",
+      "ref": "refs/tags/v0.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:16Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "rclone"
+      ]
+    },
+    "nielsfaber/alarmo": {
+      "domain": "alarmo",
+      "version": "v1.10.19",
+      "ref": "refs/tags/v1.10.19",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:17Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 2204,
+      "findings": [],
+      "domains": [
+        "alarmo"
+      ]
+    },
+    "nielsfaber/scheduler-component": {
+      "domain": "scheduler",
+      "version": "v3.3.8",
+      "ref": "refs/tags/v3.3.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:18Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 895,
+      "findings": [],
+      "domains": [
+        "scheduler"
+      ]
+    },
+    "nielstron/inteno_hass": {
+      "domain": "inteno",
+      "version": "1.1.2",
+      "ref": "refs/tags/1.1.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:18Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "inteno"
+      ]
+    },
+    "nikolmedo/ClaudePulse": {
+      "domain": "claude_pulse",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:19Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "claude_pulse"
+      ]
+    },
+    "niktest/solaredge_ev_charger_au": {
+      "domain": "solaredge_ev_charger_au",
+      "version": "1.0.5",
+      "ref": "refs/tags/1.0.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:19Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "solaredge_ev_charger_au"
+      ]
+    },
+    "nilisos/hass-lisios-bridge": {
+      "domain": "lisios",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:19Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/lisios/coordinator.py",
+          "line": 69,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/lisios/coordinator.py",
+          "line": 71,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "lisios"
+      ]
+    },
+    "niltrip/powerocean": {
+      "domain": "powerocean",
+      "version": "2026.03.04",
+      "ref": "refs/tags/2026.03.04",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:20Z",
+      "files_scanned": 22,
+      "syntax_errors": 0,
+      "stargazers_count": 35,
+      "findings": [],
+      "domains": [
+        "powerocean"
+      ]
+    },
+    "nilvanis/ha-pronatura": {
+      "domain": "pronatura",
+      "version": "1.0.4",
+      "ref": "refs/tags/1.0.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:20Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "pronatura"
+      ]
+    },
+    "nimroddolev/akuvox": {
+      "domain": "akuvox",
+      "version": "v0.1.1",
+      "ref": "refs/tags/v0.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:21Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 36,
+      "findings": [],
+      "domains": [
+        "akuvox"
+      ]
+    },
+    "nimroddolev/chime_tts": {
+      "domain": "chime_tts",
+      "version": "v1.2.2",
+      "ref": "refs/tags/v1.2.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:21Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 359,
+      "findings": [],
+      "domains": [
+        "chime_tts"
+      ]
+    },
+    "nitaybz/ha-pima": {
+      "domain": "pima",
+      "version": "v0.3.1",
+      "ref": "refs/tags/v0.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:22Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "pima"
+      ]
+    },
+    "nitaybz/optimistic_feedback": {
+      "domain": "optimistic_feedback",
+      "version": "v1.3.0",
+      "ref": "refs/tags/v1.3.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:23Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 23,
+      "findings": [],
+      "domains": [
+        "optimistic_feedback"
+      ]
+    },
+    "njobrien1006/hass_traeger": {
+      "domain": "traeger",
+      "version": "2026.07.16",
+      "ref": "refs/tags/2026.07.16",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:23Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 59,
+      "findings": [],
+      "domains": [
+        "traeger"
+      ]
+    },
+    "nkvoll/home-assistant-qsys-qrc": {
+      "domain": "qsys_qrc",
+      "version": "v0.7.0",
+      "ref": "refs/tags/v0.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:24Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 17,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/qsys_qrc/common.py",
+          "line": 49,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "qsys_qrc"
+      ]
+    },
+    "nnnlog/homeassistant-cvnet-smarthome": {
+      "domain": "cvnet",
+      "version": "v0.0.11",
+      "ref": "refs/tags/v0.0.11",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:25Z",
+      "files_scanned": 47,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "cvnet"
+      ]
+    },
+    "nordicopen/easee_hass": {
+      "domain": "easee",
+      "version": "v0.9.74",
+      "ref": "refs/tags/v0.9.74",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:25Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 279,
+      "findings": [],
+      "domains": [
+        "easee"
+      ]
+    },
+    "normcyr/essence-quebec": {
+      "domain": "essence_quebec",
+      "version": "v0.1.0",
+      "ref": "refs/tags/v0.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:26Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "essence_quebec"
+      ]
+    },
+    "normcyr/home-assistant-montreal-aqi": {
+      "domain": "montreal_aqi",
+      "version": "v0.7.3",
+      "ref": "refs/tags/v0.7.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:26Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "montreal_aqi"
+      ]
+    },
+    "notDIRK/luxtronik2-hass": {
+      "domain": "luxtronik2_hass",
+      "version": "v1.2.6",
+      "ref": "refs/tags/v1.2.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:27Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "luxtronik2_hass"
+      ]
+    },
+    "notDIRK/shelly-cloud-diy-ha": {
+      "domain": "shelly_cloud_diy",
+      "version": "v0.6.12",
+      "ref": "refs/tags/v0.6.12",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:27Z",
+      "files_scanned": 26,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/shelly_cloud_diy/coordinator.py",
+          "line": 494,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/shelly_cloud_diy/services/fleet_map.py",
+          "line": 372,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-mean-type",
+          "breaks_in": "2026.11",
+          "file": "custom_components/shelly_cloud_diy/services/historical.py",
+          "line": 275,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-import-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/shelly_cloud_diy/services/historical.py",
+          "line": 275,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/shelly_cloud_diy/services/orphans.py",
+          "line": 350,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "shelly_cloud_diy"
+      ]
+    },
+    "notf0und/hass-hume-ai-tts": {
+      "domain": "hume_tts",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:29Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "hume_tts"
+      ]
+    },
+    "nowocain/PhotoFrameCast": {
+      "domain": "photoframecast",
+      "version": "2.0.0",
+      "ref": "refs/tags/2.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:29Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "photoframecast"
+      ]
+    },
+    "nstrandm/spot-scheduler": {
+      "domain": "spot_scheduler",
+      "version": "v0.3.2",
+      "ref": "refs/tags/v0.3.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:30Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "spot_scheduler"
+      ]
+    },
+    "nstrelow/ha_philips_android_tv": {
+      "domain": "philips_android_tv",
+      "version": "",
+      "ref": "refs/heads/master",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:30Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 110,
+      "findings": [],
+      "domains": [
+        "philips_android_tv"
+      ]
+    },
+    "nuggetz/ha-amazon-price-tracker": {
+      "domain": "amazon_price_tracker",
+      "version": "v0.3.4",
+      "ref": "refs/tags/v0.3.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:30Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "amazon_price_tracker"
+      ]
+    },
+    "nuggetz/ha-fuel-prices-ita": {
+      "domain": "fuel_prices_italy",
+      "version": "v0.3.1",
+      "ref": "refs/tags/v0.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:31Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "fuel_prices_italy"
+      ]
+    },
+    "nuggetz/ha-gaming-hub": {
+      "domain": "ha_gaming_hub",
+      "version": "v0.3.0",
+      "ref": "refs/tags/v0.3.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:31Z",
+      "files_scanned": 20,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "ha_gaming_hub"
+      ]
+    },
+    "nuggetz/ha-outdoor-environment": {
+      "domain": "outdoor_environment",
+      "version": "v0.1.1",
+      "ref": "refs/tags/v0.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:32Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "outdoor_environment"
+      ]
+    },
+    "nuggetz/ha-tradepulse": {
+      "domain": "tradepulse",
+      "version": "v0.1.2",
+      "ref": "refs/tags/v0.1.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:33Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "tradepulse"
+      ]
+    },
+    "nussfuellung/paradigma-homeassistant": {
+      "domain": "paradigma",
+      "version": "V2.4.3",
+      "ref": "refs/tags/V2.4.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:33Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "paradigma"
+      ]
+    },
+    "nyffchanium/argoclima-integration": {
+      "domain": "argoclima",
+      "version": "v1.1.4",
+      "ref": "refs/tags/v1.1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:34Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 31,
+      "findings": [
+        {
+          "rule_id": "core-call-verify-domain-control",
+          "breaks_in": "2026.10",
+          "file": "custom_components/argoclima/service.py",
+          "line": 84,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "argoclima"
+      ]
+    },
+    "nzrutman/hello_fairy_ble": {
+      "domain": "hello_fairy_ble",
+      "version": "V1.0.1",
+      "ref": "refs/tags/V1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:34Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "hello_fairy_ble"
+      ]
+    },
+    "oMtQB4/HomeAssistant-Pracht-Alpha-Wallbox-Custom-Component": {
+      "domain": "pracht_alpha",
+      "version": "v1.1.2",
+      "ref": "refs/tags/v1.1.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:35Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "pracht_alpha"
+      ]
+    },
+    "odoricof/Home-Sapiens-Assistant": {
+      "domain": "domo",
+      "version": "1.7.0",
+      "ref": "refs/tags/1.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:35Z",
+      "files_scanned": 34,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/domo/binary_sensor.py",
+          "line": 55,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/domo/climate.py",
+          "line": 96,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/domo/sensor.py",
+          "line": 75,
+          "confidence": "high"
+        },
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/domo/sensor.py",
+          "line": 94,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "domo"
+      ]
+    },
+    "odya/hass-ina219-ups-hat": {
+      "domain": "ina219_ups_hat",
+      "version": "v0.3.12-1",
+      "ref": "refs/tags/v0.3.12-1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:36Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 18,
+      "findings": [],
+      "domains": [
+        "ina219_ups_hat"
+      ]
+    },
+    "ofalvai/home-assistant-candy": {
+      "domain": "candy",
+      "version": "0.8.3",
+      "ref": "refs/tags/0.8.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:37Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 166,
+      "findings": [],
+      "domains": [
+        "candy"
+      ]
+    },
+    "ofilis/ha-immich-gallery": {
+      "domain": "immich_gallery",
+      "version": "v0.1.4",
+      "ref": "refs/tags/v0.1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:37Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "immich_gallery"
+      ]
+    },
+    "ogerardin/ha-cfl-commute": {
+      "domain": "cfl_commute",
+      "version": "1.15.1",
+      "ref": "refs/tags/1.15.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:37Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "cfl_commute"
+      ]
+    },
+    "ohheyrj/home-assistant-aws-codepipeline": {
+      "domain": "aws_codepipeline",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:38Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "aws_codepipeline"
+      ]
+    },
+    "ohrensessel/bev_insights": {
+      "domain": "bev_insights",
+      "version": "v1.4.2",
+      "ref": "refs/tags/v1.4.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:38Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "bev_insights"
+      ]
+    },
+    "okkine/HA-Luna": {
+      "domain": "luna",
+      "version": "2026.04.01",
+      "ref": "refs/tags/2026.04.01",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:39Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "luna"
+      ]
+    },
+    "okkine/HA-Sol": {
+      "domain": "sol",
+      "version": "2026.05.01",
+      "ref": "refs/tags/2026.05.01",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:40Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "sol"
+      ]
+    },
+    "olibos/HomeAssistant-RecycleApp": {
+      "domain": "recycle_app",
+      "version": "v2.8.0",
+      "ref": "refs/tags/v2.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:41Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 57,
+      "findings": [],
+      "domains": [
+        "recycle_app"
+      ]
+    },
+    "olivierplante/ec-weather": {
+      "domain": "ec_weather",
+      "version": "v2.5.1",
+      "ref": "refs/tags/v2.5.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:41Z",
+      "files_scanned": 28,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/ec_weather/websocket.py",
+          "line": 67,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "ec_weather"
+      ]
+    },
+    "olivierplante/popup-card": {
+      "domain": "popup_card",
+      "version": "v1.3.0",
+      "ref": "refs/tags/v1.3.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:43Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "popup_card"
+      ]
+    },
+    "olivierplante/thermostat-slider-card": {
+      "domain": "thermostat_slider_card",
+      "version": "v1.3.3",
+      "ref": "refs/tags/v1.3.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:43Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "thermostat_slider_card"
+      ]
+    },
+    "ollo69/ha-samsungtv-smart": {
+      "domain": "samsungtv_smart",
+      "version": "v0.14.5",
+      "ref": "refs/tags/v0.14.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:44Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 670,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/samsungtv_smart/diagnostics.py",
+          "line": 40,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "samsungtv_smart"
+      ]
+    },
+    "ollo69/ha-smartthinq-sensors": {
+      "domain": "smartthinq_sensors",
+      "version": "v0.43.0",
+      "ref": "refs/tags/v0.43.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:45Z",
+      "files_scanned": 42,
+      "syntax_errors": 0,
+      "stargazers_count": 1320,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/smartthinq_sensors/__init__.py",
+          "line": 687,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/smartthinq_sensors/diagnostics.py",
+          "line": 108,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "smartthinq_sensors"
+      ]
+    },
+    "olzeug/ha-vacation-mode": {
+      "domain": "vacation_mode",
+      "version": "v0.4.0",
+      "ref": "refs/tags/v0.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:47Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "vacation_mode"
+      ]
+    },
+    "onpremcloudguy/HelloSmart_HomeAssistant": {
+      "domain": "hello_smart",
+      "version": "v0.5.1",
+      "ref": "refs/tags/v0.5.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:48Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "hello_smart"
+      ]
+    },
+    "oooohhoo/tokit_cooker": {
+      "domain": "tokit_cooker",
+      "version": "1.0.0",
+      "ref": "refs/tags/1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:50Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "tokit_cooker"
+      ]
+    },
+    "oooshk/ha-conversation-router": {
+      "domain": "conversation_router",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:51Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "conversation_router"
+      ]
+    },
+    "orandasoft/universal-remote": {
+      "domain": "universal_remote",
+      "version": "v0.6.1",
+      "ref": "refs/tags/v0.6.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:51Z",
+      "files_scanned": 21,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "universal_remote"
+      ]
+    },
+    "orevron/ha-interqr": {
+      "domain": "interqr",
+      "version": "v1.0.8",
+      "ref": "refs/tags/v1.0.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:52Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "interqr"
+      ]
+    },
+    "osk2/panasonic_smart_app": {
+      "domain": "panasonic_smart_app",
+      "version": "v2.14.0",
+      "ref": "refs/tags/v2.14.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:52Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 137,
+      "findings": [],
+      "domains": [
+        "panasonic_smart_app"
+      ]
+    },
+    "osk2/wafflecity-custom-component": {
+      "domain": "wafflecity",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:53Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "wafflecity"
+      ]
+    },
+    "osohotwateriot/osoenergy_community": {
+      "domain": "osoenergy_community",
+      "version": "v1.2.2",
+      "ref": "refs/tags/v1.2.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:53Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "osoenergy_community"
+      ]
+    },
+    "osotechie/ha_aucklandcouncil": {
+      "domain": "aucklandcouncil",
+      "version": "2026.07.14",
+      "ref": "refs/tags/2026.07.14",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:54Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "aucklandcouncil"
+      ]
+    },
+    "ostbergjohan/ha-allsvenskan": {
+      "domain": "allsvenskan",
+      "version": "1.4.9",
+      "ref": "refs/tags/1.4.9",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:54Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "allsvenskan"
+      ]
+    },
+    "oven-lab/tuya_cloud_map_extractor": {
+      "domain": "tuya_cloud_map_extractor",
+      "version": "v1.2.1",
+      "ref": "refs/tags/v1.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:55Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 37,
+      "findings": [],
+      "domains": [
+        "tuya_cloud_map_extractor"
+      ]
+    },
+    "owanvik/ha-nodvarsel": {
+      "domain": "nodvarsel",
+      "version": "v1.1.1",
+      "ref": "refs/tags/v1.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:55Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "nodvarsel"
+      ]
+    },
+    "owenashurst/Antminer-HomeAssistant-Integration": {
+      "domain": "antminer",
+      "version": "v1.0.2",
+      "ref": "refs/tags/v1.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:55Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "antminer"
+      ]
+    },
+    "oyvindwe/connectlife-ha": {
+      "domain": "connectlife",
+      "version": "v0.46.0",
+      "ref": "refs/tags/v0.46.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:56Z",
+      "files_scanned": 21,
+      "syntax_errors": 0,
+      "stargazers_count": 287,
+      "findings": [],
+      "domains": [
+        "connectlife"
+      ]
+    },
+    "p0l0/hapetwalk": {
+      "domain": "petwalk",
+      "version": "2.0.2",
+      "ref": "refs/tags/2.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:57Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [
+        {
+          "rule_id": "device-tracker-location-name",
+          "breaks_in": "2027.7",
+          "file": "custom_components/petwalk/device_tracker.py",
+          "line": 135,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "petwalk"
+      ]
+    },
+    "pa-martin/ha-pandascore": {
+      "domain": "pandascore",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:57Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/pandascore/config_flow.py",
+          "line": 224,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/pandascore/config_flow.py",
+          "line": 227,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "pandascore"
+      ]
+    },
+    "pail23/stiebel_eltron_isg_component": {
+      "domain": "stiebel_eltron_isg",
+      "version": "2026.7.3",
+      "ref": "refs/tags/2026.7.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:57Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 97,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/stiebel_eltron_isg/migration.py",
+          "line": 146,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/stiebel_eltron_isg/migration.py",
+          "line": 153,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "stiebel_eltron_isg"
+      ]
+    },
+    "pajeronda/xai_conversation": {
+      "domain": "xai_conversation",
+      "version": "3.4.1",
+      "ref": "refs/tags/3.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:56:58Z",
+      "files_scanned": 36,
+      "syntax_errors": 0,
+      "stargazers_count": 28,
+      "findings": [],
+      "domains": [
+        "xai_conversation"
+      ]
+    },
+    "pajew-ski/ha-speedport": {
+      "domain": "speedport",
+      "version": "v0.4.1",
+      "ref": "refs/tags/v0.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:00Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "speedport"
+      ]
+    },
+    "parautenbach/hass-shairport-sync": {
+      "domain": "shairport_sync",
+      "version": "v1.4.0",
+      "ref": "refs/tags/v1.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:00Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 121,
+      "findings": [],
+      "domains": [
+        "shairport_sync"
+      ]
+    },
+    "partach/ha_felicity": {
+      "domain": "ha_felicity",
+      "version": "v1.1.6",
+      "ref": "refs/tags/v1.1.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:00Z",
+      "files_scanned": 17,
+      "syntax_errors": 0,
+      "stargazers_count": 14,
+      "findings": [],
+      "domains": [
+        "ha_felicity"
+      ]
+    },
+    "partach/switch_port_card_pro": {
+      "domain": "switch_port_card_pro",
+      "version": "v1.0.0",
+      "ref": "refs/tags/v1.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:03Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 23,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/switch_port_card_pro/sensor.py",
+          "line": 287,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "switch_port_card_pro"
+      ]
+    },
+    "parvez/network_scanner": {
+      "domain": "network_scanner",
+      "version": "v1.0.7",
+      "ref": "refs/tags/v1.0.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:04Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 207,
+      "findings": [],
+      "domains": [
+        "network_scanner"
+      ]
+    },
+    "patman15/BMS_BLE-HA": {
+      "domain": "bms_ble",
+      "version": "2.16.0",
+      "ref": "refs/tags/2.16.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:04Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 353,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/bms_ble/diagnostics.py",
+          "line": 30,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "bms_ble"
+      ]
+    },
+    "patrickribbing/sjofartsverket_viva-component": {
+      "domain": "sjofartsverket_viva",
+      "version": "v1.4",
+      "ref": "refs/tags/v1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:04Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "sjofartsverket_viva"
+      ]
+    },
+    "patrickvonwiegen/TaskOrganizer": {
+      "domain": "task_organizer",
+      "version": "v1.7.0",
+      "ref": "refs/tags/v1.7.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:05Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "task_organizer"
+      ]
+    },
+    "pawelhulek/kontomierz-sensor": {
+      "domain": "kontomierz_sensor",
+      "version": "0.0.1",
+      "ref": "refs/tags/0.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:05Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "kontomierz_sensor"
+      ]
+    },
+    "pawelhulek/pgnig-sensor": {
+      "domain": "pgnig_gas_sensor",
+      "version": "v3.0.2",
+      "ref": "refs/tags/v3.0.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:05Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 56,
+      "findings": [],
+      "domains": [
+        "pgnig_gas_sensor"
+      ]
+    },
+    "pawkakol1/worlds-air-quality-index": {
+      "domain": "worlds_air_quality_index",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:06Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 53,
+      "findings": [],
+      "domains": [
+        "worlds_air_quality_index"
+      ]
+    },
+    "pcourbin/ecodevices_rt2": {
+      "domain": "ecodevices_rt2",
+      "version": "v2.2.10",
+      "ref": "refs/tags/v2.2.10",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:06Z",
+      "files_scanned": 36,
+      "syntax_errors": 0,
+      "stargazers_count": 11,
+      "findings": [],
+      "domains": [
+        "ecodevices_rt2"
+      ]
+    },
+    "pcourbin/imaprotect": {
+      "domain": "imaprotect",
+      "version": "v1.0.7",
+      "ref": "refs/tags/v1.0.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:06Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "imaprotect"
+      ]
+    },
+    "pdw-mb/tsmart_ha": {
+      "domain": "t_smart",
+      "version": "0.3.0",
+      "ref": "refs/tags/0.3.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:07Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 12,
+      "findings": [],
+      "domains": [
+        "t_smart"
+      ]
+    },
+    "peha1983/ha-ynblue": {
+      "domain": "ynblue",
+      "version": "v0.3.1",
+      "ref": "refs/tags/v0.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:07Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/ynblue/client.py",
+          "line": 118,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "ynblue"
+      ]
+    },
+    "pekur/amit_ha_integration": {
+      "domain": "amit",
+      "version": "Test_1.6.0.0",
+      "ref": "refs/tags/Test_1.6.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:08Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "amit"
+      ]
+    },
+    "pentafive/8311-ha-bridge": {
+      "domain": "was110_8311",
+      "version": "v2.2.0",
+      "ref": "refs/tags/v2.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:08Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 17,
+      "findings": [],
+      "domains": [
+        "was110_8311"
+      ]
+    },
+    "pentafive/pskr-ha-bridge": {
+      "domain": "pskr",
+      "version": "v2.6.0",
+      "ref": "refs/tags/v2.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:09Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "pskr"
+      ]
+    },
+    "pentafive/web888-ha-bridge": {
+      "domain": "web888",
+      "version": "v1.2.2",
+      "ref": "refs/tags/v1.2.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:10Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "web888"
+      ]
+    },
+    "peribeir/homeassistant-rademacher": {
+      "domain": "rademacher",
+      "version": "v2.4.3",
+      "ref": "refs/tags/v2.4.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:11Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 87,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/rademacher/__init__.py",
+          "line": 231,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "rademacher"
+      ]
+    },
+    "perosb/power_max_tracker": {
+      "domain": "power_max_tracker",
+      "version": "2026.7.1",
+      "ref": "refs/tags/2026.7.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:11Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 20,
+      "findings": [],
+      "domains": [
+        "power_max_tracker"
+      ]
+    },
+    "perosb/qvantum_custom_component": {
+      "domain": "qvantum",
+      "version": "2026.8.1",
+      "ref": "refs/tags/2026.8.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:12Z",
+      "files_scanned": 18,
+      "syntax_errors": 0,
+      "stargazers_count": 10,
+      "findings": [],
+      "domains": [
+        "qvantum"
+      ]
+    },
+    "perseus177/ha-xiaomi-kettle-ble": {
+      "domain": "mikettle_ble",
+      "version": "v1.2.1",
+      "ref": "refs/tags/v1.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:13Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "mikettle_ble"
+      ]
+    },
+    "persuader72/silla-prism-integration": {
+      "domain": "silla_prism",
+      "version": "v0.7.4",
+      "ref": "refs/tags/v0.7.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:13Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 14,
+      "findings": [],
+      "domains": [
+        "silla_prism"
+      ]
+    },
+    "peteS-UK/emotiva": {
+      "domain": "emotiva",
+      "version": "v3.0.0",
+      "ref": "refs/tags/v3.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:14Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [],
+      "domains": [
+        "emotiva"
+      ]
+    },
+    "peteS-UK/lyrion_cli": {
+      "domain": "lyrion_cli",
+      "version": "v0.2.3",
+      "ref": "refs/tags/v0.2.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:14Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "lyrion_cli"
+      ]
+    },
+    "peteS-UK/sonyavr": {
+      "domain": "sonyavr",
+      "version": "v1.8.1",
+      "ref": "refs/tags/v1.8.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:14Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 10,
+      "findings": [],
+      "domains": [
+        "sonyavr"
+      ]
+    },
+    "petergridge/Irrigation-V5": {
+      "domain": "irrigationprogram",
+      "version": "V2026.07.03",
+      "ref": "refs/tags/V2026.07.03",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:15Z",
+      "files_scanned": 29,
+      "syntax_errors": 0,
+      "stargazers_count": 115,
+      "findings": [],
+      "domains": [
+        "irrigationprogram"
+      ]
+    },
+    "petergridge/openweathermaphistory": {
+      "domain": "openweathermaphistory",
+      "version": "V2026.05.03",
+      "ref": "refs/tags/V2026.05.03",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:16Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 76,
+      "findings": [],
+      "domains": [
+        "openweathermaphistory"
+      ]
+    },
+    "peterklijn/casambi-mqtt": {
+      "domain": "casambi_mqtt",
+      "version": "0.0.3",
+      "ref": "refs/tags/0.0.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:17Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "casambi_mqtt"
+      ]
+    },
+    "peternijssen/ha-postcodeloterij": {
+      "domain": "postcodeloterij",
+      "version": "1.3.1",
+      "ref": "refs/tags/1.3.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:17Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "postcodeloterij"
+      ]
+    },
+    "peterturza/home-assistant-jablotron-futura": {
+      "domain": "jablotron_futura",
+      "version": "0.5.0",
+      "ref": "refs/tags/0.5.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:17Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [],
+      "domains": [
+        "jablotron_futura"
+      ]
+    },
+    "petos/bazos_crawler": {
+      "domain": "bazos_crawler",
+      "version": "v0.1.2",
+      "ref": "refs/tags/v0.1.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:18Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "bazos_crawler"
+      ]
+    },
+    "petos/ha-vodarenska": {
+      "domain": "ha_vodarenska",
+      "version": "v0.0.22",
+      "ref": "refs/tags/v0.0.22",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:18Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "ha_vodarenska"
+      ]
+    },
+    "petos/ha_postaonline": {
+      "domain": "ha_postaonline",
+      "version": "v0.0.3",
+      "ref": "refs/tags/v0.0.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:18Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "ha_postaonline"
+      ]
+    },
+    "petretiandrea/home-assistant-tapo-p100": {
+      "domain": "tapo",
+      "version": "3.5.0",
+      "ref": "refs/tags/3.5.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:19Z",
+      "files_scanned": 36,
+      "syntax_errors": 0,
+      "stargazers_count": 966,
+      "findings": [],
+      "domains": [
+        "tapo"
+      ]
+    },
+    "peyton/homeassistant-anona-holo": {
+      "domain": "anona_holo",
+      "version": "v2026.5.0",
+      "ref": "refs/tags/v2026.5.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:20Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "anona_holo"
+      ]
+    },
+    "pfalzcraft/notion-garden-care": {
+      "domain": "notion_garden_care",
+      "version": "v2.0.0",
+      "ref": "refs/tags/v2.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:20Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "notion_garden_care"
+      ]
+    },
+    "pgroene/kyber": {
+      "domain": "kyber",
+      "version": "v0.7.2",
+      "ref": "refs/tags/v0.7.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:21Z",
+      "files_scanned": 33,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "kyber"
+      ]
+    },
+    "philrenda/precipitation-radial-card": {
+      "domain": "precipitation_radial",
+      "version": "v2.1.0",
+      "ref": "refs/tags/v2.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:25Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "precipitation_radial"
+      ]
+    },
+    "phismith91/luxorliving": {
+      "domain": "luxor_living",
+      "version": "v1.2.1",
+      "ref": "refs/tags/v1.2.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:25Z",
+      "files_scanned": 25,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "luxor_living"
+      ]
+    },
+    "phoinixgrr/sigma_connect_ha": {
+      "domain": "sigma_connect_ha",
+      "version": "v1.2.4",
+      "ref": "refs/tags/v1.2.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:27Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "sigma_connect_ha"
+      ]
+    },
+    "physje/waterinfo": {
+      "domain": "waterinfo",
+      "version": "v3.1.0",
+      "ref": "refs/tags/v3.1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:27Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 21,
+      "findings": [],
+      "domains": [
+        "waterinfo"
+      ]
+    },
+    "pickeld/nuki_integration": {
+      "domain": "nuki_otp",
+      "version": "v2.5.1",
+      "ref": "refs/tags/v2.5.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:27Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "nuki_otp"
+      ]
+    },
+    "piitaya/home-assistant-qubino-wire-pilot": {
+      "domain": "qubino_wire_pilot",
+      "version": "3.0.3",
+      "ref": "refs/tags/3.0.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:28Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 26,
+      "findings": [
+        {
+          "rule_id": "core-call-async-remove-helper-config-entry-from-source-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/qubino_wire_pilot/__init__.py",
+          "line": 75,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "qubino_wire_pilot"
+      ]
+    },
+    "pikipixel/hass-one-pocket": {
+      "domain": "one_pocket",
+      "version": "v0.2.0",
+      "ref": "refs/tags/v0.2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:28Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "one_pocket"
+      ]
+    },
+    "pilotak/homeassistant-attributes": {
+      "domain": "attributes",
+      "version": "v1.4.1",
+      "ref": "refs/tags/v1.4.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:28Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 113,
+      "findings": [],
+      "domains": [
+        "attributes"
+      ]
+    },
+    "pilotak/homeassistant-clientraw": {
+      "domain": "clientraw",
+      "version": "v2.8.0",
+      "ref": "refs/tags/v2.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:29Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 18,
+      "findings": [],
+      "domains": [
+        "clientraw"
+      ]
+    },
+    "pink88/Tuiss2HA": {
+      "domain": "tuiss2ha",
+      "version": "1.15.0",
+      "ref": "refs/tags/1.15.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:29Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 115,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/tuiss2ha/__init__.py",
+          "line": 113,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "tuiss2ha"
+      ]
+    },
+    "pinkywafer/Anniversaries": {
+      "domain": "anniversaries",
+      "version": "6.0.1",
+      "ref": "refs/tags/6.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:30Z",
+      "files_scanned": 5,
+      "syntax_errors": 0,
+      "stargazers_count": 197,
+      "findings": [],
+      "domains": [
+        "anniversaries"
+      ]
+    },
+    "pipeless-ai/home-assistant-custom-component": {
+      "domain": "pipeless",
+      "version": "1.0.1",
+      "ref": "refs/tags/1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:30Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "pipeless"
+      ]
+    },
+    "pippyn/Home-Assistant-Sensor-Afvalbeheer": {
+      "domain": "afvalbeheer",
+      "version": "v6.5.19",
+      "ref": "refs/tags/v6.5.19",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:30Z",
+      "files_scanned": 33,
+      "syntax_errors": 0,
+      "stargazers_count": 372,
+      "findings": [],
+      "domains": [
+        "afvalbeheer"
+      ]
+    },
+    "pjordanandrsn/ha-generac": {
+      "domain": "generac",
+      "version": "v0.5.4",
+      "ref": "refs/tags/v0.5.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:31Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "generac"
+      ]
+    },
+    "pkarimov/jukeaudio_ha": {
+      "domain": "jukeaudio_ha",
+      "version": "v0.0.12",
+      "ref": "refs/tags/v0.0.12",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:32Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 13,
+      "findings": [],
+      "domains": [
+        "jukeaudio_ha"
+      ]
+    },
+    "plamish/xcomfort": {
+      "domain": "xcomfort",
+      "version": "1.3.7",
+      "ref": "refs/tags/1.3.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:32Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 26,
+      "findings": [],
+      "domains": [
+        "xcomfort"
+      ]
+    },
+    "plantlab-ai/home-assistant-plantlab": {
+      "domain": "plantlab",
+      "version": "v0.8.0",
+      "ref": "refs/tags/v0.8.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:32Z",
+      "files_scanned": 7,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "plantlab"
+      ]
+    },
+    "plmilord/Hass.io-custom-component-ikamand": {
+      "domain": "ikamand",
+      "version": "v2.2",
+      "ref": "refs/tags/v2.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:33Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 21,
+      "findings": [],
+      "domains": [
+        "ikamand"
+      ]
+    },
+    "plmilord/Hass.io-custom-component-spaclient": {
+      "domain": "spaclient",
+      "version": "v3.3",
+      "ref": "refs/tags/v3.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:33Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 49,
+      "findings": [],
+      "domains": [
+        "spaclient"
+      ]
+    },
+    "plmilord/Hass.io-custom-component-superior-propane": {
+      "domain": "superior_propane",
+      "version": "v2.0",
+      "ref": "refs/tags/v2.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:34Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 2,
+      "findings": [],
+      "domains": [
+        "superior_propane"
+      ]
+    },
+    "pmq/stiebel-eltron-http": {
+      "domain": "stiebel_eltron_http",
+      "version": "v1.6.0",
+      "ref": "refs/tags/v1.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:34Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "stiebel_eltron_http"
+      ]
+    },
+    "poldim/EG4-Inverter-Modbus": {
+      "domain": "eg4_inverter_modbus",
+      "version": "v0.0.5",
+      "ref": "refs/tags/v0.0.5",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:35Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "eg4_inverter_modbus"
+      ]
+    },
+    "popeen/Home-Assistant-Custom-Component-Brandrisk-Eldningsforbud": {
+      "domain": "brandriskute",
+      "version": "24.04.1",
+      "ref": "refs/tags/24.04.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:36Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "brandriskute"
+      ]
+    },
+    "popeen/Home-Assistant-Custom-Component-Hemglass": {
+      "domain": "hemglass",
+      "version": "26.05.26",
+      "ref": "refs/tags/26.05.26",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:36Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "hemglass"
+      ]
+    },
+    "popeen/Home-Assistant-Custom-Component-Luncha-I-Mjardevi": {
+      "domain": "lunchaimjardevi",
+      "version": "2023.09.2",
+      "ref": "refs/tags/2023.09.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:37Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "lunchaimjardevi"
+      ]
+    },
+    "popeen/Home-Assistant-Custom-Component-MotalaVattenAvfall": {
+      "domain": "motalavattenavfall",
+      "version": "0.1.4",
+      "ref": "refs/tags/0.1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:37Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [],
+      "domains": [
+        "motalavattenavfall"
+      ]
+    },
+    "popeen/Home-Assistant-Custom-Component-TCL-Remote": {
+      "domain": "tcl_tv_remote",
+      "version": "0.1.3",
+      "ref": "refs/tags/0.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:37Z",
+      "files_scanned": 2,
+      "syntax_errors": 0,
+      "stargazers_count": 26,
+      "findings": [],
+      "domains": [
+        "tcl_tv_remote"
+      ]
+    },
+    "popeen/Home-Assistant-Custom-Component-Temperatur-Nu": {
+      "domain": "temperatur_nu",
+      "version": "2024.04.1",
+      "ref": "refs/tags/2024.04.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:37Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [],
+      "domains": [
+        "temperatur_nu"
+      ]
+    },
+    "porech/samsung_ac_dplug": {
+      "domain": "samsung_ac_dplug",
+      "version": "v1.1.3",
+      "ref": "refs/tags/v1.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:38Z",
+      "files_scanned": 13,
+      "syntax_errors": 0,
+      "stargazers_count": 5,
+      "findings": [],
+      "domains": [
+        "samsung_ac_dplug"
+      ]
+    },
+    "portbusy/ha-input-boolean-group": {
+      "domain": "input_boolean_group",
+      "version": "v1.0.1",
+      "ref": "refs/tags/v1.0.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:38Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 1,
+      "findings": [],
+      "domains": [
+        "input_boolean_group"
+      ]
+    },
+    "portbusy/smart-presence-notify": {
+      "domain": "smart_presence_notify",
+      "version": "v0.4.0",
+      "ref": "refs/tags/v0.4.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:39Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 0,
+      "findings": [],
+      "domains": [
+        "smart_presence_notify"
+      ]
+    },
+    "pos-ei-don/ha-recorder-throttle": {
+      "domain": "recorder_throttle",
+      "version": "v1.0",
+      "ref": "refs/tags/v1.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:39Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 4,
+      "findings": [],
+      "domains": [
+        "recorder_throttle"
+      ]
+    },
+    "postlund/dlink_hnap": {
+      "domain": "dlink_hnap",
+      "version": "",
+      "ref": "refs/heads/master",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:40Z",
+      "files_scanned": 3,
+      "syntax_errors": 0,
+      "stargazers_count": 43,
+      "findings": [],
+      "domains": [
+        "dlink_hnap"
+      ]
+    },
+    "ppaglier/voltalis-homeassistant": {
+      "domain": "voltalis",
+      "version": "0.6.6",
+      "ref": "refs/tags/0.6.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:40Z",
+      "files_scanned": 165,
+      "syntax_errors": 0,
+      "stargazers_count": 22,
+      "findings": [],
+      "domains": [
+        "voltalis"
+      ]
+    },
+    "prairiesnpr/hass-tdameritrade": {
+      "domain": "tdameritrade",
+      "version": "v0.4",
+      "ref": "refs/tags/v0.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:42Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "tdameritrade"
+      ]
+    },
+    "pranjal-joshi/moodlights": {
+      "domain": "moodlights",
+      "version": "v1.1.8",
+      "ref": "refs/tags/v1.1.8",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:42Z",
+      "files_scanned": 10,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "moodlights"
+      ]
+    },
+    "prestomation/resmed_myair_sensors": {
+      "domain": "resmed_myair",
+      "version": "v0.2.7",
+      "ref": "refs/tags/v0.2.7",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:43Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 194,
+      "findings": [],
+      "domains": [
+        "resmed_myair"
+      ]
+    },
+    "prezervos/goodwe-wallbox-sems-home-assistant": {
+      "domain": "sems_wallbox",
+      "version": "2.0.0",
+      "ref": "refs/tags/2.0.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:43Z",
+      "files_scanned": 12,
+      "syntax_errors": 0,
+      "stargazers_count": 10,
+      "findings": [],
+      "domains": [
+        "sems_wallbox"
+      ]
+    },
+    "princekama/home-assistant-rako": {
+      "domain": "rako",
+      "version": "v0.0.12",
+      "ref": "refs/tags/v0.0.12",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:44Z",
+      "files_scanned": 8,
+      "syntax_errors": 0,
+      "stargazers_count": 6,
+      "findings": [],
+      "domains": [
+        "rako"
+      ]
+    },
+    "ptimatth/GeorideHA": {
+      "domain": "georide",
+      "version": "1.1.1",
+      "ref": "refs/tags/1.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:44Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 25,
+      "findings": [],
+      "domains": [
+        "georide"
+      ]
+    },
+    "ptrkoz/ha-smogtok": {
+      "domain": "smogtok",
+      "version": "v1.1.1",
+      "ref": "refs/tags/v1.1.1",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:45Z",
+      "files_scanned": 9,
+      "syntax_errors": 0,
+      "stargazers_count": 7,
+      "findings": [],
+      "domains": [
+        "smogtok"
+      ]
+    },
+    "puyanlin/Taiwan-CWA-Weather": {
+      "domain": "taiwan_cwa",
+      "version": "v1.1.4",
+      "ref": "refs/tags/v1.1.4",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:45Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 8,
+      "findings": [],
+      "domains": [
+        "taiwan_cwa"
+      ]
+    },
+    "pveiga90/What-s-up-Docker-Updates-Monitor": {
+      "domain": "wud_getupdates",
+      "version": "v0.6",
+      "ref": "refs/tags/v0.6",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:46Z",
+      "files_scanned": 4,
+      "syntax_errors": 0,
+      "stargazers_count": 9,
+      "findings": [],
+      "domains": [
+        "wud_getupdates"
+      ]
+    },
+    "pvyleta/xcc-integration": {
+      "domain": "xcc",
+      "version": "v1.15.17",
+      "ref": "refs/tags/v1.15.17",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:46Z",
+      "files_scanned": 15,
+      "syntax_errors": 0,
+      "stargazers_count": 3,
+      "findings": [
+        {
+          "rule_id": "device-info-via-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/xcc/entity.py",
+          "line": 111,
+          "confidence": "high"
+        }
+      ],
+      "domains": [
+        "xcc"
+      ]
+    },
+    "py-smart-gardena/hass-gardena-smart-system": {
+      "domain": "gardena_smart_system",
+      "version": "3.1.3",
+      "ref": "refs/tags/3.1.3",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:47Z",
+      "files_scanned": 27,
+      "syntax_errors": 0,
+      "stargazers_count": 316,
+      "findings": [],
+      "domains": [
+        "gardena_smart_system"
+      ]
+    },
+    "pyalarmdotcom/alarmdotcom": {
+      "domain": "alarmdotcom",
+      "version": "v3.0.15",
+      "ref": "refs/tags/v3.0.15",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:48Z",
+      "files_scanned": 16,
+      "syntax_errors": 0,
+      "stargazers_count": 165,
+      "findings": [],
+      "domains": [
+        "alarmdotcom"
+      ]
+    },
+    "pypolestar/polestar_api": {
+      "domain": "polestar_api",
+      "version": "1.24.2",
+      "ref": "refs/tags/1.24.2",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:49Z",
+      "files_scanned": 11,
+      "syntax_errors": 0,
+      "stargazers_count": 263,
+      "findings": [],
+      "domains": [
+        "polestar_api"
+      ]
+    },
+    "pyrech/homewizard_cloud_watermeter": {
+      "domain": "homewizard_cloud_watermeter",
+      "version": "0.6.0",
+      "ref": "refs/tags/0.6.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:49Z",
+      "files_scanned": 6,
+      "syntax_errors": 0,
+      "stargazers_count": 20,
+      "findings": [
+        {
+          "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/homewizard_cloud_watermeter/coordinator.py",
+          "line": 199,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
+          "breaks_in": "2026.11",
+          "file": "custom_components/homewizard_cloud_watermeter/coordinator.py",
+          "line": 266,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "homewizard_cloud_watermeter"
+      ]
+    },
+    "pytoyoda/ha_toyota": {
+      "domain": "toyota",
+      "version": "v2.5.0",
+      "ref": "refs/tags/v2.5.0",
+      "status": "scanned",
+      "scanned_utc": "2026-08-11T03:57:49Z",
+      "files_scanned": 14,
+      "syntax_errors": 0,
+      "stargazers_count": 145,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/toyota/button.py",
+          "line": 87,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/toyota/button.py",
+          "line": 114,
+          "confidence": "medium"
+        }
+      ],
+      "domains": [
+        "toyota"
+      ]
     }
   },
-  "updated_utc": "2026-08-10T04:00:42Z",
+  "updated_utc": "2026-08-11T03:57:50Z",
   "rules_hash": "8d24ed9c65cd0ac6",
   "core_version": "2026.9"
 }
