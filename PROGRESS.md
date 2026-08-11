@@ -48,6 +48,7 @@ integrations the daily crawl had not reached got no verdict beyond
 | `Validate` workflow | ✅ green on the release commit — hassfest, index schema, HACS validation, pytest 3.12/3.13/3.14 |
 | Tag | ✅ `v1.1.0` (annotated), pushed |
 | Release | ✅ <https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.1.0> — created **after** the green run (the ordering hacs/default's PR template checks), with real notes from the CHANGELOG |
+| Announcement | ✅ r/homeassistant, flair "Show & Tell": <https://www.reddit.com/r/homeassistant/comments/1vlijul/508_of_the_2500_hacs_integrations_scanned_so_far/> — verified publicly visible (`removed_by_category: null`) with markdown rendering intact; leads with the board link per the README's distribution plan |
 
 ### Remaining (not blocking, not mine to do)
 
