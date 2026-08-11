@@ -40,9 +40,17 @@ integrations the daily crawl had not reached got no verdict beyond
   rules fingerprint incl. ENGINE_VERSION and current HA version, caps).
 * The vendor-marker directories the crawler skips are skipped locally too.
 
-### Remaining (not blocking)
+### Shipped (2026-08-11)
 
-* Owner: push, tag v1.1.0, cut the GitHub release (from the phone).
+| Step | Status |
+|---|---|
+| Push | ✅ `6af6142` on `main`, rebased onto three daily-crawl commits (index now 2 500 scanned, 508 affected) |
+| `Validate` workflow | ✅ green on the release commit — hassfest, index schema, HACS validation, pytest 3.12/3.13/3.14 |
+| Tag | ✅ `v1.1.0` (annotated), pushed |
+| Release | ✅ <https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.1.0> — created **after** the green run (the ordering hacs/default's PR template checks), with real notes from the CHANGELOG |
+
+### Remaining (not blocking, not mine to do)
+
 * hacs/default#9839 still awaits maintainer review — unchanged by this release.
 
 ## Where things stand
