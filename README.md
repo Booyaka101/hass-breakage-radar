@@ -433,6 +433,8 @@ The Home Assistant integration needs none. For the crawler:
 | Skip the blog crawl | `tools/blog_rules.py --no-network` | off |
 | Force the catalogue fallback | `tools/catalog.py --force-fallback` | off |
 | Working directory | `BREAKAGE_RADAR_ROOT` env var | the repo checkout |
+| Check one local checkout | `tools/check_local.py <path>` | `.` |
+| Check offline | `tools/check_local.py <path> --rules data/rules.json` | fetches the index |
 
 Index URL and poll interval live in `custom_components/breakage_radar/const.py`
 (`INDEX_URL`, `UPDATE_INTERVAL`) if you want to point the integration at your own crawl.
@@ -524,6 +526,25 @@ source, so there is time to act.
 Every release is documented in [CHANGELOG.md](CHANGELOG.md), including what each fix
 actually changed about the verdict you see. Releases are tagged on
 [GitHub](https://github.com/Booyaka101/hass-breakage-radar/releases).
+
+---
+
+## Are you the author of a flagged integration?
+
+Read **[docs/for-integration-authors.md](docs/for-integration-authors.md)** — what a
+listing claims (and what it does not), how to check your own checkout before you
+release, how a listing clears itself once you ship a fix, and how to report a finding
+you think is wrong.
+
+The self-check runs against any checkout, including forks and private integrations the
+daily crawl can never see:
+
+```bash
+python tools/check_local.py /path/to/your-integration
+```
+
+It exits `0` clean, `1` with findings, `2` if it could not check — so it works as a
+release gate in your own CI.
 
 ---
 

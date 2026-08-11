@@ -44,6 +44,7 @@ Issues = "https://github.com/Booyaka101/hass-breakage-radar/issues"
 breakage-radar-extract-rules = "tools.extract_rules:main"
 breakage-radar-catalog = "tools.catalog:main"
 breakage-radar-scan = "tools.scan:main"
+breakage-radar-check = "tools.check_local:main"
 breakage-radar-build-index = "tools.build_index:main"
 
 [tool.setuptools]

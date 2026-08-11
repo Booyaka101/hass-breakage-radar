@@ -4,6 +4,25 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+Repository and documentation only — the Home Assistant integration is unchanged
+from 1.1.1, so there is deliberately no new version to install.
+
+* **`tools/check_local.py`** — a self-check for integration authors. Runs the
+  published index's matchers over any checkout on disk, including forks and
+  private integrations the HACS-catalogue crawl can never reach. Exits `0`
+  clean, `1` with findings, `2` when it could not check (missing
+  `custom_components/`, unreachable index, or no rules left), so it works as a
+  release gate in an author's own CI. Also available as `breakage-radar-check`.
+* **`docs/for-integration-authors.md`** — what a listing claims and what it does
+  not, how to self-check before releasing, how a listing clears itself after a
+  fix (cut a tag; the crawler follows releases, not the default branch), and how
+  to report a false positive.
+* README: dropped the internal distribution plan, refreshed the headline
+  coverage figures from the live index, and linked the changelog and
+  Discussions.
+
 ## 1.1.1 — 2026-08-11
 
 Correctness fixes for defects found auditing 1.1.0 the day it shipped. Three of
