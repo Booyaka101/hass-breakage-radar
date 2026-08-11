@@ -3,6 +3,40 @@
 Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
 kept as history.
 
+## v1.2.0 — urgency levels, self-scanning, module split (2026-08-11)
+
+Driven by two pieces of real user feedback on the r/homeassistant thread.
+
+**Levels.** A deadline a year out and one three weeks out were presented
+identically. Now `broken_now` / `imminent` / `upcoming`, where urgency decides
+presentation: an ERROR card each for broken, a WARNING card each for imminent,
+one grouped summary for the rest. The 30-day window comes from HA's monthly
+cadence (ships in the first week; the estimate uses the 1st, so it is up to six
+days early and never late). **`broken_now` is decided by version comparison
+alone**, never the date estimate, so that half stays exact.
+
+**We no longer exempt ourselves.** The local scan skipped `breakage_radar`
+while `tools/check_local.py` never did — the two disagreed, and a tool that
+exempts itself from its own check is a check nobody tests. Now scanned and
+reported like anything else, with `test_our_own_shipped_component_is_clean`
+running the shipped rules over the shipped component so CI fails if we ever use
+a doomed API.
+
+**`report.py` split** (509 lines, four responsibilities) into `discovery.py` /
+`scanner.py` / `report.py`. No behaviour change, no compatibility aliases.
+
+VERIFIED (2026-08-11): pytest **146 passed, 3 skipped** on 3.11 and 3.12
+(was 123); all nine check-runs green on `9800d8b`; released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.2.0>.
+Levels verified end to end against the live index across four simulated dates
+(263 days out → upcoming; 21 days → imminent; after upgrading to 2027.5 →
+broken_now), with `breakage_radar` itself appearing in `clean_domains`.
+
+Open question left for the owner: whether to extract the vendored 556-line
+`rules_engine.py` to a PyPI package (the idiomatic HA pattern — integration as
+a thin wrapper over a library) or keep vendoring it with the byte-identity test.
+Kept vendored for now; `"requirements": []` is a real benefit.
+
 ## v1.1.1 — correctness fixes for 1.1.0, found by auditing it (2026-08-11)
 
 Four defects, three of them "user is told everything is fine when it is not":
