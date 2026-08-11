@@ -104,6 +104,7 @@ def test_worked_example_report(sample_index):
             "line": 12,
             "confidence": "high",
             "source": "index",
+            "when": "upcoming",
             "repository": "example/fixture-tracker",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",
@@ -239,6 +240,71 @@ def test_repairs_issue_is_raised_and_cleared(sample_index):
 
     async_sync_issue(None, build_report(sample_index, {}))
     assert (DOMAIN, ISSUE_ID) not in ir.created
+
+
+def test_broken_now_gets_its_own_error_issue_and_clears_on_recovery(sample_index):
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar.const import DOMAIN, ISSUE_ID
+    from custom_components.breakage_radar.repairs import async_sync_issue
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own test harness")
+
+    ir.created.clear()
+    # Running the release that removed the API: the finding is broken_now.
+    report = build_report(
+        sample_index, {"fixture_tracker": "0.1.0"}, current_version="2027.5"
+    )
+    assert report["broken_now"] == {"fixture_tracker": "2027.5"}
+    async_sync_issue(None, report)
+
+    broken_key = (DOMAIN, "broken_now_fixture_tracker")
+    assert broken_key in ir.created
+    assert ir.created[broken_key]["severity"] == ir.IssueSeverity.ERROR
+    assert ir.created[broken_key]["translation_placeholders"] == {
+        "domain": "fixture_tracker",
+        "release": "2027.5",
+    }
+    # The aggregate escalates too while something is broken right now.
+    assert ir.created[(DOMAIN, ISSUE_ID)]["severity"] == ir.IssueSeverity.ERROR
+
+    # The integration ships a fix (its findings disappear): both issues clear.
+    fixed = json.loads(json.dumps(sample_index))
+    fixed["integrations"] = []
+    fixed["clean_domains"] = ["fixture_tracker"]
+    async_sync_issue(
+        None, build_report(fixed, {"fixture_tracker": "0.2.0"}, current_version="2027.5")
+    )
+    assert broken_key not in ir.created
+    assert (DOMAIN, ISSUE_ID) not in ir.created
+
+
+def test_broken_now_issue_for_an_uninstalled_component_is_swept(sample_index):
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar.repairs import async_sync_issue
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own test harness")
+
+    ir.created.clear()
+    report = build_report(
+        sample_index, {"fixture_tracker": "0.1.0"}, current_version="2027.5"
+    )
+    async_sync_issue(None, report)
+    assert (
+        "breakage_radar",
+        "broken_now_fixture_tracker",
+    ) in ir.created
+
+    # The user uninstalls it: the domain vanishes from the report entirely,
+    # so only the registry sweep can find the stale issue.
+    async_sync_issue(None, build_report(sample_index, {}, current_version="2027.5"))
+    assert (
+        "breakage_radar",
+        "broken_now_fixture_tracker",
+    ) not in ir.created
 
 
 # --------------------------------------------------------------------------- #

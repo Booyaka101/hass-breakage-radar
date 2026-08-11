@@ -98,34 +98,37 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self._index = index
 
         components_dir = self.hass.config.path("custom_components")
+        current_version = getattr(ha_const, "__version__", "") or index.get(
+            "core_version", ""
+        )
         installed = await self.hass.async_add_executor_job(
             discover_installed, components_dir
         )
         local_scan = await self.hass.async_add_executor_job(
-            self._scan_local, components_dir, index
+            self._scan_local, components_dir, index, current_version
         )
-        report = build_report(index, installed, local_scan)
+        report = build_report(
+            index, installed, local_scan, current_version=current_version
+        )
         _LOGGER.debug(
-            "Breakage Radar: %d of %d custom integrations affected "
+            "Breakage Radar: %d of %d custom integrations affected, %d broken now "
             "(%d file(s) scanned locally, %d cached)",
             report["affected_count"],
             report["installed_count"],
+            report["broken_now_count"],
             report["files_scanned"],
             (local_scan or {}).get("cached_domains", 0),
         )
         return report
 
     def _scan_local(
-        self, components_dir: str, index: dict[str, Any]
+        self, components_dir: str, index: dict[str, Any], current_version: str
     ) -> dict[str, Any] | None:
         """Run the local source scan. Blocking -- called from the executor.
 
         The scan itself swallows per-file problems; anything unexpected beyond
         that degrades to index-only matching rather than losing the report.
         """
-        current_version = getattr(ha_const, "__version__", "") or index.get(
-            "core_version", ""
-        )
         try:
             return scan_installed(
                 components_dir,

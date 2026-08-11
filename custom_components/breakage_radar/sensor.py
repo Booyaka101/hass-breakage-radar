@@ -70,6 +70,8 @@ class BreakageRadarSensor(CoordinatorEntity[BreakageRadarCoordinator], SensorEnt
             ATTR_DETAILS: data.get("details", []),
             ATTR_INDEX_GENERATED: data.get("index_generated_utc", ""),
             "affected_domains": data.get("affected_domains", []),
+            "broken_now": data.get("broken_now", {}),
+            "broken_now_count": data.get("broken_now_count", 0),
             "total_findings": data.get("total_findings", 0),
             "details_truncated": data.get("details_truncated", False),
             "installed_count": data.get("installed_count", 0),

@@ -4,6 +4,40 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.1.1 — 2026-08-11
+
+Correctness fixes for defects found auditing 1.1.0 the day it shipped. Three of
+the four meant a user could be told everything is fine when it is not.
+
+* **A passed deadline no longer makes a finding disappear.** 1.1.0 reused the
+  crawler's future-releases-only rule filter on the consumer side, so upgrading
+  Home Assistant *onto* the release that removes an API flipped the affected
+  integration to `clean` — a false all-clear at the exact moment the warning
+  came true. The local scan now applies every matchable rule regardless of
+  tense, and each finding is classified `upcoming` or `broken_now` (new `when`
+  key on details, new `broken_now` / `broken_now_count` sensor attributes)
+  against the running Home Assistant version.
+* **Broken-now integrations get individually actionable Repairs issues.** One
+  ERROR-severity issue per integration whose removal release has arrived —
+  unlike the year-ahead aggregate these are actionable today, which is the bar
+  Repairs sets. The aggregate escalates to ERROR alongside them and each issue
+  clears when the integration recovers or is uninstalled.
+* **A forked or renamed integration keeps its local verdict.** The scan keyed
+  results by directory name while the merge looked up the manifest domain, so
+  the exact case 1.1.0 was built for — a fork — had its local findings silently
+  dropped into `not_in_index`. Results are now keyed by the manifest-declared
+  domain; finding paths still show the real on-disk directory.
+* **A degraded index can no longer launder every domain clean.** A scan armed
+  with zero matchable rules proves nothing: such domains now stay `unknown`
+  with a reason, and a local `clean` reached with no rules in play never
+  overrides an index finding.
+* **Symlinked integration directories are scanned.** The dev-checkout pattern
+  (`custom_components/x` → elsewhere) was counted as installed but silently
+  skipped by the scan. The top-level directory now follows the link; symlinked
+  *subdirectories* are still never descended into.
+* Release ordering inside a report now compares versions numerically, so
+  `2027.10` sorts after `2027.5` in `by_release` and `earliest_release`.
+
 ## 1.1.0 — 2026-08-11
 
 ### The integration now scans your own code

@@ -109,6 +109,7 @@ def test_true_positive_not_in_index_gets_a_local_finding(
             "line": 12,
             "confidence": "high",
             "source": "local",
+            "when": "upcoming",
             "repository": "",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",
@@ -367,6 +368,161 @@ def test_sensor_exposes_the_scan_counters(
     assert attributes["unparsed_files"] == 0
     assert attributes["skipped_files"] == 0
     assert attributes["not_in_index_reasons"] == {}
+
+
+# --------------------------------------------------------------------------- #
+# v1.1.1 regressions: a passed deadline must get MORE visible, never less
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.parametrize(
+    "running,expected_when",
+    [("2026.9", "upcoming"), ("2027.4", "upcoming"), ("2027.5", "broken_now"),
+     ("2027.9", "broken_now")],
+)
+def test_passed_deadlines_stay_visible_and_escalate(
+    tmp_path, fixtures_dir, sample_index, running, expected_when
+):
+    """v1.1.0 dropped past-deadline rules from the local scan, so upgrading
+    *onto* the breaking release flipped an affected domain to clean."""
+    components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
+    local = _scan(components, sample_index)
+    report = build_report(
+        sample_index,
+        {"fixture_tracker": "0.1.0"},
+        local,
+        current_version=running,
+    )
+
+    assert report["affected_domains"] == ["fixture_tracker"]
+    assert report["clean_domains"] == []
+    assert report["details"][0]["when"] == expected_when
+    if expected_when == "broken_now":
+        assert report["broken_now"] == {"fixture_tracker": "2027.5"}
+        assert report["broken_now_count"] == 1
+    else:
+        assert report["broken_now"] == {}
+
+
+def test_without_a_version_everything_is_conservatively_upcoming(sample_index):
+    report = build_report(sample_index, {"fixture_tracker": "0.1.0"})
+    assert report["details"][0]["when"] == "upcoming"
+    assert report["broken_now"] == {}
+
+
+# --------------------------------------------------------------------------- #
+# v1.1.1 regressions: a fork keeps its verdict whatever the directory is named
+# --------------------------------------------------------------------------- #
+
+
+def test_renamed_directory_is_keyed_by_its_manifest_domain(
+    tmp_path, fixtures_dir, index_without_fixture_tracker
+):
+    """v1.1.0 keyed the scan by directory name but the merge looked up the
+    manifest domain, so a fork's local finding was silently dropped."""
+    components = tmp_path / "custom_components"
+    source = (
+        fixtures_dir / "true_positive" / "custom_components" / "fixture_tracker"
+    )
+    shutil.copytree(source, components / "my_fork_of_tracker")
+    (components / "my_fork_of_tracker" / "manifest.json").write_text(
+        json.dumps({"domain": "fixture_tracker", "version": "9.9"}),
+        encoding="utf-8",
+    )
+
+    installed = {"fixture_tracker": "9.9"}
+    local = _scan(components, index_without_fixture_tracker)
+    report = build_report(index_without_fixture_tracker, installed, local)
+
+    assert list(local["domains"]) == ["fixture_tracker"]
+    assert report["affected_domains"] == ["fixture_tracker"]
+    assert report["not_in_index"] == []
+    # The finding path shows where the code actually lives on disk.
+    assert report["details"][0]["file"] == (
+        "custom_components/my_fork_of_tracker/device_tracker.py"
+    )
+
+
+def test_a_fork_of_breakage_radar_itself_is_still_excluded(
+    tmp_path, index_without_fixture_tracker
+):
+    fork = tmp_path / "custom_components" / "radar_fork"
+    fork.mkdir(parents=True)
+    (fork / "manifest.json").write_text(
+        json.dumps({"domain": "breakage_radar", "version": "1.0"}), encoding="utf-8"
+    )
+    (fork / "__init__.py").write_text("VALUE = 1\n", encoding="utf-8")
+    local = _scan(tmp_path / "custom_components", index_without_fixture_tracker)
+    assert local["domains"] == {}
+
+
+# --------------------------------------------------------------------------- #
+# v1.1.1 regressions: a scan with no rules proves nothing
+# --------------------------------------------------------------------------- #
+
+
+def test_an_index_with_no_matchers_cannot_launder_domains_clean(
+    tmp_path, fixtures_dir, sample_index
+):
+    """v1.1.0 let a zero-rule scan mark every domain clean, overriding real
+    index findings."""
+    for rule in sample_index["rules"]:
+        rule.pop("match", None)
+    components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
+    local = _scan(components, sample_index)
+    report = build_report(sample_index, {"fixture_tracker": "0.1.0"}, local)
+
+    assert local["rules_matchable"] == 0
+    assert local["domains"]["fixture_tracker"]["status"] == "unknown"
+    # The index finding survives, attributed to the index.
+    assert report["affected_domains"] == ["fixture_tracker"]
+    assert report["details"][0]["source"] == "index"
+    assert report["clean_domains"] == []
+
+
+def test_no_matchers_and_no_index_entry_is_unknown_with_a_reason(
+    tmp_path, fixtures_dir, index_without_fixture_tracker
+):
+    for rule in index_without_fixture_tracker["rules"]:
+        rule.pop("match", None)
+    components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
+    local = _scan(components, index_without_fixture_tracker)
+    report = build_report(
+        index_without_fixture_tracker, {"fixture_tracker": "0.1.0"}, local
+    )
+
+    assert report["not_in_index"] == ["fixture_tracker"]
+    assert "no matchable rules" in report["not_in_index_reasons"]["fixture_tracker"]
+
+
+# --------------------------------------------------------------------------- #
+# v1.1.1 regressions: a symlinked component directory is scanned
+# --------------------------------------------------------------------------- #
+
+
+def test_symlinked_component_directory_is_scanned(
+    tmp_path, fixtures_dir, index_without_fixture_tracker
+):
+    """v1.1.0 skipped symlinked component directories (the dev-checkout
+    pattern) while discover_installed counted them as installed."""
+    components = tmp_path / "custom_components"
+    components.mkdir()
+    real = tmp_path / "elsewhere" / "fixture_tracker"
+    shutil.copytree(
+        fixtures_dir / "true_positive" / "custom_components" / "fixture_tracker",
+        real,
+    )
+    try:
+        os.symlink(real, components / "fixture_tracker", target_is_directory=True)
+    except OSError:
+        pytest.skip("symlinks need privileges on this platform")
+
+    local = _scan(components, index_without_fixture_tracker)
+    report = build_report(
+        index_without_fixture_tracker, {"fixture_tracker": ""}, local
+    )
+    assert len(local["domains"]["fixture_tracker"]["findings"]) == 1
+    assert report["affected_domains"] == ["fixture_tracker"]
 
 
 # --------------------------------------------------------------------------- #

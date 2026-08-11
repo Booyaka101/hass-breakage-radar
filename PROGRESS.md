@@ -1,7 +1,41 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.1.0 build session (2026-08-11); the v1 section below
-is kept as history.
+Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
+kept as history.
+
+## v1.1.1 — correctness fixes for 1.1.0, found by auditing it (2026-08-11)
+
+Four defects, three of them "user is told everything is fine when it is not":
+
+1. **False all-clear on upgrade** — the consumer reused the crawler's
+   future-only rule filter, so upgrading onto the breaking release flipped an
+   affected domain to `clean`. Now every matchable rule applies regardless of
+   tense and findings are classified `upcoming` / `broken_now` (new `when`
+   detail key, `broken_now` sensor attribute, per-integration ERROR Repairs
+   issues + aggregate escalation).
+2. **Forks lost their verdict** — scan keyed by directory name, merge looked up
+   manifest domain; the fork case 1.1.0 was built for silently dropped its
+   findings. Now keyed by manifest domain (paths still show the real directory).
+3. **Zero-matcher index laundered everything clean** — a scan with no rules now
+   yields `unknown` with a reason and never overrides an index finding.
+4. **Symlinked component directories skipped** — discover counted them
+   installed, scan skipped them. Top-level links are followed now; symlinked
+   subdirectories still are not. (Fix verified by test on Linux CI; Windows
+   here cannot create POSIX symlinks without privileges.)
+
+Also: release comparisons in `by_release` / `earliest_release` are numeric now
+(`2027.10` no longer sorts before `2027.5`).
+
+VERIFIED (2026-08-11): `python -m pytest` **113 passed, 3 skipped** (was 102/2;
++11 regression tests; skips = 2 opt-in network + symlink-on-Windows); the three
+defect-demonstration scripts in `.cache/` all flip to ok; live-index validation
+still **15/15 line-for-line** under Python 3.14; E2E vs the live index
+unchanged (state 2, 3 local details, lookalike clean).
+
+Origin note: defect 1 was found while evaluating a user feature request
+(WannaBMonkey on the announcement thread asking for per-integration Repairs
+issues) — the tiered `broken_now` issues are also the honest answer to that
+request, without shipping 8 unfixable year-ahead cards.
 
 ## v1.1.0 — the integration now scans the user's own code (2026-08-11)
 

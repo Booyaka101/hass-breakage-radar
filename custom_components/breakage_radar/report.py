@@ -17,9 +17,10 @@ from .const import MAX_DETAILS, SUPPORTED_SCHEMA
 from .rules_engine import (
     ENGINE_VERSION,
     ScanStats,
+    is_future,
     load_rules,
     match_source,
-    matchable_rules,
+    parse_version,
 )
 
 #: Never treat these as installed custom integrations.
@@ -73,6 +74,24 @@ def discover_installed(custom_components_dir: str) -> dict[str, str]:
     return installed
 
 
+def _manifest_domain(directory: str, fallback: str) -> str:
+    """The domain a component directory *declares*, falling back to its name.
+
+    This is the same resolution :func:`discover_installed` uses, and it is what
+    keeps a forked or renamed checkout matched up: the scan, the discovery and
+    the index lookup must all speak the same key or a finding gets dropped
+    between them.
+    """
+    try:
+        with open(os.path.join(directory, "manifest.json"), encoding="utf-8") as handle:
+            manifest = json.load(handle)
+        if isinstance(manifest, dict) and manifest.get("domain"):
+            return str(manifest["domain"])
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        pass
+    return fallback
+
+
 def _rules_fingerprint(rules_payload: list[dict[str, Any]], current_version: str) -> str:
     """A stable hash of everything that can change a scan's outcome.
 
@@ -123,7 +142,7 @@ def _domain_python_files(domain_dir: str) -> tuple[list[tuple[str, str]], int]:
 
 
 def _scan_domain(
-    domain: str,
+    directory_name: str,
     files: list[tuple[str, str]],
     unreadable_dirs: int,
     rules: list[Any],
@@ -131,7 +150,12 @@ def _scan_domain(
     max_files: int,
     max_bytes: int,
 ) -> dict[str, Any]:
-    """Run the matchers over one installed domain. Never raises."""
+    """Run the matchers over one installed component directory. Never raises.
+
+    ``directory_name`` is the on-disk name, which is what finding paths show;
+    the caller keys the result by the manifest-declared domain, which can
+    differ in a forked checkout.
+    """
     stats = ScanStats()
     findings: list[dict[str, Any]] = []
     unreadable_files = 0
@@ -141,7 +165,7 @@ def _scan_domain(
         if position >= max_files:
             skipped_files += len(files) - position
             break
-        scan_path = f"custom_components/{domain}/{relative}"
+        scan_path = f"custom_components/{directory_name}/{relative}"
         try:
             if os.path.getsize(absolute) > max_bytes:
                 skipped_files += 1
@@ -159,6 +183,11 @@ def _scan_domain(
     reason = ""
     if findings:
         status = "affected"
+    elif not rules:
+        # A scan with nothing to look for has proven nothing. Never let a
+        # degraded index launder every installation as clean.
+        status = "unknown"
+        reason = "the index shipped no matchable rules"
     elif unreadable_dirs:
         status = "unknown"
         reason = "directory could not be fully read"
@@ -205,6 +234,16 @@ def scan_installed(
     matchers run over the exact installed bytes, so there is no
     scanned-version/installed-version skew either.
 
+    Every matchable rule is applied regardless of tense: a rule whose deadline
+    has already passed is the *most* urgent thing to report, so it is never
+    filtered out here -- :func:`build_report` classifies each finding as
+    ``upcoming`` or ``broken_now`` against the running version instead.
+    Results are keyed by the domain each component's manifest declares (the
+    same key :func:`discover_installed` uses), so a forked or renamed checkout
+    still matches up. A symlinked component directory is followed at the top
+    level -- the dev-checkout pattern -- while symlinked *subdirectories* are
+    still never descended into.
+
     ``cache`` maps ``domain -> (signature, result)`` where the signature covers
     the domain's file count, newest mtime, total size and the rules fingerprint;
     a 12-hourly refresh therefore re-parses nothing that has not changed.
@@ -213,7 +252,7 @@ def scan_installed(
     ``clean``.
     """
     fingerprint = _rules_fingerprint(rules_payload, current_version)
-    rules = matchable_rules(load_rules(rules_payload), current_version=current_version)
+    rules = [rule for rule in load_rules(rules_payload) if rule.matchable]
 
     domains: dict[str, dict[str, Any]] = {}
     totals = {"files_scanned": 0, "unparsed_files": 0, "skipped_files": 0}
@@ -227,7 +266,7 @@ def scan_installed(
     for entry in entries:
         try:
             if (
-                not entry.is_dir(follow_symlinks=False)
+                not entry.is_dir()
                 or entry.name in _IGNORED_DIRECTORIES
                 or entry.name.startswith(".")
                 or entry.name == _SELF_DOMAIN
@@ -236,7 +275,9 @@ def scan_installed(
         except OSError:
             continue
 
-        domain = entry.name
+        domain = _manifest_domain(entry.path, entry.name)
+        if domain == _SELF_DOMAIN:
+            continue
         files, unreadable_dirs = _domain_python_files(entry.path)
 
         newest_mtime = 0
@@ -264,7 +305,7 @@ def scan_installed(
             cached_domains += 1
         else:
             result = _scan_domain(
-                domain,
+                entry.name,
                 files,
                 unreadable_dirs,
                 rules,
@@ -309,6 +350,8 @@ def build_report(
     index: dict[str, Any],
     installed: dict[str, str],
     local_scan: dict[str, Any] | None = None,
+    *,
+    current_version: str = "",
 ) -> dict[str, Any]:
     """Match installed custom integrations against the published index.
 
@@ -318,7 +361,14 @@ def build_report(
     parses clean becomes ``clean``, and an index finding disappears when the
     installed copy no longer contains it. Only a domain the local scan could
     not read falls back to the index, and if neither side knows it, it stays in
-    ``not_in_index`` with the local reason.
+    ``not_in_index`` with the local reason. A local ``clean`` reached with zero
+    matchable rules in play proves nothing and never overrides the index.
+
+    ``current_version`` is the Home Assistant release this system runs. Each
+    finding is classified against it: ``upcoming`` while the deadline is still
+    ahead, ``broken_now`` once it has arrived -- passing a deadline makes a
+    finding *more* urgent, never invisible. Without a version every finding is
+    conservatively ``upcoming``.
 
     Returns a plain dict ready to become the sensor's state and attributes.
     Unknown or malformed index payloads degrade to an empty report rather than
@@ -332,6 +382,7 @@ def build_report(
     affected_by_domain = _index_by_domain(index)
     clean_domains = set(index.get("clean_domains") or [])
     scanned_locally = (local_scan or {}).get("domains", {})
+    rules_in_play = (local_scan or {}).get("rules_matchable", 0)
 
     by_release: dict[str, list[str]] = {}
     details: list[dict[str, Any]] = []
@@ -339,6 +390,12 @@ def build_report(
     clean: list[str] = []
     unknown: list[str] = []
     unknown_reasons: dict[str, str] = {}
+    broken_now: dict[str, str] = {}
+
+    def _when(release: str) -> str:
+        if not current_version or not release:
+            return "upcoming"
+        return "upcoming" if is_future(release, current_version) else "broken_now"
 
     def _add_details(
         domain: str,
@@ -352,6 +409,11 @@ def build_report(
             bucket = by_release.setdefault(release, [])
             if domain not in bucket:
                 bucket.append(domain)
+            when = _when(release)
+            if when == "broken_now" and release:
+                previous = broken_now.get(domain)
+                if previous is None or parse_version(release) < parse_version(previous):
+                    broken_now[domain] = release
             rule = rules.get(finding.get("rule_id"), {})
             details.append(
                 {
@@ -362,6 +424,7 @@ def build_report(
                     "line": finding.get("line", 0),
                     "confidence": finding.get("confidence", ""),
                     "source": source,
+                    "when": when,
                     "repository": (entry or {}).get("full_name", ""),
                     # A local finding was matched against the installed bytes
                     # themselves, so the scanned version *is* the installed one.
@@ -387,7 +450,7 @@ def build_report(
 
         if local and local.get("status") == "affected":
             _add_details(domain, local.get("findings", []), "local", entry)
-        elif local and local.get("status") == "clean":
+        elif local and local.get("status") == "clean" and rules_in_play > 0:
             clean.append(domain)
         elif index_findings:
             _add_details(domain, index_findings, "index", entry)
@@ -406,7 +469,9 @@ def build_report(
         "affected_domains": affected,
         "by_release": {
             release: sorted(domains)
-            for release, domains in sorted(by_release.items())
+            for release, domains in sorted(
+                by_release.items(), key=lambda item: parse_version(item[0])
+            )
         },
         "details": details[:MAX_DETAILS],
         "details_truncated": truncated,
@@ -415,6 +480,8 @@ def build_report(
         "clean_domains": clean,
         "not_in_index": unknown,
         "not_in_index_reasons": unknown_reasons,
+        "broken_now": broken_now,
+        "broken_now_count": len(broken_now),
         "files_scanned": (local_scan or {}).get("files_scanned", 0),
         "unparsed_files": (local_scan or {}).get("unparsed_files", 0),
         "skipped_files": (local_scan or {}).get("skipped_files", 0),
@@ -422,7 +489,9 @@ def build_report(
         "index_generated_utc": index.get("generated_utc", ""),
         "index_core_version": index.get("core_version", ""),
         "index_schema": index.get("schema"),
-        "earliest_release": min(by_release) if by_release else None,
+        "earliest_release": (
+            min(by_release, key=parse_version) if by_release else None
+        ),
     }
 
 

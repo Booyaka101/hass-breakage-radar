@@ -102,6 +102,7 @@ attributes:
       line: 12
       confidence: high
       source: local
+      when: upcoming
       repository: someone/some-tracker
       scanned_version: "1.3.2"
       installed_version: "1.3.2"
@@ -109,6 +110,8 @@ attributes:
       learn_more: https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/
   index_generated_utc: "2026-08-11T03:57:51Z"
   affected_domains: [some_tracker, another_integration]
+  broken_now: {}
+  broken_now_count: 0
   not_in_index: [broken_thing]
   not_in_index_reasons:
     broken_thing: "1 of 3 Python file(s) could not be parsed"
@@ -127,10 +130,18 @@ as clean. The scan runs in an executor and is cached on each integration's file
 count, newest mtime, total size and the rules fingerprint, so the 12-hourly
 refresh re-parses nothing that has not changed.
 
+Every finding is also classified against the Home Assistant version you are running:
+`when: upcoming` while the deadline is ahead, `when: broken_now` once it has arrived.
+Upgrading past a deadline makes a finding *more* visible, never less — the domain
+stays affected and moves into the `broken_now` attribute.
+
 When the count is above zero a **Repairs** issue appears, naming the integrations and
 the first deadline. It is deliberately *not* fixable in place — the code lives in
 someone else's repository — but it links to the board and clears itself when the count
-returns to zero.
+returns to zero. Integrations in `broken_now` additionally get **one ERROR-severity
+Repairs issue each**: unlike the year-ahead aggregate, "this integration is failing on
+this system right now — update or replace it today" is individually actionable, and
+each issue clears the moment an updated version no longer contains the removed API.
 
 Automate on it:
 
@@ -446,6 +457,9 @@ Everything below is covered by a test.
 | An installed integration's file will not parse or decode | counted in `unparsed_files`; the domain stays unknown with a reason, never falsely clean |
 | An installed integration exceeds the local scan caps | counted in `skipped_files`; the index verdict is used if there is one |
 | The local scan itself fails unexpectedly | logged, and the report falls back to index-only matching |
+| Home Assistant is upgraded past a finding's deadline | the finding stays, reclassified `broken_now`, and Repairs escalates to ERROR |
+| The index ships no matchable rules | domains scan `unknown` with a reason — an empty rule set never reads as clean |
+| An integration directory is renamed or forked | matched by the domain its `manifest.json` declares, not the directory name |
 | Very affected system | `details` caps at 100 entries and sets `details_truncated` |
 
 ---

@@ -165,6 +165,11 @@ def _install_homeassistant_stubs() -> None:
     issue_registry.async_create_issue = async_create_issue
     issue_registry.async_delete_issue = async_delete_issue
 
+    def async_get(hass):  # noqa: D103 - mirrors ir.async_get(hass).issues
+        return types.SimpleNamespace(issues=issue_registry.created)
+
+    issue_registry.async_get = async_get
+
     try:
         import aiohttp  # noqa: F401
     except ImportError:
