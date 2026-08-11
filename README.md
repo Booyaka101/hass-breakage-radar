@@ -37,11 +37,12 @@ of **your** installed integrations are on the list and when they die.
 📊 **Board:** <https://booyaka101.github.io/hass-breakage-radar/>
 🤖 **Index:** <https://booyaka101.github.io/hass-breakage-radar/index.json> (schema 1)
 
-**In the shipped index right now:** 1 300 of the 3 088 HACS custom integrations crawled,
-**270 affected**, **659 findings**, across 5 Home Assistant releases — 4 in 2026.10,
-36 in 2026.11, 6 in 2027.5, 18 in 2027.7 and 218 in 2027.8 (counted by distinct
-integration domain; the board lists 283 repository rows). Every number comes from a
-real crawl; nothing is seeded or simulated. The daily job widens coverage on its own.
+**In the published index right now:** 2 500 of the 3 088 HACS custom integrations
+crawled (18 unreachable), **508 affected**, **1 259 findings**, across 5 Home Assistant
+releases — 7 in 2026.10, 71 in 2026.11, 9 in 2027.5, 28 in 2027.7 and 418 in 2027.8
+(counted by distinct integration domain). Every number comes from a real crawl; nothing
+is seeded or simulated. The daily job widens coverage on its own, so the index is
+usually ahead of these figures — `coverage` in `index.json` is always authoritative.
 
 ---
 
@@ -197,8 +198,9 @@ INFO breakage_radar.tools:   2027.8     async_device_info_to_link_from_entity
 INFO breakage_radar.tools:   2027.8     async_remove_stale_devices_links_keep_entity_device
 ```
 
-Real output from `tools/scan.py` and `tools/build_index.py` — this is the crawl the
-committed `docs/index.json` came from:
+Real output from `tools/scan.py` and `tools/build_index.py`. This is the v1.0.0 crawl
+slice, kept as a worked example of what a run prints — the published index has since
+been widened by the daily job, so its totals are larger (see the figures at the top):
 
 ```
 INFO breakage_radar.tools: 32 matchable rules (core 2026.9, rules_hash 0708f404a48c72d3)
@@ -517,19 +519,22 @@ source, so there is time to act.
 
 ---
 
-## Distribution — the single best first step
+## Changelog
 
-Open the PR to [`hacs/default`](https://github.com/hacs/default) adding
-`Booyaka101/hass-breakage-radar` to the `integration` list. That is the one action that
-puts this in front of every Home Assistant user who already has HACS installed, with no
-"add a custom repository" step in the way — which is exactly the audience that has custom
-integrations to worry about in the first place. Everything HACS checks for
-(`hacs.json`, `custom_components/breakage_radar/manifest.json`, the hassfest and HACS
-validation actions) is already green in CI.
+Every release is documented in [CHANGELOG.md](CHANGELOG.md), including what each fix
+actually changed about the verdict you see. Releases are tagged on
+[GitHub](https://github.com/Booyaka101/hass-breakage-radar/releases).
 
-Second best: a post in r/homeassistant linking the board rather than the repo. The board
-answers the question before anyone has to install anything, and "218 HACS integrations
-break in 2027.8" is the hook.
+---
+
+## Questions, findings and false positives
+
+* **[Discussions](https://github.com/Booyaka101/hass-breakage-radar/discussions)** —
+  questions, "is this finding right?", and anything you would rather not file as a bug.
+* **[Issues](https://github.com/Booyaka101/hass-breakage-radar/issues)** — false
+  positives and false negatives especially. A finding names the exact file and line, so
+  a report that quotes them is immediately actionable, and a wrong rule is worth fixing
+  fast: it is a tax on every user it fires on.
 
 ---
 
