@@ -15,7 +15,7 @@ from 1.1.1, so there is deliberately no new version to install.
   clean, `1` with findings, `2` when it could not check (missing
   `custom_components/`, unreachable index, or no rules left), so it works as a
   release gate in an author's own CI. Also available as `breakage-radar-check`.
-* **`docs/for-integration-authors.md`** — what a listing claims and what it does
+* **`guides/for-integration-authors.md`** — what a listing claims and what it does
   not, how to self-check before releasing, how a listing clears itself after a
   fix (cut a tag; the crawler follows releases, not the default branch), and how
   to report a false positive.

@@ -74,6 +74,27 @@ def test_manifest_json_is_unique_in_the_repository(repo_root):
     assert found == ["custom_components/breakage_radar/manifest.json"], found
 
 
+def test_pages_root_holds_only_published_artifacts(repo_root):
+    """``docs/`` is the GitHub Pages root, not a documentation folder.
+
+    Anything committed there is served publicly, so prose belongs in
+    ``guides/``. Keeping the Pages root to exactly the published artifacts also
+    means a stray file can never shadow the board or the index.
+    """
+    published = sorted(p.name for p in (repo_root / "docs").iterdir())
+    assert published == [".nojekyll", "index.html", "index.json"], published
+
+
+def test_the_author_guide_is_reachable_from_the_readme(repo_root):
+    guide = repo_root / "guides" / "for-integration-authors.md"
+    assert guide.exists()
+    readme = (repo_root / "README.md").read_text(encoding="utf-8")
+    assert "guides/for-integration-authors.md" in readme
+    # The guide links back to a section that has to still exist.
+    assert "../README.md#contributing-a-rule" in guide.read_text(encoding="utf-8")
+    assert "## Contributing a rule" in readme
+
+
 def test_discover_installed_on_a_missing_directory_is_empty(tmp_path):
     assert discover_installed(str(tmp_path / "nope")) == {}
 

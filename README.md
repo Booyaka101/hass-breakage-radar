@@ -531,7 +531,7 @@ actually changed about the verdict you see. Releases are tagged on
 
 ## Are you the author of a flagged integration?
 
-Read **[docs/for-integration-authors.md](docs/for-integration-authors.md)** — what a
+Read **[guides/for-integration-authors.md](guides/for-integration-authors.md)** — what a
 listing claims (and what it does not), how to check your own checkout before you
 release, how a listing clears itself once you ship a fix, and how to report a finding
 you think is wrong.
