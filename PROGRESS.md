@@ -3,6 +3,25 @@
 Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
 kept as history.
 
+## v1.2.1 — the release-date estimate was wrong, and so was my claim (2026-08-12)
+
+The owner challenged the 1.2.0 claim "Home Assistant publishes release
+*numbers*, not dates". Checked properly: the release FAQ
+(home-assistant.io/faq/release/) publishes the schedule — **first Wednesday of
+every month** — and that rule predicted all eight 2026 releases to the day,
+while the shipped 1st-of-month estimate accumulated 23 days of error over the
+same eight. Estimator corrected, eight tests pin it against the real 2026
+release dates, claim fixed in README/const/issue text. `broken_now` never used
+the estimate and was unaffected.
+
+SHIPPED: `7db31fb`, all nine check-runs green, pytest **154 passed, 3
+skipped**, released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.2.1>.
+Lesson for future sessions: the "publishes no dates" claim came from checking
+the developer docs (404) and one blog post, then generalising; the FAQ had the
+schedule all along. Verify a negative claim against the obvious FAQ before
+shipping it in user-facing text.
+
 ## v1.2.0 — urgency levels, self-scanning, module split (2026-08-11)
 
 Driven by two pieces of real user feedback on the r/homeassistant thread.
