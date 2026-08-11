@@ -103,6 +103,7 @@ def test_worked_example_report(sample_index):
             "file": "custom_components/fixture_tracker/device_tracker.py",
             "line": 12,
             "confidence": "high",
+            "source": "index",
             "repository": "example/fixture-tracker",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",

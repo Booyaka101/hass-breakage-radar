@@ -1,6 +1,49 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1 build session (2026-08-08).
+Status at the end of the v1.1.0 build session (2026-08-11); the v1 section below
+is kept as history.
+
+## v1.1.0 — the integration now scans the user's own code (2026-08-11)
+
+The gap this closes: the integration only looked installed domains up in the
+published index, so forks, renames, non-HACS installs and the ~588 catalogued
+integrations the daily crawl had not reached got no verdict beyond
+`not_in_index`. The engine is now vendored into the integration
+(`custom_components/breakage_radar/rules_engine.py`, byte-identical to
+`tools/rules_engine.py`, guarded by a test) and runs over the installed bytes.
+
+### VERIFIED working (all run by hand on this machine, 2026-08-11)
+
+| Check | Result |
+|---|---|
+| `python -m pytest` | **102 passed, 2 skipped** (baseline was 87 passed, 1 skipped; +15 offline tests, +1 opt-in network test, 1 existing test updated for the new `source` key) |
+| True-positive fixture, absent from index | sensor reads **1**, one detail `source: local`, `device_tracker.py:12`, `by_release {"2027.5": ["fixture_tracker"]}`, NOT in `not_in_index` |
+| False-positive fixture | zero findings, lands in `clean_domains` |
+| `git ls-files '*manifest.json'` | exactly one path |
+| Engine byte-identity | `tools/rules_engine.py` == vendored copy |
+| Live-index validation (Python 3.14, `.cache/validate_local_scan.py`) | 6 repos at the crawler's exact refs — pycupra, ha_xiaomi_home, vserver-ssh-stats, padavan-tracker, YandexStation, homeconnect_local_hass — **15/15 findings reproduced rule-for-rule, line-for-line** |
+| E2E vs the live index (`.cache/e2e_local_scan.py`) | simulated box with real pycupra v0.2.23 + both fixtures → state 2, 3 local details, lookalike clean, `not_in_index` empty |
+
+### Design points worth remembering
+
+* **Merge order:** local affected > local clean > index affected > index clean >
+  local unknown (with reason) > unknown. Local verdicts replace index verdicts
+  because they describe the installed bytes; a truncated/unparseable local scan
+  falls back to the index instead of reading as clean.
+* **The local scan parses with the box's Python.** Found live during
+  validation: `homeconnect_local_hass` uses PEP 695 `type` aliases, which the
+  box's 3.11 cannot parse while the crawler's 3.14 can. The merge handles it
+  (domain → unknown → index verdict used); the network test asserts that
+  contract, and the strict line-for-line comparison runs under
+  `.cache/py314/python.exe`.
+* Scan cache key: (file count, newest mtime ns, total size, unreadable dirs,
+  rules fingerprint incl. ENGINE_VERSION and current HA version, caps).
+* The vendor-marker directories the crawler skips are skipped locally too.
+
+### Remaining (not blocking)
+
+* Owner: push, tag v1.1.0, cut the GitHub release (from the phone).
+* hacs/default#9839 still awaits maintainer review — unchanged by this release.
 
 ## Where things stand
 

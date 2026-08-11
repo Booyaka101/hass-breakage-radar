@@ -29,6 +29,18 @@
    "origin": "manual",
    "confidence": "high",
    "matchable": true,
+   "match": {
+    "type": "moduledef",
+    "names": [
+     "async_get_scanner",
+     "get_scanner",
+     "async_setup_scanner",
+     "setup_scanner"
+    ],
+    "files": [
+     "device_tracker.py"
+    ]
+   },
    "hits": 1,
    "repos_hit": 1
   }

@@ -2,19 +2,37 @@
 
 Deliberately free of any ``homeassistant`` import so the exact code that runs on
 a real box can be unit-tested without a Home Assistant install. Nothing here
-touches the network; ``build_report`` is a pure function of (index, installed).
+touches the network; ``build_report`` is a pure function of
+(index, installed, local scan) and ``scan_installed`` reads only the local disk.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from typing import Any
 
 from .const import MAX_DETAILS, SUPPORTED_SCHEMA
+from .rules_engine import (
+    ENGINE_VERSION,
+    ScanStats,
+    load_rules,
+    match_source,
+    matchable_rules,
+)
 
 #: Never treat these as installed custom integrations.
 _IGNORED_DIRECTORIES = frozenset({"__pycache__", ".git", ".github"})
+
+#: Directories the local scan never descends into -- the same vendored code the
+#: crawler's ``VENDOR_MARKERS`` excludes, so both sides judge the same files.
+_UNSCANNED_DIRECTORIES = _IGNORED_DIRECTORIES | frozenset(
+    {"site-packages", "node_modules", "vendor"}
+)
+
+#: Breakage Radar never reports on itself.
+_SELF_DOMAIN = "breakage_radar"
 
 
 def discover_installed(custom_components_dir: str) -> dict[str, str]:
@@ -55,6 +73,224 @@ def discover_installed(custom_components_dir: str) -> dict[str, str]:
     return installed
 
 
+def _rules_fingerprint(rules_payload: list[dict[str, Any]], current_version: str) -> str:
+    """A stable hash of everything that can change a scan's outcome.
+
+    Folding in :data:`ENGINE_VERSION` and ``current_version`` means a rules
+    update, an engine semantics change *or* a Home Assistant upgrade (which can
+    move rules in or out of the future) all invalidate the cache, never leaving
+    stale findings behind.
+    """
+    digest = hashlib.sha256()
+    digest.update(f"engine={ENGINE_VERSION};current={current_version};".encode())
+    digest.update(json.dumps(rules_payload, sort_keys=True, default=str).encode())
+    return digest.hexdigest()[:16]
+
+
+def _domain_python_files(domain_dir: str) -> tuple[list[tuple[str, str]], int]:
+    """``[(absolute_path, relative_posix_path)]`` for every ``*.py``, plus a
+    count of directories the walk could not enter.
+
+    ``__pycache__`` and symlinked directories are never descended into, so a
+    link pointing back up the tree cannot loop the scan or double-count files.
+    """
+    files: list[tuple[str, str]] = []
+    unreadable_dirs = 0
+
+    def _on_error(_err: OSError) -> None:
+        nonlocal unreadable_dirs
+        unreadable_dirs += 1
+
+    for root, dirnames, filenames in os.walk(
+        domain_dir, onerror=_on_error, followlinks=False
+    ):
+        dirnames[:] = sorted(
+            d
+            for d in dirnames
+            if d not in _UNSCANNED_DIRECTORIES
+            and not d.startswith(".")
+            and not os.path.islink(os.path.join(root, d))
+        )
+        relative_root = os.path.relpath(root, domain_dir)
+        for name in sorted(filenames):
+            if not name.endswith(".py"):
+                continue
+            relative = name if relative_root == "." else os.path.join(relative_root, name)
+            files.append(
+                (os.path.join(root, name), relative.replace(os.sep, "/"))
+            )
+    return files, unreadable_dirs
+
+
+def _scan_domain(
+    domain: str,
+    files: list[tuple[str, str]],
+    unreadable_dirs: int,
+    rules: list[Any],
+    *,
+    max_files: int,
+    max_bytes: int,
+) -> dict[str, Any]:
+    """Run the matchers over one installed domain. Never raises."""
+    stats = ScanStats()
+    findings: list[dict[str, Any]] = []
+    unreadable_files = 0
+    skipped_files = 0
+
+    for position, (absolute, relative) in enumerate(files):
+        if position >= max_files:
+            skipped_files += len(files) - position
+            break
+        scan_path = f"custom_components/{domain}/{relative}"
+        try:
+            if os.path.getsize(absolute) > max_bytes:
+                skipped_files += 1
+                continue
+            with open(absolute, "rb") as handle:
+                source = handle.read()
+        except OSError:
+            unreadable_files += 1
+            continue
+        findings.extend(
+            finding.to_dict() for finding in match_source(scan_path, source, rules, stats)
+        )
+
+    unparsed = len(stats.syntax_errors) + unreadable_files
+    reason = ""
+    if findings:
+        status = "affected"
+    elif unreadable_dirs:
+        status = "unknown"
+        reason = "directory could not be fully read"
+    elif unparsed:
+        status = "unknown"
+        reason = (
+            f"{unparsed} of {len(files)} Python file(s) could not be parsed"
+        )
+    elif skipped_files:
+        status = "unknown"
+        reason = (
+            f"scan truncated: {skipped_files} of {len(files)} Python file(s) "
+            "skipped by the size caps"
+        )
+    else:
+        # Zero findings with every file parsed -- including the trivial case of
+        # a component that ships no Python at all.
+        status = "clean"
+
+    return {
+        "status": status,
+        "reason": reason,
+        "findings": findings,
+        "files_scanned": stats.files_scanned,
+        "unparsed_files": unparsed,
+        "skipped_files": skipped_files,
+        "cached": False,
+    }
+
+
+def scan_installed(
+    custom_components_dir: str,
+    rules_payload: list[dict[str, Any]],
+    *,
+    current_version: str,
+    max_files: int = 400,
+    max_bytes: int = 1_000_000,
+    cache: dict[str, tuple[tuple[Any, ...], dict[str, Any]]] | None = None,
+) -> dict[str, Any]:
+    """Scan every installed custom integration's own source with the index rules.
+
+    Blocking I/O -- call from an executor. This is what gives forked, renamed
+    and non-HACS integrations a real verdict instead of ``not_in_index``: the
+    matchers run over the exact installed bytes, so there is no
+    scanned-version/installed-version skew either.
+
+    ``cache`` maps ``domain -> (signature, result)`` where the signature covers
+    the domain's file count, newest mtime, total size and the rules fingerprint;
+    a 12-hourly refresh therefore re-parses nothing that has not changed.
+    Problems are counted, never raised: a domain whose files cannot be parsed
+    comes back ``unknown`` with a reason, and a truncated scan never reads as
+    ``clean``.
+    """
+    fingerprint = _rules_fingerprint(rules_payload, current_version)
+    rules = matchable_rules(load_rules(rules_payload), current_version=current_version)
+
+    domains: dict[str, dict[str, Any]] = {}
+    totals = {"files_scanned": 0, "unparsed_files": 0, "skipped_files": 0}
+    cached_domains = 0
+
+    try:
+        entries = sorted(os.scandir(custom_components_dir), key=lambda e: e.name)
+    except OSError:
+        entries = []
+
+    for entry in entries:
+        try:
+            if (
+                not entry.is_dir(follow_symlinks=False)
+                or entry.name in _IGNORED_DIRECTORIES
+                or entry.name.startswith(".")
+                or entry.name == _SELF_DOMAIN
+            ):
+                continue
+        except OSError:
+            continue
+
+        domain = entry.name
+        files, unreadable_dirs = _domain_python_files(entry.path)
+
+        newest_mtime = 0
+        total_size = 0
+        for absolute, _relative in files:
+            try:
+                stat = os.stat(absolute)
+            except OSError:
+                continue
+            newest_mtime = max(newest_mtime, stat.st_mtime_ns)
+            total_size += stat.st_size
+        signature = (
+            len(files),
+            newest_mtime,
+            total_size,
+            unreadable_dirs,
+            fingerprint,
+            max_files,
+            max_bytes,
+        )
+
+        if cache is not None and domain in cache and cache[domain][0] == signature:
+            result = dict(cache[domain][1])
+            result["cached"] = True
+            cached_domains += 1
+        else:
+            result = _scan_domain(
+                domain,
+                files,
+                unreadable_dirs,
+                rules,
+                max_files=max_files,
+                max_bytes=max_bytes,
+            )
+            if cache is not None:
+                cache[domain] = (signature, dict(result))
+
+        domains[domain] = result
+        totals["files_scanned"] += result["files_scanned"]
+        totals["unparsed_files"] += result["unparsed_files"]
+        totals["skipped_files"] += result["skipped_files"]
+
+    return {
+        "domains": domains,
+        "files_scanned": totals["files_scanned"],
+        "unparsed_files": totals["unparsed_files"],
+        "skipped_files": totals["skipped_files"],
+        "cached_domains": cached_domains,
+        "rules_matchable": len(rules),
+        "rules_fingerprint": fingerprint,
+        "engine_version": ENGINE_VERSION,
+    }
+
+
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
     mapping: dict[str, dict[str, Any]] = {}
     for integration in index.get("integrations", []):
@@ -70,9 +306,19 @@ def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 
 def build_report(
-    index: dict[str, Any], installed: dict[str, str]
+    index: dict[str, Any],
+    installed: dict[str, str],
+    local_scan: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Match installed custom integrations against the published index.
+
+    ``local_scan`` is the result of :func:`scan_installed`. Local findings
+    describe the exact installed bytes, so wherever the local scan reached a
+    verdict it **replaces** the index's: a domain the index never heard of that
+    parses clean becomes ``clean``, and an index finding disappears when the
+    installed copy no longer contains it. Only a domain the local scan could
+    not read falls back to the index, and if neither side knows it, it stays in
+    ``not_in_index`` with the local reason.
 
     Returns a plain dict ready to become the sensor's state and attributes.
     Unknown or malformed index payloads degrade to an empty report rather than
@@ -85,33 +331,21 @@ def build_report(
     }
     affected_by_domain = _index_by_domain(index)
     clean_domains = set(index.get("clean_domains") or [])
-    unreachable = set(index.get("unreachable_domains") or [])
+    scanned_locally = (local_scan or {}).get("domains", {})
 
     by_release: dict[str, list[str]] = {}
     details: list[dict[str, Any]] = []
     affected: list[str] = []
     clean: list[str] = []
     unknown: list[str] = []
-    self_domain = "breakage_radar"
+    unknown_reasons: dict[str, str] = {}
 
-    for domain in sorted(installed):
-        if domain == self_domain:
-            continue
-        entry = affected_by_domain.get(domain)
-        if entry is None:
-            if domain in clean_domains:
-                clean.append(domain)
-            elif domain in unreachable:
-                unknown.append(domain)
-            else:
-                unknown.append(domain)
-            continue
-
-        findings = [f for f in entry.get("findings", []) if isinstance(f, dict)]
-        if not findings:
-            clean.append(domain)
-            continue
-
+    def _add_details(
+        domain: str,
+        findings: list[dict[str, Any]],
+        source: str,
+        entry: dict[str, Any] | None,
+    ) -> None:
         affected.append(domain)
         for finding in findings:
             release = str(finding.get("breaks_in", ""))
@@ -127,13 +361,42 @@ def build_report(
                     "file": finding.get("file", ""),
                     "line": finding.get("line", 0),
                     "confidence": finding.get("confidence", ""),
-                    "repository": entry.get("full_name", ""),
-                    "scanned_version": entry.get("version", ""),
+                    "source": source,
+                    "repository": (entry or {}).get("full_name", ""),
+                    # A local finding was matched against the installed bytes
+                    # themselves, so the scanned version *is* the installed one.
+                    "scanned_version": (
+                        installed.get(domain, "")
+                        if source == "local"
+                        else (entry or {}).get("version", "")
+                    ),
                     "installed_version": installed.get(domain, ""),
                     "message": (rule.get("message") or "")[:300],
                     "learn_more": rule.get("source", ""),
                 }
             )
+
+    for domain in sorted(installed):
+        if domain == _SELF_DOMAIN:
+            continue
+        entry = affected_by_domain.get(domain)
+        index_findings = [
+            f for f in (entry or {}).get("findings", []) if isinstance(f, dict)
+        ]
+        local = scanned_locally.get(domain)
+
+        if local and local.get("status") == "affected":
+            _add_details(domain, local.get("findings", []), "local", entry)
+        elif local and local.get("status") == "clean":
+            clean.append(domain)
+        elif index_findings:
+            _add_details(domain, index_findings, "index", entry)
+        elif entry is not None or domain in clean_domains:
+            clean.append(domain)
+        else:
+            unknown.append(domain)
+            if local and local.get("reason"):
+                unknown_reasons[domain] = local["reason"]
 
     details.sort(key=lambda d: (d["breaks_in"], d["domain"], d["file"], d["line"]))
     truncated = len(details) > MAX_DETAILS
@@ -148,9 +411,14 @@ def build_report(
         "details": details[:MAX_DETAILS],
         "details_truncated": truncated,
         "total_findings": len(details),
-        "installed_count": len([d for d in installed if d != self_domain]),
+        "installed_count": len([d for d in installed if d != _SELF_DOMAIN]),
         "clean_domains": clean,
         "not_in_index": unknown,
+        "not_in_index_reasons": unknown_reasons,
+        "files_scanned": (local_scan or {}).get("files_scanned", 0),
+        "unparsed_files": (local_scan or {}).get("unparsed_files", 0),
+        "skipped_files": (local_scan or {}).get("skipped_files", 0),
+        "local_scan_enabled": local_scan is not None,
         "index_generated_utc": index.get("generated_utc", ""),
         "index_core_version": index.get("core_version", ""),
         "index_schema": index.get("schema"),

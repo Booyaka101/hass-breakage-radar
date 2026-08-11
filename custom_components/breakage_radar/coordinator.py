@@ -8,12 +8,13 @@ import logging
 from typing import Any
 
 import aiohttp
+from homeassistant import const as ha_const
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, FETCH_TIMEOUT, INDEX_URL, UPDATE_INTERVAL
-from .report import build_report, discover_installed, validate_index
+from .report import build_report, discover_installed, scan_installed, validate_index
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -36,6 +37,9 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.index_url = index_url
         self.last_error: str | None = None
         self._index: dict[str, Any] | None = None
+        #: ``domain -> (signature, result)``; lets the 12-hourly refresh skip
+        #: re-parsing any integration whose files and rules have not changed.
+        self._scan_cache: dict[str, Any] = {}
 
     async def _fetch_index(self) -> dict[str, Any]:
         session = async_get_clientsession(self.hass)
@@ -93,13 +97,44 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.last_error = None
         self._index = index
 
+        components_dir = self.hass.config.path("custom_components")
         installed = await self.hass.async_add_executor_job(
-            discover_installed, self.hass.config.path("custom_components")
+            discover_installed, components_dir
         )
-        report = build_report(index, installed)
+        local_scan = await self.hass.async_add_executor_job(
+            self._scan_local, components_dir, index
+        )
+        report = build_report(index, installed, local_scan)
         _LOGGER.debug(
-            "Breakage Radar: %d of %d custom integrations affected",
+            "Breakage Radar: %d of %d custom integrations affected "
+            "(%d file(s) scanned locally, %d cached)",
             report["affected_count"],
             report["installed_count"],
+            report["files_scanned"],
+            (local_scan or {}).get("cached_domains", 0),
         )
         return report
+
+    def _scan_local(
+        self, components_dir: str, index: dict[str, Any]
+    ) -> dict[str, Any] | None:
+        """Run the local source scan. Blocking -- called from the executor.
+
+        The scan itself swallows per-file problems; anything unexpected beyond
+        that degrades to index-only matching rather than losing the report.
+        """
+        current_version = getattr(ha_const, "__version__", "") or index.get(
+            "core_version", ""
+        )
+        try:
+            return scan_installed(
+                components_dir,
+                index.get("rules", []),
+                current_version=current_version,
+                cache=self._scan_cache,
+            )
+        except Exception:  # noqa: BLE001 - a scan bug must never kill the sensor
+            _LOGGER.exception(
+                "Local source scan failed; falling back to index-only matching"
+            )
+            return None

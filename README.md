@@ -50,7 +50,7 @@ real crawl; nothing is seeded or simulated. The daily job widens coverage on its
 | | What it is | Where it runs |
 |---|---|---|
 | **A. The crawler** | `tools/` — extracts rules from Home Assistant core, fetches the HACS catalogue, scans each repository's `custom_components/**/*.py`, publishes `docs/index.json` + a static board | GitHub Actions, daily |
-| **B. The integration** | `custom_components/breakage_radar/` — downloads the index every 12 h, matches it against what is installed, exposes one sensor and raises a repairs issue | Your Home Assistant box |
+| **B. The integration** | `custom_components/breakage_radar/` — downloads the index every 12 h, matches it against what is installed, **runs the same matchers over your own installed source**, exposes one sensor and raises a repairs issue | Your Home Assistant box |
 
 No server, no account, no API key, no third-party runtime dependency. The integration's
 `manifest.json` declares `"requirements": []`.
@@ -78,6 +78,16 @@ The config flow has a single confirmation step — there is nothing to configure
 `sensor.breakage_radar_affected` — the number of installed custom integrations with at
 least one finding.
 
+Findings come from two sources, and every `details` entry says which:
+
+* `source: local` — the integration parsed the **installed bytes** in your own
+  `custom_components/` directory with the same eight AST matchers the crawler
+  uses. Forks, renamed copies and integrations installed outside HACS get a real
+  verdict this way, and there is no version skew: the scanned version *is* the
+  installed version.
+* `source: index` — the published index's verdict, used where the local scan
+  could not reach one (for example a file over the size caps).
+
 ```yaml
 state: 2
 attributes:
@@ -91,17 +101,31 @@ attributes:
       file: custom_components/some_tracker/device_tracker.py
       line: 12
       confidence: high
+      source: local
       repository: someone/some-tracker
-      scanned_version: "1.4.0"
+      scanned_version: "1.3.2"
       installed_version: "1.3.2"
       message: "Implements the legacy (non-config-entry) device tracker platform API..."
       learn_more: https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/
-  index_generated_utc: "2026-08-08T12:00:00Z"
+  index_generated_utc: "2026-08-11T03:57:51Z"
   affected_domains: [some_tracker, another_integration]
-  not_in_index: [my_local_hack]
+  not_in_index: [broken_thing]
+  not_in_index_reasons:
+    broken_thing: "1 of 3 Python file(s) could not be parsed"
+  files_scanned: 412
+  unparsed_files: 1
+  skipped_files: 0
   earliest_release: "2027.5"
   total_findings: 5
 ```
+
+A domain that is nowhere in the index but parses clean locally lands in
+`clean_domains`; only a domain **neither** side could analyse stays in
+`not_in_index`, with the reason alongside. `files_scanned`, `unparsed_files` and
+`skipped_files` make a truncated scan visible — it is never silently reported
+as clean. The scan runs in an executor and is cached on each integration's file
+count, newest mtime, total size and the rules fingerprint, so the 12-hourly
+refresh re-parses nothing that has not changed.
 
 When the count is above zero a **Repairs** issue appears, naming the integrations and
 the first deadline. It is deliberately *not* fixable in place — the code lives in
@@ -280,9 +304,15 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `call` | a call to one of `names` |
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
 | `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
+| `call_hass_argument` | a call to one of `names` that passes `hass` — for `@deprecated_hass_argument`, where the *argument* is deprecated, not the function |
 
 Any matcher can be narrowed with `files` (exact basenames); `attr` matchers can also
 require `in_class_base`.
+
+The engine lives in `tools/rules_engine.py` and is vendored byte-for-byte at
+`custom_components/breakage_radar/rules_engine.py`, so the crawler and the
+integration's local scan can never disagree about the same source — a test
+asserts the two copies are identical.
 
 ---
 
@@ -350,7 +380,11 @@ list core dispatches on in `homeassistant/components/device_tracker/legacy.py`:
   "rules": [
     { "id": "legacy-device-tracker-platform", "breaks_in": "2027.5",
       "message": "...", "source": "https://developers.home-assistant.io/blog/...",
-      "confidence": "high", "matchable": true, "hits": 3, "repos_hit": 3 }
+      "confidence": "high", "matchable": true, "hits": 3, "repos_hit": 3,
+      "match": { "type": "moduledef",
+                 "names": ["async_get_scanner", "get_scanner",
+                           "async_setup_scanner", "setup_scanner"],
+                 "files": ["device_tracker.py"] } }
   ],
   "integrations": [
     { "full_name": "someone/some-tracker", "domain": "some_tracker",
@@ -365,6 +399,10 @@ list core dispatches on in `homeassistant/components/device_tracker/legacy.py`:
 
 `integrations` lists only repositories **with** findings. `clean_domains` lists the ones
 scanned and found clean, so a consumer can tell "no problems" from "not looked at yet".
+
+Every `matchable: true` rule ships its matcher as the nested `match` object — that is
+what lets the integration run the same rules over locally installed code without the
+index changing shape for it.
 
 ---
 
@@ -405,6 +443,9 @@ Everything below is covered by a test.
 | `index.json` is not schema 1 | rejected with a message rather than half-read |
 | `custom_components/` missing or unreadable | empty report, no exception |
 | An installed `manifest.json` is corrupt | the component still counts as installed, with an empty version |
+| An installed integration's file will not parse or decode | counted in `unparsed_files`; the domain stays unknown with a reason, never falsely clean |
+| An installed integration exceeds the local scan caps | counted in `skipped_files`; the index verdict is used if there is one |
+| The local scan itself fails unexpectedly | logged, and the report falls back to index-only matching |
 | Very affected system | `details` caps at 100 entries and sets `details_truncated` |
 
 ---
@@ -430,15 +471,20 @@ real package is used instead.
 
 ## Limitations
 
-* **Matching is by domain.** If you forked a HACS integration, or installed one from
-  outside HACS, it appears in the sensor's `not_in_index` list rather than being
-  analysed. `details` carries `scanned_version` alongside `installed_version` so a
-  version skew is visible.
 * **A finding is static analysis, not a guarantee.** `confidence: medium` rules match a
   method name on an object whose type is only known at runtime.
-* **Coverage is partial by design.** One slice is capped so the daily job stays inside
-  GitHub's rate limits; `coverage.repos_scanned` always states how much of the 3 088-repo
-  catalogue has been visited so far.
+* **Index coverage is partial by design.** One slice is capped so the daily job stays
+  inside GitHub's rate limits; `coverage.repos_scanned` always states how much of the
+  3 088-repo catalogue has been visited so far. Since 1.1.0 this matters less on your
+  own box: whatever the crawl has not reached, the integration scans locally with the
+  same rules.
+* **The local scan is bounded.** Per integration it reads at most 400 Python files of
+  up to 1 MB each; anything beyond that is counted in `skipped_files` and the domain is
+  reported unknown rather than clean.
+* **The local scan parses with your box's own Python.** An installed file using syntax
+  newer than your interpreter (for example PEP 695 `type` aliases on Python 3.11) is
+  counted in `unparsed_files` and the domain falls back to the index verdict — the
+  crawler parses with 3.14, so the index side never has this gap.
 * **`DeviceEntry.config_entries` is informational only.** `config_entries` is also
   `hass.config_entries`, which every integration touches, so no matcher ships for it.
 * **Integrations only.** HACS plugins, themes and AppDaemon apps are out of scope for v1.
