@@ -3,6 +3,28 @@
 Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
 kept as history.
 
+## v1.2.2 — setup no longer waits for the local scan (2026-08-12)
+
+First real user bug report: issue #1 (DunLaoghaire1, HA 2026.8.1), config
+entry setup cancelled mid-scan. Root cause was structural and mine: since
+1.1.0 the full local scan ran inside the coordinator's first update, which
+setup waits on, so a slow box could hang in setup long enough to be cancelled.
+
+Fix (PR #2, first change to go through the PR route now that there are real
+users): first update does discovery only and returns an index-only report;
+the scan runs as a background task and publishes via async_set_updated_data
+when it lands. Same on every refresh; mtime cache keeps repeats cheap. Five
+coordinator tests, one of which fails if the scan ever runs inside
+_async_update_data again.
+
+SHIPPED: merged as `892a973` (rebase, branch deleted), all nine check-runs
+green, released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.2.2>.
+Issue #1 left OPEN pending the reporter's confirmation; asked for their
+integration count and hardware to learn real scan durations. Owner direction
+now standing: user-facing changes go via PR, and outward-facing prose
+(issues, release notes) in plain human tone, no em dashes.
+
 ## v1.2.1 — the release-date estimate was wrong, and so was my claim (2026-08-12)
 
 The owner challenged the 1.2.0 claim "Home Assistant publishes release
