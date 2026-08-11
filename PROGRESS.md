@@ -37,6 +37,12 @@ Origin note: defect 1 was found while evaluating a user feature request
 issues) — the tiered `broken_now` issues are also the honest answer to that
 request, without shipping 8 unfixable year-ahead cards.
 
+SHIPPED (2026-08-11): pushed as `70a45ad`, Validate green on all six jobs
+(Linux pytest = 114 passed / 2 skipped — the symlink regression test *ran*
+there), tag `v1.1.1`, release
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.1.1>
+created after the green run.
+
 ## v1.1.0 — the integration now scans the user's own code (2026-08-11)
 
 The gap this closes: the integration only looked installed domains up in the
