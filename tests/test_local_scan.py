@@ -15,7 +15,8 @@ import shutil
 
 import pytest
 
-from custom_components.breakage_radar.report import build_report, scan_installed
+from custom_components.breakage_radar.report import build_report
+from custom_components.breakage_radar.scanner import scan_installed
 from custom_components.breakage_radar.sensor import BreakageRadarSensor
 
 
@@ -110,6 +111,7 @@ def test_true_positive_not_in_index_gets_a_local_finding(
             "confidence": "high",
             "source": "local",
             "when": "upcoming",
+            "days_until": None,
             "repository": "",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",
@@ -280,9 +282,7 @@ def test_missing_custom_components_directory_is_an_empty_scan(
 # --------------------------------------------------------------------------- #
 
 
-def test_pycache_and_breakage_radar_itself_are_excluded(
-    tmp_path, fixtures_dir, index_without_fixture_tracker
-):
+def test_pycache_is_excluded(tmp_path, fixtures_dir, index_without_fixture_tracker):
     components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
     cache_dir = components / "fixture_tracker" / "__pycache__"
     cache_dir.mkdir()
@@ -291,15 +291,31 @@ def test_pycache_and_breakage_radar_itself_are_excluded(
         components / "fixture_tracker" / "device_tracker.py",
         cache_dir / "device_tracker.py",
     )
+    local = _scan(components, index_without_fixture_tracker)
+    assert len(local["domains"]["fixture_tracker"]["findings"]) == 1
+
+
+def test_breakage_radar_scans_itself_like_anything_else(
+    tmp_path, index_without_fixture_tracker
+):
+    """A tool that exempts itself from its own check is a check that has
+    quietly stopped being tested."""
+    components = tmp_path / "custom_components"
     ourselves = components / "breakage_radar"
-    ourselves.mkdir()
+    ourselves.mkdir(parents=True)
+    (ourselves / "manifest.json").write_text(
+        json.dumps({"domain": "breakage_radar", "version": "1.2.0"}), encoding="utf-8"
+    )
     (ourselves / "device_tracker.py").write_text(
         "def setup_scanner(hass, config, see):\n    return True\n", encoding="utf-8"
     )
 
     local = _scan(components, index_without_fixture_tracker)
-    assert "breakage_radar" not in local["domains"]
-    assert len(local["domains"]["fixture_tracker"]["findings"]) == 1
+    assert local["domains"]["breakage_radar"]["status"] == "affected"
+
+    report = build_report(index_without_fixture_tracker, {"breakage_radar": "1.2.0"}, local)
+    assert report["affected_domains"] == ["breakage_radar"]
+    assert report["installed_count"] == 1
 
 
 # --------------------------------------------------------------------------- #
@@ -443,17 +459,22 @@ def test_renamed_directory_is_keyed_by_its_manifest_domain(
     )
 
 
-def test_a_fork_of_breakage_radar_itself_is_still_excluded(
-    tmp_path, index_without_fixture_tracker
-):
-    fork = tmp_path / "custom_components" / "radar_fork"
-    fork.mkdir(parents=True)
-    (fork / "manifest.json").write_text(
-        json.dumps({"domain": "breakage_radar", "version": "1.0"}), encoding="utf-8"
+def test_our_own_shipped_component_is_clean(repo_root, sample_index):
+    """Dogfood: run the shipped rules over the shipped integration.
+
+    This is the guard the old self-exclusion was hiding. If Breakage Radar ever
+    starts using an API Home Assistant is removing, this fails in CI -- which
+    is exactly what it would tell any other integration author to want.
+    """
+    local = scan_installed(
+        str(repo_root / "custom_components"),
+        sample_index["rules"],
+        current_version=sample_index["core_version"],
     )
-    (fork / "__init__.py").write_text("VALUE = 1\n", encoding="utf-8")
-    local = _scan(tmp_path / "custom_components", index_without_fixture_tracker)
-    assert local["domains"] == {}
+    ours = local["domains"]["breakage_radar"]
+    assert ours["findings"] == []
+    assert ours["status"] == "clean", ours["reason"]
+    assert ours["unparsed_files"] == 0
 
 
 # --------------------------------------------------------------------------- #

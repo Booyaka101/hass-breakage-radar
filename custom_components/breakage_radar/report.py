@@ -1,335 +1,39 @@
-"""Pure logic shared by the coordinator and the sensor.
+"""Turning the index and the local scan into the sensor's state.
 
-Deliberately free of any ``homeassistant`` import so the exact code that runs on
-a real box can be unit-tested without a Home Assistant install. Nothing here
-touches the network; ``build_report`` is a pure function of
-(index, installed, local scan) and ``scan_installed`` reads only the local disk.
+Deliberately free of any ``homeassistant`` import so the exact code that runs
+on a real box can be unit-tested without a Home Assistant install, and free of
+I/O: :func:`build_report` is a pure function of (index, local scan, clock).
+
+Discovery lives in :mod:`.discovery` and scanning in :mod:`.scanner`; this
+module only decides what the two of them add up to.
 """
 
 from __future__ import annotations
 
-import hashlib
-import json
-import os
+from datetime import date
 from typing import Any
 
-from .const import MAX_DETAILS, SUPPORTED_SCHEMA
-from .rules_engine import (
-    ENGINE_VERSION,
-    ScanStats,
-    is_future,
-    load_rules,
-    match_source,
-    parse_version,
-)
-
-#: Never treat these as installed custom integrations.
-_IGNORED_DIRECTORIES = frozenset({"__pycache__", ".git", ".github"})
-
-#: Directories the local scan never descends into -- the same vendored code the
-#: crawler's ``VENDOR_MARKERS`` excludes, so both sides judge the same files.
-_UNSCANNED_DIRECTORIES = _IGNORED_DIRECTORIES | frozenset(
-    {"site-packages", "node_modules", "vendor"}
-)
-
-#: Breakage Radar never reports on itself.
-_SELF_DOMAIN = "breakage_radar"
+from .const import ALERT_WINDOW_DAYS, MAX_DETAILS, SUPPORTED_SCHEMA
+from .rules_engine import is_future, parse_version
 
 
-def discover_installed(custom_components_dir: str) -> dict[str, str]:
-    """Return ``{domain: version}`` for every custom integration on disk.
+def release_estimated_date(release: str) -> date | None:
+    """Approximate calendar date of a Home Assistant release label.
 
-    Blocking I/O -- call from an executor. A directory without a readable
-    ``manifest.json`` still counts as installed (version ``""``), because HACS
-    repositories occasionally ship a malformed manifest and the user still wants
-    to know the component is there.
+    Home Assistant ships monthly and lands between the 1st and the 7th, so
+    ``"2027.5"`` is early May 2027. The 1st of the month is used deliberately:
+    it can be up to six days early and is never late, which is the right bias
+    for a deadline warning. Returns ``None`` for anything unparseable, and
+    callers treat that as "no date opinion" rather than guessing.
     """
-    installed: dict[str, str] = {}
+    parts = release.split(".")
+    if len(parts) < 2:
+        return None
     try:
-        entries = sorted(os.scandir(custom_components_dir), key=lambda e: e.name)
-    except (FileNotFoundError, NotADirectoryError, PermissionError, OSError):
-        return installed
-
-    for entry in entries:
-        try:
-            if not entry.is_dir() or entry.name in _IGNORED_DIRECTORIES:
-                continue
-            if entry.name.startswith("."):
-                continue
-        except OSError:
-            continue
-
-        domain = entry.name
-        version = ""
-        manifest_path = os.path.join(entry.path, "manifest.json")
-        try:
-            with open(manifest_path, encoding="utf-8") as handle:
-                manifest = json.load(handle)
-            if isinstance(manifest, dict):
-                domain = manifest.get("domain") or entry.name
-                version = str(manifest.get("version") or "")
-        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
-            pass
-        installed[domain] = version
-    return installed
-
-
-def _manifest_domain(directory: str, fallback: str) -> str:
-    """The domain a component directory *declares*, falling back to its name.
-
-    This is the same resolution :func:`discover_installed` uses, and it is what
-    keeps a forked or renamed checkout matched up: the scan, the discovery and
-    the index lookup must all speak the same key or a finding gets dropped
-    between them.
-    """
-    try:
-        with open(os.path.join(directory, "manifest.json"), encoding="utf-8") as handle:
-            manifest = json.load(handle)
-        if isinstance(manifest, dict) and manifest.get("domain"):
-            return str(manifest["domain"])
-    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
-        pass
-    return fallback
-
-
-def _rules_fingerprint(rules_payload: list[dict[str, Any]], current_version: str) -> str:
-    """A stable hash of everything that can change a scan's outcome.
-
-    Folding in :data:`ENGINE_VERSION` and ``current_version`` means a rules
-    update, an engine semantics change *or* a Home Assistant upgrade (which can
-    move rules in or out of the future) all invalidate the cache, never leaving
-    stale findings behind.
-    """
-    digest = hashlib.sha256()
-    digest.update(f"engine={ENGINE_VERSION};current={current_version};".encode())
-    digest.update(json.dumps(rules_payload, sort_keys=True, default=str).encode())
-    return digest.hexdigest()[:16]
-
-
-def _domain_python_files(domain_dir: str) -> tuple[list[tuple[str, str]], int]:
-    """``[(absolute_path, relative_posix_path)]`` for every ``*.py``, plus a
-    count of directories the walk could not enter.
-
-    ``__pycache__`` and symlinked directories are never descended into, so a
-    link pointing back up the tree cannot loop the scan or double-count files.
-    """
-    files: list[tuple[str, str]] = []
-    unreadable_dirs = 0
-
-    def _on_error(_err: OSError) -> None:
-        nonlocal unreadable_dirs
-        unreadable_dirs += 1
-
-    for root, dirnames, filenames in os.walk(
-        domain_dir, onerror=_on_error, followlinks=False
-    ):
-        dirnames[:] = sorted(
-            d
-            for d in dirnames
-            if d not in _UNSCANNED_DIRECTORIES
-            and not d.startswith(".")
-            and not os.path.islink(os.path.join(root, d))
-        )
-        relative_root = os.path.relpath(root, domain_dir)
-        for name in sorted(filenames):
-            if not name.endswith(".py"):
-                continue
-            relative = name if relative_root == "." else os.path.join(relative_root, name)
-            files.append(
-                (os.path.join(root, name), relative.replace(os.sep, "/"))
-            )
-    return files, unreadable_dirs
-
-
-def _scan_domain(
-    directory_name: str,
-    files: list[tuple[str, str]],
-    unreadable_dirs: int,
-    rules: list[Any],
-    *,
-    max_files: int,
-    max_bytes: int,
-) -> dict[str, Any]:
-    """Run the matchers over one installed component directory. Never raises.
-
-    ``directory_name`` is the on-disk name, which is what finding paths show;
-    the caller keys the result by the manifest-declared domain, which can
-    differ in a forked checkout.
-    """
-    stats = ScanStats()
-    findings: list[dict[str, Any]] = []
-    unreadable_files = 0
-    skipped_files = 0
-
-    for position, (absolute, relative) in enumerate(files):
-        if position >= max_files:
-            skipped_files += len(files) - position
-            break
-        scan_path = f"custom_components/{directory_name}/{relative}"
-        try:
-            if os.path.getsize(absolute) > max_bytes:
-                skipped_files += 1
-                continue
-            with open(absolute, "rb") as handle:
-                source = handle.read()
-        except OSError:
-            unreadable_files += 1
-            continue
-        findings.extend(
-            finding.to_dict() for finding in match_source(scan_path, source, rules, stats)
-        )
-
-    unparsed = len(stats.syntax_errors) + unreadable_files
-    reason = ""
-    if findings:
-        status = "affected"
-    elif not rules:
-        # A scan with nothing to look for has proven nothing. Never let a
-        # degraded index launder every installation as clean.
-        status = "unknown"
-        reason = "the index shipped no matchable rules"
-    elif unreadable_dirs:
-        status = "unknown"
-        reason = "directory could not be fully read"
-    elif unparsed:
-        status = "unknown"
-        reason = (
-            f"{unparsed} of {len(files)} Python file(s) could not be parsed"
-        )
-    elif skipped_files:
-        status = "unknown"
-        reason = (
-            f"scan truncated: {skipped_files} of {len(files)} Python file(s) "
-            "skipped by the size caps"
-        )
-    else:
-        # Zero findings with every file parsed -- including the trivial case of
-        # a component that ships no Python at all.
-        status = "clean"
-
-    return {
-        "status": status,
-        "reason": reason,
-        "findings": findings,
-        "files_scanned": stats.files_scanned,
-        "unparsed_files": unparsed,
-        "skipped_files": skipped_files,
-        "cached": False,
-    }
-
-
-def scan_installed(
-    custom_components_dir: str,
-    rules_payload: list[dict[str, Any]],
-    *,
-    current_version: str,
-    max_files: int = 400,
-    max_bytes: int = 1_000_000,
-    cache: dict[str, tuple[tuple[Any, ...], dict[str, Any]]] | None = None,
-) -> dict[str, Any]:
-    """Scan every installed custom integration's own source with the index rules.
-
-    Blocking I/O -- call from an executor. This is what gives forked, renamed
-    and non-HACS integrations a real verdict instead of ``not_in_index``: the
-    matchers run over the exact installed bytes, so there is no
-    scanned-version/installed-version skew either.
-
-    Every matchable rule is applied regardless of tense: a rule whose deadline
-    has already passed is the *most* urgent thing to report, so it is never
-    filtered out here -- :func:`build_report` classifies each finding as
-    ``upcoming`` or ``broken_now`` against the running version instead.
-    Results are keyed by the domain each component's manifest declares (the
-    same key :func:`discover_installed` uses), so a forked or renamed checkout
-    still matches up. A symlinked component directory is followed at the top
-    level -- the dev-checkout pattern -- while symlinked *subdirectories* are
-    still never descended into.
-
-    ``cache`` maps ``domain -> (signature, result)`` where the signature covers
-    the domain's file count, newest mtime, total size and the rules fingerprint;
-    a 12-hourly refresh therefore re-parses nothing that has not changed.
-    Problems are counted, never raised: a domain whose files cannot be parsed
-    comes back ``unknown`` with a reason, and a truncated scan never reads as
-    ``clean``.
-    """
-    fingerprint = _rules_fingerprint(rules_payload, current_version)
-    rules = [rule for rule in load_rules(rules_payload) if rule.matchable]
-
-    domains: dict[str, dict[str, Any]] = {}
-    totals = {"files_scanned": 0, "unparsed_files": 0, "skipped_files": 0}
-    cached_domains = 0
-
-    try:
-        entries = sorted(os.scandir(custom_components_dir), key=lambda e: e.name)
-    except OSError:
-        entries = []
-
-    for entry in entries:
-        try:
-            if (
-                not entry.is_dir()
-                or entry.name in _IGNORED_DIRECTORIES
-                or entry.name.startswith(".")
-                or entry.name == _SELF_DOMAIN
-            ):
-                continue
-        except OSError:
-            continue
-
-        domain = _manifest_domain(entry.path, entry.name)
-        if domain == _SELF_DOMAIN:
-            continue
-        files, unreadable_dirs = _domain_python_files(entry.path)
-
-        newest_mtime = 0
-        total_size = 0
-        for absolute, _relative in files:
-            try:
-                stat = os.stat(absolute)
-            except OSError:
-                continue
-            newest_mtime = max(newest_mtime, stat.st_mtime_ns)
-            total_size += stat.st_size
-        signature = (
-            len(files),
-            newest_mtime,
-            total_size,
-            unreadable_dirs,
-            fingerprint,
-            max_files,
-            max_bytes,
-        )
-
-        if cache is not None and domain in cache and cache[domain][0] == signature:
-            result = dict(cache[domain][1])
-            result["cached"] = True
-            cached_domains += 1
-        else:
-            result = _scan_domain(
-                entry.name,
-                files,
-                unreadable_dirs,
-                rules,
-                max_files=max_files,
-                max_bytes=max_bytes,
-            )
-            if cache is not None:
-                cache[domain] = (signature, dict(result))
-
-        domains[domain] = result
-        totals["files_scanned"] += result["files_scanned"]
-        totals["unparsed_files"] += result["unparsed_files"]
-        totals["skipped_files"] += result["skipped_files"]
-
-    return {
-        "domains": domains,
-        "files_scanned": totals["files_scanned"],
-        "unparsed_files": totals["unparsed_files"],
-        "skipped_files": totals["skipped_files"],
-        "cached_domains": cached_domains,
-        "rules_matchable": len(rules),
-        "rules_fingerprint": fingerprint,
-        "engine_version": ENGINE_VERSION,
-    }
+        year, month = int(parts[0]), int(parts[1])
+        return date(year, month, 1)
+    except ValueError:
+        return None
 
 
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -352,6 +56,8 @@ def build_report(
     local_scan: dict[str, Any] | None = None,
     *,
     current_version: str = "",
+    today: date | None = None,
+    alert_window_days: int = ALERT_WINDOW_DAYS,
 ) -> dict[str, Any]:
     """Match installed custom integrations against the published index.
 
@@ -364,11 +70,21 @@ def build_report(
     ``not_in_index`` with the local reason. A local ``clean`` reached with zero
     matchable rules in play proves nothing and never overrides the index.
 
-    ``current_version`` is the Home Assistant release this system runs. Each
-    finding is classified against it: ``upcoming`` while the deadline is still
-    ahead, ``broken_now`` once it has arrived -- passing a deadline makes a
-    finding *more* urgent, never invisible. Without a version every finding is
-    conservatively ``upcoming``.
+    ``current_version`` is the Home Assistant release this system runs, and
+    ``today`` the current date. Together they sort every finding into three
+    levels:
+
+    ``broken_now``  the running version has already reached the deadline. This
+                    is decided by version comparison alone -- never by a date
+                    estimate -- so it is exact.
+    ``imminent``    still ahead, but the release is estimated to land within
+                    ``alert_window_days``. Worth an alert of its own.
+    ``upcoming``    further out. Summarised in one group rather than alerted
+                    on individually, because a year-ahead deadline that cannot
+                    be dismissed just teaches people to ignore the panel.
+
+    Without a version or a date, findings degrade conservatively to
+    ``upcoming`` rather than guessing.
 
     Returns a plain dict ready to become the sensor's state and attributes.
     Unknown or malformed index payloads degrade to an empty report rather than
@@ -391,11 +107,27 @@ def build_report(
     unknown: list[str] = []
     unknown_reasons: dict[str, str] = {}
     broken_now: dict[str, str] = {}
+    imminent: dict[str, dict[str, Any]] = {}
+
+    def _days_until(release: str) -> int | None:
+        """Estimated days until ``release`` ships, or ``None`` if unknowable."""
+        if today is None:
+            return None
+        when = release_estimated_date(release)
+        if when is None:
+            return None
+        return (when - today).days
 
     def _when(release: str) -> str:
-        if not current_version or not release:
+        if not release:
             return "upcoming"
-        return "upcoming" if is_future(release, current_version) else "broken_now"
+        if current_version and not is_future(release, current_version):
+            # Exact: this system is already running the release that removed it.
+            return "broken_now"
+        days = _days_until(release)
+        if days is not None and days <= alert_window_days:
+            return "imminent"
+        return "upcoming"
 
     def _add_details(
         domain: str,
@@ -410,10 +142,20 @@ def build_report(
             if domain not in bucket:
                 bucket.append(domain)
             when = _when(release)
-            if when == "broken_now" and release:
+            days = _days_until(release)
+            if when == "broken_now":
                 previous = broken_now.get(domain)
                 if previous is None or parse_version(release) < parse_version(previous):
                     broken_now[domain] = release
+            elif when == "imminent":
+                previous_entry = imminent.get(domain)
+                if previous_entry is None or parse_version(release) < parse_version(
+                    previous_entry["release"]
+                ):
+                    imminent[domain] = {
+                        "release": release,
+                        "days": days if days is not None else 0,
+                    }
             rule = rules.get(finding.get("rule_id"), {})
             details.append(
                 {
@@ -425,6 +167,7 @@ def build_report(
                     "confidence": finding.get("confidence", ""),
                     "source": source,
                     "when": when,
+                    "days_until": days,
                     "repository": (entry or {}).get("full_name", ""),
                     # A local finding was matched against the installed bytes
                     # themselves, so the scanned version *is* the installed one.
@@ -440,8 +183,8 @@ def build_report(
             )
 
     for domain in sorted(installed):
-        if domain == _SELF_DOMAIN:
-            continue
+        # Breakage Radar is reported on like anything else. Exempting the tool
+        # from its own check is how a check quietly stops being tested.
         entry = affected_by_domain.get(domain)
         index_findings = [
             f for f in (entry or {}).get("findings", []) if isinstance(f, dict)
@@ -476,12 +219,20 @@ def build_report(
         "details": details[:MAX_DETAILS],
         "details_truncated": truncated,
         "total_findings": len(details),
-        "installed_count": len([d for d in installed if d != _SELF_DOMAIN]),
+        "installed_count": len(installed),
         "clean_domains": clean,
         "not_in_index": unknown,
         "not_in_index_reasons": unknown_reasons,
         "broken_now": broken_now,
         "broken_now_count": len(broken_now),
+        "imminent": imminent,
+        "imminent_count": len(imminent),
+        # Affected domains with nothing urgent -- the ones the aggregate issue
+        # summarises rather than alerting on individually.
+        "summarised_domains": sorted(
+            set(affected) - set(broken_now) - set(imminent)
+        ),
+        "alert_window_days": alert_window_days,
         "files_scanned": (local_scan or {}).get("files_scanned", 0),
         "unparsed_files": (local_scan or {}).get("unparsed_files", 0),
         "skipped_files": (local_scan or {}).get("skipped_files", 0),

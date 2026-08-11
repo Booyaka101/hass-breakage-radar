@@ -4,10 +4,49 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
-## Unreleased
+## 1.2.0 — 2026-08-11
 
-Repository and documentation only — the Home Assistant integration is unchanged
-from 1.1.1, so there is deliberately no new version to install.
+### Three levels instead of one wall of warnings
+
+Findings are now sorted by how soon they bite, and urgency decides the
+presentation:
+
+| Level | When | How it appears |
+|---|---|---|
+| `broken_now` | your running Home Assistant has already reached the deadline | one **ERROR** Repairs issue per integration |
+| `imminent` | the release is estimated within 30 days | one **WARNING** Repairs issue per integration |
+| `upcoming` | further out | a single summary issue, grouped by release |
+
+* The alert window is 30 days by default (`ALERT_WINDOW_DAYS`). Home Assistant
+  ships monthly, landing between the 1st and the 7th, so a release label maps to
+  a month; the estimate uses the 1st, which can be up to six days early and is
+  never late — the right bias for a deadline warning.
+* **`broken_now` is decided by version comparison alone, never by the date
+  estimate**, so "already broken" stays exact even if a release slips.
+* The summary issue now covers only what it still lists — anything promoted to
+  its own alert leaves the group, and the summary disappears entirely when
+  everything is urgent.
+* New on the sensor: `imminent`, `imminent_count`, `summarised_domains`,
+  `alert_window_days`, and `when` / `days_until` on every `details` entry.
+
+### Breakage Radar no longer exempts itself
+
+The local scan used to skip its own component. A tool that exempts itself from
+its own check is a check that has quietly stopped being tested — and the
+standalone `tools/check_local.py` never skipped it, so the two disagreed.
+Breakage Radar is now scanned, counted and reported on like any other installed
+integration, and a test runs the shipped rules over the shipped component so CI
+fails if it ever uses a doomed API itself.
+
+### Maintainability
+
+* **`report.py` (509 lines, four responsibilities) is split** into
+  `discovery.py` (what is installed), `scanner.py` (run the matchers over it)
+  and `report.py` (decide what it all adds up to). Behaviour is unchanged; the
+  existing suite was the safety net and every import site was updated rather
+  than left behind an alias.
+
+### Also in this release
 
 * **`tools/check_local.py`** — a self-check for integration authors. Runs the
   published index's matchers over any checkout on disk, including forks and

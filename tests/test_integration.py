@@ -14,11 +14,8 @@ import re
 import pytest
 
 from custom_components.breakage_radar.const import ATTR_BY_RELEASE, MAX_DETAILS
-from custom_components.breakage_radar.report import (
-    build_report,
-    discover_installed,
-    validate_index,
-)
+from custom_components.breakage_radar.discovery import discover_installed
+from custom_components.breakage_radar.report import build_report, validate_index
 from custom_components.breakage_radar.sensor import BreakageRadarSensor
 
 
@@ -126,6 +123,7 @@ def test_worked_example_report(sample_index):
             "confidence": "high",
             "source": "index",
             "when": "upcoming",
+            "days_until": None,
             "repository": "example/fixture-tracker",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",
@@ -148,9 +146,10 @@ def test_clean_and_unknown_domains_are_separated(sample_index):
     )
     assert report["affected_count"] == 1
     assert report["clean_domains"] == ["lookalike_tracker"]
-    assert report["not_in_index"] == ["something_local"]
-    # Breakage Radar never reports on itself.
-    assert report["installed_count"] == 3
+    # Breakage Radar holds itself to the same standard as everything else, so
+    # it is counted and reported on like any other installed integration.
+    assert report["not_in_index"] == ["breakage_radar", "something_local"]
+    assert report["installed_count"] == 4
 
 
 def test_empty_installation_gives_an_empty_report(sample_index):
@@ -287,8 +286,10 @@ def test_broken_now_gets_its_own_error_issue_and_clears_on_recovery(sample_index
         "domain": "fixture_tracker",
         "release": "2027.5",
     }
-    # The aggregate escalates too while something is broken right now.
-    assert ir.created[(DOMAIN, ISSUE_ID)]["severity"] == ir.IssueSeverity.ERROR
+    # Promoted to its own card, so it is no longer in the summary -- and with
+    # nothing left to summarise the aggregate issue goes away entirely.
+    assert report["summarised_domains"] == []
+    assert (DOMAIN, ISSUE_ID) not in ir.created
 
     # The integration ships a fix (its findings disappear): both issues clear.
     fixed = json.loads(json.dumps(sample_index))

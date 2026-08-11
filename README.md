@@ -56,6 +56,22 @@ usually ahead of these figures — `coverage` in `index.json` is always authorit
 No server, no account, no API key, no third-party runtime dependency. The integration's
 `manifest.json` declares `"requirements": []`.
 
+Inside `custom_components/breakage_radar/`, one job per module:
+
+| Module | Job |
+|---|---|
+| `__init__.py`, `config_flow.py`, `const.py` | standard Home Assistant wiring |
+| `coordinator.py` | fetch the index, drive the scan off the event loop, cache it |
+| `discovery.py` | what is installed (`{domain: version}` from each `manifest.json`) |
+| `scanner.py` | run the matchers over installed source; count what it could not read |
+| `report.py` | decide what index + local scan add up to, and at which level |
+| `repairs.py`, `sensor.py` | how that surfaces in Home Assistant |
+| `rules_engine.py` | the AST matchers, vendored byte-for-byte from `tools/` |
+
+`discovery.py`, `scanner.py` and `report.py` import no `homeassistant` symbols at all,
+which is why the exact code that runs on your box is unit-tested without a Home
+Assistant install.
+
 ---
 
 ## Install (Home Assistant side)
@@ -103,7 +119,8 @@ attributes:
       line: 12
       confidence: high
       source: local
-      when: upcoming
+      when: imminent        # broken_now | imminent | upcoming
+      days_until: 21
       repository: someone/some-tracker
       scanned_version: "1.3.2"
       installed_version: "1.3.2"
@@ -113,6 +130,11 @@ attributes:
   affected_domains: [some_tracker, another_integration]
   broken_now: {}
   broken_now_count: 0
+  imminent:
+    some_tracker: {release: "2027.5", days: 21}
+  imminent_count: 1
+  summarised_domains: [another_integration]
+  alert_window_days: 30
   not_in_index: [broken_thing]
   not_in_index_reasons:
     broken_thing: "1 of 3 Python file(s) could not be parsed"
@@ -131,18 +153,33 @@ as clean. The scan runs in an executor and is cached on each integration's file
 count, newest mtime, total size and the rules fingerprint, so the 12-hourly
 refresh re-parses nothing that has not changed.
 
-Every finding is also classified against the Home Assistant version you are running:
-`when: upcoming` while the deadline is ahead, `when: broken_now` once it has arrived.
-Upgrading past a deadline makes a finding *more* visible, never less — the domain
-stays affected and moves into the `broken_now` attribute.
+### Three levels, so a year-out deadline is not shouted at you
 
-When the count is above zero a **Repairs** issue appears, naming the integrations and
-the first deadline. It is deliberately *not* fixable in place — the code lives in
-someone else's repository — but it links to the board and clears itself when the count
-returns to zero. Integrations in `broken_now` additionally get **one ERROR-severity
-Repairs issue each**: unlike the year-ahead aggregate, "this integration is failing on
-this system right now — update or replace it today" is individually actionable, and
-each issue clears the moment an updated version no longer contains the removed API.
+Every finding is sorted by how soon it bites, and that decides how loudly it appears:
+
+| Level | When | What you see |
+|---|---|---|
+| `broken_now` | your running Home Assistant already reached the deadline | one **ERROR** Repairs issue per integration |
+| `imminent` | the release is due within 30 days | one **WARNING** Repairs issue per integration |
+| `upcoming` | further out | **one** summary issue, grouped by release |
+
+The point of the split is that Repairs has no snooze button. A dozen cards for
+deadlines a year away would only teach you to ignore the panel — which is where every
+*other* integration raises things you genuinely must act on. So distant deadlines stay
+grouped and summarised, and a card only appears when there is something to do this
+month: update the integration, replace it, or raise it upstream while the maintainer
+still has time.
+
+Home Assistant ships monthly, landing between the 1st and the 7th, so a release label
+maps to a month. The estimate uses the 1st — up to six days early, never late.
+`broken_now` never relies on that estimate: it is decided by comparing your running
+version to the deadline, so it stays exact even if a release slips. Upgrading past a
+deadline makes a finding *more* visible, never less.
+
+Each issue links to the board and clears itself — when an updated version no longer
+contains the removed API, when the integration is uninstalled, or when a deadline
+stops being imminent. None of them are fixable in place: the code lives in someone
+else's repository.
 
 Automate on it:
 
@@ -462,6 +499,7 @@ Everything below is covered by a test.
 | An installed integration exceeds the local scan caps | counted in `skipped_files`; the index verdict is used if there is one |
 | The local scan itself fails unexpectedly | logged, and the report falls back to index-only matching |
 | Home Assistant is upgraded past a finding's deadline | the finding stays, reclassified `broken_now`, and Repairs escalates to ERROR |
+| A release label cannot be turned into a date | no `imminent` opinion is formed; the finding is summarised rather than guessed at |
 | The index ships no matchable rules | domains scan `unknown` with a reason — an empty rule set never reads as clean |
 | An integration directory is renamed or forked | matched by the domain its `manifest.json` declares, not the directory name |
 | Very affected system | `details` caps at 100 entries and sets `details_truncated` |
@@ -505,6 +543,10 @@ real package is used instead.
   crawler parses with 3.14, so the index side never has this gap.
 * **`DeviceEntry.config_entries` is informational only.** `config_entries` is also
   `hass.config_entries`, which every integration touches, so no matcher ships for it.
+* **`imminent` is an estimate, `broken_now` is not.** Home Assistant publishes release
+  *numbers*, not dates, so the 30-day window is derived from its monthly cadence and can
+  be a few days early. Whether a deadline has already *passed* is decided by version
+  comparison alone, so that half is exact.
 * **Integrations only.** HACS plugins, themes and AppDaemon apps are out of scope for v1.
 * **No automatic fixing.** v1 tells you what breaks and when; it does not rewrite code.
 

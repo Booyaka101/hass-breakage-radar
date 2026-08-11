@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from datetime import datetime, timezone
 from typing import Any
 
 import aiohttp
@@ -14,7 +15,9 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN, FETCH_TIMEOUT, INDEX_URL, UPDATE_INTERVAL
-from .report import build_report, discover_installed, scan_installed, validate_index
+from .discovery import discover_installed
+from .report import build_report, validate_index
+from .scanner import scan_installed
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -108,14 +111,21 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             self._scan_local, components_dir, index, current_version
         )
         report = build_report(
-            index, installed, local_scan, current_version=current_version
+            index,
+            installed,
+            local_scan,
+            current_version=current_version,
+            today=datetime.now(timezone.utc).date(),
         )
         _LOGGER.debug(
-            "Breakage Radar: %d of %d custom integrations affected, %d broken now "
-            "(%d file(s) scanned locally, %d cached)",
+            "Breakage Radar: %d of %d custom integrations affected "
+            "(%d broken now, %d imminent, %d summarised; "
+            "%d file(s) scanned locally, %d cached)",
             report["affected_count"],
             report["installed_count"],
             report["broken_now_count"],
+            report["imminent_count"],
+            len(report["summarised_domains"]),
             report["files_scanned"],
             (local_scan or {}).get("cached_domains", 0),
         )
