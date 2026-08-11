@@ -4,6 +4,16 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.2.2 — 2026-08-12
+
+* **Setup no longer waits for the local scan** (#1). The scan ran inside the
+  coordinator's first update, and config entry setup waits on that update, so
+  on a system with many custom integrations adding Breakage Radar could hang
+  long enough for setup to be cancelled mid-scan. The scan now runs as a
+  background task: the sensor comes up with index-based results right away and
+  local results replace them when the scan finishes. Refreshes behave the same
+  way, so a slow scan can never block anything again.
+
 ## 1.2.1 — 2026-08-12
 
 * **The `imminent` date estimate now uses Home Assistant's actual published

@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import aiohttp
@@ -43,6 +43,11 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         #: ``domain -> (signature, result)``; lets the 12-hourly refresh skip
         #: re-parsing any integration whose files and rules have not changed.
         self._scan_cache: dict[str, Any] = {}
+        #: Last completed local scan. Updates never wait for a scan; see
+        #: async_run_local_scan (and issue #1) for why.
+        self._local_scan: dict[str, Any] | None = None
+        self._installed: dict[str, str] = {}
+        self._scan_lock = asyncio.Lock()
 
     async def _fetch_index(self) -> dict[str, Any]:
         session = async_get_clientsession(self.hass)
@@ -63,7 +68,7 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                         f"for {self.index_url}"
                     )
                 body = await response.text()
-        except asyncio.TimeoutError as err:
+        except TimeoutError as err:
             raise UpdateFailed(
                 f"Timed out after {FETCH_TIMEOUT}s fetching {self.index_url}"
             ) from err
@@ -100,22 +105,30 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.last_error = None
         self._index = index
 
-        components_dir = self.hass.config.path("custom_components")
+        # Discovery is one scandir plus a manifest.json per component, cheap
+        # enough to do inline. The scan is not, so it goes to the background
+        # and this update returns with whatever the last scan produced.
+        self._installed = await self.hass.async_add_executor_job(
+            discover_installed, self.hass.config.path("custom_components")
+        )
+        self._schedule_local_scan()
+        return self._compose(index, self._installed, self._local_scan)
+
+    def _compose(
+        self,
+        index: dict[str, Any],
+        installed: dict[str, str],
+        local_scan: dict[str, Any] | None,
+    ) -> dict[str, Any]:
         current_version = getattr(ha_const, "__version__", "") or index.get(
             "core_version", ""
-        )
-        installed = await self.hass.async_add_executor_job(
-            discover_installed, components_dir
-        )
-        local_scan = await self.hass.async_add_executor_job(
-            self._scan_local, components_dir, index, current_version
         )
         report = build_report(
             index,
             installed,
             local_scan,
             current_version=current_version,
-            today=datetime.now(timezone.utc).date(),
+            today=datetime.now(UTC).date(),
         )
         _LOGGER.debug(
             "Breakage Radar: %d of %d custom integrations affected "
@@ -130,6 +143,43 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             (local_scan or {}).get("cached_domains", 0),
         )
         return report
+
+    def _schedule_local_scan(self) -> None:
+        create = getattr(self.hass, "async_create_background_task", None)
+        if create is not None:
+            create(self.async_run_local_scan(), name=f"{DOMAIN}_local_scan")
+        else:  # pragma: no cover - cores older than 2022.10
+            self.hass.async_create_task(self.async_run_local_scan())
+
+    async def async_run_local_scan(self) -> None:
+        """Scan the installed source in the background, then publish.
+
+        Parsing every installed integration can take minutes on a slow box,
+        and config entry setup waits on the first update, so the scan must
+        never run inside one (issue #1: setup cancelled mid-scan). Instead the
+        sensor starts with index-only results and this replaces them when the
+        scan lands. The per-domain mtime cache makes repeat runs cheap, so it
+        is fine to do this on every refresh.
+        """
+        async with self._scan_lock:
+            index = self._index
+            if index is None:
+                return
+            current_version = getattr(ha_const, "__version__", "") or index.get(
+                "core_version", ""
+            )
+            scan = await self.hass.async_add_executor_job(
+                self._scan_local,
+                self.hass.config.path("custom_components"),
+                index,
+                current_version,
+            )
+            if scan is None:
+                return  # failure already logged; keep the previous results
+            self._local_scan = scan
+            self.async_set_updated_data(
+                self._compose(index, self._installed, scan)
+            )
 
     def _scan_local(
         self, components_dir: str, index: dict[str, Any], current_version: str

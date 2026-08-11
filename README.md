@@ -500,6 +500,7 @@ Everything below is covered by a test.
 | An installed integration's file will not parse or decode | counted in `unparsed_files`; the domain stays unknown with a reason, never falsely clean |
 | An installed integration exceeds the local scan caps | counted in `skipped_files`; the index verdict is used if there is one |
 | The local scan itself fails unexpectedly | logged, and the report falls back to index-only matching |
+| The local scan is slow (many integrations, slow disk) | nothing waits for it: setup and refreshes return index results immediately, local results follow when the background scan finishes |
 | Home Assistant is upgraded past a finding's deadline | the finding stays, reclassified `broken_now`, and Repairs escalates to ERROR |
 | A release label cannot be turned into a date | no `imminent` opinion is formed; the finding is summarised rather than guessed at |
 | The index ships no matchable rules | domains scan `unknown` with a reason — an empty rule set never reads as clean |
