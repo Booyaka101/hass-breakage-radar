@@ -3,6 +3,33 @@
 Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
 kept as history.
 
+## v1.3.1 — verified the rule carrying 328 integrations (2026-08-12)
+
+`device-registry-async-get-device` accounts for 328 of 593 affected
+integrations and nearly all of the 2027.8 deadline, at medium confidence.
+Hand-checked 45 of its findings against real source in two samples: 44 genuine.
+The 11.3% catalogue hit rate is legitimate, so the 2027.8 cliff is real.
+
+The one false positive awaited its own API client's method of the same name.
+Core defines the registry method as a plain `def` taking identifiers or
+connections, so an awaited call cannot be it. Added an opt-in `not_awaited`
+matcher constraint; 36 of 36 sampled true positives unchanged, false positive
+gone. ENGINE_VERSION 4 forces the re-crawl.
+
+SHIPPED via PR #6, merged as `c7b3230`, all nine check-runs green, released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.3.1>.
+
+Two process failures worth remembering, both caught before merge:
+* The first verification run reported three true positives lost. That was the
+  harness, not the fix: Python 3.11 cannot parse PEP 695 generics, so the files
+  never parsed at all. LESSONS.md already records this; use
+  `.cache/py314/python.exe` for anything that parses other projects' code.
+* Regenerating `data/rules.json` with `blog_rules.py --no-network` silently
+  dropped 15 blog-derived rules (142 -> 127). The test suite passed throughout
+  because those rules are informational. Always diff the regenerated rule set
+  against the previous one, and run the generator with the network unless you
+  mean to drop them.
+
 ## v1.3.0 — see what breaks when, and actionable notifications (2026-08-12)
 
 From issue #3 (DunLaoghaire1): "I'd like to see when an integration will
