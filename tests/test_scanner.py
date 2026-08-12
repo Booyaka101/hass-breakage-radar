@@ -233,3 +233,28 @@ def test_verify_domain_control_decorator_without_hass_is_clean(rules):
         "    return None\n"
     )
     assert match_source("custom_components/x/services.py", source, rules) == []
+
+
+def test_awaited_async_get_device_is_somebody_elses_method(rules):
+    """DeviceRegistry.async_get_device is a plain def in core, so a call that
+    is awaited cannot be it.
+
+    Measured on ThomasLomas/ha-starlinghomehub, which awaits its own API
+    client's method of the same name. That was the only false positive in 45
+    hand-checked hits of this rule.
+    """
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        "\n"
+        "async def refresh(self, hass, device):\n"
+        "    theirs = await self.client.async_get_device(device_id=device['id'])\n"
+        "    registry = dr.async_get(hass)\n"
+        "    ours = registry.async_get_device(identifiers={('x', 'y')})\n"
+        "    return theirs, ours\n"
+    )
+    hits = [
+        f for f in match_source("custom_components/x/coordinator.py", source, rules)
+        if f.rule_id == "device-registry-async-get-device"
+    ]
+    assert [f.line for f in hits] == [7]
