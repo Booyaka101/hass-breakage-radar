@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Breakage Radar: Home Assistant API removals</title>
+    <link>https://booyaka101.github.io/hass-breakage-radar/</link>
+    <description>Home Assistant APIs scheduled for removal, and how many HACS custom integrations still use each one.</description>
+    <language>en</language>
+    <lastBuildDate>Wed, 12 Aug 2026 12:18:57 +0000</lastBuildDate>
+    <atom:link href="https://booyaka101.github.io/hass-breakage-radar/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>2026.10: deprecate hass argument service helpers</title>
+      <link>https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/</link>
+      <guid isPermaLink="false">breakage-radar:blog-deprecate-hass-argument-service-helpers-2026.10</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>Support for the hass argument will be removed in Home Assistant 2026.10. Confidence: info.</description>
+    </item>
+    <item>
+      <title>2026.10: async_extract_config_entry_ids</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-extract-config-entry-ids</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>passes `hass` to `async_extract_config_entry_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 3 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.10: async_extract_entities</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L364</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-extract-entities</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>passes `hass` to `async_extract_entities`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.10: async_extract_entity_ids</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L403</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-extract-entity-ids</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>passes `hass` to `async_extract_entity_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 4 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.10: extract_entity_ids</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L351</link>
+      <guid isPermaLink="false">breakage-radar:core-call-extract-entity-ids</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>passes `hass` to `extract_entity_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 1 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.10: verify_domain_control</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L1020</link>
+      <guid isPermaLink="false">breakage-radar:core-call-verify-domain-control</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>passes `hass` to `verify_domain_control`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 1 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.10: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L57</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-platform-2026.10</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.10: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/picotts/issue.py#L12</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-deprecate-yaml-issue-2026.10</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.10</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: recorder statistics api changes</title>
+      <link>https://developers.home-assistant.io/blog/2025/10/16/recorder-statistics-api-changes/</link>
+      <guid isPermaLink="false">breakage-radar:blog-recorder-statistics-api-changes-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>Not specifying the unit_class is deprecated and will stop working in Home Assistant Core 2026.11. Confidence: info.</description>
+    </item>
+    <item>
+      <title>2026.11: async_add_external_statistics(missing unit_class)</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2890</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-add-external-statistics-missing-unit-class</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>doesn&#x27;t specify unit_class when calling async_add_external_statistics 62 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: async_import_statistics(missing mean_type)</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2847</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-import-statistics-missing-mean-type</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>doesn&#x27;t specify mean_type when calling async_import_statistics 25 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: async_import_statistics(missing unit_class)</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2853</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-import-statistics-missing-unit-class</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>doesn&#x27;t specify unit_class when calling async_import_statistics 25 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: async_update_statistics_metadata(missing unit_class)</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L990</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-update-statistics-metadata-missing-unit-class</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>doesn&#x27;t specify unit_class when calling async_update_statistics_metadata 2 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/shopping_list/__init__.py#L50</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L459</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-async-check-deprecation-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L56</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-platform-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L42</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-deprecated-dismiss-action-call-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L22</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-deprecated-notify-action-call-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L82</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-repair-issue-cleanup-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.11: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L109</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-repair-issue-firmware-update-2026.11</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.11</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: TargetSelectorData</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L106</link>
+      <guid isPermaLink="false">breakage-radar:core-classbase-targetselectordata</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>TargetSelection Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/lg_thinq/number.py#L191</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-check-deprecated-fan-speed-entity-2026.12</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: core-issue-create-issue-yaml-migration-2026.12</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/rflink/utils.py#L33</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-create-issue-yaml-migration-2026.12</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>uses ``, deprecated and removed in Home Assistant 2026.12. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/hassio/services.py#L96</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-normalize-partial-options-data-2026.12</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: self.hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L298</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-opnsenseconfigflow-abort-import-2026.12</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>self.hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: self.hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L221</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-opnsenseconfigflow-async-step-import-2026.12</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>self.hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: has an update listener and should use it for scheduling a reload</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3161</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-has-an-update-listener-and-should-use-it-for-scheduling-a-reload</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>has an update listener and should use it for scheduling a reload Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: passes a non-string value of type {...} as {...} to the device registry</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L315</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>passes a non-string value of type {...} as {...} to the device registry Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2026.12: TemperatureConverter.convert_interval</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L872</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-temperatureconverter-convert-interval</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2026.12</category>
+      <description>TemperatureDeltaConverter.convert Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.1: async_register_info</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/system_health/__init__.py#L55</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-register-info</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.1</category>
+      <description>calls system_health.async_register_info, which is deprecated; add a system_health platform instead Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.1: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/smtp/issue.py#L23</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-deprecate-yaml-issue-2027.1</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.1</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.1: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L527</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-entry-2027.1</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.1</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.1: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/swisscom/device_tracker.py#L34</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-scanner-2027.1</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.1</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.1: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger.py#L332</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-create-deprecated-behavior-issue-2027.1</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.1</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: async_generate_entity_id</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1287</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-generate-entity-id</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: async_render_no_api_prompt</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L56</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-render-no-api-prompt</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>an empty string Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/aqualogic/__init__.py#L61</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-import-2027.2</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L222</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-load-config-2027.2</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L27</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-deprecate-2027.2</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L62</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-deprecated-event-bus-2027.2</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: sets a `group` attribute on entity {...} which is not a `Group` instance</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1559</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-sets-a-group-attribute-on-entity-which-is-not-a-group-instance</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>sets a `group` attribute on entity {...} which is not a `Group` instance Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.2: sets an invalid entity ID: &#x27;{...}&#x27;. In most cases, entities should not set entit...</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L891</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.2</category>
+      <description>sets an invalid entity ID: &#x27;{...}&#x27;. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.3: labs async listen deprecation</title>
+      <link>https://developers.home-assistant.io/blog/2026/02/16/labs-async-listen-deprecation/</link>
+      <guid isPermaLink="false">breakage-radar:blog-labs-async-listen-deprecation-2027.3</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.3</category>
+      <description>async_listen will be removed in Home Assistant 2027.3. Confidence: info.</description>
+    </item>
+    <item>
+      <title>2027.3: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/smtp/issue.py#L59</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-deprecated-notify-action-call-2027.3</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.3</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.3: calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` ...</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/labs/helpers.py#L92</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-calls-async-listen-which-is-deprecated-use-async-subscribe-preview-feature</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.3</category>
+      <description>calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` instead Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.4: doorbell standard event type</title>
+      <link>https://developers.home-assistant.io/blog/2026/04/15/doorbell-standard-event-type/</link>
+      <guid isPermaLink="false">breakage-radar:blog-doorbell-standard-event-type-2027.4</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.4</category>
+      <description>Doorbell entities that do not include DoorbellEventType.RING will log a deprecation warning and will stop working in Home Assistant 2027.4 . Confidence: info.</description>
+    </item>
+    <item>
+      <title>2027.5: entity id mismatched domain deprecated</title>
+      <link>https://developers.home-assistant.io/blog/2026/04/07/entity-id-mismatched-domain-deprecated/</link>
+      <guid isPermaLink="false">breakage-radar:blog-entity-id-mismatched-domain-deprecated-2027.5</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.5</category>
+      <description>Setting an entity ID with the wrong domain will log a deprecation warning and will stop working in Home Assistant 2027.5 . Confidence: info.</description>
+    </item>
+    <item>
+      <title>2027.5: legacy device tracker deprecation</title>
+      <link>https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/</link>
+      <guid isPermaLink="false">breakage-radar:blog-legacy-device-tracker-deprecation-2027.5</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.5</category>
+      <description>Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at mo... Confidence: info.</description>
+    </item>
+    <item>
+      <title>2027.5: hass</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L236</link>
+      <guid isPermaLink="false">breakage-radar:core-issue-async-setup-integration-async-see-service-2027.5</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.5</category>
+      <description>hass Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.5: sets an entity ID with wrong domain: &#x27;{...}&#x27;. Expected domain is &#x27;{...}&#x27;</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L908</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-sets-an-entity-id-with-wrong-domain-expected-domain-is</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.5</category>
+      <description>sets an entity ID with wrong domain: &#x27;{...}&#x27;. Expected domain is &#x27;{...}&#x27; Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.5: setup_scanner</title>
+      <link>https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/</link>
+      <guid isPermaLink="false">breakage-radar:legacy-device-tracker-platform</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.5</category>
+      <description>Implements the legacy (non-config-entry) device tracker platform API. &#x27;The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.&#x27; Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity). 11 integration(s) in the HACS catalogue currently use it. Replacement: https://developers.home-assistant.io/docs/core/entity/device-tracker. Confidence: high.</description>
+    </item>
+    <item>
+      <title>2027.5: DeviceScanner</title>
+      <link>https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/</link>
+      <guid isPermaLink="false">breakage-radar:legacy-device-tracker-scanner-class</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.5</category>
+      <description>Subclasses homeassistant.components.device_tracker.DeviceScanner, part of the legacy device tracker platform API removed in Home Assistant 2027.5. Migrate to ScannerEntity on a config entry. 6 integration(s) in the HACS catalogue currently use it. Replacement: https://developers.home-assistant.io/docs/core/entity/device-tracker. Confidence: high.</description>
+    </item>
+    <item>
+      <title>2027.6: FlowHandler.show_advanced_options</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L646</link>
+      <guid isPermaLink="false">breakage-radar:core-call-flowhandler-show-advanced-options</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.6</category>
+      <description>a user friendly way to present additional options in the UI, for example a section Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.6: InfraredEntityDescription</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/infrared/entity.py#L181</link>
+      <guid isPermaLink="false">breakage-radar:core-classbase-infraredentitydescription</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.6</category>
+      <description>homeassistant.components.infrared.InfraredEmitterEntityDescription Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.6: InfraredEntity</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/infrared/entity.py#L189</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-infraredentity</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.6</category>
+      <description>homeassistant.components.infrared.InfraredEmitterEntity Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.6: that calls the MQTT publish API with `None` for qos or retain. The `qos` argumen...</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L199</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-that-calls-the-mqtt-publish-api-with-none-for-qos-or-retain-the-qos-argumen</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.6</category>
+      <description>that calls the MQTT publish API with `None` for qos or retain. The `qos` argument must be an `int`, and the `retain` argument must be a `bool` Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.7: device tracker changes</title>
+      <link>https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/</link>
+      <guid isPermaLink="false">breakage-radar:blog-device-tracker-changes-2027.7</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.7</category>
+      <description>Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at most one sub... Confidence: info.</description>
+    </item>
+    <item>
+      <title>2027.7: get_astral_location</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L20</link>
+      <guid isPermaLink="false">breakage-radar:core-call-get-astral-location</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.7</category>
+      <description>homeassistant.helpers.sun.get_astral_observer 4 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.7: get_location_astral_event_next</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L60</link>
+      <guid isPermaLink="false">breakage-radar:core-call-get-location-astral-event-next</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.7</category>
+      <description>homeassistant.helpers.sun.get_observer_astral_event_next Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.7: battery_level</title>
+      <link>https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes</link>
+      <guid isPermaLink="false">breakage-radar:device-tracker-battery-level</guid>
+      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
+      <category>2027.7</category>
+      <description>&#x27;The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.&#x27; Expose the battery as a separate sensor entity with device_class battery instead. 19 integration(s) in the HACS catalogue currently use it. Confidence: high.</description>
+    </item>
+  </channel>
+</rss>

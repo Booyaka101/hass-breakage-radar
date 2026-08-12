@@ -79,7 +79,7 @@ def test_pages_root_holds_only_published_artifacts(repo_root):
     means a stray file can never shadow the board or the index.
     """
     published = sorted(p.name for p in (repo_root / "docs").iterdir())
-    assert published == [".nojekyll", "index.html", "index.json"], published
+    assert published == [".nojekyll", "feed.xml", "index.html", "index.json"], published
 
 
 def test_the_author_guide_is_reachable_from_the_readme(repo_root):
