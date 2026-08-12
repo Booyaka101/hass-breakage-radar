@@ -422,3 +422,71 @@ def test_source_url_is_preferred_over_a_bare_source(sample_index):
         today=date(2027, 4, 11),
     )
     assert report["links"]["fixture_tracker"]["learn_more"].startswith("https://")
+
+
+# --------------------------------------------------------------------------- #
+# upstream: what the crawler already found out about the repository
+# --------------------------------------------------------------------------- #
+
+
+def _links(sample_index, upstream):
+    sample_index["integrations"][0]["upstream"] = upstream
+    report = build_report(
+        sample_index,
+        {"fixture_tracker": "0.1.0"},
+        current_version="2027.4",
+        today=date(2027, 4, 11),
+    )
+    return report["links"]["fixture_tracker"]
+
+
+def test_an_open_report_is_offered_for_a_reaction(sample_index):
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(_links(sample_index, {
+        "archived": False, "issues_enabled": True,
+        "report": {"number": 41, "state": "open", "url": "https://github.com/example/x/issues/41",
+                   "title": "The deprecated argument hass was passed to verify_domain_control"},
+    }))
+    assert "already reported" in text
+    assert "[#41 The deprecated argument" in text
+    assert "Add a reaction" in text
+    assert "issues?q=" not in text          # no need to send them searching
+
+
+def test_a_closed_report_points_at_a_probable_fix(sample_index):
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(_links(sample_index, {
+        "archived": False, "issues_enabled": True,
+        "report": {"number": 320, "state": "closed", "url": "https://github.com/example/x/issues/320",
+                   "title": "Remove deprecated argument (2026.10)"},
+    }))
+    assert "reported and closed" in text
+    assert "a fix may already have shipped" in text
+
+
+def test_an_archived_repository_says_so_instead_of_sending_people_there(sample_index):
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(_links(sample_index, {"archived": True, "issues_enabled": False}))
+    assert "archived" in text
+    assert "replace this integration" in text
+    assert "/releases" not in text
+    assert "/issues" not in text
+
+
+def test_a_repository_with_issues_disabled_does_not_send_people_to_report(sample_index):
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(_links(sample_index, {"archived": False, "issues_enabled": False}))
+    assert "does not accept issues" in text
+    assert "issues?q=" not in text
+
+
+def test_without_upstream_facts_it_still_links_the_search(sample_index):
+    """An index built before the lookup existed, or a repo not yet visited."""
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(_links(sample_index, {}))
+    assert "issues?q=is%3Aissue+setup_scanner" in text

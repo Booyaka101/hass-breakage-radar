@@ -134,22 +134,23 @@ def build_payload(
             rule_repos[rule_id] += 1
 
         findings.sort(key=lambda f: (parse_version(f["breaks_in"]), f["file"], f["line"]))
-        integrations.append(
-            {
-                "full_name": full_name,
-                "domain": domain,
-                "domains": record.get("domains", [domain] if domain else []),
-                "version": record.get("version", ""),
-                "ref": record.get("ref", ""),
-                "stargazers_count": catalog_entry.get(
-                    "stargazers_count", record.get("stargazers_count", 0)
-                ),
-                "repo_url": f"https://github.com/{full_name}",
-                "scanned_utc": record.get("scanned_utc", ""),
-                "earliest_breaks_in": findings[0]["breaks_in"],
-                "findings": findings,
-            }
-        )
+        entry = {
+            "full_name": full_name,
+            "domain": domain,
+            "domains": record.get("domains", [domain] if domain else []),
+            "version": record.get("version", ""),
+            "ref": record.get("ref", ""),
+            "stargazers_count": catalog_entry.get(
+                "stargazers_count", record.get("stargazers_count", 0)
+            ),
+            "repo_url": f"https://github.com/{full_name}",
+            "scanned_utc": record.get("scanned_utc", ""),
+            "earliest_breaks_in": findings[0]["breaks_in"],
+            "findings": findings,
+        }
+        if record.get("upstream"):
+            entry["upstream"] = record["upstream"]
+        integrations.append(entry)
 
     integrations.sort(
         key=lambda i: (

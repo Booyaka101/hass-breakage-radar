@@ -489,6 +489,12 @@ list core dispatches on in `homeassistant/components/device_tracker/legacy.py`:
 `integrations` lists only repositories **with** findings. `clean_domains` lists the ones
 scanned and found clean, so a consumer can tell "no problems" from "not looked at yet".
 
+An affected integration may also carry `upstream`, recording what its own
+repository says: whether it is archived, whether it accepts issues, and the most
+relevant existing report if there is one. That is what lets a notification say
+"already reported, add a reaction there" instead of sending everybody to open
+the same issue. It is optional, so an older index simply lacks it.
+
 Every `matchable: true` rule ships its matcher as the nested `match` object — that is
 what lets the integration run the same rules over locally installed code without the
 index changing shape for it.

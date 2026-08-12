@@ -58,6 +58,10 @@ jobs:
         run: python tools/catalog.py
 
       - name: Scan a slice of the catalogue
+        # The token is only used to ask whether a deprecation is already
+        # reported on the repositories this slice found problems in.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python tools/scan.py \
             --limit "${{ github.event.inputs.limit || '400' }}" \

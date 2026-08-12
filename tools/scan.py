@@ -58,6 +58,7 @@ from tools.rules_engine import (  # noqa: E402
     match_source,
     matchable_rules,
 )
+from tools.upstream import annotate  # noqa: E402
 
 CODELOAD = "https://codeload.github.com/{full_name}/tar.gz/{ref}"
 
@@ -278,6 +279,11 @@ def main(argv: list[str] | None = None) -> int:
         "--force", action="store_true", help="rescan even if nothing changed"
     )
     parser.add_argument(
+        "--no-upstream",
+        action="store_true",
+        help="skip looking up existing issues on the scanned repositories",
+    )
+    parser.add_argument(
         "--sleep",
         type=float,
         default=0.0,
@@ -416,6 +422,13 @@ def main(argv: list[str] | None = None) -> int:
             time.sleep(args.sleep)
 
     checkpoint()
+
+    if not args.no_upstream:
+        scanned_now = {n: repos[n] for n in (e["full_name"] for e in todo) if n in repos}
+        looked_up = annotate(scanned_now, {r.id: {"symbol": r.symbol} for r in active})
+        if looked_up:
+            LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
+            checkpoint()
 
     LOGGER.info(
         "slice done in %.0fs: %s | state has %d repos, findings file has %d repos%s",
