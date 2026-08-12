@@ -44,6 +44,12 @@ releases — 7 in 2026.10, 71 in 2026.11, 9 in 2027.5, 28 in 2027.7 and 418 in 2
 is seeded or simulated. The daily job widens coverage on its own, so the index is
 usually ahead of these figures — `coverage` in `index.json` is always authoritative.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/schedule-summary.png"
+       alt="A Home Assistant repair notification listing which custom integrations break in which release, with dates"
+       width="760">
+</p>
+
 ---
 
 ## Two halves in one repository
@@ -169,10 +175,30 @@ The summary tells you which integration breaks when, not just how many:
 2027.8  - August 2027, about a year away: yandex_station
 ```
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/repairs-list.png"
+       alt="The Home Assistant repairs panel showing one notification per imminent integration plus a single summary"
+       width="760">
+</p>
+
+Each per-integration notification links to that integration's releases page and to a
+search for an existing report of the same deprecation, so you can add a reaction
+instead of filing a duplicate:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/integration-notification.png"
+       alt="A notification for a single integration, linking to its releases, to existing reports and to the Home Assistant change"
+       width="760">
+</p>
+
 Change the window under **Settings → Devices & Services → Breakage Radar →
 Configure**: 30, 60 or 90 days, 6 months or a year. It applies immediately. However
 wide the window, at most five notifications are raised at once, since the summary
 lists every date anyway.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/options.png" alt="The options dialog, choosing how far ahead to be alerted" width="760">
+</p>
 
 The point of the split is that Repairs has no snooze button. A dozen cards for
 deadlines a year away would only teach you to ignore the panel — which is where every

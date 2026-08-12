@@ -369,3 +369,16 @@ def test_translations_match_strings(repo_root):
     )
     assert strings == english
     assert "integrations_affected" in strings["issues"]
+
+
+def test_readme_screenshots_exist(repo_root):
+    """A README image that 404s on GitHub and inside HACS looks broken."""
+    import re
+
+    readme = (repo_root / "README.md").read_text(encoding="utf-8")
+    referenced = set(
+        re.findall(r"hass-breakage-radar/main/images/([\w.-]+\.png)", readme)
+    )
+    assert referenced, "the README should show what the integration looks like"
+    on_disk = {p.name for p in (repo_root / "images").glob("*.png")}
+    assert referenced <= on_disk, f"missing: {sorted(referenced - on_disk)}"
