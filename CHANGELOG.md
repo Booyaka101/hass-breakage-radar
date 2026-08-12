@@ -4,6 +4,37 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.4.0 — 2026-08-12
+
+### Notifications know whether the problem is already reported
+
+The crawler now asks each affected repository what it already says about the
+deprecation, and publishes the answer in the index, so nobody has to search and
+nobody files a duplicate. A notification says one of:
+
+* **already reported and open** — links the issue and asks you to add a
+  reaction there instead of opening another one
+* **reported and closed** — links it and says a fix may already have shipped,
+  which usually means updating is enough
+* **archived repository** — says no fix is coming and to plan a replacement,
+  rather than sending you to a dead tracker
+* **issues disabled** — says there is nowhere to report it
+* **nothing found** — links a search for the symbol, as before
+
+Only issues that look like they are about the deprecation count. Searching a
+symbol also matches tracebacks pasted into unrelated bug reports: one real
+repository returned "Bug: Everything is unavailable" for a symbol search, and
+linking someone to that as "the report" would be worse than saying nothing. A
+title has to name the symbol or use removal language to qualify.
+
+The lookup runs in the crawler, not on your system. It needs a GitHub token and
+the search API allows 30 requests a minute, so doing it per user would need a
+token from each of them. It rides along with the daily slice, so coverage grows
+at the same rate as the scan itself.
+
+New optional `upstream` field on index integrations. The index is still
+schema 1 and older versions of the integration ignore it.
+
 ## 1.3.1 — 2026-08-12
 
 * **An awaited call is no longer reported as `DeviceRegistry.async_get_device`.**
