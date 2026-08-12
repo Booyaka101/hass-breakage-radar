@@ -168,7 +168,8 @@
         "type": "call",
         "names": ["async_get_device"],
         "modules": ["homeassistant.helpers.device_registry"],
-        "allow_unresolved_attribute": true
+        "allow_unresolved_attribute": true,
+        "not_awaited": true
       }
     },
     {
