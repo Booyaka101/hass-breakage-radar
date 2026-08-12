@@ -49,17 +49,85 @@ def _install_homeassistant_stubs() -> None:
 
     class ConfigEntry:  # noqa: D101
         entry_id = "test-entry"
+        options: dict = {}
 
     class ConfigFlowResult(dict):  # noqa: D101
         pass
 
-    class ConfigFlow:  # noqa: D101
+    class _FlowBase:
+        """Enough of HA's flow API to drive a flow in a test."""
+
+        async def async_set_unique_id(self, unique_id):
+            self._unique_id = unique_id
+
+        def _abort_if_unique_id_configured(self):
+            return None
+
+        def async_show_form(self, **kwargs):
+            return ConfigFlowResult(type="form", **kwargs)
+
+        def async_create_entry(self, **kwargs):
+            return ConfigFlowResult(type="create_entry", **kwargs)
+
+    class ConfigFlow(_FlowBase):  # noqa: D101
         def __init_subclass__(cls, **kwargs):
             super().__init_subclass__()
+
+    class OptionsFlow(_FlowBase):  # noqa: D101
+        config_entry = ConfigEntry()
 
     config_entries.ConfigEntry = ConfigEntry
     config_entries.ConfigFlow = ConfigFlow
     config_entries.ConfigFlowResult = ConfigFlowResult
+    config_entries.OptionsFlow = OptionsFlow
+
+    selector = module("homeassistant.helpers.selector")
+
+    class SelectSelectorMode:  # noqa: D101
+        DROPDOWN = "dropdown"
+        LIST = "list"
+
+    class SelectSelectorConfig:  # noqa: D101
+        def __init__(self, options=None, mode=None, translation_key=None, **kwargs):
+            self.options = options or []
+            self.mode = mode
+            self.translation_key = translation_key
+
+    class SelectSelector:  # noqa: D101
+        def __init__(self, config):
+            self.config = config
+
+        def __call__(self, value):
+            return value
+
+    selector.SelectSelector = SelectSelector
+    selector.SelectSelectorConfig = SelectSelectorConfig
+    selector.SelectSelectorMode = SelectSelectorMode
+
+    try:
+        import voluptuous  # noqa: F401
+    except ImportError:
+        # Home Assistant always ships voluptuous; a bare CI runner does not.
+        vol = module("voluptuous")
+
+        class Marker:
+            def __init__(self, schema, default=None, description=None):
+                self.schema = schema
+                self.default = default
+
+            def __hash__(self):
+                return hash(self.schema)
+
+            def __eq__(self, other):
+                return self.schema == getattr(other, "schema", other)
+
+        class Schema:
+            def __init__(self, schema):
+                self.schema = schema
+
+        vol.Schema = Schema
+        vol.Required = Marker
+        vol.Optional = Marker
 
     const = module("homeassistant.const")
 

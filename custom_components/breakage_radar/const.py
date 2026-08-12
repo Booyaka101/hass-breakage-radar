@@ -23,10 +23,18 @@ FETCH_TIMEOUT: Final = 30
 #: produce a state object Home Assistant refuses to store.
 MAX_DETAILS: Final = 100
 
-#: A deadline this close gets its own alert instead of being summarised with
-#: the rest. Home Assistant releases on the first Wednesday of every month
-#: (home-assistant.io/faq/release/), so 30 days means "the next release".
+#: Deadlines inside this many days get their own notification; everything else
+#: is listed in the summary. Configurable per entry via the options flow.
 ALERT_WINDOW_DAYS: Final = 30
+
+CONF_ALERT_WINDOW_DAYS: Final = "alert_window_days"
+
+#: Offered in the options flow, in days.
+ALERT_WINDOW_CHOICES: Final = (30, 60, 90, 180, 365)
+
+#: However wide the window, only the nearest few deadlines get their own
+#: notification. The rest stay in the summary, which lists every date anyway.
+MAX_ALERT_CARDS: Final = 5
 
 ISSUE_ID: Final = "integrations_affected"
 

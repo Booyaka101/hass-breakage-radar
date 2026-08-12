@@ -4,6 +4,43 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.3.0 — 2026-08-12
+
+### You can now see what breaks when (#3)
+
+The summary notification used to list affected integrations in one flat line
+and their release deadlines in another, so with 13 affected you could not tell
+which one broke in which release. It now shows a dated schedule:
+
+```
+2026.10 - October 2026, about 2 months away: argoclima, miele, thermia and 1 more
+2026.11 - November 2026, about 3 months away: bosch, octopus_energy, spook
+2027.8  - August 2027, about a year away: yandex_station
+```
+
+* Dates are written the way a person would say them, not as day counts.
+* The same schedule is on the sensor as a `schedule` attribute, and every
+  `details` entry gained a readable `due` field, so it is easy to build a
+  dashboard card from it.
+* Releases sort numerically, so `2027.10` comes after `2027.9`.
+
+### The alert window is configurable
+
+**Settings > Devices & Services > Breakage Radar > Configure.** Choose how far
+ahead a deadline gets its own notification: 30, 60 or 90 days, 6 months or a
+year. The default stays 30 days, and changing it applies immediately without a
+restart.
+
+At most five notifications are raised at once, however wide the window. A
+90 day window on a system with 13 affected integrations would otherwise have
+raised 13 separate notifications; the rest stay in the summary, which lists
+every date anyway.
+
+### Wording
+
+All three notifications were rewritten to say what happened and what to do
+about it, without jargon. The options screen explains what the setting changes.
+
 ## 1.2.2 — 2026-08-12
 
 * **Setup no longer waits for the local scan** (#1). The scan ran inside the

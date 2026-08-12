@@ -160,8 +160,21 @@ Every finding is sorted by how soon it bites, and that decides how loudly it app
 | Level | When | What you see |
 |---|---|---|
 | `broken_now` | your running Home Assistant already reached the deadline | one **ERROR** Repairs issue per integration |
-| `imminent` | the release is due within 30 days | one **WARNING** Repairs issue per integration |
-| `upcoming` | further out | **one** summary issue, grouped by release |
+| `imminent` | the release is due inside the alert window (30 days by default) | one **WARNING** Repairs issue per integration, up to five |
+| `upcoming` | further out | **one** summary issue listing what breaks in each release |
+
+The summary tells you which integration breaks when, not just how many:
+
+```
+2026.10 - October 2026, about 2 months away: argoclima, miele, thermia
+2026.11 - November 2026, about 3 months away: bosch, octopus_energy, spook
+2027.8  - August 2027, about a year away: yandex_station
+```
+
+Change the window under **Settings → Devices & Services → Breakage Radar →
+Configure**: 30, 60 or 90 days, 6 months or a year. It applies immediately. However
+wide the window, at most five notifications are raised at once, since the summary
+lists every date anyway.
 
 The point of the split is that Repairs has no snooze button. A dozen cards for
 deadlines a year away would only teach you to ignore the panel — which is where every
@@ -460,7 +473,12 @@ index changing shape for it.
 
 ## Configuration
 
-The Home Assistant integration needs none. For the crawler:
+The Home Assistant integration has one setting, under **Settings → Devices &
+Services → Breakage Radar → Configure**: how far ahead a deadline gets its own
+notification (30, 60 or 90 days, 6 months, or a year). Everything outside that
+window is listed in the summary instead.
+
+For the crawler:
 
 | Setting | Where | Default |
 |---|---|---|

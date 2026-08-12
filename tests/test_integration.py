@@ -124,6 +124,7 @@ def test_worked_example_report(sample_index):
             "source": "index",
             "when": "upcoming",
             "days_until": None,
+            "due": "May 2027",
             "repository": "example/fixture-tracker",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",

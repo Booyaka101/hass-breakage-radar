@@ -112,6 +112,7 @@ def test_true_positive_not_in_index_gets_a_local_finding(
             "source": "local",
             "when": "upcoming",
             "days_until": None,
+            "due": "May 2027",
             "repository": "",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",
