@@ -3,6 +3,48 @@
 Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
 kept as history.
 
+## v1.3.0 — see what breaks when, and actionable notifications (2026-08-12)
+
+From issue #3 (DunLaoghaire1): "I'd like to see when an integration will
+break. Not just that 13 will break." Shipped via PR #4, squash merged.
+
+* Dated schedule in the summary card and on the sensor; releases sort
+  numerically; dates phrased in words.
+* Alert window configurable 30 days to a year via an options flow, applied
+  without a restart. Capped at 5 individual notifications whatever the window.
+* Notifications link to releases, to a search for an existing report, and to
+  the core change. Deliberately NOT to a blank issue form: a popular
+  integration has thousands of users and duplicate issues would make this tool
+  a burden on volunteer maintainers. Verified on real repos, one already had
+  two closed issues about the exact deprecation we flag.
+* Sensor attributes were 19 KB against HA's 16 KB recorder limit, so nothing
+  was being recorded. Now 7 KB; the full report moved to diagnostics.py.
+
+**Testing method that paid for itself:** ran the branch in a real Home
+Assistant container (docker, port 8124) against the live index with nine
+genuinely affected integrations installed. That is what surfaced the recorder
+limit, a code block that would not wrap, a wrong entity id in card copy, and
+the duplicate-issue risk. None of it was visible from unit tests.
+Reproduce with `.cache/seed_test_config.py` then the docker run in that file's
+header; `.cache/ha_onboard.py` completes onboarding via the API.
+
+Attribute renames (breaking for templates): details -> findings,
+by_release -> schedule, not_in_index -> not_analysed, clean_domains ->
+clean_count. HACS minimum raised to 2024.11 for OptionsFlow.config_entry.
+
+VERIFIED: 196 passed, 3 skipped. All nine check-runs green on `5ca7208`.
+Released <https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.3.0>.
+Issue #3 left OPEN pending the reporter (it auto-closed on merge because the
+squash body said "Closes #3"; reopened deliberately).
+
+Next candidate, needs owner sign-off: move the existing-issue lookup into the
+crawler (it has a token and 5000 req/hr) and publish per integration whether a
+report exists, its state, whether issues are enabled, and the repo's issue
+templates. The card could then say "already reported and closed, update" or
+"open report, add a reaction" or offer a prefilled draft in the repo's own
+template format. Doing it on the user's box is wrong: unauthenticated GitHub
+search is ~10 req/min and asking for a token breaks the no-account promise.
+
 ## v1.2.2 — setup no longer waits for the local scan (2026-08-12)
 
 First real user bug report: issue #1 (DunLaoghaire1, HA 2026.8.1), config
