@@ -4,6 +4,25 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.3.1 — 2026-08-12
+
+* **An awaited call is no longer reported as `DeviceRegistry.async_get_device`.**
+  That rule accounts for 328 of the affected integrations, so it was checked
+  against real source: 44 of 45 hand-verified findings were genuine. The one
+  that was not awaited its own API client's method of the same name. Core
+  defines the registry method as a plain `def` taking `identifiers` or
+  `connections`, so an awaited call cannot be it. Matchers gained an opt-in
+  `not_awaited` constraint and that rule now sets it.
+
+  Re-scanned against live source under Python 3.14: all 36 sampled repositories
+  the rule hits are unchanged, and the false positive drops to zero. Roughly 2%
+  of that rule's repositories, about seven maintainers, stop being told about a
+  problem they do not have.
+
+  Your local scan picks this up as soon as you update. The published index
+  corrects itself over the following days as the daily crawl works back through
+  the catalogue, which `ENGINE_VERSION` 4 forces.
+
 ## 1.3.0 — 2026-08-12
 
 ### You can now see what breaks when (#3)
