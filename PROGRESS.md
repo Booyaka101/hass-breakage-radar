@@ -3,6 +3,36 @@
 Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
 kept as history.
 
+## v1.4.0 — upstream issue lookup (2026-08-12)
+
+The crawler now asks each affected repository what it already says about the
+deprecation and publishes it as an optional `upstream` field. Notifications
+say: already reported and open (react to it), reported and closed (a fix may
+have shipped), archived (plan a replacement), issues disabled (nowhere to
+report), or nothing found (link the search).
+
+Design decisions worth keeping:
+* **The lookup belongs in the crawler.** GitHub's search API allows 30 requests
+  a minute whether authenticated or not, so doing it per user would need a
+  token from each of them and break the no-account promise. It rides the daily
+  slice, so upstream coverage grows with the scan.
+* **A raw search hit is not evidence.** A symbol search matches tracebacks
+  pasted into unrelated reports; klejejs/ha-thermia returns "Bug: Everything is
+  unavailable" for `async_extract_entity_ids`. The title must name the symbol
+  or use removal language. Verified: three real reports pass, that one fails.
+* **The index stays schema 1.** `validate_index` rejects anything else, so
+  bumping would have broken every installed version to add a nicety.
+
+No-breakage check before merging, since that was the condition: loaded the
+shipped v1.3.1 modules from git and ran them against an index carrying
+`upstream`. validate_index OK, report byte-identical to the same index without
+the field. Board and index rebuilt with real annotated data: board 437 KB,
+index did not balloon.
+
+SHIPPED via PR #7, merged as `8360e82`, all nine check-runs green, released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.4.0>.
+214 tests. The next daily crawl starts populating `upstream`.
+
 ## v1.3.1 — verified the rule carrying 328 integrations (2026-08-12)
 
 `device-registry-async-get-device` accounts for 328 of 593 affected
