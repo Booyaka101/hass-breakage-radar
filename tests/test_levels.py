@@ -206,6 +206,7 @@ def test_imminent_raises_its_own_warning_issue_and_steps_down_again(sample_index
         "domain": "fixture_tracker",
         "release": "2027.5",
         "days": "24",
+        "day_word": "days",
         "due": "May 2027, about 24 days away",
     }
     # Nothing left over, so no summary issue.
@@ -254,6 +255,8 @@ def test_the_summary_only_counts_what_it_still_lists(sample_index):
     # The schedule pairs each release with what breaks in it, which is the
     # whole point of issue #3.
     assert placeholders["schedule"] == (
-        "2027.5 - May 2027, about 9 months away: fixture_tracker"
+        "- **May 2027, about 9 months away** (2027.5): `fixture_tracker`"
     )
+    assert placeholders["noun"] == "integration"
+    assert placeholders["verb"] == "uses"
     assert ir.created[(DOMAIN, ISSUE_ID)]["severity"] == ir.IssueSeverity.WARNING

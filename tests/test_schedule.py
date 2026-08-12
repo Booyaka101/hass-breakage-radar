@@ -148,9 +148,12 @@ def test_format_schedule_is_one_readable_line_per_release(many_releases):
     text = format_schedule(report["schedule"])
 
     assert text.splitlines()[0] == (
-        "2026.11 - November 2026, about 3 months away: alpha, beta"
+        "- **November 2026, about 3 months away** (2026.11): `alpha`, `beta`"
     )
-    assert "2027.5 - May 2027, about 9 months away: delta, epsilon, zeta" in text
+    assert (
+        "- **May 2027, about 9 months away** (2027.5): "
+        "`delta`, `epsilon`, `zeta`" in text
+    )
     assert len(text.splitlines()) == 5
 
 
@@ -161,8 +164,8 @@ def test_format_schedule_can_show_only_the_summarised_domains(many_releases):
     )
     text = format_schedule(report["schedule"], only={"gamma", "eta"})
     assert text.splitlines() == [
-        "2027.2 - February 2027, about 6 months away: gamma",
-        "2027.8 - August 2027, about a year away: eta",
+        "- **February 2027, about 6 months away** (2027.2): `gamma`",
+        "- **August 2027, about a year away** (2027.8): `eta`",
     ]
 
 
@@ -184,7 +187,7 @@ def test_format_schedule_caps_long_lists(sample_index):
     )
     lines = format_schedule(report["schedule"]).splitlines()
     assert len(lines) == MAX_SCHEDULE_LINES + 1
-    assert lines[-1].startswith("...and 4 more")
+    assert lines[-1].startswith("- ...and 4 more")
 
 
 def test_the_summary_card_shows_the_schedule(many_releases):
@@ -208,9 +211,11 @@ def test_the_summary_card_shows_the_schedule(many_releases):
     async_sync_issue(None, report)
 
     placeholders = ir.created[(DOMAIN, ISSUE_ID)]["translation_placeholders"]
-    assert "2026.11 - November 2026, about 3 months away: alpha, beta" in (
+    assert "**November 2026, about 3 months away** (2026.11)" in (
         placeholders["schedule"]
     )
+    assert placeholders["noun"] == "integrations"
+    assert placeholders["verb"] == "use"
     assert placeholders["earliest_due"] == "November 2026, about 3 months away"
     assert placeholders["window"] == "30"
     assert placeholders["count"] == "8"

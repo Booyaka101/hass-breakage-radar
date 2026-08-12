@@ -24,9 +24,11 @@ MAX_DOMAINS_PER_LINE = 6
 
 
 def format_schedule(schedule: list[dict], only: set[str] | None = None) -> str:
-    """A dated timeline of what breaks when, one release per line.
+    """A dated timeline of what breaks when, as a markdown list.
 
-    ``2027.5 - May 2027, about 9 months away: pycupra, some_tracker``
+    A list rather than a code block because Home Assistant renders repair
+    descriptions as markdown, and a fenced block scrolls sideways instead of
+    wrapping, which hides the integration names on narrow screens.
     """
     lines: list[str] = []
     hidden = 0
@@ -40,13 +42,18 @@ def format_schedule(schedule: list[dict], only: set[str] | None = None) -> str:
             hidden += len(domains)
             continue
         shown = domains[:MAX_DOMAINS_PER_LINE]
-        names = ", ".join(shown)
+        names = ", ".join(f"`{name}`" for name in shown)
         if len(domains) > len(shown):
             names += f" and {len(domains) - len(shown)} more"
-        lines.append(f"{group['release']} - {group['due']}: {names}")
+        lines.append(f"- **{group['due']}** ({group['release']}): {names}")
     if hidden:
-        lines.append(f"...and {hidden} more further out.")
+        lines.append(f"- ...and {hidden} more further out.")
     return "\n".join(lines)
+
+
+def plural(count: int, singular: str, plural_form: str | None = None) -> str:
+    """``1 integration`` / ``9 integrations``, since a title cannot say (s)."""
+    return singular if count == 1 else (plural_form or f"{singular}s")
 
 
 @callback
@@ -78,6 +85,7 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
 
     for domain, entry in imminent.items():
         release = str(entry.get("release", ""))
+        days = max(int(entry.get("days", 0)), 0)
         ir.async_create_issue(
             hass,
             DOMAIN,
@@ -89,7 +97,8 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
             translation_placeholders={
                 "domain": domain,
                 "release": release,
-                "days": str(max(int(entry.get("days", 0)), 0)),
+                "days": str(days),
+                "day_word": plural(days, "day"),
                 "due": due_by_release.get(release, release),
             },
             learn_more_url=LEARN_MORE_URL,
@@ -140,6 +149,8 @@ def async_sync_issue(hass: HomeAssistant, report: dict) -> None:
         translation_key="integrations_affected",
         translation_placeholders={
             "count": str(len(summarised)),
+            "noun": plural(len(summarised), "integration"),
+            "verb": "uses" if len(summarised) == 1 else "use",
             "earliest": first["release"] if first else "a future release",
             "earliest_due": first["due"] if first else "",
             "schedule": format_schedule(schedule, only=set(summarised)),
