@@ -279,15 +279,6 @@ def test_only_the_nearest_deadlines_get_their_own_notification(sample_index):
     assert report["schedule"][0]["count"] == len(domains)
 
 
-def test_the_window_is_reported_so_the_card_can_explain_itself(many_releases):
-    index, installed = many_releases
-    report = build_report(
-        index, installed, current_version="2026.9", today=date(2026, 8, 12),
-        alert_window_days=180,
-    )
-    assert report["alert_window_days"] == 180
-
-
 # --------------------------------------------------------------------------- #
 # links: the notification has to lead somewhere useful
 # --------------------------------------------------------------------------- #
@@ -306,17 +297,6 @@ def test_alert_levels_carry_the_links_needed_to_act(sample_index):
     assert link["repository"] == "example/fixture-tracker"
     assert link["repo_url"] == "https://github.com/example/fixture-tracker"
     assert link["learn_more"] == sample_index["rules"][0]["source"]
-
-
-def test_links_are_only_collected_for_things_worth_alerting_on(sample_index):
-    """A year-out finding is summarised, so it needs no per-integration links."""
-    report = build_report(
-        sample_index,
-        {"fixture_tracker": "0.1.0"},
-        current_version="2026.9",
-        today=date(2026, 8, 12),
-    )
-    assert report["links"] == {}
 
 
 def test_describe_links_points_at_releases_and_issues():

@@ -47,6 +47,7 @@ def test_options_flow_offers_the_documented_choices():
 
     selector = form["data_schema"].schema[marker]
     assert selector.config.options == [str(d) for d in ALERT_WINDOW_CHOICES]
+    assert ALERT_WINDOW_DAYS in ALERT_WINDOW_CHOICES, "default must be selectable"
     assert selector.config.translation_key == CONF_ALERT_WINDOW_DAYS
 
 
@@ -69,10 +70,6 @@ def test_every_offered_choice_has_a_translated_label(repo_root):
     labels = strings["selector"][CONF_ALERT_WINDOW_DAYS]["options"]
     assert set(labels) == {str(days) for days in ALERT_WINDOW_CHOICES}
     assert all(label.strip() for label in labels.values())
-
-
-def test_the_default_window_is_one_of_the_choices():
-    assert ALERT_WINDOW_DAYS in ALERT_WINDOW_CHOICES
 
 
 def test_strings_reference_the_real_entity_id(repo_root):
