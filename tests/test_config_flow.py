@@ -73,3 +73,44 @@ def test_every_offered_choice_has_a_translated_label(repo_root):
 
 def test_the_default_window_is_one_of_the_choices():
     assert ALERT_WINDOW_DAYS in ALERT_WINDOW_CHOICES
+
+
+def test_strings_reference_the_real_entity_id(repo_root):
+    """The cards tell people where to look, so the id has to be right."""
+    from custom_components.breakage_radar.const import DOMAIN
+
+    base = repo_root / "custom_components" / "breakage_radar"
+    strings = (base / "strings.json").read_text(encoding="utf-8")
+    sensor_src = (base / "sensor.py").read_text(encoding="utf-8")
+
+    assert 'f"sensor.{DOMAIN}_affected"' in sensor_src
+    real = f"sensor.{DOMAIN}_affected"
+    assert f"`{real}`" in strings
+    # No reference to an entity id that does not exist.
+    for line in strings.splitlines():
+        for token in line.split("`"):
+            if token.startswith("sensor."):
+                assert token == real, f"unknown entity id in strings.json: {token}"
+
+
+def test_every_placeholder_in_strings_is_supplied(repo_root):
+    """A missing placeholder renders as a literal {name} in the card."""
+    import json
+    import re
+
+    from custom_components.breakage_radar.repairs import (
+        BROKEN_ISSUE_PREFIX,
+        IMMINENT_ISSUE_PREFIX,
+    )
+
+    base = repo_root / "custom_components" / "breakage_radar"
+    strings = json.loads((base / "strings.json").read_text(encoding="utf-8"))
+    repairs_src = (base / "repairs.py").read_text(encoding="utf-8")
+
+    for key, issue in strings["issues"].items():
+        used = set(re.findall(r"\{(\w+)\}", issue["title"] + issue["description"]))
+        for name in used:
+            assert f'"{name}"' in repairs_src, (
+                f"issue {key} uses {{{name}}} but repairs.py never supplies it"
+            )
+    assert BROKEN_ISSUE_PREFIX and IMMINENT_ISSUE_PREFIX

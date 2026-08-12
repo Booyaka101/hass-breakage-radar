@@ -88,14 +88,16 @@ Assistant install.
 Copy `custom_components/breakage_radar/` into your Home Assistant `config/custom_components/`
 directory and restart, then add the integration from the UI.
 
-The config flow has a single confirmation step — there is nothing to configure.
+The config flow has a single confirmation step. One setting is available afterwards
+under **Configure**: how far ahead a deadline gets its own notification.
 
 ### What you get
 
 `sensor.breakage_radar_affected` — the number of installed custom integrations with at
-least one finding.
+least one finding. The full report, including every message and link, is one click away
+under **Download diagnostics** on the integration's page.
 
-Findings come from two sources, and every `details` entry says which:
+Findings come from two sources, and every `findings` entry says which:
 
 * `source: local` — the integration parsed the **installed bytes** in your own
   `custom_components/` directory with the same eight AST matchers the crawler
@@ -108,10 +110,13 @@ Findings come from two sources, and every `details` entry says which:
 ```yaml
 state: 2
 attributes:
-  by_release:
-    "2027.5": [some_tracker]
-    "2027.8": [some_tracker, another_integration]
-  details:
+  schedule:
+    - release: "2027.5"
+      due: "May 2027, about 9 months away"
+      when: imminent
+      domains: [some_tracker]
+      count: 1
+  findings:
     - domain: some_tracker
       rule_id: legacy-device-tracker-platform
       breaks_in: "2027.5"
@@ -121,11 +126,6 @@ attributes:
       source: local
       when: imminent        # broken_now | imminent | upcoming
       days_until: 21
-      repository: someone/some-tracker
-      scanned_version: "1.3.2"
-      installed_version: "1.3.2"
-      message: "Implements the legacy (non-config-entry) device tracker platform API..."
-      learn_more: https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/
   index_generated_utc: "2026-08-11T03:57:51Z"
   affected_domains: [some_tracker, another_integration]
   broken_now: {}
@@ -133,11 +133,9 @@ attributes:
   imminent:
     some_tracker: {release: "2027.5", days: 21}
   imminent_count: 1
-  summarised_domains: [another_integration]
   alert_window_days: 30
-  not_in_index: [broken_thing]
-  not_in_index_reasons:
-    broken_thing: "1 of 3 Python file(s) could not be parsed"
+  not_analysed: [broken_thing]
+  clean_count: 4
   files_scanned: 412
   unparsed_files: 1
   skipped_files: 0
@@ -146,8 +144,8 @@ attributes:
 ```
 
 A domain that is nowhere in the index but parses clean locally lands in
-`clean_domains`; only a domain **neither** side could analyse stays in
-`not_in_index`, with the reason alongside. `files_scanned`, `unparsed_files` and
+the clean count; only a domain **neither** side could analyse stays in
+`not_analysed`. `files_scanned`, `unparsed_files` and
 `skipped_files` make a truncated scan visible — it is never silently reported
 as clean. The scan runs in an executor and is cached on each integration's file
 count, newest mtime, total size and the rules fingerprint, so the 12-hourly
@@ -415,7 +413,7 @@ produces **exactly one** finding:
 ```
 
 and with it installed the sensor reads `1` with
-`by_release == {"2027.5": ["fixture_tracker"]}`.
+`schedule[0] == {release: "2027.5", domains: ["fixture_tracker"], ...}`.
 
 Lookalikes produce **zero** findings — `setup_scanner` inside a class body is a method,
 and `setup_scanner` in `sensor.py` is just a function with an unlucky name. Both are

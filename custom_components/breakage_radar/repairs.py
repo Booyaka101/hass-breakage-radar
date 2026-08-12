@@ -56,6 +56,36 @@ def plural(count: int, singular: str, plural_form: str | None = None) -> str:
     return singular if count == 1 else (plural_form or f"{singular}s")
 
 
+def describe_links(link: dict | None) -> str:
+    """Where to go next, as a markdown sentence.
+
+    The whole point of a notification about somebody else's code is getting
+    the reader to that repository, so the links go in the body rather than
+    leaving them to search for it.
+    """
+    link = link or {}
+    repo_url = link.get("repo_url")
+    repository = link.get("repository") or "the integration's repository"
+    learn_more = link.get("learn_more") or ""
+
+    parts: list[str] = []
+    if repo_url:
+        parts.append(
+            f"Check [{repository}]({repo_url}/releases) for a newer release, "
+            f"or [open an issue]({repo_url}/issues) if there isn't one."
+        )
+    else:
+        parts.append(
+            "Check the integration's own repository for a newer release, or "
+            "raise it with whoever maintains it."
+        )
+    if learn_more.startswith("http"):
+        parts.append(f"[What Home Assistant is changing]({learn_more})")
+    elif learn_more:
+        parts.append(f"What Home Assistant is changing: `{learn_more}`")
+    return "\n\n".join(parts)
+
+
 @callback
 def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
     """One card per integration that needs attention now, or soon.
@@ -66,6 +96,7 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
     """
     broken: dict[str, str] = report.get("broken_now") or {}
     imminent: dict[str, dict] = report.get("imminent") or {}
+    links: dict[str, dict] = report.get("links") or {}
     due_by_release = {
         group["release"]: group["due"] for group in report.get("schedule") or []
     }
@@ -79,8 +110,12 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
             is_persistent=False,
             severity=ir.IssueSeverity.ERROR,
             translation_key="integration_broken",
-            translation_placeholders={"domain": domain, "release": str(release)},
-            learn_more_url=LEARN_MORE_URL,
+            translation_placeholders={
+                "domain": domain,
+                "release": str(release),
+                "where": describe_links(links.get(domain)),
+            },
+            learn_more_url=links.get(domain, {}).get("repo_url") or LEARN_MORE_URL,
         )
 
     for domain, entry in imminent.items():
@@ -100,8 +135,9 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
                 "days": str(days),
                 "day_word": plural(days, "day"),
                 "due": due_by_release.get(release, release),
+                "where": describe_links(links.get(domain)),
             },
-            learn_more_url=LEARN_MORE_URL,
+            learn_more_url=links.get(domain, {}).get("repo_url") or LEARN_MORE_URL,
         )
 
     # Anything that dropped out of a level, including an uninstalled component
@@ -155,6 +191,7 @@ def async_sync_issue(hass: HomeAssistant, report: dict) -> None:
             "earliest_due": first["due"] if first else "",
             "schedule": format_schedule(schedule, only=set(summarised)),
             "window": str(report.get("alert_window_days") or 0),
+            "board_url": LEARN_MORE_URL,
         },
         learn_more_url=LEARN_MORE_URL,
     )

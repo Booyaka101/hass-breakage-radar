@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Breakage Radar",
-        "description": "Breakage Radar compares the custom integrations installed on this system against a public index of Home Assistant APIs that are scheduled for removal, and tells you which release removes them.\n\nThe index is downloaded from {index_url} every 12 hours. Nothing is uploaded and no account is needed."
+        "description": "Home Assistant announces API removals about a year ahead. Custom integrations often don't get updated in time, and the warning only ever reaches your log file.\n\nBreakage Radar checks the custom integrations installed here against a public index of those removals, and against your own installed code, so you find out before an upgrade breaks something.\n\nThe index is downloaded from {index_url} every 12 hours. Nothing is uploaded and no account is needed."
       }
     },
     "abort": {
@@ -15,7 +15,7 @@
     "step": {
       "init": {
         "title": "Breakage Radar options",
-        "description": "Integrations breaking inside the alert window get their own repair notification. Everything further out is listed together in one summary, so a deadline a year away doesn't sit in your notifications for months.",
+        "description": "An integration breaking inside the alert window gets its own notification. Everything further out is listed together in one summary, so a deadline a year away doesn't sit in your notifications for months.",
         "data": {
           "alert_window_days": "Alert me this far ahead"
         },
@@ -28,9 +28,9 @@
   "selector": {
     "alert_window_days": {
       "options": {
-        "30": "30 days (one release)",
-        "60": "60 days (two releases)",
-        "90": "90 days (three releases)",
+        "30": "30 days (about one release)",
+        "60": "60 days (about two releases)",
+        "90": "90 days (about three releases)",
         "180": "6 months",
         "365": "1 year"
       }
@@ -39,22 +39,22 @@
   "entity": {
     "sensor": {
       "affected": {
-        "name": "Affected"
+        "name": "Affected integrations"
       }
     }
   },
   "issues": {
     "integrations_affected": {
       "title": "{count} custom {noun} will break in a future release",
-      "description": "{count} installed custom {noun} {verb} Home Assistant APIs that are scheduled for removal. Nothing breaks today. The first deadline is {earliest_due}.\n\n**What breaks, and when**\n\n{schedule}\n\nEach one has to be fixed by whoever maintains it. The useful next step is to check the integration's repository for a newer release, or raise it with the author while there is still time. `sensor.breakage_radar_affected` lists the exact file and line for every finding.\n\nAnything breaking within {window} days gets its own notification instead of being listed here. You can change that in this integration's options."
+      "description": "{count} installed custom {noun} {verb} Home Assistant APIs that are scheduled for removal. Nothing is broken today. The first deadline is {earliest_due}.\n\n**What breaks, and when**\n\n{schedule}\n\nEach one has to be fixed by whoever maintains it, so the useful next step is to check those repositories for a newer release. Anything breaking within {window} days gets its own notification with a direct link, which you can change in this integration's options.\n\nThe exact file and line for every finding is on `sensor.breakage_radar_affected`, and the full report is under **Download diagnostics** on this integration's page.\n\n[Look up any integration on the public board]({board_url})"
     },
     "integration_imminent": {
       "title": "{domain} breaks in about {days} {day_word}",
-      "description": "Home Assistant {release} removes an API that `{domain}` still uses, and that release is due {due}.\n\nCheck the integration's repository for a newer release that fixes it. If there isn't one, consider raising an issue there, or finding a replacement before you upgrade.\n\nThis notification clears itself once the integration no longer uses the removed API. The exact file and line are in the details on `sensor.breakage_radar_affected`."
+      "description": "Home Assistant {release} removes an API that `{domain}` still uses, and that release is due {due}.\n\n{where}\n\nIf no fix arrives before then, you can stay on your current Home Assistant version or replace the integration. This notification clears itself once `{domain}` no longer uses the removed API."
     },
     "integration_broken": {
-      "title": "{domain} uses an API that was removed in Home Assistant {release}",
-      "description": "This system is running Home Assistant {release} or later, and `{domain}` still uses an API that release removed. It is most likely failing right now.\n\nCheck the integration's repository for an update. If there isn't one, the integration will need replacing, or you can raise it with the author.\n\nThis notification clears itself once the integration no longer uses the removed API. The exact file and line are in the details on `sensor.breakage_radar_affected`."
+      "title": "{domain} uses an API that Home Assistant {release} removed",
+      "description": "This system runs Home Assistant {release} or later, and `{domain}` still uses an API that release removed, so it is most likely failing right now.\n\n{where}\n\nThis notification clears itself once `{domain}` no longer uses the removed API. The exact file and line are on `sensor.breakage_radar_affected`."
     }
   }
 }

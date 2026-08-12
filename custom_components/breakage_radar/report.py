@@ -120,6 +120,7 @@ def build_report(
     unknown_reasons: dict[str, str] = {}
     broken_now: dict[str, str] = {}
     imminent: dict[str, dict[str, Any]] = {}
+    links: dict[str, dict[str, str]] = {}
 
     def _days_until(release: str) -> int | None:
         if today is None:
@@ -166,6 +167,22 @@ def build_report(
                         "release": release,
                         "days": days if days is not None else 0,
                     }
+            if when in ("broken_now", "imminent"):
+                # What the notification needs to point somewhere useful.
+                links.setdefault(
+                    domain,
+                    {
+                        "repository": (entry or {}).get("full_name", ""),
+                        "repo_url": (entry or {}).get("repo_url", ""),
+                        # source_url is a real link; source can be a bare
+                        # "file.py:418" reference for core-derived rules.
+                        "learn_more": (
+                            rules.get(finding.get("rule_id"), {}).get("source_url")
+                            or rules.get(finding.get("rule_id"), {}).get("source")
+                            or ""
+                        ),
+                    },
+                )
             rule = rules.get(finding.get("rule_id"), {})
             details.append(
                 {
@@ -245,12 +262,6 @@ def build_report(
     return {
         "affected_count": len(affected),
         "affected_domains": affected,
-        "by_release": {
-            release: sorted(domains)
-            for release, domains in sorted(
-                by_release.items(), key=lambda item: parse_version(item[0])
-            )
-        },
         "details": details[:MAX_DETAILS],
         "details_truncated": truncated,
         "total_findings": len(details),
@@ -262,6 +273,7 @@ def build_report(
         "broken_now_count": len(broken_now),
         "imminent": imminent,
         "imminent_count": len(imminent),
+        "links": links,
         "schedule": schedule,
         "summarised_domains": sorted(
             set(affected) - set(broken_now) - set(imminent)

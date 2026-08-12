@@ -286,3 +286,127 @@ def test_the_window_is_reported_so_the_card_can_explain_itself(many_releases):
         alert_window_days=180,
     )
     assert report["alert_window_days"] == 180
+
+
+# --------------------------------------------------------------------------- #
+# links: the notification has to lead somewhere useful
+# --------------------------------------------------------------------------- #
+
+
+def test_alert_levels_carry_the_links_needed_to_act(sample_index):
+    """A notification about someone else's code is only useful if it points
+    at that repository."""
+    report = build_report(
+        sample_index,
+        {"fixture_tracker": "0.1.0"},
+        current_version="2027.4",
+        today=date(2027, 4, 11),
+    )
+    link = report["links"]["fixture_tracker"]
+    assert link["repository"] == "example/fixture-tracker"
+    assert link["repo_url"] == "https://github.com/example/fixture-tracker"
+    assert link["learn_more"] == sample_index["rules"][0]["source"]
+
+
+def test_links_are_only_collected_for_things_worth_alerting_on(sample_index):
+    """A year-out finding is summarised, so it needs no per-integration links."""
+    report = build_report(
+        sample_index,
+        {"fixture_tracker": "0.1.0"},
+        current_version="2026.9",
+        today=date(2026, 8, 12),
+    )
+    assert report["links"] == {}
+
+
+def test_describe_links_points_at_releases_and_issues():
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(
+        {
+            "repository": "example/thing",
+            "repo_url": "https://github.com/example/thing",
+            "learn_more": "https://developers.home-assistant.io/blog/whatever",
+        }
+    )
+    assert "[example/thing](https://github.com/example/thing/releases)" in text
+    assert "[open an issue](https://github.com/example/thing/issues)" in text
+    assert "https://developers.home-assistant.io/blog/whatever" in text
+
+
+def test_describe_links_degrades_when_the_repository_is_unknown():
+    """A locally scanned fork is not in the index, so there is no repo URL."""
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links({"repository": "", "repo_url": "", "learn_more": ""})
+    assert "integration's own repository" in text
+    assert "](" not in text
+
+
+def test_the_sensor_stays_inside_the_recorder_attribute_limit(sample_index):
+    """Home Assistant drops state attributes over 16 KB. A system with many
+    findings used to produce 19 KB, so the recorder stored nothing."""
+    import json as _json
+
+    from custom_components.breakage_radar.sensor import BreakageRadarSensor
+
+    template = sample_index["integrations"][0]
+    finding = template["findings"][0]
+    domains = [f"integration_number_{n:03d}" for n in range(60)]
+    sample_index["integrations"] = [
+        {
+            **template,
+            "domain": domain,
+            "domains": [domain],
+            "full_name": f"some-long-owner-name/{domain}-for-home-assistant",
+            "findings": [
+                {
+                    **finding,
+                    "breaks_in": "2027.5",
+                    "file": f"custom_components/{domain}/a/deeply/nested/module.py",
+                    "line": n,
+                }
+                for n in range(1, 6)
+            ],
+        }
+        for domain in domains
+    ]
+    report = build_report(
+        sample_index,
+        {d: "1.0.0" for d in domains},
+        current_version="2026.9",
+        today=date(2026, 8, 12),
+    )
+
+    class _Coordinator:
+        data = report
+        last_update_success = True
+        last_error = None
+        index_url = "https://booyaka101.github.io/hass-breakage-radar/index.json"
+
+    size = len(_json.dumps(BreakageRadarSensor(_Coordinator()).extra_state_attributes))
+    assert report["total_findings"] == 300
+    assert size < 16384, f"{size} bytes would be dropped by the recorder"
+
+
+def test_a_bare_source_reference_is_not_rendered_as_a_link():
+    """Core-derived rules cite a file and line, not a URL."""
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(
+        {"repository": "", "repo_url": "", "learn_more": "homeassistant/helpers/service.py:418"}
+    )
+    assert "`homeassistant/helpers/service.py:418`" in text
+    assert "](homeassistant" not in text
+
+
+def test_source_url_is_preferred_over_a_bare_source(sample_index):
+    sample_index["rules"][0]["source_url"] = "https://github.com/home-assistant/core/blob/dev/x.py#L1"
+    sample_index["rules"][0]["source"] = "homeassistant/x.py:1"
+    report = build_report(
+        sample_index,
+        {"fixture_tracker": "0.1.0"},
+        current_version="2027.4",
+        today=date(2027, 4, 11),
+    )
+    assert report["links"]["fixture_tracker"]["learn_more"].startswith("https://")

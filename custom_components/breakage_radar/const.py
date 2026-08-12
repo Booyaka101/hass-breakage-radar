@@ -19,9 +19,13 @@ UPDATE_INTERVAL: Final = timedelta(hours=12)
 #: Network timeout for one index fetch, in seconds.
 FETCH_TIMEOUT: Final = 30
 
-#: Hard cap on the ``details`` attribute so a very affected system cannot
-#: produce a state object Home Assistant refuses to store.
-MAX_DETAILS: Final = 100
+#: Findings kept in the report. Everything beyond this is counted but not
+#: listed; the full set is in the downloadable diagnostics.
+MAX_DETAILS: Final = 200
+
+#: Findings put on the sensor. The recorder drops state attributes over 16 KB,
+#: so this stays well inside it even with long file paths.
+MAX_SENSOR_FINDINGS: Final = 40
 
 #: Deadlines inside this many days get their own notification; everything else
 #: is listed in the summary. Configurable per entry via the options flow.
@@ -38,6 +42,6 @@ MAX_ALERT_CARDS: Final = 5
 
 ISSUE_ID: Final = "integrations_affected"
 
-ATTR_BY_RELEASE: Final = "by_release"
-ATTR_DETAILS: Final = "details"
+ATTR_SCHEDULE: Final = "schedule"
+ATTR_DETAILS: Final = "findings"
 ATTR_INDEX_GENERATED: Final = "index_generated_utc"

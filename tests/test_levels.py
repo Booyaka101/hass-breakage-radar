@@ -202,13 +202,11 @@ def test_imminent_raises_its_own_warning_issue_and_steps_down_again(sample_index
     key = (DOMAIN, "imminent_fixture_tracker")
     assert key in ir.created
     assert ir.created[key]["severity"] == ir.IssueSeverity.WARNING
-    assert ir.created[key]["translation_placeholders"] == {
-        "domain": "fixture_tracker",
-        "release": "2027.5",
-        "days": "24",
-        "day_word": "days",
-        "due": "May 2027, about 24 days away",
-    }
+    placeholders = ir.created[key]["translation_placeholders"]
+    assert placeholders["days"] == "24"
+    assert placeholders["day_word"] == "days"
+    assert placeholders["due"] == "May 2027, about 24 days away"
+    assert "example/fixture-tracker" in placeholders["where"]
     # Nothing left over, so no summary issue.
     assert (DOMAIN, ISSUE_ID) not in ir.created
 

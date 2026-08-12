@@ -36,10 +36,34 @@ At most five notifications are raised at once, however wide the window. A
 raised 13 separate notifications; the rest stay in the summary, which lists
 every date anyway.
 
+### Notifications link to where you need to go
+
+Each per-integration notification now links straight to that integration's
+releases page and its issue tracker, plus the Home Assistant change that
+causes the break. The summary links the public board. Previously every
+notification pointed at the same project homepage.
+
+### The sensor no longer breaks the recorder
+
+With nine affected integrations the sensor produced 19 KB of state attributes,
+past the recorder's 16 KB limit, so Home Assistant logged a warning and stored
+**none** of them. The sensor now carries a compact summary (7 KB in the same
+situation, and a test pins it under the limit for 300 findings):
+
+* `details` is now `findings`, trimmed to the fields worth templating on.
+* The full report, with every message, link and version, moved to
+  **Download diagnostics** on the integration page.
+* `by_release` is gone. `schedule` carries the same information with dates.
+* `not_in_index` is now `not_analysed`, and `clean_domains` became
+  `clean_count`.
+
 ### Wording
 
-All three notifications were rewritten to say what happened and what to do
-about it, without jargon. The options screen explains what the setting changes.
+All three notifications and the options screen were rewritten to say what
+happened and what to do about it. The entity is now called "Affected
+integrations" rather than "Affected", titles say "1 integration" or
+"9 integrations" instead of "integration(s)", and the setup screen explains
+what the integration is for rather than only how it fetches data.
 
 ## 1.2.2 — 2026-08-12
 

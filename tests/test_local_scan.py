@@ -100,7 +100,7 @@ def test_true_positive_not_in_index_gets_a_local_finding(
     sensor = BreakageRadarSensor(FakeCoordinator(report))
 
     assert sensor.native_value == 1
-    assert report["by_release"] == {"2027.5": ["fixture_tracker"]}
+    assert [g["release"] for g in report["schedule"]] == ["2027.5"]
     assert report["details"] == [
         {
             "domain": "fixture_tracker",
@@ -384,7 +384,7 @@ def test_sensor_exposes_the_scan_counters(
     assert attributes["files_scanned"] == 1
     assert attributes["unparsed_files"] == 0
     assert attributes["skipped_files"] == 0
-    assert attributes["not_in_index_reasons"] == {}
+    assert attributes["not_analysed"] == []
 
 
 # --------------------------------------------------------------------------- #
