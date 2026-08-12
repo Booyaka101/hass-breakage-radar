@@ -4,6 +4,67 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.3.0 — 2026-08-12
+
+### You can now see what breaks when (#3)
+
+The summary notification used to list affected integrations in one flat line
+and their release deadlines in another, so with 13 affected you could not tell
+which one broke in which release. It now shows a dated schedule:
+
+```
+2026.10 - October 2026, about 2 months away: argoclima, miele, thermia and 1 more
+2026.11 - November 2026, about 3 months away: bosch, octopus_energy, spook
+2027.8  - August 2027, about a year away: yandex_station
+```
+
+* Dates are written the way a person would say them, not as day counts.
+* The same schedule is on the sensor as a `schedule` attribute, and every
+  `details` entry gained a readable `due` field, so it is easy to build a
+  dashboard card from it.
+* Releases sort numerically, so `2027.10` comes after `2027.9`.
+
+### The alert window is configurable
+
+**Settings > Devices & Services > Breakage Radar > Configure.** Choose how far
+ahead a deadline gets its own notification: 30, 60 or 90 days, 6 months or a
+year. The default stays 30 days, and changing it applies immediately without a
+restart.
+
+At most five notifications are raised at once, however wide the window. A
+90 day window on a system with 13 affected integrations would otherwise have
+raised 13 separate notifications; the rest stay in the summary, which lists
+every date anyway.
+
+### Notifications link to where you need to go
+
+Each per-integration notification now links straight to that integration's
+releases page and its issue tracker, plus the Home Assistant change that
+causes the break. The summary links the public board. Previously every
+notification pointed at the same project homepage.
+
+### The sensor no longer breaks the recorder
+
+With nine affected integrations the sensor produced 19 KB of state attributes,
+past the recorder's 16 KB limit, so Home Assistant logged a warning and stored
+**none** of them. The sensor now carries a compact summary (7 KB in the same
+situation, and a test pins it under the limit for 300 findings):
+
+* `details` is now `findings`, trimmed to the fields worth templating on.
+* The full report, with every message, link and version, moved to
+  **Download diagnostics** on the integration page.
+* `by_release` is gone. `schedule` carries the same information with dates.
+* `not_in_index` is now `not_analysed`, and `clean_domains` became
+  `clean_count`.
+
+### Wording
+
+All three notifications and the options screen were rewritten to say what
+happened and what to do about it. The entity is now called "Affected
+integrations" rather than "Affected", titles say "1 integration" or
+"9 integrations" instead of "integration(s)", and the setup screen explains
+what the integration is for rather than only how it fetches data.
+
 ## 1.2.2 — 2026-08-12
 
 * **Setup no longer waits for the local scan** (#1). The scan ran inside the

@@ -13,7 +13,7 @@ import re
 
 import pytest
 
-from custom_components.breakage_radar.const import ATTR_BY_RELEASE, MAX_DETAILS
+from custom_components.breakage_radar.const import ATTR_SCHEDULE, MAX_DETAILS
 from custom_components.breakage_radar.discovery import discover_installed
 from custom_components.breakage_radar.report import build_report, validate_index
 from custom_components.breakage_radar.sensor import BreakageRadarSensor
@@ -112,7 +112,8 @@ def test_discover_installed_survives_a_broken_manifest(tmp_path):
 def test_worked_example_report(sample_index):
     report = build_report(sample_index, {"fixture_tracker": "0.1.0"})
     assert report["affected_count"] == 1
-    assert report["by_release"] == {"2027.5": ["fixture_tracker"]}
+    assert [g["release"] for g in report["schedule"]] == ["2027.5"]
+    assert report["schedule"][0]["domains"] == ["fixture_tracker"]
     assert report["details"] == [
         {
             "domain": "fixture_tracker",
@@ -124,6 +125,7 @@ def test_worked_example_report(sample_index):
             "source": "index",
             "when": "upcoming",
             "days_until": None,
+            "due": "May 2027",
             "repository": "example/fixture-tracker",
             "scanned_version": "0.1.0",
             "installed_version": "0.1.0",
@@ -155,7 +157,7 @@ def test_clean_and_unknown_domains_are_separated(sample_index):
 def test_empty_installation_gives_an_empty_report(sample_index):
     report = build_report(sample_index, {})
     assert report["affected_count"] == 0
-    assert report["by_release"] == {}
+    assert report["schedule"] == []
     assert report["earliest_release"] is None
 
 
@@ -209,11 +211,11 @@ def test_sensor_state_and_attributes(sample_index):
     sensor = BreakageRadarSensor(FakeCoordinator(report))
 
     assert sensor.native_value == 1
-    assert sensor.extra_state_attributes[ATTR_BY_RELEASE] == {
-        "2027.5": ["fixture_tracker"]
-    }
+    schedule = sensor.extra_state_attributes[ATTR_SCHEDULE]
+    assert [g["release"] for g in schedule] == ["2027.5"]
+    assert schedule[0]["domains"] == ["fixture_tracker"]
     assert sensor.entity_id == "sensor.breakage_radar_affected"
-    assert sensor.extra_state_attributes["details"][0]["line"] == 12
+    assert sensor.extra_state_attributes["findings"][0]["line"] == 12
     assert sensor.extra_state_attributes["index_generated_utc"] == "2026-08-08T09:00:00Z"
     assert "last_error" not in sensor.extra_state_attributes
 
@@ -232,7 +234,7 @@ def test_sensor_is_unavailable_and_keeps_the_last_report_on_failure(sample_index
 def test_sensor_with_no_data_yet_has_no_state():
     sensor = BreakageRadarSensor(FakeCoordinator(None))
     assert sensor.native_value is None
-    assert sensor.extra_state_attributes[ATTR_BY_RELEASE] == {}
+    assert sensor.extra_state_attributes[ATTR_SCHEDULE] == []
 
 
 # --------------------------------------------------------------------------- #
@@ -282,10 +284,10 @@ def test_broken_now_gets_its_own_error_issue_and_clears_on_recovery(sample_index
     broken_key = (DOMAIN, "broken_now_fixture_tracker")
     assert broken_key in ir.created
     assert ir.created[broken_key]["severity"] == ir.IssueSeverity.ERROR
-    assert ir.created[broken_key]["translation_placeholders"] == {
-        "domain": "fixture_tracker",
-        "release": "2027.5",
-    }
+    placeholders = ir.created[broken_key]["translation_placeholders"]
+    assert placeholders["domain"] == "fixture_tracker"
+    assert placeholders["release"] == "2027.5"
+    assert "example/fixture-tracker" in placeholders["where"]
     # Promoted to its own card, so it is no longer in the summary -- and with
     # nothing left to summarise the aggregate issue goes away entirely.
     assert report["summarised_domains"] == []
