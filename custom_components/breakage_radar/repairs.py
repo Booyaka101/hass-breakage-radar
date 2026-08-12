@@ -7,6 +7,8 @@ it upstream, or replace it before the deadline.
 
 from __future__ import annotations
 
+from urllib.parse import quote_plus
+
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import issue_registry as ir
 
@@ -57,27 +59,44 @@ def plural(count: int, singular: str, plural_form: str | None = None) -> str:
 
 
 def describe_links(link: dict | None) -> str:
-    """Where to go next, as a markdown sentence.
+    """Where to go next, as markdown.
 
-    The whole point of a notification about somebody else's code is getting
-    the reader to that repository, so the links go in the body rather than
-    leaving them to search for it.
+    Deliberately points at *existing* reports rather than a blank issue form.
+    Popular integrations have thousands of users; if each one files "this
+    breaks in 2027.5" the maintainer gets the same issue over and over. A
+    search for the deprecated symbol lands on the report if there is one, so
+    the reader can add a reaction instead of a duplicate, and shows an empty
+    result with a New issue button if there is not.
     """
     link = link or {}
-    repo_url = link.get("repo_url")
+    repo_url = (link.get("repo_url") or "").rstrip("/")
     repository = link.get("repository") or "the integration's repository"
+    symbol = link.get("symbol") or ""
     learn_more = link.get("learn_more") or ""
 
     parts: list[str] = []
     if repo_url:
         parts.append(
-            f"Check [{repository}]({repo_url}/releases) for a newer release, "
-            f"or [open an issue]({repo_url}/issues) if there isn't one."
+            f"First check [{repository} releases]({repo_url}/releases) for a "
+            "version that fixes it."
         )
+        if symbol:
+            query = quote_plus(f"is:issue {symbol}")
+            parts.append(
+                f"If there isn't one, [see whether it is already "
+                f"reported]({repo_url}/issues?q={query}). Adding a reaction to "
+                "an existing report helps the maintainer more than another "
+                "copy of it does."
+            )
+        else:
+            parts.append(
+                f"If there isn't one, check [the issue tracker]({repo_url}/issues) "
+                "before reporting it, so the maintainer does not get duplicates."
+            )
     else:
         parts.append(
-            "Check the integration's own repository for a newer release, or "
-            "raise it with whoever maintains it."
+            "Check the integration's own repository for a newer release, and "
+            "its issue tracker before reporting anything."
         )
     if learn_more.startswith("http"):
         parts.append(f"[What Home Assistant is changing]({learn_more})")

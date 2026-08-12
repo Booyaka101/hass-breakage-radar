@@ -329,8 +329,9 @@ def test_describe_links_points_at_releases_and_issues():
             "learn_more": "https://developers.home-assistant.io/blog/whatever",
         }
     )
-    assert "[example/thing](https://github.com/example/thing/releases)" in text
-    assert "[open an issue](https://github.com/example/thing/issues)" in text
+    assert "[example/thing releases](https://github.com/example/thing/releases)" in text
+    # Points at existing reports, never at a blank issue form.
+    assert "/issues/new" not in text
     assert "https://developers.home-assistant.io/blog/whatever" in text
 
 
@@ -341,6 +342,37 @@ def test_describe_links_degrades_when_the_repository_is_unknown():
     text = describe_links({"repository": "", "repo_url": "", "learn_more": ""})
     assert "integration's own repository" in text
     assert "](" not in text
+
+
+def test_describe_links_searches_for_an_existing_report(sample_index):
+    """Thousands of users filing the same issue would make this tool a
+    nuisance to maintainers, so it links the search, not a blank form."""
+    from custom_components.breakage_radar.repairs import describe_links
+
+    text = describe_links(
+        {
+            "repository": "example/thing",
+            "repo_url": "https://github.com/example/thing",
+            "symbol": "async_extract_config_entry_ids",
+            "learn_more": "",
+        }
+    )
+    assert (
+        "https://github.com/example/thing/issues?q=is%3Aissue+"
+        "async_extract_config_entry_ids" in text
+    )
+    assert "reaction" in text
+    assert "/issues/new" not in text
+
+
+def test_the_symbol_travels_with_the_link(sample_index):
+    report = build_report(
+        sample_index,
+        {"fixture_tracker": "0.1.0"},
+        current_version="2027.4",
+        today=date(2027, 4, 11),
+    )
+    assert report["links"]["fixture_tracker"]["symbol"] == "setup_scanner"
 
 
 def test_the_sensor_stays_inside_the_recorder_attribute_limit(sample_index):

@@ -169,17 +169,19 @@ def build_report(
                     }
             if when in ("broken_now", "imminent"):
                 # What the notification needs to point somewhere useful.
+                rule = rules.get(finding.get("rule_id"), {})
                 links.setdefault(
                     domain,
                     {
                         "repository": (entry or {}).get("full_name", ""),
                         "repo_url": (entry or {}).get("repo_url", ""),
+                        # The deprecated symbol is the search term that finds an
+                        # existing report; a vague word like "deprecated" does not.
+                        "symbol": rule.get("symbol", ""),
                         # source_url is a real link; source can be a bare
                         # "file.py:418" reference for core-derived rules.
                         "learn_more": (
-                            rules.get(finding.get("rule_id"), {}).get("source_url")
-                            or rules.get(finding.get("rule_id"), {}).get("source")
-                            or ""
+                            rule.get("source_url") or rule.get("source") or ""
                         ),
                     },
                 )
