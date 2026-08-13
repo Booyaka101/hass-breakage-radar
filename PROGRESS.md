@@ -1,7 +1,44 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.1.1 build session (2026-08-11); earlier sections are
-kept as history.
+Status at the end of the v1.4.1 session (2026-08-13); earlier sections are kept
+as history, newest first.
+
+## v1.4.1 — RSS feed of announced removals (2026-08-13)
+
+From issue #8, asked for on the announcement thread by u/ALERTua: following the
+project meant polling index.json and diffing it. The crawl now writes
+`docs/feed.xml` beside the index, one item per announced removal, and the board
+carries a rel=alternate link. Live and verified:
+<https://booyaka101.github.io/hass-breakage-radar/feed.xml> (31 KB, 60 items).
+
+`state/feed.json` records when each rule was first published, because a rule
+carries the release that removes it, not the day it was announced. Without it
+every item would look new on each rebuild and re-notify every subscriber.
+
+Reviewing the generated feed as a subscriber receives it found two things the
+tests passed over, both fixed in PR #10 after PR #9 had already merged:
+* `html.escape` is the wrong escaper for XML. It turned every apostrophe into
+  `&#x27;`, unreadable in a reader showing raw text. Use
+  `xml.sax.saxutils.escape`.
+* Rules with `kind: prose` carry a sentence where others carry a symbol, so
+  seven titles ran to 91 characters, and an id fallback produced slugs like
+  `2027.2: core-prose-sets-an-invalid-entity-id...`. Titles are capped at 72
+  and cut on a word boundary.
+
+Deliberately not built: per-integration feeds. That is a few hundred static
+files or a server, and the Home Assistant integration already answers "does
+this affect me" without polling.
+
+SHIPPED: PRs #9 and #10, released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.4.1>.
+226 tests. Publishing only, so the integration is unchanged from 1.4.0.
+
+Process note from the owner this session: slow down on releases. Four went out
+on 2026-08-12, which is four update prompts for every installed user. Batch
+work into fewer, considered releases. Also: #9 was merged while the review was
+still in progress, so the fixes landed after the merge and needed a follow-up
+PR. If a PR is merged mid-review, expect a follow-up rather than assuming the
+branch state is what shipped.
 
 ## v1.4.0 — upstream issue lookup (2026-08-12)
 
