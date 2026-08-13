@@ -4,10 +4,10 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
-## Unreleased
+## 1.4.1 — 2026-08-13
 
-Publishing only. The Home Assistant integration is unchanged, so there is no
-new version to install.
+Publishing only. The Home Assistant integration is unchanged from 1.4.0, so
+updating gains you nothing unless you want the feed.
 
 * **RSS feed at
   [`/feed.xml`](https://booyaka101.github.io/hass-breakage-radar/feed.xml)**
@@ -20,6 +20,11 @@ new version to install.
   A rule knows which release removes it, not the day it was announced, so
   `state/feed.json` records when each one was first published and the item keeps
   that date instead of looking new on every rebuild.
+
+  Titles are capped at 72 characters and cut on a word boundary, because rules
+  with `kind: prose` carry a sentence where others carry a symbol. Escaping uses
+  the XML escaper rather than `html.escape`, which was turning every apostrophe
+  into `&#x27;`.
 
 ## 1.4.0 — 2026-08-12
 
