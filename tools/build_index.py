@@ -186,7 +186,11 @@ def build_payload(
         "catalog_source": catalog_doc.get("source", ""),
         "coverage": {
             "catalog_total": len(catalog_by_name),
-            "repos_scanned": len(repos),
+            # Only repositories still in the catalogue. A renamed or delisted
+            # repository keeps its findings record, so counting the file
+            # itself can exceed catalog_total and read as nonsense.
+            "repos_scanned": len(set(repos) & set(catalog_by_name)),
+            "repos_delisted": len(set(repos) - set(catalog_by_name)),
             "repos_affected": len(integrations),
             "repos_clean": len(clean_domains),
             "repos_unreachable": len(unreachable),
