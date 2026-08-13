@@ -102,6 +102,7 @@ def test_coverage_counts(payload):
     assert payload["coverage"] == {
         "catalog_total": 3,
         "repos_scanned": 3,
+        "repos_delisted": 0,
         "repos_affected": 1,
         "repos_clean": 1,
         "repos_unreachable": 1,
@@ -205,3 +206,27 @@ def test_published_index_is_valid_and_real(repo_root):
     for integration in published["integrations"]:
         assert "/" in integration["full_name"]
         assert not integration["full_name"].startswith("example/")
+
+
+def test_coverage_never_claims_more_scanned_than_the_catalogue_holds():
+    """A repository that is renamed or delisted keeps its findings record, so
+    counting the findings file made repos_scanned exceed catalog_total.
+
+    Seen live: drake69/NeverDry became never-dry/NeverDry, and the crawl
+    reported 3089 scanned against a 3088 repository catalogue.
+    """
+    from tools.build_index import build_payload
+
+    rules_doc = {"core_version": "2026.9", "rules": []}
+    catalog_doc = {"integrations": [{"full_name": "owner/still-listed", "domain": "a"}]}
+    findings_doc = {
+        "repos": {
+            "owner/still-listed": {"status": "scanned", "domain": "a", "findings": []},
+            "owner/renamed-away": {"status": "scanned", "domain": "b", "findings": []},
+        }
+    }
+
+    coverage = build_payload(rules_doc, findings_doc, catalog_doc)["coverage"]
+    assert coverage["repos_scanned"] == 1
+    assert coverage["repos_delisted"] == 1
+    assert coverage["repos_scanned"] <= coverage["catalog_total"]
