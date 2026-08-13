@@ -7,6 +7,8 @@ Writes:
   integration consumes.
 * ``docs/index.html`` -- a dependency-free sortable board grouped by the Home
   Assistant release that does the removing.
+* ``docs/feed.xml`` -- RSS of the announced removals, so following the project
+  does not mean polling the index and diffing it yourself.
 * ``docs/.nojekyll`` -- so GitHub Pages serves the JSON untouched.
 
 Usage::
@@ -19,7 +21,6 @@ from __future__ import annotations
 import argparse
 import collections
 import html
-import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -31,11 +32,13 @@ from tools.common import (  # noqa: E402
     DATA_DIR,
     DOCS_DIR,
     LOGGER,
+    STATE_DIR,
     read_json,
     setup_logging,
     utc_now_iso,
     write_json,
 )
+from tools.feed import build as build_feed, update_first_seen  # noqa: E402
 from tools.rules_engine import is_future, parse_version  # noqa: E402
 
 SCHEMA_VERSION = 1
@@ -214,6 +217,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Breakage Radar for Home Assistant</title>
 <meta name="description" content="Which HACS custom integrations stop working, and in which Home Assistant release.">
+<link rel="alternate" type="application/rss+xml" title="Breakage Radar: announced removals" href="feed.xml">
 <style>
 :root {{
   --bg: #0f1216; --panel: #171c22; --line: #262d36; --ink: #e6edf3;
@@ -454,6 +458,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--findings", type=Path, default=DATA_DIR / "findings.json")
     parser.add_argument("--catalog", type=Path, default=DATA_DIR / "catalog.json")
     parser.add_argument("--output-dir", type=Path, default=DOCS_DIR)
+    parser.add_argument("--first-seen", type=Path, default=STATE_DIR / "feed.json")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
     setup_logging(args.verbose)
@@ -493,6 +498,16 @@ def main(argv: list[str] | None = None) -> int:
         render_html(payload), encoding="utf-8", newline="\n"
     )
     (args.output_dir / ".nojekyll").write_text("", encoding="utf-8")
+
+    seen = update_first_seen(
+        payload["rules"],
+        read_json(args.first_seen, default={}) or {},
+        now=payload["generated_utc"],
+    )
+    write_json(args.first_seen, seen, indent=1)
+    (args.output_dir / "feed.xml").write_text(
+        build_feed(payload, seen), encoding="utf-8", newline="\n"
+    )
 
     coverage = payload["coverage"]
     LOGGER.info(

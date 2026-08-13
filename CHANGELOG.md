@@ -4,6 +4,23 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+Publishing only. The Home Assistant integration is unchanged, so there is no
+new version to install.
+
+* **RSS feed at
+  [`/feed.xml`](https://booyaka101.github.io/hass-breakage-radar/feed.xml)**
+  ([#8](https://github.com/Booyaka101/hass-breakage-radar/issues/8), asked for
+  on the announcement thread). One item per announced removal, with the release
+  that does it, how many HACS integrations still use it, and a link to the
+  announcement. Following the project no longer means polling `index.json` and
+  diffing it yourself. The board advertises it, so readers find it on their own.
+
+  A rule knows which release removes it, not the day it was announced, so
+  `state/feed.json` records when each one was first published and the item keeps
+  that date instead of looking new on every rebuild.
+
 ## 1.4.0 — 2026-08-12
 
 ### Notifications know whether the problem is already reported

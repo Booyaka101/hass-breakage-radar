@@ -80,7 +80,8 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/rules.json data/catalog.json data/findings.json \
-                  state/crawl.json docs/index.json docs/index.html docs/.nojekyll
+                  state/crawl.json state/feed.json \
+                  docs/index.json docs/index.html docs/feed.xml docs/.nojekyll
           if git diff --cached --quiet; then
             echo "No index changes to commit."
             exit 0
