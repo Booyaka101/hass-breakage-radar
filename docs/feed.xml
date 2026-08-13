@@ -5,7 +5,7 @@
     <link>https://booyaka101.github.io/hass-breakage-radar/</link>
     <description>Home Assistant APIs scheduled for removal, and how many HACS custom integrations still use each one.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Aug 2026 03:45:53 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 04:32:23 +0000</lastBuildDate>
     <atom:link href="https://booyaka101.github.io/hass-breakage-radar/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>2026.10: deprecate hass argument service helpers</title>
@@ -21,7 +21,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-extract-config-entry-ids</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.10</category>
-      <description>passes `hass` to `async_extract_config_entry_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 3 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>passes `hass` to `async_extract_config_entry_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 4 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.10: async_extract_entities</title>
@@ -29,7 +29,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-extract-entities</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.10</category>
-      <description>passes `hass` to `async_extract_entities`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. Confidence: medium.</description>
+      <description>passes `hass` to `async_extract_entities`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 1 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.10: async_extract_entity_ids</title>
@@ -53,7 +53,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-verify-domain-control</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.10</category>
-      <description>passes `hass` to `verify_domain_control`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 1 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>passes `hass` to `verify_domain_control`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call. 2 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.10: hass</title>
@@ -85,7 +85,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-add-external-statistics-missing-unit-class</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.11</category>
-      <description>doesn't specify unit_class when calling async_add_external_statistics 62 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>doesn't specify unit_class when calling async_add_external_statistics 63 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.11: async_import_statistics(missing mean_type)</title>
@@ -413,7 +413,7 @@
       <guid isPermaLink="false">breakage-radar:legacy-device-tracker-platform</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.5</category>
-      <description>Implements the legacy (non-config-entry) device tracker platform API. 'The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.' Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity). 11 integration(s) in the HACS catalogue currently use it. Replacement: https://developers.home-assistant.io/docs/core/entity/device-tracker. Confidence: high.</description>
+      <description>Implements the legacy (non-config-entry) device tracker platform API. 'The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.' Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity). 12 integration(s) in the HACS catalogue currently use it. Replacement: https://developers.home-assistant.io/docs/core/entity/device-tracker. Confidence: high.</description>
     </item>
     <item>
       <title>2027.5: DeviceScanner</title>
