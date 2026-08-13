@@ -89,4 +89,21 @@ jobs:
           SCANNED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_scanned'])")
           AFFECTED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_affected'])")
           git commit -m "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
-          git push
+
+          # A slice takes about ten minutes, so main can move while it runs.
+          # These files are generated, not authored, so rebasing and keeping
+          # ours is always the right answer for them.
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected (attempt ${attempt}); rebasing onto the updated main"
+            git fetch origin main
+            git rebase -X ours origin/main || {
+              git rebase --abort
+              echo "could not rebase cleanly; leaving main alone"
+              exit 1
+            }
+          done
+          echo "still could not push after three attempts"
+          exit 1
