@@ -12,9 +12,9 @@ not the day it was announced.
 
 from __future__ import annotations
 
-import html
 from datetime import UTC, datetime
 from typing import Any
+from xml.sax.saxutils import escape
 
 from tools.rules_engine import parse_version
 
@@ -43,6 +43,27 @@ def update_first_seen(
     for rule in rules:
         seen.setdefault(rule["id"], now)
     return seen
+
+
+#: Long enough for the deadline plus a symbol, short enough for a reader's
+#: item list without the title being cut off mid-word.
+MAX_TITLE = 72
+
+
+def title_for(rule: dict[str, Any]) -> str:
+    """``2027.5: setup_scanner``, or a trimmed sentence for prose rules.
+
+    Most rules name a symbol. ``kind: prose`` rules do not have one -- the
+    symbol is the sentence -- so they get the sentence, cut on a word boundary
+    rather than showing a dangling ``'{...}'`` placeholder.
+    """
+    symbol = " ".join((rule.get("symbol") or "").split())
+    name = symbol or rule["id"]
+    prefix = f"{rule['breaks_in']}: "
+    room = MAX_TITLE - len(prefix)
+    if len(name) > room:
+        name = name[: room - 1].rsplit(" ", 1)[0].rstrip(" ,.;:") + "…"
+    return prefix + name
 
 
 def describe(rule: dict[str, Any], repos_hit: int) -> str:
@@ -85,18 +106,18 @@ def build(payload: dict[str, Any], seen: dict[str, str]) -> str:
     ]
     for rule in items:
         published = seen.get(rule["id"], generated)
-        title = f"{rule['breaks_in']}: {rule.get('symbol') or rule['id']}"
+        title = title_for(rule)
         link = rule.get("source_url") or rule.get("source") or BOARD
         if not str(link).startswith("http"):
             link = BOARD
         lines += [
             "    <item>",
-            f"      <title>{html.escape(title)}</title>",
-            f"      <link>{html.escape(link)}</link>",
-            f'      <guid isPermaLink="false">breakage-radar:{html.escape(rule["id"])}</guid>',
+            f"      <title>{escape(title)}</title>",
+            f"      <link>{escape(link)}</link>",
+            f'      <guid isPermaLink="false">breakage-radar:{escape(rule["id"])}</guid>',
             f"      <pubDate>{_rfc822(published)}</pubDate>",
-            f"      <category>{html.escape(rule['breaks_in'])}</category>",
-            f"      <description>{html.escape(describe(rule, rule.get('repos_hit', 0)))}</description>",
+            f"      <category>{escape(rule['breaks_in'])}</category>",
+            f"      <description>{escape(describe(rule, rule.get('repos_hit', 0)))}</description>",
             "    </item>",
         ]
     lines += ["  </channel>", "</rss>", ""]

@@ -38,7 +38,8 @@ from tools.common import (  # noqa: E402
     utc_now_iso,
     write_json,
 )
-from tools.feed import build as build_feed, update_first_seen  # noqa: E402
+from tools.feed import build as build_feed  # noqa: E402
+from tools.feed import update_first_seen
 from tools.rules_engine import is_future, parse_version  # noqa: E402
 
 SCHEMA_VERSION = 1

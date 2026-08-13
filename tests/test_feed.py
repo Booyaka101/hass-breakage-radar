@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
-from tools.feed import MAX_ITEMS, build, describe, update_first_seen
+from tools.feed import MAX_ITEMS, MAX_TITLE, build, describe, title_for, update_first_seen
 
 
 @pytest.fixture
@@ -108,3 +108,43 @@ def test_the_feed_is_capped(payload):
     ]
     channel = ET.fromstring(build(payload, {})).find("channel")
     assert len(channel.findall("item")) == MAX_ITEMS
+
+
+def test_a_prose_rule_gets_a_readable_title_not_a_slug():
+    """Some rules have no symbol -- the symbol is the sentence. Falling back
+    to the rule id gave titles like '2027.2: core-prose-sets-an-invalid...'."""
+    rule = {
+        "id": "core-prose-sets-an-invalid-entity-id-in-most-cases-entities",
+        "breaks_in": "2027.2",
+        "symbol": "sets an invalid entity ID: '{...}'. In most cases, entities "
+                  "should not set entity IDs themselves.",
+    }
+    title = title_for(rule)
+    assert title.startswith("2027.2: sets an invalid entity ID")
+    assert "core-prose" not in title
+    assert len(title) <= MAX_TITLE
+    # Cut on a word boundary, not mid-word.
+    assert not title.rstrip("…").endswith(" ")
+    assert title.endswith("…")
+
+
+def test_a_title_short_enough_is_left_alone():
+    assert title_for({"id": "x", "breaks_in": "2027.5", "symbol": "setup_scanner"}) == (
+        "2027.5: setup_scanner"
+    )
+
+
+def test_apostrophes_stay_readable(payload):
+    """html.escape turns every quote into &#x27;, which is valid but makes a
+    description unreadable in a reader that shows raw text."""
+    payload["rules"][0]["message"] = "doesn't specify unit_class when calling it"
+    feed = build(payload, {})
+    assert "doesn't specify" in feed
+    assert "&#x27;" not in feed
+
+
+def test_markup_in_a_message_cannot_break_the_feed(payload):
+    payload["rules"][0]["message"] = "uses <Thing> & </item> in a message"
+    feed = build(payload, {})
+    ET.fromstring(feed)          # would raise if the escaping were wrong
+    assert "&lt;Thing&gt;" in feed and "&amp;" in feed

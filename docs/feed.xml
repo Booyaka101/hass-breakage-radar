@@ -5,7 +5,7 @@
     <link>https://booyaka101.github.io/hass-breakage-radar/</link>
     <description>Home Assistant APIs scheduled for removal, and how many HACS custom integrations still use each one.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 12 Aug 2026 12:18:57 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 03:45:53 +0000</lastBuildDate>
     <atom:link href="https://booyaka101.github.io/hass-breakage-radar/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>2026.10: deprecate hass argument service helpers</title>
@@ -85,7 +85,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-add-external-statistics-missing-unit-class</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.11</category>
-      <description>doesn&#x27;t specify unit_class when calling async_add_external_statistics 62 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>doesn't specify unit_class when calling async_add_external_statistics 62 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.11: async_import_statistics(missing mean_type)</title>
@@ -93,7 +93,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-import-statistics-missing-mean-type</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.11</category>
-      <description>doesn&#x27;t specify mean_type when calling async_import_statistics 25 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>doesn't specify mean_type when calling async_import_statistics 25 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.11: async_import_statistics(missing unit_class)</title>
@@ -101,7 +101,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-import-statistics-missing-unit-class</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.11</category>
-      <description>doesn&#x27;t specify unit_class when calling async_import_statistics 25 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>doesn't specify unit_class when calling async_import_statistics 25 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.11: async_update_statistics_metadata(missing unit_class)</title>
@@ -109,7 +109,7 @@
       <guid isPermaLink="false">breakage-radar:core-call-async-update-statistics-metadata-missing-unit-class</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.11</category>
-      <description>doesn&#x27;t specify unit_class when calling async_update_statistics_metadata 2 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
+      <description>doesn't specify unit_class when calling async_update_statistics_metadata 2 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
     </item>
     <item>
       <title>2026.11: hass</title>
@@ -216,7 +216,7 @@
       <description>self.hass Confidence: medium.</description>
     </item>
     <item>
-      <title>2026.12: has an update listener and should use it for scheduling a reload</title>
+      <title>2026.12: has an update listener and should use it for scheduling a…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3161</link>
       <guid isPermaLink="false">breakage-radar:core-prose-has-an-update-listener-and-should-use-it-for-scheduling-a-reload</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
@@ -224,7 +224,7 @@
       <description>has an update listener and should use it for scheduling a reload Confidence: medium.</description>
     </item>
     <item>
-      <title>2026.12: passes a non-string value of type {...} as {...} to the device registry</title>
+      <title>2026.12: passes a non-string value of type {...} as {...} to the…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L315</link>
       <guid isPermaLink="false">breakage-radar:core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
@@ -328,7 +328,7 @@
       <description>hass Confidence: medium.</description>
     </item>
     <item>
-      <title>2027.2: sets a `group` attribute on entity {...} which is not a `Group` instance</title>
+      <title>2027.2: sets a `group` attribute on entity {...} which is not a…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1559</link>
       <guid isPermaLink="false">breakage-radar:core-prose-sets-a-group-attribute-on-entity-which-is-not-a-group-instance</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
@@ -336,12 +336,12 @@
       <description>sets a `group` attribute on entity {...} which is not a `Group` instance Confidence: medium.</description>
     </item>
     <item>
-      <title>2027.2: sets an invalid entity ID: &#x27;{...}&#x27;. In most cases, entities should not set entit...</title>
+      <title>2027.2: sets an invalid entity ID: '{...}'. In most cases, entities…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L891</link>
       <guid isPermaLink="false">breakage-radar:core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.2</category>
-      <description>sets an invalid entity ID: &#x27;{...}&#x27;. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID Confidence: medium.</description>
+      <description>sets an invalid entity ID: '{...}'. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID Confidence: medium.</description>
     </item>
     <item>
       <title>2027.3: labs async listen deprecation</title>
@@ -360,7 +360,7 @@
       <description>hass Confidence: medium.</description>
     </item>
     <item>
-      <title>2027.3: calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` ...</title>
+      <title>2027.3: calls `async_listen` which is deprecated, use…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/labs/helpers.py#L92</link>
       <guid isPermaLink="false">breakage-radar:core-prose-calls-async-listen-which-is-deprecated-use-async-subscribe-preview-feature</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
@@ -400,12 +400,12 @@
       <description>hass Confidence: medium.</description>
     </item>
     <item>
-      <title>2027.5: sets an entity ID with wrong domain: &#x27;{...}&#x27;. Expected domain is &#x27;{...}&#x27;</title>
+      <title>2027.5: sets an entity ID with wrong domain: '{...}'. Expected domain…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L908</link>
       <guid isPermaLink="false">breakage-radar:core-prose-sets-an-entity-id-with-wrong-domain-expected-domain-is</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.5</category>
-      <description>sets an entity ID with wrong domain: &#x27;{...}&#x27;. Expected domain is &#x27;{...}&#x27; Confidence: medium.</description>
+      <description>sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}' Confidence: medium.</description>
     </item>
     <item>
       <title>2027.5: setup_scanner</title>
@@ -413,7 +413,7 @@
       <guid isPermaLink="false">breakage-radar:legacy-device-tracker-platform</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.5</category>
-      <description>Implements the legacy (non-config-entry) device tracker platform API. &#x27;The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.&#x27; Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity). 11 integration(s) in the HACS catalogue currently use it. Replacement: https://developers.home-assistant.io/docs/core/entity/device-tracker. Confidence: high.</description>
+      <description>Implements the legacy (non-config-entry) device tracker platform API. 'The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.' Migrate to the modern device tracker platform API (config entry + ScannerEntity/TrackerEntity). 11 integration(s) in the HACS catalogue currently use it. Replacement: https://developers.home-assistant.io/docs/core/entity/device-tracker. Confidence: high.</description>
     </item>
     <item>
       <title>2027.5: DeviceScanner</title>
@@ -448,7 +448,7 @@
       <description>homeassistant.components.infrared.InfraredEmitterEntity Confidence: medium.</description>
     </item>
     <item>
-      <title>2027.6: that calls the MQTT publish API with `None` for qos or retain. The `qos` argumen...</title>
+      <title>2027.6: that calls the MQTT publish API with `None` for qos or retain…</title>
       <link>https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L199</link>
       <guid isPermaLink="false">breakage-radar:core-prose-that-calls-the-mqtt-publish-api-with-none-for-qos-or-retain-the-qos-argumen</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
@@ -485,7 +485,7 @@
       <guid isPermaLink="false">breakage-radar:device-tracker-battery-level</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.7</category>
-      <description>&#x27;The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.&#x27; Expose the battery as a separate sensor entity with device_class battery instead. 19 integration(s) in the HACS catalogue currently use it. Confidence: high.</description>
+      <description>'The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.' Expose the battery as a separate sensor entity with device_class battery instead. 19 integration(s) in the HACS catalogue currently use it. Confidence: high.</description>
     </item>
   </channel>
 </rss>
