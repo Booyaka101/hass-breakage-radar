@@ -82,6 +82,23 @@ def test_pages_root_holds_only_published_artifacts(repo_root):
     assert published == [".nojekyll", "feed.xml", "index.html", "index.json"], published
 
 
+def test_the_crawl_commits_every_published_artifact(repo_root):
+    """Pages serves what is committed, so an artifact the crawl builds but never
+    stages is frozen at whatever was committed by hand -- stale, and silently so.
+    """
+    workflow = (repo_root / ".github" / "workflows" / "crawl.yml").read_text(
+        encoding="utf-8"
+    )
+    add = re.search(r"^\s*git add ((?:.*\\\n)*.*)$", workflow, re.M)
+    assert add, "the crawl no longer stages anything"
+    staged = set(add.group(1).replace("\\", " ").split())
+
+    published = {f"docs/{p.name}" for p in (repo_root / "docs").iterdir()}
+    assert published <= staged, f"never committed: {sorted(published - staged)}"
+    # The feed's dates live here; unstaged, every item looks new on every run.
+    assert "state/feed.json" in staged
+
+
 def test_the_author_guide_is_reachable_from_the_readme(repo_root):
     guide = repo_root / "guides" / "for-integration-authors.md"
     assert guide.exists()
