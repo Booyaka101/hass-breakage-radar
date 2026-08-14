@@ -1,0 +1,44 @@
+name: Bug report
+description: Something didn't work the way it should
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran, and what came back.
+      placeholder: |
+        $ python -m hass_breakage_radar ...
+        Traceback ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Breakage Radar version
+      description: The commit or release you are on.
+    validations:
+      required: true
+
+  - type: input
+    id: runtime
+    attributes:
+      label: Python version and OS
+      description: Output of `python --version`, plus your OS.
+      placeholder: Python 3.12.4 on Debian 12
+    validations:
+      required: true
+
+  - type: textarea
+    id: integration
+    attributes:
+      label: Which integration and which HA release
+      description: The custom integration's repo, and the Home Assistant version you expected the break in.
