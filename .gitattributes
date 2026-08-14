@@ -1,0 +1,4 @@
+# Normalise to LF in the repository and in the working tree on every platform.
+# A Windows clone with core.autocrlf=true otherwise rewrites shebangs to CRLF,
+# and a publish from that clone ships a binary Linux rejects as "bad interpreter".
+* text=auto eol=lf

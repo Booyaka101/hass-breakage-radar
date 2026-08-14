@@ -1,0 +1,33 @@
+version: 2
+
+# Staying current is a standing requirement, so it is automated rather than
+# remembered.
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      # Minor and patch only. Majors deliberately arrive as their own PR so one
+      # breaking upgrade cannot redden, and block, a batch of safe ones.
+      all-minor-patch:
+        patterns: ['*']
+        update-types: ['minor', 'patch']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(ci)'
+    groups:
+      # Minor and patch only. Majors deliberately arrive as their own PR so one
+      # breaking upgrade cannot redden, and block, a batch of safe ones.
+      actions-minor-patch:
+        patterns: ['*']
+        update-types: ['minor', 'patch']
+

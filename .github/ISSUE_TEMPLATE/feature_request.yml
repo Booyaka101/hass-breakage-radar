@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest something hass-breakage-radar should do
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reads public Home Assistant sources and integration repos over HTTPS. It never touches your Home Assistant instance or its config.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The situation, not the solution. What got in your way?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like it to do?
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What are you doing instead today?
+    validations:
+      required: false
