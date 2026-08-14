@@ -5,8 +5,32 @@
     <link>https://booyaka101.github.io/hass-breakage-radar/</link>
     <description>Home Assistant APIs scheduled for removal, and how many HACS custom integrations still use each one.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Aug 2026 04:32:23 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 04:06:47 +0000</lastBuildDate>
     <atom:link href="https://booyaka101.github.io/hass-breakage-radar/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>2027.8: sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3458</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-sets-disabled-by-to-deviceentrydisabler-device-enabled</guid>
+      <pubDate>Fri, 14 Aug 2026 04:06:47 +0000</pubDate>
+      <category>2027.8</category>
+      <description>sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.8: sets disabled_by to None {...} disabled</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3471</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-sets-disabled-by-to-none-disabled</guid>
+      <pubDate>Fri, 14 Aug 2026 04:06:47 +0000</pubDate>
+      <category>2027.8</category>
+      <description>sets disabled_by to None {...} disabled Confidence: medium.</description>
+    </item>
+    <item>
+      <title>2027.9: accesses ChildDeviceEntry.{...}, which does not exist on child…</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L702</link>
+      <guid isPermaLink="false">breakage-radar:core-prose-accesses-childdeviceentry-which-does-not-exist-on-child-devices</guid>
+      <pubDate>Fri, 14 Aug 2026 04:06:47 +0000</pubDate>
+      <category>2027.9</category>
+      <description>accesses ChildDeviceEntry.{...}, which does not exist on child devices Confidence: medium.</description>
+    </item>
     <item>
       <title>2026.10: deprecate hass argument service helpers</title>
       <link>https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/</link>
@@ -49,7 +73,7 @@
     </item>
     <item>
       <title>2026.10: verify_domain_control</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L1020</link>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L1019</link>
       <guid isPermaLink="false">breakage-radar:core-call-verify-domain-control</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.10</category>
@@ -225,7 +249,7 @@
     </item>
     <item>
       <title>2026.12: passes a non-string value of type {...} as {...} to the…</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L315</link>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L345</link>
       <guid isPermaLink="false">breakage-radar:core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2026.12</category>
@@ -281,7 +305,7 @@
     </item>
     <item>
       <title>2027.2: async_generate_entity_id</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1287</link>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1289</link>
       <guid isPermaLink="false">breakage-radar:core-call-async-generate-entity-id</guid>
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.2</category>
@@ -462,30 +486,6 @@
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.7</category>
       <description>Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at most one sub... Confidence: info.</description>
-    </item>
-    <item>
-      <title>2027.7: get_astral_location</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L20</link>
-      <guid isPermaLink="false">breakage-radar:core-call-get-astral-location</guid>
-      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
-      <category>2027.7</category>
-      <description>homeassistant.helpers.sun.get_astral_observer 4 integration(s) in the HACS catalogue currently use it. Confidence: medium.</description>
-    </item>
-    <item>
-      <title>2027.7: get_location_astral_event_next</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L60</link>
-      <guid isPermaLink="false">breakage-radar:core-call-get-location-astral-event-next</guid>
-      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
-      <category>2027.7</category>
-      <description>homeassistant.helpers.sun.get_observer_astral_event_next Confidence: medium.</description>
-    </item>
-    <item>
-      <title>2027.7: battery_level</title>
-      <link>https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes</link>
-      <guid isPermaLink="false">breakage-radar:device-tracker-battery-level</guid>
-      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
-      <category>2027.7</category>
-      <description>'The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.' Expose the battery as a separate sensor entity with device_class battery instead. 19 integration(s) in the HACS catalogue currently use it. Confidence: high.</description>
     </item>
   </channel>
 </rss>
