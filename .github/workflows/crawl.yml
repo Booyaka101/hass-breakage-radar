@@ -39,7 +39,7 @@ jobs:
           python-version: "3.14"
 
       - name: Cache the Home Assistant core tarball
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .cache
           key: core-dev-${{ github.run_id }}
