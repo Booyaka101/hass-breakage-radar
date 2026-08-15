@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           # Home Assistant's dev branch tracks the newest CPython syntax
           # (2026.9 dev already uses PEP 758 `except A, B:`), so the rule
