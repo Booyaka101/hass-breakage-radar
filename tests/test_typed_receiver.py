@@ -1,4 +1,4 @@
-"""The receiver-aware matcher: fire on a proven DeviceEntry, never on hass."""
+"""The receiver-aware matcher: fire on a proved DeviceEntry, never on hass."""
 
 from __future__ import annotations
 
@@ -7,12 +7,7 @@ import json
 import pytest
 
 import tools.rules_engine as engine
-from tools.rules_engine import (
-    Rule,
-    load_rules,
-    match_source,
-    matchable_rules,
-)
+from tools.rules_engine import Rule, load_rules, match_source, matchable_rules
 
 RULE_ID = "device-entry-config-entries"
 
@@ -45,7 +40,6 @@ def rules(request):
 
 @pytest.fixture(scope="module")
 def rule(rules):
-    """The shipped device-entry-config-entries rule, matcher included."""
     ours = [r for r in rules if r.id == RULE_ID]
     assert len(ours) == 1, "the rule must ship matchable"
     return ours[0]
@@ -81,93 +75,19 @@ def test_worked_example_yields_exactly_two_findings(rule):
     ]
 
 
-def test_every_proven_receiver_shape_fires(fixtures_dir, rule):
+def test_every_proved_receiver_shape_fires(fixtures_dir, rule):
     findings = _scan_tree(fixtures_dir / "typed_receiver" / "true_positive", [rule])
-    assert [f["line"] for f in findings] == [14, 21, 28, 29, 36, 39, 44]
+    assert [f["line"] for f in findings] == [13, 20, 27, 33, 36, 43, 51, 64, 72, 75]
 
 
 def test_lookalikes_produce_zero_findings_under_every_rule(fixtures_dir, rules):
-    """hass.config_entries and friends, scanned with the full shipped rule set."""
     assert _scan_tree(fixtures_dir / "typed_receiver" / "false_positive", rules) == []
 
 
-def test_an_old_engine_silently_skips_the_new_type(monkeypatch, rule):
-    """A 1.4.1 install reads the same published index. Its engine has no
-    attr_access_typed handler, so the rule must be invisible there: not
-    matchable, and zero findings from match_source."""
-    monkeypatch.setattr(
-        engine, "MATCHER_TYPES", engine.MATCHER_TYPES - {"attr_access_typed"}
-    )
-    monkeypatch.setattr(
-        engine,
-        "_DISPATCH",
-        {k: v for k, v in engine._DISPATCH.items() if k != "attr_access_typed"},
-    )
-    old_rule = Rule.from_dict(rule.to_dict())
-    assert old_rule.matchable is False
-    assert (
-        engine.match_source("custom_components/x/__init__.py", WORKED_EXAMPLE, [old_rule])
-        == []
-    )
-
-
-def test_bare_unimported_async_get_proves_nothing(rule):
-    source = (
-        "def go(hass):\n"
-        "    reg = async_get(hass)\n"
-        '    device = reg.async_get_device({("x", "y")})\n'
-        "    return device.config_entries\n"
-    )
-    assert match_source("custom_components/x/__init__.py", source, [rule]) == []
-
-
-def test_contract_only_binds_a_module_level_async_def(rule):
-    method = (
-        "class Thing:\n"
-        "    async def async_remove_config_entry_device(self, hass, entry, device):\n"
-        "        return device.config_entries\n"
-    )
-    plain = (
-        "def async_remove_config_entry_device(hass, entry, device):\n"
-        "    return device.config_entries\n"
-    )
-    assert match_source("custom_components/x/__init__.py", method, [rule]) == []
-    assert match_source("custom_components/x/__init__.py", plain, [rule]) == []
-
-
-def test_string_and_optional_annotations_still_bind(rule):
-    source = (
-        "from typing import Optional\n"
-        "from homeassistant.helpers.device_registry import DeviceEntry\n"
-        "\n"
-        'def a(device: "DeviceEntry"):\n'
-        "    return device.config_entries\n"
-        "\n"
-        "def b(device: Optional[DeviceEntry]):\n"
-        "    return device.config_entries\n"
-    )
-    hits = match_source("custom_components/x/__init__.py", source, [rule])
-    assert [f.line for f in hits] == [5, 8]
-
-
-def test_entry_function_from_another_module_does_not_bind(rule):
-    source = (
-        "from .helpers import async_entries_for_config_entry\n"
-        "\n"
-        "def go(reg, entry_id):\n"
-        "    for device in async_entries_for_config_entry(reg, entry_id):\n"
-        "        return device.config_entries\n"
-    )
-    assert match_source("custom_components/x/__init__.py", source, [rule]) == []
-
-
-def test_a_proof_does_not_leak_into_another_function(rule):
-    """`device` is one of the commonest names in this ecosystem.
-
-    A binder that proved names file-wide would carry the proof from `real`
-    into `unrelated`, whose `device` came out of a dict.
-    """
-    source = (
+def test_a_proof_does_not_escape_the_scope_that_earned_it(rule):
+    """`device` is one of the commonest locals in this ecosystem, so proving
+    names file-wide would flag one that came out of a dict."""
+    sibling_function = (
         "from homeassistant.helpers import device_registry as dr\n"
         "\n"
         "def real(hass):\n"
@@ -179,12 +99,7 @@ def test_a_proof_does_not_leak_into_another_function(rule):
         '    device = payload["device"]\n'
         "    return device.config_entries\n"
     )
-    hits = match_source("custom_components/x/__init__.py", source, [rule])
-    assert [f.line for f in hits] == [6]
-
-
-def test_a_parameter_shadows_what_the_enclosing_scope_proved(rule):
-    source = (
+    shadowing_parameter = (
         "from homeassistant.helpers import device_registry as dr\n"
         "\n"
         'device = dr.async_get(HASS).async_get_device({("x", "y")})\n'
@@ -192,79 +107,25 @@ def test_a_parameter_shadows_what_the_enclosing_scope_proved(rule):
         "def go(device):\n"
         "    return device.config_entries\n"
     )
-    assert match_source("custom_components/x/__init__.py", source, [rule]) == []
+    assert [
+        f.line for f in match_source("custom_components/x/a.py", sibling_function, [rule])
+    ] == [6]
+    assert match_source("custom_components/x/b.py", shadowing_parameter, [rule]) == []
 
 
-def test_a_closure_inherits_the_enclosing_proof(rule):
-    source = (
-        "from homeassistant.helpers import device_registry as dr\n"
-        "\n"
-        "def outer(hass):\n"
-        "    reg = dr.async_get(hass)\n"
-        '    device = reg.async_get_device({("x", "y")})\n'
-        "\n"
-        "    def inner():\n"
-        "        return device.config_entries\n"
-        "\n"
-        "    return inner\n"
+def test_an_old_engine_silently_skips_the_new_type(monkeypatch, rule):
+    """A 1.4.1 install reads the same published index with the old engine
+    vendored. An unknown matcher type has to be invisible there, where an
+    unknown key on `attr_access` would have fired on every hass.config_entries
+    in the world."""
+    monkeypatch.setattr(
+        engine, "MATCHER_TYPES", engine.MATCHER_TYPES - {"attr_access_typed"}
     )
-    hits = match_source("custom_components/x/__init__.py", source, [rule])
-    assert [f.line for f in hits] == [8]
-
-
-def test_the_platform_contract_survives_its_own_parameter_shadowing(rule):
-    """The contract binds a parameter, so it has to be applied after the
-    shadowing that clears inherited names of the same spelling."""
-    source = (
-        "device_entry = 1\n"
-        "\n"
-        "async def async_remove_config_entry_device(hass, config_entry, device_entry):\n"
-        "    return len(device_entry.config_entries) <= 1\n"
+    monkeypatch.setattr(
+        engine,
+        "_DISPATCH",
+        {k: v for k, v in engine._DISPATCH.items() if k != "attr_access_typed"},
     )
-    hits = match_source("custom_components/x/__init__.py", source, [rule])
-    assert [f.line for f in hits] == [4]
-
-
-def test_a_comprehension_generator_binds_like_a_for_statement(rule):
-    """`zwave_js` iterates the area helper inside a genexp, in core today."""
-    source = (
-        "from homeassistant.helpers import device_registry as dr\n"
-        "\n"
-        "def go(reg, area_id):\n"
-        "    return any(\n"
-        "        entry_id\n"
-        "        for device in dr.async_entries_for_area(reg, area_id)\n"
-        "        for entry_id in device.config_entries\n"
-        "    )\n"
-    )
-    hits = match_source("custom_components/x/__init__.py", source, [rule])
-    assert [f.line for f in hits] == [7]
-
-
-def test_a_receiver_the_binder_cannot_model_stays_quiet(rule):
-    """Reading the registry's own dict is a real DeviceEntry, and is missed.
-
-    `blue_current` does this in core. Pinned deliberately: the boundary is
-    under-reporting by design, so a future change that starts guessing at
-    unmodelled receiver shapes has to come past this test.
-    """
-    source = (
-        "from homeassistant.helpers import device_registry as dr\n"
-        "\n"
-        "def go(hass, device_id):\n"
-        "    device = dr.async_get(hass).devices.get(device_id)\n"
-        "    return device.config_entries\n"
-    )
-    assert match_source("custom_components/x/__init__.py", source, [rule]) == []
-
-
-def test_registry_annotation_alone_proves_the_chain(rule):
-    source = (
-        "from homeassistant.helpers import device_registry as dr\n"
-        "\n"
-        "def go(registry: dr.DeviceRegistry):\n"
-        '    device = registry.async_get_device({("x", "y")})\n'
-        "    return device.config_entries\n"
-    )
-    hits = match_source("custom_components/x/__init__.py", source, [rule])
-    assert [f.line for f in hits] == [5]
+    old_rule = Rule.from_dict(rule.to_dict())
+    assert old_rule.matchable is False
+    assert engine.match_source("custom_components/x/a.py", WORKED_EXAMPLE, [old_rule]) == []

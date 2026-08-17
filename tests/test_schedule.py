@@ -25,13 +25,6 @@ from custom_components.breakage_radar.report import build_report, describe_when
 
 
 @pytest.fixture
-def sample_index(fixtures_dir):
-    return json.loads(
-        (fixtures_dir / "index_sample.json").read_text(encoding="utf-8")
-    )
-
-
-@pytest.fixture
 def many_releases(sample_index):
     """One index, several integrations, spread across five releases."""
     template = sample_index["integrations"][0]
@@ -324,7 +317,7 @@ def test_describe_links_degrades_when_the_repository_is_unknown():
     assert "](" not in text
 
 
-def test_describe_links_searches_for_an_existing_report(sample_index):
+def test_describe_links_searches_for_an_existing_report():
     """Thousands of users filing the same issue would make this tool a
     nuisance to maintainers, so it links the search, not a blank form."""
     from custom_components.breakage_radar.repairs import describe_links

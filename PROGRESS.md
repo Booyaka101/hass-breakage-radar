@@ -28,7 +28,18 @@ read the same index. A NEW matcher type is silently skipped there
 old-engine behaviour with a simulated 1.4.1 dispatch table.
 
 VERIFIED (all by hand on this machine, 2026-08-17):
-* pytest 242 passed, 3 skipped (was 226/3; +16 tests).
+* pytest 232 passed, 3 skipped (was 226/3). The matcher's own file is five
+  tests; the shape coverage lives in the two fixture trees, which is how
+  `test_scanner.py` already works.
+* Test housekeeping in the same pass. `test_local_scan.py` was 634 lines
+  covering two concerns, so the local/index merge moved to `test_local_merge.py`
+  and the scan itself stayed put (342 and 259 lines). `sample_index` had been
+  copy-pasted into five files and `FakeCoordinator` into two; both now live in
+  `conftest.py` once, along with the local-scan helpers the two files share.
+  An audit of all sixteen test files for the usual tells found only two dead
+  fixture parameters, both removed. The rest of the suite was left alone: its
+  tests map to real incidents, and rewriting them would be churn with
+  regression risk.
 * Phase 0 re-verified live: the deprecation post (2027.8 window), core dev
   `device_registry.py` signatures, and the published index (3 088 scanned,
   623 affected, sibling repos_hit 340/216/70/17/0 exactly as expected).
@@ -37,25 +48,26 @@ VERIFIED (all by hand on this machine, 2026-08-17):
   must still resolve to the device_registry module to bind) for code written
   against older cores.
 * Real-repo validation: rescanned 142 HACS integrations that hit the sibling
-  device-registry rules with `tools/scan.py --force --only`. 56 findings in 27
+  device-registry rules with `tools/scan.py --force --only`. 57 findings in 27
   repos, all hand-checked against the repository source at the scanned tag,
-  56/56 genuine, zero `hass.config_entries`. Measurement also added
+  57/57 genuine, zero `hass.config_entries`. Measurement also added
   `async_get` (the `DeviceRegistry.async_get(device_id)` method form) to
   `entry_methods`, which nearly half the true positives use.
 * Adversarial corpus, added during review: home-assistant/core itself, 9 865
-  files and 5 963 textual `.config_entries` occurrences. 46 findings, every one
-  a device entry, covering 46 of the 54 device-entry reads present.
+  files and 5 963 textual `.config_entries` occurrences. 51 findings, every one
+  a device entry, covering 51 of the 54 device-entry reads present. The three
+  misses are handed a device by another file, which one file cannot follow.
 * Review found and fixed a real false-positive vector: bindings were module-
   wide, so a name proved in one function leaked into an unrelated function
   reusing the spelling (`device` from a dict was flagged). Binding is per scope
-  now, with inheritance into nested scopes and parameter shadowing. Cost 5 of
-  the core hits, each of which had been found by leakage rather than by proof.
-  Comprehension generators now bind like `for` statements, which is how core's
-  `zwave_js` iterates the area helper.
+  now, with inheritance into nested scopes and parameter shadowing. Three
+  shapes were then added back on evidence: comprehension generators (core's
+  `zwave_js`), and a registry kept on an attribute, proved class-wide because
+  it is assigned in `__init__` and read elsewhere (core's `search`).
 * `build_index.py` validates schema 1 with the new match object published.
 * repos_hit lands at 27 on the verification slice. Higher than the sibling
   `primary_config_entry`'s 17 because `.config_entries` is the old,
-  long-standing API; precision is what was verified, and it is 56/56.
+  long-standing API; precision is what was verified, and it is 57/57.
 
 `state/`, `data/findings.json` and `docs/` were deliberately left to the daily
 crawl: ENGINE_VERSION 5 changes the rules hash, so the 03:17 UTC job rescans

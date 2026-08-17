@@ -48,7 +48,7 @@ def test_core_version_is_read_from_const(mini_tarball):
     assert RELEASE_RE.match(core_version(mini_tarball))
 
 
-def test_extracts_rules_with_a_release_shaped_breaks_in(mini_tarball, tmp_path):
+def test_extracts_rules_with_a_release_shaped_breaks_in(mini_tarball):
     records = []
     for path, source in iter_core_python(mini_tarball):
         records.extend(extract_from_source(path, source))

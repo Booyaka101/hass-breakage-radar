@@ -30,22 +30,23 @@ same-named local in another, which matters because `device` is one of the
 commonest variable names in this ecosystem: proving them file-wide would carry
 a proof out of the function that earned it. Nested scopes still inherit what
 encloses them, the way a closure really does read those names, and a parameter
-shadows whatever the enclosing scope proved about that spelling.
+shadows whatever the enclosing scope proved about that spelling. A registry
+kept on an attribute is proved for its whole class, since that assignment
+lives in `__init__` and the lookups do not.
 
 Verified against real code before shipping, the way 1.3.1 was: 142 HACS
 integrations already hitting the sibling device-registry rules were rescanned,
 and every finding the new matcher produced was hand-checked against that
-repository's source at the scanned tag. 56 of 56 are genuine
+repository's source at the scanned tag. 57 of 57 are genuine
 `DeviceEntry.config_entries` reads across 27 repositories; none is
 `hass.config_entries`.
 
 Then measured against home-assistant/core, which is the hardest corpus there
 is for this rule: 9 865 files carrying 5 963 textual `.config_entries`
 occurrences, the great majority of them `hass.config_entries`. The matcher
-reports 46, every one a device entry, and finds 46 of the 54 device-entry
-reads present. The eight it misses arrive from another module, from a registry
-held on `self`, or from `registry.devices.get(...)`, none of which one scope
-can prove; it stays quiet rather than guessing, and a test pins that boundary.
+reports 51, every one a device entry, and finds 51 of the 54 device-entry
+reads present. The three it misses are handed a device by another file, which
+no single-file matcher can follow; it stays quiet rather than guessing.
 
 Installs still on 1.4.1 read the same published index and silently skip the
 unknown matcher type, so nothing changes for them until they update; a pinned

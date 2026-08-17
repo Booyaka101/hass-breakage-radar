@@ -432,9 +432,11 @@ def _annotation_resolves(
     if annotation is None:
         return False
     if isinstance(annotation, ast.Constant) and isinstance(annotation.value, str):
+        # Same guard as the top-level parse: third-party code decides what is
+        # in here, and no annotation is worth aborting a crawl over.
         try:
             annotation = ast.parse(annotation.value.strip(), mode="eval").body
-        except SyntaxError:
+        except (SyntaxError, ValueError, RecursionError, MemoryError):
             return False
     if isinstance(annotation, ast.BinOp) and isinstance(annotation.op, ast.BitOr):
         return _annotation_resolves(
@@ -462,7 +464,8 @@ def _all_args(node: ast.FunctionDef | ast.AsyncFunctionDef) -> list[ast.arg]:
 
 
 def _bound_names(node: ast.Assign | ast.AnnAssign | ast.NamedExpr) -> list[str]:
-    """Plain-``Name`` targets only: ``self.device = ...`` proves nothing."""
+    """Plain-``Name`` targets; attribute targets go through
+    :func:`_factory_attributes`, which scopes them to the class."""
     targets = node.targets if isinstance(node, ast.Assign) else [node.target]
     return [target.id for target in targets if isinstance(target, ast.Name)]
 
@@ -475,6 +478,33 @@ def _is_factory_call(
         return False
     factory = f"{matcher.get('module', '')}.{matcher.get('registry_factory', '')}"
     return _resolve_call_module(node, name, imports) == factory
+
+
+def _factory_attributes(
+    matcher: dict[str, Any], node: ast.ClassDef, imports: dict[str, str]
+) -> set[str]:
+    """Attributes a class assigns the registry to, e.g. ``self._registry``.
+
+    Collected across the whole class because the assignment usually sits in
+    ``__init__`` and the lookups sit in other methods. An attribute is safe to
+    prove that widely where a bare local name is not: it belongs to the class
+    rather than to whichever function happened to reuse the spelling.
+    """
+    found: set[str] = set()
+    for child in ast.walk(node):
+        if not isinstance(child, (ast.Assign, ast.AnnAssign)):
+            continue
+        if not (
+            isinstance(child.value, ast.Call)
+            and _is_factory_call(matcher, child.value, imports)
+        ):
+            continue
+        targets = child.targets if isinstance(child, ast.Assign) else [child.target]
+        for target in targets:
+            dotted = _dotted(target) if isinstance(target, ast.Attribute) else None
+            if dotted:
+                found.add(dotted)
+    return found
 
 
 def _scope_nodes(body: list[ast.stmt]) -> tuple[list[ast.AST], list[ast.AST]]:
@@ -506,9 +536,10 @@ def _entry_call(
 ) -> bool:
     """True when ``node`` provably returns entry objects.
 
-    Either a method from ``entry_methods`` on a receiver proved in pass 1
-    (or chained straight off the factory call), or a module-level function
-    from ``entry_functions`` that the import map pins to the matcher module.
+    Either a method from ``entry_methods`` on a proved receiver -- a local
+    name, an attribute such as ``self._registry``, or the factory call
+    chained directly -- or a module-level function from ``entry_functions``
+    that the import map pins to the matcher module.
     """
     name = _called_name(node)
     if name is None:
@@ -518,14 +549,49 @@ def _entry_call(
         matcher.get("entry_methods", ())
     ):
         receiver = func.value
-        if isinstance(receiver, ast.Name) and receiver.id in receivers:
+        if _dotted(receiver) in receivers:
             return True
         return isinstance(receiver, ast.Call) and _is_factory_call(
             matcher, receiver, imports
         )
+    if isinstance(func, ast.Attribute) and name in ("get", "values"):
+        return _is_entry_container(matcher, func.value, imports, receivers)
     if name in set(matcher.get("entry_functions", ())):
         module = matcher.get("module", "")
         return _resolve_call_module(node, name, imports) == f"{module}.{name}"
+    return False
+
+
+def _is_entry_container(
+    matcher: dict[str, Any],
+    node: ast.expr,
+    imports: dict[str, str],
+    receivers: set[str],
+) -> bool:
+    """``registry.devices`` and friends: a proved registry's own mapping."""
+    if not (
+        isinstance(node, ast.Attribute)
+        and node.attr in set(matcher.get("entry_containers", ()))
+    ):
+        return False
+    if _dotted(node.value) in receivers:
+        return True
+    return isinstance(node.value, ast.Call) and _is_factory_call(
+        matcher, node.value, imports
+    )
+
+
+def _yields_entry(
+    matcher: dict[str, Any],
+    node: ast.expr,
+    imports: dict[str, str],
+    receivers: set[str],
+) -> bool:
+    """True when evaluating ``node`` gives an entry, or entries to iterate."""
+    if isinstance(node, ast.Call):
+        return _entry_call(matcher, node, imports, receivers)
+    if isinstance(node, ast.Subscript):
+        return _is_entry_container(matcher, node.value, imports, receivers)
     return False
 
 
@@ -576,17 +642,13 @@ def _scope_bindings(
             # An awaited value is wrapped in ``ast.Await`` and never binds:
             # every entry method here is a plain ``def`` in core, so an await
             # is somebody else's method of the same name.
-            if isinstance(node.value, ast.Call) and _entry_call(
-                matcher, node.value, imports, receivers
-            ):
+            if _yields_entry(matcher, node.value, imports, receivers):
                 entries.update(_bound_names(node))
         elif isinstance(node, (ast.For, ast.comprehension)):
             # `for x in async_entries_for_area(...)` proves the same thing
             # whether it is a statement or the generator of a comprehension.
-            if (
-                isinstance(node.target, ast.Name)
-                and isinstance(node.iter, ast.Call)
-                and _entry_call(matcher, node.iter, imports, receivers)
+            if isinstance(node.target, ast.Name) and _yields_entry(
+                matcher, node.iter, imports, receivers
             ):
                 entries.add(node.target.id)
     return receivers, entries
@@ -626,7 +688,9 @@ def _match_attr_access_typed(
 
     Inference is per scope and flow-insensitive: a name proved anywhere in a
     function counts everywhere in it, and nested scopes inherit what encloses
-    them, the way a closure really does read those names.
+    them, the way a closure really does read those names. A registry assigned
+    to an attribute is proved for its whole class, because that assignment
+    lives in ``__init__`` and the lookups do not.
     """
     names = set(matcher.get("names", ()))
 
@@ -654,15 +718,16 @@ def _match_attr_access_typed(
             value = node.value
             if isinstance(value, ast.Name) and value.id in entries:
                 yield node.lineno, node.attr
-            elif isinstance(value, ast.Call) and _entry_call(
-                matcher, value, imports, receivers
-            ):
+            elif _yields_entry(matcher, value, imports, receivers):
                 yield node.lineno, node.attr
         for child in nested:
+            inherited = receivers
+            if isinstance(child, ast.ClassDef):
+                inherited = receivers | _factory_attributes(matcher, child, imports)
             yield from visit(
                 child,
                 child.body,
-                receivers,
+                inherited,
                 entries,
                 _contract_parameter(matcher, child, module_level),
                 False,

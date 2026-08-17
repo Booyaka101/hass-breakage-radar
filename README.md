@@ -402,6 +402,25 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 Any matcher can be narrowed with `files` (exact basenames); `attr` matchers can also
 require `in_class_base`.
 
+`attr_access_typed` needs to know what counts as proof, so it carries the helper
+module it trusts rather than hard-coding one. Its keys, as used by
+`device-entry-config-entries` in `data/manual_rules.json`:
+
+| Key | Meaning |
+|---|---|
+| `module` | the helper module every proof below has to resolve to |
+| `registry_factory` | function returning the registry, e.g. `async_get` for `dr.async_get(hass)` |
+| `registry_types` | type names that prove a registry when used as an annotation |
+| `entry_types` | type names that prove an entry when used as an annotation |
+| `entry_methods` | registry methods returning an entry, called on a proved receiver |
+| `entry_containers` | mappings on a proved registry whose values are entries, e.g. `devices` |
+| `entry_functions` | module-level functions returning entries, resolved through the import map |
+| `entry_params` | `{function name: 1-based parameter}` typed by a platform contract rather than by an annotation |
+
+Names are proved per scope, nested scopes inherit their enclosing one, and a registry
+assigned to an attribute (`self._registry = dr.async_get(hass)`) is proved for the
+whole class, since that assignment usually lives in `__init__` and the lookups do not.
+
 The engine lives in `tools/rules_engine.py` and is vendored byte-for-byte at
 `custom_components/breakage_radar/rules_engine.py`, so the crawler and the
 integration's local scan can never disagree about the same source — a test
@@ -598,11 +617,10 @@ real package is used instead.
   crawler parses with 3.14, so the index side never has this gap.
 * **`attr_access_typed` infers types per scope, and errs towards silence.** It reports
   `DeviceEntry.config_entries` only where the receiver is proved in the scope that
-  reads it, so a device entry that arrives from another module, from a registry held
-  on `self`, or through a shape the binder does not model
-  (`registry.devices.get(device_id)`), is missed rather than guessed at. Measured on
-  home-assistant/core: 46 of the 54 device-entry reads found, against 5 963 textual
-  `.config_entries` occurrences, with no `hass.config_entries` among them. A missed
+  reads it, so a device entry built in another file, or handed over by a helper this
+  file cannot see, is missed rather than guessed at. Measured on home-assistant/core: 51 of the 54 device-entry reads
+  found, against 5 963 textual `.config_entries` occurrences, with no
+  `hass.config_entries` among them. A missed
   call is a rule that stays quiet; a wrong one would waste a maintainer's afternoon,
   so the matcher is built to under-report.
 * **`imminent` is computed from the release schedule, `broken_now` is not.** The

@@ -2237,6 +2237,10 @@
           "async_get_or_create",
           "async_update_device"
         ],
+        "entry_containers": [
+          "devices",
+          "deleted_devices"
+        ],
         "entry_functions": [
           "async_entries_for_area",
           "async_entries_for_config_entry",
@@ -2361,5 +2365,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L702"
     }
   ],
-  "blog_merged_utc": "2026-08-17T03:18:06Z"
+  "blog_merged_utc": "2026-08-17T04:21:29Z"
 }

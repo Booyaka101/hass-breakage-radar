@@ -203,6 +203,7 @@
           "async_get_or_create",
           "async_update_device"
         ],
+        "entry_containers": ["devices", "deleted_devices"],
         "entry_functions": [
           "async_entries_for_area",
           "async_entries_for_config_entry",
