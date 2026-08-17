@@ -32,6 +32,14 @@ repository's source at the scanned tag. 63 of 63 are genuine
 `DeviceEntry.config_entries` reads across 30 repositories; none is
 `hass.config_entries`.
 
+Then measured against home-assistant/core, which is the hardest corpus there
+is for this rule: 9 865 files carrying 5 963 textual `.config_entries`
+occurrences, the great majority of them `hass.config_entries`. The matcher
+reports 50, every one a device entry, and finds 50 of the 54 device-entry
+reads present. The four it misses come from another module or from
+`registry.devices.get(...)`, shapes one file cannot prove; it stays quiet
+rather than guessing, and a test pins that boundary.
+
 Installs still on 1.4.1 read the same published index and silently skip the
 unknown matcher type, so nothing changes for them until they update; a pinned
 test keeps that true. `ENGINE_VERSION` is now 5, which makes the daily crawl

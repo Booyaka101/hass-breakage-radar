@@ -161,6 +161,23 @@ def test_entry_function_from_another_module_does_not_bind(rule):
     assert match_source("custom_components/x/__init__.py", source, [rule]) == []
 
 
+def test_a_receiver_the_binder_cannot_model_stays_quiet(rule):
+    """Reading the registry's own dict is a real DeviceEntry, and is missed.
+
+    `blue_current` does this in core. Pinned deliberately: the boundary is
+    under-reporting by design, so a future change that starts guessing at
+    unmodelled receiver shapes has to come past this test.
+    """
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        "def go(hass, device_id):\n"
+        "    device = dr.async_get(hass).devices.get(device_id)\n"
+        "    return device.config_entries\n"
+    )
+    assert match_source("custom_components/x/__init__.py", source, [rule]) == []
+
+
 def test_registry_annotation_alone_proves_the_chain(rule):
     source = (
         "from homeassistant.helpers import device_registry as dr\n"

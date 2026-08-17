@@ -42,7 +42,8 @@ class Coordinator:
 
 def uses_entry(hass, entry):
     entry.config_entries = ["stored", "not", "read"]
-    return hass.config_entries.async_entries("demo")
+    known = entry.config_entries
+    return known, hass.config_entries.async_entries("demo")
 
 
 def own_class(device: DeviceEntry):

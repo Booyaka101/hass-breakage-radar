@@ -28,10 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           # Home Assistant's dev branch tracks the newest CPython syntax
           # (2026.9 dev already uses PEP 758 `except A, B:`), so the rule
@@ -39,7 +39,7 @@ jobs:
           python-version: "3.14"
 
       - name: Cache the Home Assistant core tarball
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .cache
           key: core-dev-${{ github.run_id }}

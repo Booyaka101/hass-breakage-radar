@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-14T03:58:36Z",
+  "generated_utc": "2026-08-16T03:33:36Z",
   "core_ref": "dev",
   "core_version": "2026.9",
-  "core_tarball_sha256": "3bf71bd7ca1c71bc7158d39f5a26dfbc12c3ef31c56fb21ba5052bd0a141812f",
+  "core_tarball_sha256": "84b2adaabcb95f10b1ba44704e0d2e0636b4042b96b542561c735b4a3c9d6265",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 145,
+    "total": 143,
     "future": 87,
     "matchable_future": 35,
-    "core_files_scanned": 9883,
+    "core_files_scanned": 9890,
     "core_files_unparsed": 0,
-    "from_core_ast": 120,
+    "from_core_ast": 118,
     "from_manual": 10,
     "from_blog": 15
   },
@@ -1146,34 +1146,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L832"
-    },
-    {
-      "id": "core-prose-is-setting-the-battery-supported-feature-which-has-been-deprecated-integration",
-      "kind": "prose",
-      "symbol": "is setting the battery supported feature which has been deprecated. Integration ...",
-      "message": "is setting the battery supported feature which has been deprecated. Integration {...} should remove this as part of migrating the battery level and icon to a sensor",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/vacuum/__init__.py:293",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/vacuum/__init__.py#L293"
-    },
-    {
-      "id": "core-prose-is-setting-the-which-has-been-deprecated-integration-should-impleme",
-      "kind": "prose",
-      "symbol": "is setting the {...} which has been deprecated. Integration {...} should impleme...",
-      "message": "is setting the {...} which has been deprecated. Integration {...} should implement a sensor instead with a correct device class and link it to the same device",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/vacuum/__init__.py:269",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/vacuum/__init__.py#L269"
     },
     {
       "id": "core-issue-action-called-without-config-entry-2026.9",
@@ -2389,5 +2361,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L702"
     }
   ],
-  "blog_merged_utc": "2026-08-17T02:59:22Z"
+  "blog_merged_utc": "2026-08-17T03:18:06Z"
 }
