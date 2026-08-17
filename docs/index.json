@@ -1,9 +1,9 @@
 {
  "schema": 1,
- "generated_utc": "2026-08-16T03:42:31Z",
+ "generated_utc": "2026-08-17T03:43:37Z",
  "index_url": "https://booyaka101.github.io/hass-breakage-radar/index.json",
  "core_version": "2026.9",
- "core_tarball_sha256": "84b2adaabcb95f10b1ba44704e0d2e0636b4042b96b542561c735b4a3c9d6265",
+ "core_tarball_sha256": "869ef45dc4901784220a265354d2fcdf330ad9c8c49d878981aa104e2762bcd5",
  "catalog_source": "https://data-v2.hacs.xyz/integration/data.json",
  "coverage": {
   "catalog_total": 3088,
@@ -12,7 +12,7 @@
   "repos_affected": 623,
   "repos_clean": 2448,
   "repos_unreachable": 19,
-  "findings_total": 1569,
+  "findings_total": 1564,
   "rules_published": 87,
   "rules_matchable": 34
  },
@@ -137,7 +137,6 @@
    "car2home",
    "colota",
    "comma_ai",
-   "cowboy",
    "eeveemobility",
    "growappy",
    "http_agent",
@@ -172,6 +171,7 @@
    "adaptive_cover",
    "adaptive_cover_pro",
    "adtpulse",
+   "advanced_switches",
    "aecc_battery",
    "aegis_ajax",
    "ai_hub",
@@ -195,7 +195,6 @@
    "asys_ble",
    "attribute_as_sensor",
    "audiobookshelf",
-   "august_access_codes",
    "automate",
    "autopi",
    "ave_dominaplus",
@@ -319,7 +318,6 @@
    "froeling_s3200_modbus",
    "fusion_solar",
    "g4smobility",
-   "gaf_masterflow",
    "gallagher_water",
    "gaming_status",
    "gardena_smart_local_preview",
@@ -362,6 +360,7 @@
    "higoal",
    "hikconnect",
    "hikvision_next",
+   "hilo",
    "hiq",
    "hisense_vrf",
    "hitachi_yutaki",
@@ -1836,8 +1835,8 @@
    },
    "matchable": true,
    "expired": false,
-   "hits": 15,
-   "repos_hit": 13
+   "hits": 14,
+   "repos_hit": 12
   },
   {
    "id": "async-initialize-triggers-home-assistant-start",
@@ -2303,8 +2302,8 @@
    },
    "matchable": true,
    "expired": false,
-   "hits": 543,
-   "repos_hit": 216
+   "hits": 540,
+   "repos_hit": 215
   },
   {
    "id": "device-registry-async-get-device",
@@ -2329,8 +2328,8 @@
    },
    "matchable": true,
    "expired": false,
-   "hits": 607,
-   "repos_hit": 340
+   "hits": 605,
+   "repos_hit": 339
   },
   {
    "id": "device-registry-config-entry-mutation-params",
@@ -2360,8 +2359,8 @@
    },
    "matchable": true,
    "expired": false,
-   "hits": 103,
-   "repos_hit": 70
+   "hits": 104,
+   "repos_hit": 71
   },
   {
    "id": "core-prose-accesses-childdeviceentry-which-does-not-exist-on-child-devices",
@@ -2389,7 +2388,7 @@
    ],
    "version": "v3.21.4",
    "ref": "refs/tags/v3.21.4",
-   "stargazers_count": 1910,
+   "stargazers_count": 1911,
    "repo_url": "https://github.com/AlexxIT/YandexStation",
    "scanned_utc": "2026-08-13T04:27:11Z",
    "earliest_breaks_in": "2026.10",
@@ -2423,7 +2422,7 @@
    ],
    "version": "1.0.4",
    "ref": "refs/tags/1.0.4",
-   "stargazers_count": 426,
+   "stargazers_count": 427,
    "repo_url": "https://github.com/chris-mc1/homeconnect_local_hass",
    "scanned_utc": "2026-08-16T03:36:23Z",
    "earliest_breaks_in": "2026.10",
@@ -2755,7 +2754,7 @@
    "ref": "refs/tags/v5.0.0",
    "stargazers_count": 1225,
    "repo_url": "https://github.com/frenck/spook",
-   "scanned_utc": "2026-08-09T03:54:03Z",
+   "scanned_utc": "2026-08-17T03:35:35Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -2786,7 +2785,19 @@
      "line": 91,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "report": {
+     "number": 1230,
+     "url": "https://github.com/frenck/spook/issues/1230",
+     "state": "closed",
+     "title": "Specify mean_type when calling async_import_statistics",
+     "reactions": 0
+    },
+    "symbol": "async_import_statistics"
+   }
   },
   {
    "full_name": "BottlecapDave/HomeAssistant-OctopusEnergy",
@@ -2796,7 +2807,7 @@
    ],
    "version": "v19.0.0",
    "ref": "refs/tags/v19.0.0",
-   "stargazers_count": 977,
+   "stargazers_count": 980,
    "repo_url": "https://github.com/BottlecapDave/HomeAssistant-OctopusEnergy",
    "scanned_utc": "2026-08-13T04:27:52Z",
    "earliest_breaks_in": "2026.11",
@@ -3094,7 +3105,7 @@
    "ref": "refs/tags/2026.8.0",
    "stargazers_count": 180,
    "repo_url": "https://github.com/fsaris/home-assistant-zonneplan-one",
-   "scanned_utc": "2026-08-09T03:54:06Z",
+   "scanned_utc": "2026-08-17T03:35:40Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -3104,7 +3115,12 @@
      "line": 378,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "klausj1/homeassistant-statistics",
@@ -3150,7 +3166,7 @@
    ],
    "version": "2026.8.3",
    "ref": "refs/tags/2026.8.3",
-   "stargazers_count": 132,
+   "stargazers_count": 136,
    "repo_url": "https://github.com/ReikanYsora/Helios-Forecast",
    "scanned_utc": "2026-08-15T03:29:30Z",
    "earliest_breaks_in": "2026.11",
@@ -3286,7 +3302,7 @@
    "ref": "refs/tags/0.4.7",
    "stargazers_count": 69,
    "repo_url": "https://github.com/duhow/hass-aigues-barcelona",
-   "scanned_utc": "2026-08-09T03:53:05Z",
+   "scanned_utc": "2026-08-17T03:34:16Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -3303,7 +3319,12 @@
      "line": 266,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_import_statistics"
+   }
   },
   {
    "full_name": "kdeyev/eyeonwater",
@@ -3376,7 +3397,7 @@
    ],
    "version": "v0.0.98",
    "ref": "refs/tags/v0.0.98",
-   "stargazers_count": 58,
+   "stargazers_count": 59,
    "repo_url": "https://github.com/thecem/octopus_germany",
    "scanned_utc": "2026-08-12T04:01:56Z",
    "earliest_breaks_in": "2026.11",
@@ -3715,7 +3736,7 @@
    ],
    "version": "v3.5.1",
    "ref": "refs/tags/v3.5.1",
-   "stargazers_count": 24,
+   "stargazers_count": 25,
    "repo_url": "https://github.com/johnnyh1975/ha_roomba_plus",
    "scanned_utc": "2026-08-10T03:58:15Z",
    "earliest_breaks_in": "2026.11",
@@ -3877,77 +3898,6 @@
    ]
   },
   {
-   "full_name": "ergo5/hass-energa-my-meter-api",
-   "domain": "energa_mobile",
-   "domains": [
-    "energa_mobile"
-   ],
-   "version": "v4.15.2",
-   "ref": "refs/tags/v4.15.2",
-   "stargazers_count": 20,
-   "repo_url": "https://github.com/ergo5/hass-energa-my-meter-api",
-   "scanned_utc": "2026-08-09T03:53:33Z",
-   "earliest_breaks_in": "2026.11",
-   "findings": [
-    {
-     "rule_id": "core-call-async-import-statistics-missing-mean-type",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/__init__.py",
-     "line": 534,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-unit-class",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/__init__.py",
-     "line": 534,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-mean-type",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/__init__.py",
-     "line": 562,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-unit-class",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/__init__.py",
-     "line": 562,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-mean-type",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/sensor.py",
-     "line": 1025,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-unit-class",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/sensor.py",
-     "line": 1025,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-mean-type",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/sensor.py",
-     "line": 1058,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "core-call-async-import-statistics-missing-unit-class",
-     "breaks_in": "2026.11",
-     "file": "custom_components/energa_mobile/sensor.py",
-     "line": 1058,
-     "confidence": "medium"
-    }
-   ]
-  },
-  {
    "full_name": "marq24/ha-bosch-ebike-flow",
    "domain": "bosch_ebike",
    "domains": [
@@ -3955,7 +3905,7 @@
    ],
    "version": "2026.8.0",
    "ref": "refs/tags/2026.8.0",
-   "stargazers_count": 20,
+   "stargazers_count": 22,
    "repo_url": "https://github.com/marq24/ha-bosch-ebike-flow",
    "scanned_utc": "2026-08-11T03:54:02Z",
    "earliest_breaks_in": "2026.11",
@@ -3975,6 +3925,82 @@
      "confidence": "medium"
     }
    ]
+  },
+  {
+   "full_name": "ergo5/hass-energa-my-meter-api",
+   "domain": "energa_mobile",
+   "domains": [
+    "energa_mobile"
+   ],
+   "version": "v4.15.2",
+   "ref": "refs/tags/v4.15.2",
+   "stargazers_count": 20,
+   "repo_url": "https://github.com/ergo5/hass-energa-my-meter-api",
+   "scanned_utc": "2026-08-17T03:34:54Z",
+   "earliest_breaks_in": "2026.11",
+   "findings": [
+    {
+     "rule_id": "core-call-async-import-statistics-missing-mean-type",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/__init__.py",
+     "line": 534,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-unit-class",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/__init__.py",
+     "line": 534,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-mean-type",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/__init__.py",
+     "line": 562,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-unit-class",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/__init__.py",
+     "line": 562,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-mean-type",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/sensor.py",
+     "line": 1025,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-unit-class",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/sensor.py",
+     "line": 1025,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-mean-type",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/sensor.py",
+     "line": 1058,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "core-call-async-import-statistics-missing-unit-class",
+     "breaks_in": "2026.11",
+     "file": "custom_components/energa_mobile/sensor.py",
+     "line": 1058,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_import_statistics"
+   }
   },
   {
    "full_name": "pyrech/homewizard_cloud_watermeter",
@@ -4015,7 +4041,7 @@
    "ref": "refs/tags/v4.1.4",
    "stargazers_count": 19,
    "repo_url": "https://github.com/domodom30/ha-octopus-french",
-   "scanned_utc": "2026-08-09T03:52:58Z",
+   "scanned_utc": "2026-08-17T03:34:07Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -4102,7 +4128,12 @@
      "line": 156,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "Favio25/Kronoterm-homeassistant",
@@ -4773,7 +4804,7 @@
    "ref": "refs/tags/v2.3.1",
    "stargazers_count": 6,
    "repo_url": "https://github.com/ha-termoweb/ha-termoweb",
-   "scanned_utc": "2026-08-09T03:55:16Z",
+   "scanned_utc": "2026-08-17T03:37:11Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -4839,7 +4870,12 @@
      "line": 194,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_import_statistics"
+   }
   },
   {
    "full_name": "renaudallard/homeassistant_be_water_prices",
@@ -5003,7 +5039,7 @@
    "ref": "refs/tags/v0.8.0",
    "stargazers_count": 3,
    "repo_url": "https://github.com/hudsonbrendon/HA-solar-plus-intelbras",
-   "scanned_utc": "2026-08-10T03:57:05Z",
+   "scanned_utc": "2026-08-17T03:38:12Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5034,7 +5070,12 @@
      "line": 54,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "akshimassar/ha-fortum",
@@ -5156,7 +5197,7 @@
    "ref": "refs/tags/v1.0.35",
    "stargazers_count": 2,
    "repo_url": "https://github.com/funkadelic/ha-acwd",
-   "scanned_utc": "2026-08-09T03:54:08Z",
+   "scanned_utc": "2026-08-17T03:35:42Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5180,7 +5221,12 @@
      "line": 350,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "herruzo99/ista-calista",
@@ -5192,7 +5238,7 @@
    "ref": "refs/tags/v0.9.2",
    "stargazers_count": 2,
    "repo_url": "https://github.com/herruzo99/ista-calista",
-   "scanned_utc": "2026-08-09T03:55:39Z",
+   "scanned_utc": "2026-08-17T03:37:40Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5202,7 +5248,12 @@
      "line": 810,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "jelmer/homeassistant-thameswater",
@@ -5411,7 +5462,7 @@
    "ref": "refs/tags/v1.0.26217.1",
    "stargazers_count": 1,
    "repo_url": "https://github.com/hugo-brito/ha-minvandforsyning",
-   "scanned_utc": "2026-08-10T03:57:06Z",
+   "scanned_utc": "2026-08-17T03:38:13Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5421,7 +5472,12 @@
      "line": 391,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "jirutka/hass-goliash",
@@ -5674,7 +5730,7 @@
    "ref": "refs/tags/v0.8.0",
    "stargazers_count": 0,
    "repo_url": "https://github.com/eklundjon/ha-haikubox",
-   "scanned_utc": "2026-08-09T03:53:13Z",
+   "scanned_utc": "2026-08-17T03:34:29Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5698,7 +5754,12 @@
      "line": 756,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "energiedaten-at/ha-energiedaten",
@@ -5710,7 +5771,7 @@
    "ref": "refs/tags/v0.6.0",
    "stargazers_count": 0,
    "repo_url": "https://github.com/energiedaten-at/ha-energiedaten",
-   "scanned_utc": "2026-08-09T03:53:26Z",
+   "scanned_utc": "2026-08-17T03:34:45Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5734,7 +5795,12 @@
      "line": 160,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "flcdrg/flipped_energy_ha",
@@ -5746,7 +5812,7 @@
    "ref": "refs/tags/v2.0.0",
    "stargazers_count": 0,
    "repo_url": "https://github.com/flcdrg/flipped_energy_ha",
-   "scanned_utc": "2026-08-09T03:53:57Z",
+   "scanned_utc": "2026-08-17T03:35:27Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
@@ -5756,7 +5822,12 @@
      "line": 169,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "gerbear1990/ha-esb-smart-meter",
@@ -5764,28 +5835,33 @@
    "domains": [
     "esb_smart_meter"
    ],
-   "version": "v0.4.0",
-   "ref": "refs/tags/v0.4.0",
+   "version": "v0.6.1",
+   "ref": "refs/tags/v0.6.1",
    "stargazers_count": 0,
    "repo_url": "https://github.com/gerbear1990/ha-esb-smart-meter",
-   "scanned_utc": "2026-08-09T03:54:34Z",
+   "scanned_utc": "2026-08-17T03:36:16Z",
    "earliest_breaks_in": "2026.11",
    "findings": [
     {
      "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
      "breaks_in": "2026.11",
      "file": "custom_components/esb_smart_meter/statistics.py",
-     "line": 43,
+     "line": 166,
      "confidence": "medium"
     },
     {
      "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
      "breaks_in": "2026.11",
      "file": "custom_components/esb_smart_meter/statistics.py",
-     "line": 55,
+     "line": 178,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_add_external_statistics"
+   }
   },
   {
    "full_name": "GKHerping/eloverblik-nordpool",
@@ -6005,7 +6081,7 @@
    "ref": "refs/tags/v3.5.1",
    "stargazers_count": 892,
    "repo_url": "https://github.com/gcobb321/icloud3",
-   "scanned_utc": "2026-08-09T03:54:20Z",
+   "scanned_utc": "2026-08-17T03:35:57Z",
    "earliest_breaks_in": "2027.5",
    "findings": [
     {
@@ -6036,7 +6112,12 @@
      "line": 55,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "setup_scanner"
+   }
   },
   {
    "full_name": "robinostlund/homeassistant-volkswagencarnet",
@@ -6352,7 +6433,7 @@
    ],
    "version": "v0.4.7",
    "ref": "refs/tags/v0.4.7",
-   "stargazers_count": 22004,
+   "stargazers_count": 22005,
    "repo_url": "https://github.com/XiaoMi/ha_xiaomi_home",
    "scanned_utc": "2026-08-15T03:30:58Z",
    "earliest_breaks_in": "2027.7",
@@ -6400,7 +6481,7 @@
    ],
    "version": "v1.1.4",
    "ref": "refs/tags/v1.1.4",
-   "stargazers_count": 6076,
+   "stargazers_count": 6077,
    "repo_url": "https://github.com/al-one/hass-xiaomi-miot",
    "scanned_utc": "2026-08-15T03:31:36Z",
    "earliest_breaks_in": "2027.7",
@@ -6469,7 +6550,7 @@
    ],
    "version": "v4.6.1",
    "ref": "refs/tags/v4.6.1",
-   "stargazers_count": 438,
+   "stargazers_count": 439,
    "repo_url": "https://github.com/BJReplay/ha-solcast-solar",
    "scanned_utc": "2026-08-13T04:27:34Z",
    "earliest_breaks_in": "2027.7",
@@ -6539,7 +6620,7 @@
    "ref": "refs/tags/v0.21.13",
    "stargazers_count": 185,
    "repo_url": "https://github.com/gbroeckling/padspanHA",
-   "scanned_utc": "2026-08-09T03:54:15Z",
+   "scanned_utc": "2026-08-17T03:35:51Z",
    "earliest_breaks_in": "2027.7",
    "findings": [
     {
@@ -6556,7 +6637,12 @@
      "line": 242,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "location_name"
+   }
   },
   {
    "full_name": "Wibias/hass-variables",
@@ -6709,21 +6795,26 @@
    "domains": [
     "xiaomi_cloud"
    ],
-   "version": "v1.2.7",
-   "ref": "refs/tags/v1.2.7",
+   "version": "v1.3.0",
+   "ref": "refs/tags/v1.3.0",
    "stargazers_count": 50,
    "repo_url": "https://github.com/fineemb/xiaomi-cloud",
-   "scanned_utc": "2026-08-09T03:53:53Z",
+   "scanned_utc": "2026-08-17T03:35:22Z",
    "earliest_breaks_in": "2027.7",
    "findings": [
     {
      "rule_id": "device-tracker-battery-level",
      "breaks_in": "2027.7",
      "file": "custom_components/xiaomi_cloud/device_tracker.py",
-     "line": 71,
+     "line": 55,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "battery_level"
+   }
   },
   {
    "full_name": "jesserockz/ha-leafspy",
@@ -6744,35 +6835,6 @@
      "file": "custom_components/leafspy/device_tracker.py",
      "line": 74,
      "confidence": "high"
-    }
-   ]
-  },
-  {
-   "full_name": "elsbrock/cowboy-ha",
-   "domain": "cowboy",
-   "domains": [
-    "cowboy"
-   ],
-   "version": "v1.3.0",
-   "ref": "refs/tags/v1.3.0",
-   "stargazers_count": 29,
-   "repo_url": "https://github.com/elsbrock/cowboy-ha",
-   "scanned_utc": "2026-08-09T03:53:23Z",
-   "earliest_breaks_in": "2027.7",
-   "findings": [
-    {
-     "rule_id": "device-tracker-location-name",
-     "breaks_in": "2027.7",
-     "file": "custom_components/cowboy/device_tracker.py",
-     "line": 71,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/cowboy/__init__.py",
-     "line": 134,
-     "confidence": "medium"
     }
    ]
   },
@@ -6881,7 +6943,7 @@
    "ref": "refs/tags/v1.0.2",
    "stargazers_count": 10,
    "repo_url": "https://github.com/geertmeersman/eeveemobility",
-   "scanned_utc": "2026-08-09T03:54:29Z",
+   "scanned_utc": "2026-08-17T03:36:07Z",
    "earliest_breaks_in": "2027.7",
    "findings": [
     {
@@ -6898,7 +6960,12 @@
      "line": 253,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "battery_level"
+   }
   },
   {
    "full_name": "basilfx/homeassistant-biketrax",
@@ -7169,9 +7236,9 @@
    ],
    "version": "2.0.5",
    "ref": "refs/tags/2.0.5",
-   "stargazers_count": 7615,
+   "stargazers_count": 7617,
    "repo_url": "https://github.com/hacs/integration",
-   "scanned_utc": "2026-08-09T03:55:20Z",
+   "scanned_utc": "2026-08-17T03:37:16Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -7181,7 +7248,19 @@
      "line": 1297,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "report": {
+     "number": 5471,
+     "url": "https://github.com/hacs/integration/issues/5471",
+     "state": "open",
+     "title": "DeviceRegistry.async_get_device() removal in Home Assistant 2027.8",
+     "reactions": 0
+    },
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "AlexxIT/XiaomiGateway3",
@@ -7232,9 +7311,9 @@
    ],
    "version": "v2.2.22",
    "ref": "refs/tags/v2.2.22",
-   "stargazers_count": 2296,
+   "stargazers_count": 2298,
    "repo_url": "https://github.com/greghesp/ha-bambulab",
-   "scanned_utc": "2026-08-09T03:54:54Z",
+   "scanned_utc": "2026-08-17T03:36:44Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -7328,7 +7407,12 @@
      "line": 938,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "custom-components/ble_monitor",
@@ -7386,7 +7470,7 @@
    ],
    "version": "7.1.25",
    "ref": "refs/tags/7.1.25",
-   "stargazers_count": 1973,
+   "stargazers_count": 1975,
    "repo_url": "https://github.com/JurajNyiri/HomeAssistant-Tapo-Control",
    "scanned_utc": "2026-08-14T04:00:41Z",
    "earliest_breaks_in": "2027.8",
@@ -7471,7 +7555,7 @@
    ],
    "version": "v0.5.3",
    "ref": "refs/tags/v0.5.3",
-   "stargazers_count": 1191,
+   "stargazers_count": 1197,
    "repo_url": "https://github.com/3dg1luk43/ha_washdata",
    "scanned_utc": "2026-08-13T04:26:44Z",
    "earliest_breaks_in": "2027.8",
@@ -7498,7 +7582,7 @@
    ],
    "version": "3.5.3",
    "ref": "refs/tags/3.5.3",
-   "stargazers_count": 1143,
+   "stargazers_count": 1144,
    "repo_url": "https://github.com/andrew-codechimp/HA-Battery-Notes",
    "scanned_utc": "2026-08-15T03:32:22Z",
    "earliest_breaks_in": "2027.8",
@@ -7546,7 +7630,7 @@
    ],
    "version": "3.8.0",
    "ref": "refs/tags/3.8.0",
-   "stargazers_count": 1058,
+   "stargazers_count": 1059,
    "repo_url": "https://github.com/thomluther/ha-anker-solix",
    "scanned_utc": "2026-08-12T04:02:07Z",
    "earliest_breaks_in": "2027.8",
@@ -7596,9 +7680,9 @@
    ],
    "version": "1.4.2",
    "ref": "refs/tags/1.4.2",
-   "stargazers_count": 991,
+   "stargazers_count": 992,
    "repo_url": "https://github.com/ekutner/home-connect-hass",
-   "scanned_utc": "2026-08-09T03:53:14Z",
+   "scanned_utc": "2026-08-17T03:34:30Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -7622,7 +7706,12 @@
      "line": 402,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "SecKatie/ha-wyzeapi",
@@ -7952,7 +8041,7 @@
    ],
    "version": "v2.2",
    "ref": "refs/tags/v2.2",
-   "stargazers_count": 465,
+   "stargazers_count": 466,
    "repo_url": "https://github.com/tomaae/homeassistant-mikrotik_router",
    "scanned_utc": "2026-08-13T04:24:34Z",
    "earliest_breaks_in": "2027.8",
@@ -8212,7 +8301,7 @@
    ],
    "version": "v1.2.32",
    "ref": "refs/tags/v1.2.32",
-   "stargazers_count": 352,
+   "stargazers_count": 351,
    "repo_url": "https://github.com/jjjonesjr33/petlibro",
    "scanned_utc": "2026-08-10T03:58:02Z",
    "earliest_breaks_in": "2027.8",
@@ -8324,7 +8413,7 @@
    ],
    "version": "v0.5.3",
    "ref": "refs/tags/v0.5.3",
-   "stargazers_count": 347,
+   "stargazers_count": 348,
    "repo_url": "https://github.com/FutureTense/keymaster",
    "scanned_utc": "2026-08-14T03:59:47Z",
    "earliest_breaks_in": "2027.8",
@@ -8373,7 +8462,7 @@
    ],
    "version": "4.1.2",
    "ref": "refs/tags/4.1.2",
-   "stargazers_count": 327,
+   "stargazers_count": 328,
    "repo_url": "https://github.com/sebr/bhyve-home-assistant",
    "scanned_utc": "2026-08-12T04:00:14Z",
    "earliest_breaks_in": "2027.8",
@@ -8505,7 +8594,7 @@
    ],
    "version": "v3.3.5",
    "ref": "refs/tags/v3.3.5",
-   "stargazers_count": 309,
+   "stargazers_count": 310,
    "repo_url": "https://github.com/WillCodeForCats/solaredge-modbus-multi",
    "scanned_utc": "2026-08-15T03:30:53Z",
    "earliest_breaks_in": "2027.8",
@@ -8582,33 +8671,6 @@
    ]
   },
   {
-   "full_name": "bremor/bureau_of_meteorology",
-   "domain": "bureau_of_meteorology",
-   "domains": [
-    "bureau_of_meteorology"
-   ],
-   "version": "1.3.6",
-   "ref": "refs/tags/1.3.6",
-   "stargazers_count": 276,
-   "repo_url": "https://github.com/bremor/bureau_of_meteorology",
-   "scanned_utc": "2026-08-16T03:35:18Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-config-entry-mutation-params",
-     "breaks_in": "2027.8",
-     "file": "custom_components/bureau_of_meteorology/__init__.py",
-     "line": 204,
-     "confidence": "high"
-    }
-   ],
-   "upstream": {
-    "archived": false,
-    "issues_enabled": true,
-    "symbol": "async_update_device"
-   }
-  },
-  {
    "full_name": "TypQxQ/Sigenergy-Local-Modbus",
    "domain": "sigen",
    "domains": [
@@ -8616,7 +8678,7 @@
    ],
    "version": "v.1.2.5.1",
    "ref": "refs/tags/v.1.2.5.1",
-   "stargazers_count": 276,
+   "stargazers_count": 277,
    "repo_url": "https://github.com/TypQxQ/Sigenergy-Local-Modbus",
    "scanned_utc": "2026-08-15T03:30:40Z",
    "earliest_breaks_in": "2027.8",
@@ -8657,6 +8719,33 @@
    }
   },
   {
+   "full_name": "bremor/bureau_of_meteorology",
+   "domain": "bureau_of_meteorology",
+   "domains": [
+    "bureau_of_meteorology"
+   ],
+   "version": "1.3.6",
+   "ref": "refs/tags/1.3.6",
+   "stargazers_count": 276,
+   "repo_url": "https://github.com/bremor/bureau_of_meteorology",
+   "scanned_utc": "2026-08-16T03:35:18Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-config-entry-mutation-params",
+     "breaks_in": "2027.8",
+     "file": "custom_components/bureau_of_meteorology/__init__.py",
+     "line": 204,
+     "confidence": "high"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_update_device"
+   }
+  },
+  {
    "full_name": "Jezza34000/homeassistant_petkit",
    "domain": "petkit",
    "domains": [
@@ -8664,7 +8753,7 @@
    ],
    "version": "1.27.0",
    "ref": "refs/tags/1.27.0",
-   "stargazers_count": 275,
+   "stargazers_count": 276,
    "repo_url": "https://github.com/Jezza34000/homeassistant_petkit",
    "scanned_utc": "2026-08-14T04:00:30Z",
    "earliest_breaks_in": "2027.8",
@@ -8758,6 +8847,40 @@
      "reactions": 0
     },
     "symbol": "via_device"
+   }
+  },
+  {
+   "full_name": "dvd-dev/hilo",
+   "domain": "hilo",
+   "domains": [
+    "hilo"
+   ],
+   "version": "v2026.8.2",
+   "ref": "refs/tags/v2026.8.2",
+   "stargazers_count": 248,
+   "repo_url": "https://github.com/dvd-dev/hilo",
+   "scanned_utc": "2026-08-17T03:34:19Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/hilo/__init__.py",
+     "line": 160,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/hilo/__init__.py",
+     "line": 164,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
    }
   },
   {
@@ -8880,7 +9003,7 @@
    "ref": "refs/tags/v0.10.6",
    "stargazers_count": 236,
    "repo_url": "https://github.com/jason0x43/hacs-hubitat",
-   "scanned_utc": "2026-08-10T03:57:47Z",
+   "scanned_utc": "2026-08-17T03:39:08Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -8890,7 +9013,12 @@
      "line": 1039,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "tijsverkoyen/HomeAssistant-FusionSolar",
@@ -8900,7 +9028,7 @@
    ],
    "version": "v3.6.0",
    "ref": "refs/tags/v3.6.0",
-   "stargazers_count": 234,
+   "stargazers_count": 236,
    "repo_url": "https://github.com/tijsverkoyen/HomeAssistant-FusionSolar",
    "scanned_utc": "2026-08-12T04:02:16Z",
    "earliest_breaks_in": "2027.8",
@@ -9068,9 +9196,9 @@
    ],
    "version": "v2.6.2",
    "ref": "refs/tags/v2.6.2",
-   "stargazers_count": 222,
+   "stargazers_count": 223,
    "repo_url": "https://github.com/hif2k1/battery_sim",
-   "scanned_utc": "2026-08-09T03:55:46Z",
+   "scanned_utc": "2026-08-17T03:37:48Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -9080,7 +9208,12 @@
      "line": 281,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "anker-charging/ha-anker-solix-official",
@@ -9283,7 +9416,7 @@
    "ref": "refs/tags/v1.0.23",
    "stargazers_count": 196,
    "repo_url": "https://github.com/elad-bar/ha-blueiris",
-   "scanned_utc": "2026-08-09T03:53:15Z",
+   "scanned_utc": "2026-08-17T03:34:30Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -9293,7 +9426,12 @@
      "line": 39,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "martinarva/dynamic_energy_cost",
@@ -9323,6 +9461,33 @@
      "confidence": "medium"
     }
    ]
+  },
+  {
+   "full_name": "DAB-LABS/HAIR",
+   "domain": "hair",
+   "domains": [
+    "hair"
+   ],
+   "version": "v0.9.10",
+   "ref": "refs/tags/v0.9.10",
+   "stargazers_count": 194,
+   "repo_url": "https://github.com/DAB-LABS/HAIR",
+   "scanned_utc": "2026-08-13T04:28:40Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/hair/device_manager.py",
+     "line": 313,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "AlbinLind/dawarich-home-assistant",
@@ -9369,33 +9534,6 @@
      "breaks_in": "2027.8",
      "file": "custom_components/sleep_as_android_mqtt/sensor.py",
      "line": 101,
-     "confidence": "medium"
-    }
-   ],
-   "upstream": {
-    "archived": false,
-    "issues_enabled": true,
-    "symbol": "async_get_device"
-   }
-  },
-  {
-   "full_name": "DAB-LABS/HAIR",
-   "domain": "hair",
-   "domains": [
-    "hair"
-   ],
-   "version": "v0.9.10",
-   "ref": "refs/tags/v0.9.10",
-   "stargazers_count": 192,
-   "repo_url": "https://github.com/DAB-LABS/HAIR",
-   "scanned_utc": "2026-08-13T04:28:40Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/hair/device_manager.py",
-     "line": 313,
      "confidence": "medium"
     }
    ],
@@ -9535,11 +9673,11 @@
    "domains": [
     "tado_ce"
    ],
-   "version": "v4.3.1",
-   "ref": "refs/tags/v4.3.1",
+   "version": "v4.3.3",
+   "ref": "refs/tags/v4.3.3",
    "stargazers_count": 154,
    "repo_url": "https://github.com/hiall-fyi/tado_ce",
-   "scanned_utc": "2026-08-09T03:55:41Z",
+   "scanned_utc": "2026-08-17T03:37:43Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -9563,7 +9701,12 @@
      "line": 279,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "ffunes/Marstek-Venus-Energy-Manager",
@@ -9575,7 +9718,7 @@
    "ref": "refs/tags/v2.1.1",
    "stargazers_count": 147,
    "repo_url": "https://github.com/ffunes/Marstek-Venus-Energy-Manager",
-   "scanned_utc": "2026-08-09T03:53:46Z",
+   "scanned_utc": "2026-08-17T03:35:13Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -9592,7 +9735,12 @@
      "line": 1653,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "elad-bar/ha-edgeos",
@@ -9604,7 +9752,7 @@
    "ref": "refs/tags/v2.1.9",
    "stargazers_count": 146,
    "repo_url": "https://github.com/elad-bar/ha-edgeos",
-   "scanned_utc": "2026-08-09T03:53:15Z",
+   "scanned_utc": "2026-08-17T03:34:31Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -9642,7 +9790,12 @@
      "line": 927,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "Pho3niX90/solis_modbus",
@@ -9883,35 +10036,26 @@
    "domains": [
     "securitas"
    ],
-   "version": "v5.4.1",
-   "ref": "refs/tags/v5.4.1",
+   "version": "v5.5.0",
+   "ref": "refs/tags/v5.5.0",
    "stargazers_count": 135,
    "repo_url": "https://github.com/guerrerotook/securitas-direct-new-api",
-   "scanned_utc": "2026-08-09T03:55:01Z",
+   "scanned_utc": "2026-08-17T03:36:53Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
-     "rule_id": "device-info-via-device",
+     "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/securitas/entity.py",
-     "line": 32,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/securitas/lock.py",
-     "line": 191,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/securitas/lock.py",
-     "line": 239,
-     "confidence": "high"
+     "line": 49,
+     "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "studiobts/home-assistant-device-pulse",
@@ -10020,7 +10164,7 @@
    ],
    "version": "v1.19.43",
    "ref": "refs/tags/v1.19.43",
-   "stargazers_count": 123,
+   "stargazers_count": 128,
    "repo_url": "https://github.com/Xunil99/ha-bosch-ebike",
    "scanned_utc": "2026-08-15T03:31:00Z",
    "earliest_breaks_in": "2027.8",
@@ -10306,7 +10450,7 @@
    "ref": "refs/tags/v2.0.6",
    "stargazers_count": 110,
    "repo_url": "https://github.com/elad-bar/ha-hpprinter",
-   "scanned_utc": "2026-08-09T03:53:16Z",
+   "scanned_utc": "2026-08-17T03:34:32Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -10337,7 +10481,12 @@
      "line": 263,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "lasswellt/govee-homeassistant",
@@ -10574,7 +10723,7 @@
    ],
    "version": "v1.16.2",
    "ref": "refs/tags/v1.16.2",
-   "stargazers_count": 99,
+   "stargazers_count": 100,
    "repo_url": "https://github.com/bvis/aegis-hass",
    "scanned_utc": "2026-08-16T03:35:30Z",
    "earliest_breaks_in": "2027.8",
@@ -10799,7 +10948,7 @@
    "ref": "refs/tags/0.2.0",
    "stargazers_count": 95,
    "repo_url": "https://github.com/fsaris/home-assistant-awox",
-   "scanned_utc": "2026-08-09T03:54:05Z",
+   "scanned_utc": "2026-08-17T03:35:40Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -10816,7 +10965,12 @@
      "line": 82,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "briis/weatherflow_forecast",
@@ -10914,21 +11068,26 @@
    "domains": [
     "pax_ble"
    ],
-   "version": "v1.1.24",
-   "ref": "refs/tags/v1.1.24",
+   "version": "v1.1.28",
+   "ref": "refs/tags/v1.1.28",
    "stargazers_count": 86,
    "repo_url": "https://github.com/eriknn/ha-pax_ble",
-   "scanned_utc": "2026-08-09T03:53:34Z",
+   "scanned_utc": "2026-08-17T03:34:56Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/pax_ble/config_flow.py",
-     "line": 497,
+     "line": 514,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "gjohansson-ST/attribute_as_sensor",
@@ -10940,7 +11099,7 @@
    "ref": "refs/tags/2.0.0",
    "stargazers_count": 86,
    "repo_url": "https://github.com/gjohansson-ST/attribute_as_sensor",
-   "scanned_utc": "2026-08-09T03:54:40Z",
+   "scanned_utc": "2026-08-17T03:36:25Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -10964,7 +11123,19 @@
      "line": 103,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "report": {
+     "number": 80,
+     "url": "https://github.com/gjohansson-ST/attribute_as_sensor/issues/80",
+     "state": "open",
+     "title": "Depricated call to 'async_remove_stale_devices_links_keep_entity_device'",
+     "reactions": 0
+    },
+    "symbol": "async_remove_stale_devices_links_keep_entity_device"
+   }
   },
   {
    "full_name": "its-me-prash/vwgroup-connect-ha",
@@ -10972,21 +11143,33 @@
    "domains": [
     "vag_connect"
    ],
-   "version": "v3.0.1",
-   "ref": "refs/tags/v3.0.1",
-   "stargazers_count": 85,
+   "version": "v3.2.3",
+   "ref": "refs/tags/v3.2.3",
+   "stargazers_count": 86,
    "repo_url": "https://github.com/its-me-prash/vwgroup-connect-ha",
-   "scanned_utc": "2026-08-10T03:57:34Z",
+   "scanned_utc": "2026-08-17T03:38:51Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/vag_connect/coordinator.py",
-     "line": 4356,
+     "line": 3310,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/vag_connect/coordinator.py",
+     "line": 4500,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "cx3Y/sunlogin",
@@ -11186,7 +11369,7 @@
    "ref": "refs/tags/v1.5.10-bugfix-covers",
    "stargazers_count": 73,
    "repo_url": "https://github.com/grimmpp/home-assistant-eltako",
-   "scanned_utc": "2026-08-09T03:54:58Z",
+   "scanned_utc": "2026-08-17T03:36:48Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -11238,7 +11421,19 @@
      "line": 983,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "report": {
+     "number": 213,
+     "url": "https://github.com/grimmpp/home-assistant-eltako/issues/213",
+     "state": "closed",
+     "title": "Home Assistant 2027.8 API changes",
+     "reactions": 0
+    },
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "Ediminator/homematicip-hcu",
@@ -11248,7 +11443,7 @@
    ],
    "version": "2.2.1",
    "ref": "refs/tags/2.2.1",
-   "stargazers_count": 70,
+   "stargazers_count": 71,
    "repo_url": "https://github.com/Ediminator/homematicip-hcu",
    "scanned_utc": "2026-08-14T03:58:57Z",
    "earliest_breaks_in": "2027.8",
@@ -11311,7 +11506,7 @@
    "ref": "refs/tags/1.6.0",
    "stargazers_count": 68,
    "repo_url": "https://github.com/erikkastelec/hass-WEM-Portal",
-   "scanned_utc": "2026-08-09T03:53:34Z",
+   "scanned_utc": "2026-08-17T03:34:56Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -11321,7 +11516,12 @@
      "line": 52,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "jaroschek/home-assistant-myuplink",
@@ -11333,7 +11533,7 @@
    "ref": "refs/tags/1.8.3",
    "stargazers_count": 68,
    "repo_url": "https://github.com/jaroschek/home-assistant-myuplink",
-   "scanned_utc": "2026-08-10T03:57:46Z",
+   "scanned_utc": "2026-08-17T03:39:07Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -11343,7 +11543,12 @@
      "line": 137,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "mukaschultze/ha-must-inverter",
@@ -11623,7 +11828,7 @@
    "ref": "refs/tags/1.5.0",
    "stargazers_count": 65,
    "repo_url": "https://github.com/firstof9/ha-gasbuddy",
-   "scanned_utc": "2026-08-09T03:53:53Z",
+   "scanned_utc": "2026-08-17T03:35:22Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -11633,7 +11838,12 @@
      "line": 250,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "primary_config_entry"
+   }
   },
   {
    "full_name": "DeerMaximum/Technische-Alternative-CMI",
@@ -11750,28 +11960,33 @@
    "domains": [
     "maintenance_supporter"
    ],
-   "version": "v2.55.0",
-   "ref": "refs/tags/v2.55.0",
+   "version": "v2.58.0",
+   "ref": "refs/tags/v2.58.0",
    "stargazers_count": 61,
    "repo_url": "https://github.com/iluebbe/maintenance_supporter",
-   "scanned_utc": "2026-08-10T03:57:15Z",
+   "scanned_utc": "2026-08-17T03:38:26Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/maintenance_supporter/helpers/device_link.py",
-     "line": 190,
+     "line": 198,
      "confidence": "medium"
     },
     {
      "rule_id": "core-call-async-remove-helper-config-entry-from-source-device",
      "breaks_in": "2027.8",
      "file": "custom_components/maintenance_supporter/helpers/device_link.py",
-     "line": 242,
+     "line": 250,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "zupancicmarko/JellyHA",
@@ -12219,7 +12434,7 @@
    "ref": "refs/tags/v3.0.14",
    "stargazers_count": 54,
    "repo_url": "https://github.com/elad-bar/ha-shinobi",
-   "scanned_utc": "2026-08-09T03:53:16Z",
+   "scanned_utc": "2026-08-17T03:34:33Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -12229,7 +12444,12 @@
      "line": 109,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "geertmeersman/robonect",
@@ -12241,7 +12461,7 @@
    "ref": "refs/tags/v5.1.13",
    "stargazers_count": 51,
    "repo_url": "https://github.com/geertmeersman/robonect",
-   "scanned_utc": "2026-08-09T03:54:30Z",
+   "scanned_utc": "2026-08-17T03:36:10Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -12258,7 +12478,12 @@
      "line": 83,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "hasl-sensor/integration",
@@ -12270,7 +12495,7 @@
    "ref": "refs/tags/4.0.0",
    "stargazers_count": 50,
    "repo_url": "https://github.com/hasl-sensor/integration",
-   "scanned_utc": "2026-08-09T03:55:23Z",
+   "scanned_utc": "2026-08-17T03:37:20Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -12301,7 +12526,12 @@
      "line": 62,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "dirkgroenen/hass-evse-load-balancer",
@@ -12430,7 +12660,7 @@
    "ref": "refs/tags/1.7.0",
    "stargazers_count": 48,
    "repo_url": "https://github.com/doron1/ha-palgate",
-   "scanned_utc": "2026-08-09T03:52:59Z",
+   "scanned_utc": "2026-08-17T03:34:08Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -12440,7 +12670,12 @@
      "line": 279,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "tronikos/nest_legacy",
@@ -12975,11 +13210,11 @@
    "domains": [
     "ai_hub"
    ],
-   "version": "2026.08.0",
-   "ref": "refs/tags/2026.08.0",
+   "version": "2026.08.1",
+   "ref": "refs/tags/2026.08.1",
    "stargazers_count": 40,
    "repo_url": "https://github.com/ha-china/ai_hub",
-   "scanned_utc": "2026-08-09T03:55:06Z",
+   "scanned_utc": "2026-08-17T03:37:00Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -12989,7 +13224,12 @@
      "line": 199,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "IAmTheMitchell/renogy-ha",
@@ -13142,11 +13382,11 @@
    "domains": [
     "pollenlevels"
    ],
-   "version": "v3.0.0",
-   "ref": "refs/tags/v3.0.0",
+   "version": "v3.0.2",
+   "ref": "refs/tags/v3.0.2",
    "stargazers_count": 39,
    "repo_url": "https://github.com/eXPerience83/pollenlevels",
-   "scanned_utc": "2026-08-09T03:53:09Z",
+   "scanned_utc": "2026-08-17T03:34:22Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -13170,7 +13410,19 @@
      "line": 641,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "report": {
+     "number": 226,
+     "url": "https://github.com/eXPerience83/pollenlevels/issues/226",
+     "state": "open",
+     "title": "Track Home Assistant device registry move API deprecation",
+     "reactions": 0
+    },
+    "symbol": "async_update_device"
+   }
   },
   {
    "full_name": "hudsonbrendon/HA-drivvo",
@@ -13182,7 +13434,7 @@
    "ref": "refs/tags/v3.0.0",
    "stargazers_count": 39,
    "repo_url": "https://github.com/hudsonbrendon/HA-drivvo",
-   "scanned_utc": "2026-08-10T03:57:05Z",
+   "scanned_utc": "2026-08-17T03:38:11Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -13192,7 +13444,12 @@
      "line": 77,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_update_device"
+   }
   },
   {
    "full_name": "MarcusTaz/ha_kia_hyundai_USA",
@@ -13375,7 +13632,7 @@
    "ref": "refs/tags/v1.1.0",
    "stargazers_count": 37,
    "repo_url": "https://github.com/jaycollett/OpenIRBlaster",
-   "scanned_utc": "2026-08-10T03:57:50Z",
+   "scanned_utc": "2026-08-17T03:39:12Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -13385,7 +13642,12 @@
      "line": 277,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "ruaan-deysel/ha-unifi-insights",
@@ -13466,7 +13728,7 @@
    ],
    "version": "v2.0.0",
    "ref": "refs/tags/v2.0.0",
-   "stargazers_count": 35,
+   "stargazers_count": 36,
    "repo_url": "https://github.com/FaserF/ha-whatsapp",
    "scanned_utc": "2026-08-14T03:59:39Z",
    "earliest_breaks_in": "2027.8",
@@ -13495,7 +13757,7 @@
    "ref": "refs/tags/2026.4.0",
    "stargazers_count": 35,
    "repo_url": "https://github.com/houzzkit/houzzkit-ai-ha",
-   "scanned_utc": "2026-08-10T03:57:01Z",
+   "scanned_utc": "2026-08-17T03:38:07Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -13519,7 +13781,12 @@
      "line": 97,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "alepee/hass-hitachi_yutaki",
@@ -13641,7 +13908,7 @@
    "ref": "refs/tags/v1.7.2",
    "stargazers_count": 33,
    "repo_url": "https://github.com/enoch85/ovms-home-assistant",
-   "scanned_utc": "2026-08-09T03:53:30Z",
+   "scanned_utc": "2026-08-17T03:34:50Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -13693,7 +13960,12 @@
      "line": 287,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "myny-git/smappee_ev",
@@ -13770,7 +14042,7 @@
    "ref": "refs/tags/v2024.9.1",
    "stargazers_count": 32,
    "repo_url": "https://github.com/giachello/mlgw",
-   "scanned_utc": "2026-08-09T03:54:37Z",
+   "scanned_utc": "2026-08-17T03:36:21Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -13780,7 +14052,12 @@
      "line": 503,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "barneyonline/ha-enphase-energy",
@@ -13951,16 +14228,43 @@
    }
   },
   {
+   "full_name": "elsbrock/cowboy-ha",
+   "domain": "cowboy",
+   "domains": [
+    "cowboy"
+   ],
+   "version": "v1.3.1",
+   "ref": "refs/tags/v1.3.1",
+   "stargazers_count": 29,
+   "repo_url": "https://github.com/elsbrock/cowboy-ha",
+   "scanned_utc": "2026-08-17T03:34:41Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/cowboy/__init__.py",
+     "line": 134,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
+  },
+  {
    "full_name": "gentslava/elektronny-gorod",
    "domain": "elektronny_gorod",
    "domains": [
     "elektronny_gorod"
    ],
-   "version": "4.0.0",
-   "ref": "refs/tags/4.0.0",
+   "version": "4.0.1",
+   "ref": "refs/tags/4.0.1",
    "stargazers_count": 29,
    "repo_url": "https://github.com/gentslava/elektronny-gorod",
-   "scanned_utc": "2026-08-09T03:54:32Z",
+   "scanned_utc": "2026-08-17T03:36:13Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -14005,7 +14309,12 @@
      "line": 392,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "Mat931/digitalstrom-homeassistant",
@@ -14353,6 +14662,28 @@
    }
   },
   {
+   "full_name": "kayl-codes/homeassistant-truenas",
+   "domain": "truenas_ce",
+   "domains": [
+    "truenas_ce"
+   ],
+   "version": "v2.6.0",
+   "ref": "refs/tags/v2.6.0",
+   "stargazers_count": 26,
+   "repo_url": "https://github.com/kayl-codes/homeassistant-truenas",
+   "scanned_utc": "2026-08-10T03:59:07Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/truenas_ce/entity.py",
+     "line": 553,
+     "confidence": "high"
+    }
+   ]
+  },
+  {
    "full_name": "kcofoni/ha-netro-watering",
    "domain": "netro_watering",
    "domains": [
@@ -14544,28 +14875,6 @@
     "issues_enabled": true,
     "symbol": "via_device"
    }
-  },
-  {
-   "full_name": "kayl-codes/homeassistant-truenas",
-   "domain": "truenas_ce",
-   "domains": [
-    "truenas_ce"
-   ],
-   "version": "v2.6.0",
-   "ref": "refs/tags/v2.6.0",
-   "stargazers_count": 24,
-   "repo_url": "https://github.com/kayl-codes/homeassistant-truenas",
-   "scanned_utc": "2026-08-10T03:59:07Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/truenas_ce/entity.py",
-     "line": 553,
-     "confidence": "high"
-    }
-   ]
   },
   {
    "full_name": "partach/switch_port_card_pro",
@@ -15101,7 +15410,7 @@
    "ref": "refs/tags/v2.4.2",
    "stargazers_count": 21,
    "repo_url": "https://github.com/eifinger/hass-foldingathomecontrol",
-   "scanned_utc": "2026-08-09T03:53:13Z",
+   "scanned_utc": "2026-08-17T03:34:28Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -15111,7 +15420,12 @@
      "line": 64,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "lizardsystems/hass-tnse",
@@ -15154,6 +15468,35 @@
      "file": "custom_components/ufh_controller/device.py",
      "line": 34,
      "confidence": "high"
+    }
+   ]
+  },
+  {
+   "full_name": "ronnnnnnnnnnnnn/renpho_fitness_scale_ble",
+   "domain": "renpho_fitness_scale_ble",
+   "domains": [
+    "renpho_fitness_scale_ble"
+   ],
+   "version": "v0.3.2",
+   "ref": "refs/tags/v0.3.2",
+   "stargazers_count": 21,
+   "repo_url": "https://github.com/ronnnnnnnnnnnnn/renpho_fitness_scale_ble",
+   "scanned_utc": "2026-08-12T03:59:21Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/renpho_fitness_scale_ble/coordinator.py",
+     "line": 2510,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/renpho_fitness_scale_ble/coordinator.py",
+     "line": 2824,
+     "confidence": "medium"
     }
    ]
   },
@@ -15339,35 +15682,6 @@
     "issues_enabled": true,
     "symbol": "async_get_device"
    }
-  },
-  {
-   "full_name": "ronnnnnnnnnnnnn/renpho_fitness_scale_ble",
-   "domain": "renpho_fitness_scale_ble",
-   "domains": [
-    "renpho_fitness_scale_ble"
-   ],
-   "version": "v0.3.2",
-   "ref": "refs/tags/v0.3.2",
-   "stargazers_count": 20,
-   "repo_url": "https://github.com/ronnnnnnnnnnnnn/renpho_fitness_scale_ble",
-   "scanned_utc": "2026-08-12T03:59:21Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/renpho_fitness_scale_ble/coordinator.py",
-     "line": 2510,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/renpho_fitness_scale_ble/coordinator.py",
-     "line": 2824,
-     "confidence": "medium"
-    }
-   ]
   },
   {
    "full_name": "bacco007/sensor.opennem",
@@ -15634,7 +15948,7 @@
    "ref": "refs/tags/0.4.0",
    "stargazers_count": 17,
    "repo_url": "https://github.com/duhow/hass-cover-time-based",
-   "scanned_utc": "2026-08-09T03:53:05Z",
+   "scanned_utc": "2026-08-17T03:34:16Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -15644,7 +15958,12 @@
      "line": 90,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_remove_helper_config_entry_from_source_device"
+   }
   },
   {
    "full_name": "flashg1/SolarCharger",
@@ -15652,11 +15971,11 @@
    "domains": [
     "solarcharger"
    ],
-   "version": "v0.10.1",
-   "ref": "refs/tags/v0.10.1",
+   "version": "v0.10.2",
+   "ref": "refs/tags/v0.10.2",
    "stargazers_count": 17,
    "repo_url": "https://github.com/flashg1/SolarCharger",
-   "scanned_utc": "2026-08-09T03:53:55Z",
+   "scanned_utc": "2026-08-17T03:35:25Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -15670,10 +15989,49 @@
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/solarcharger/state_machine/solar_charge.py",
-     "line": 160,
+     "line": 161,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
+  },
+  {
+   "full_name": "geappliances/geappliances-smarthq-integration",
+   "domain": "smarthq",
+   "domains": [
+    "smarthq"
+   ],
+   "version": "v1.2.4",
+   "ref": "refs/tags/v1.2.4",
+   "stargazers_count": 17,
+   "repo_url": "https://github.com/geappliances/geappliances-smarthq-integration",
+   "scanned_utc": "2026-08-17T03:36:04Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/smarthq/llm_api.py",
+     "line": 137,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/smarthq/llm_api.py",
+     "line": 447,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "lizardsystems/hass-mygas",
@@ -15763,7 +16121,7 @@
    "ref": "refs/tags/1.0.7",
    "stargazers_count": 16,
    "repo_url": "https://github.com/faizpuru/ha-pilot-wire-climate",
-   "scanned_utc": "2026-08-09T03:53:43Z",
+   "scanned_utc": "2026-08-17T03:35:09Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -15773,36 +16131,12 @@
      "line": 18,
      "confidence": "medium"
     }
-   ]
-  },
-  {
-   "full_name": "geappliances/geappliances-smarthq-integration",
-   "domain": "smarthq",
-   "domains": [
-    "smarthq"
    ],
-   "version": "v1.2.4",
-   "ref": "refs/tags/v1.2.4",
-   "stargazers_count": 16,
-   "repo_url": "https://github.com/geappliances/geappliances-smarthq-integration",
-   "scanned_utc": "2026-08-09T03:54:26Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/smarthq/llm_api.py",
-     "line": 137,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/smarthq/llm_api.py",
-     "line": 447,
-     "confidence": "medium"
-    }
-   ]
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_remove_stale_devices_links_keep_entity_device"
+   }
   },
   {
    "full_name": "geertmeersman/nexxtmove",
@@ -15814,7 +16148,7 @@
    "ref": "refs/tags/v1.1.1",
    "stargazers_count": 16,
    "repo_url": "https://github.com/geertmeersman/nexxtmove",
-   "scanned_utc": "2026-08-09T03:54:30Z",
+   "scanned_utc": "2026-08-17T03:36:09Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -15824,7 +16158,12 @@
      "line": 134,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "sprocket-9/hacs-nuvo-serial",
@@ -15988,7 +16327,7 @@
    "ref": "refs/tags/v1.5",
    "stargazers_count": 15,
    "repo_url": "https://github.com/hexCut/irsap-ha",
-   "scanned_utc": "2026-08-09T03:55:40Z",
+   "scanned_utc": "2026-08-17T03:37:41Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -15998,7 +16337,12 @@
      "line": 48,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "kramttocs/ha-blueiris",
@@ -16761,6 +17105,28 @@
    }
   },
   {
+   "full_name": "tjbaker/homeassistant-fansync",
+   "domain": "fansync",
+   "domains": [
+    "fansync"
+   ],
+   "version": "0.8.1",
+   "ref": "refs/tags/0.8.1",
+   "stargazers_count": 13,
+   "repo_url": "https://github.com/tjbaker/homeassistant-fansync",
+   "scanned_utc": "2026-08-12T04:02:21Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/fansync/coordinator.py",
+     "line": 118,
+     "confidence": "medium"
+    }
+   ]
+  },
+  {
    "full_name": "Veldkornet/ha-hyxi-cloud",
    "domain": "hyxi_cloud",
    "domains": [
@@ -16883,60 +17249,60 @@
    "domains": [
     "duofern"
    ],
-   "version": "v2.3.4",
-   "ref": "refs/tags/v2.3.4",
+   "version": "v2.3.5",
+   "ref": "refs/tags/v2.3.5",
    "stargazers_count": 12,
    "repo_url": "https://github.com/irstmon/homeassistant-duofern",
-   "scanned_utc": "2026-08-10T03:57:26Z",
+   "scanned_utc": "2026-08-17T03:38:39Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 434,
+     "line": 475,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 450,
+     "line": 491,
      "confidence": "medium"
     },
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 589,
+     "line": 630,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 605,
+     "line": 646,
      "confidence": "medium"
     },
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 698,
+     "line": 739,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 714,
+     "line": 755,
      "confidence": "medium"
     },
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/binary_sensor.py",
-     "line": 803,
+     "line": 844,
      "confidence": "high"
     },
     {
@@ -16957,14 +17323,14 @@
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/cover.py",
-     "line": 345,
+     "line": 365,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/cover.py",
-     "line": 361,
+     "line": 381,
      "confidence": "medium"
     },
     {
@@ -17034,24 +17400,29 @@
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/switch.py",
-     "line": 792,
+     "line": 804,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/switch.py",
-     "line": 810,
+     "line": 822,
      "confidence": "medium"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/duofern/switch.py",
-     "line": 966,
+     "line": 978,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "KipK/vtherm_smartpi",
@@ -17081,6 +17452,28 @@
    }
   },
   {
+   "full_name": "meltingice1337/tedee_ble",
+   "domain": "tedee_ble",
+   "domains": [
+    "tedee_ble"
+   ],
+   "version": "v0.1.15",
+   "ref": "refs/tags/v0.1.15",
+   "stargazers_count": 12,
+   "repo_url": "https://github.com/meltingice1337/tedee_ble",
+   "scanned_utc": "2026-08-11T03:54:38Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/tedee_ble/coordinator.py",
+     "line": 868,
+     "confidence": "medium"
+    }
+   ]
+  },
+  {
    "full_name": "superbox-dev/keba_keenergy",
    "domain": "keba_keenergy",
    "domains": [
@@ -17099,28 +17492,6 @@
      "file": "custom_components/keba_keenergy/entity.py",
      "line": 238,
      "confidence": "high"
-    }
-   ]
-  },
-  {
-   "full_name": "tjbaker/homeassistant-fansync",
-   "domain": "fansync",
-   "domains": [
-    "fansync"
-   ],
-   "version": "0.8.1",
-   "ref": "refs/tags/0.8.1",
-   "stargazers_count": 12,
-   "repo_url": "https://github.com/tjbaker/homeassistant-fansync",
-   "scanned_utc": "2026-08-12T04:02:21Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/fansync/coordinator.py",
-     "line": 118,
-     "confidence": "medium"
     }
    ]
   },
@@ -17232,32 +17603,32 @@
    "domains": [
     "homey_hass"
    ],
-   "version": "v2.0.1",
-   "ref": "refs/tags/v2.0.1",
+   "version": "v2.1.0",
+   "ref": "refs/tags/v2.1.0",
    "stargazers_count": 11,
    "repo_url": "https://github.com/ifMike/homeyHASS",
-   "scanned_utc": "2026-08-10T03:57:12Z",
+   "scanned_utc": "2026-08-17T03:38:22Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/homey_hass/__init__.py",
-     "line": 768,
+     "line": 800,
      "confidence": "medium"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/homey_hass/__init__.py",
-     "line": 880,
+     "line": 912,
      "confidence": "medium"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/homey_hass/__init__.py",
-     "line": 914,
+     "line": 946,
      "confidence": "medium"
     },
     {
@@ -17281,7 +17652,12 @@
      "line": 649,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "J-shw/ha-mycloud",
@@ -17357,28 +17733,6 @@
      "breaks_in": "2027.8",
      "file": "custom_components/senso4s/coordinator.py",
      "line": 194,
-     "confidence": "medium"
-    }
-   ]
-  },
-  {
-   "full_name": "meltingice1337/tedee_ble",
-   "domain": "tedee_ble",
-   "domains": [
-    "tedee_ble"
-   ],
-   "version": "v0.1.15",
-   "ref": "refs/tags/v0.1.15",
-   "stargazers_count": 11,
-   "repo_url": "https://github.com/meltingice1337/tedee_ble",
-   "scanned_utc": "2026-08-11T03:54:38Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/tedee_ble/coordinator.py",
-     "line": 868,
      "confidence": "medium"
     }
    ]
@@ -17743,7 +18097,7 @@
    "ref": "refs/tags/v4.4.1",
    "stargazers_count": 10,
    "repo_url": "https://github.com/hoizi89/pv_management",
-   "scanned_utc": "2026-08-10T03:56:56Z",
+   "scanned_utc": "2026-08-17T03:38:00Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -17802,7 +18156,12 @@
      "line": 21,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "maginawin/ha-dali-center",
@@ -18142,6 +18501,105 @@
    ]
   },
   {
+   "full_name": "mike-goldfinger/ha-warema-wms",
+   "domain": "warema_wms",
+   "domains": [
+    "warema_wms"
+   ],
+   "version": "v1.7.0",
+   "ref": "refs/tags/v1.7.0",
+   "stargazers_count": 9,
+   "repo_url": "https://github.com/mike-goldfinger/ha-warema-wms",
+   "scanned_utc": "2026-08-11T03:54:57Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/binary_sensor.py",
+     "line": 121,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/binary_sensor.py",
+     "line": 163,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/button.py",
+     "line": 83,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/config_flow.py",
+     "line": 1334,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/cover.py",
+     "line": 293,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/light.py",
+     "line": 135,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/sensor.py",
+     "line": 266,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/sensor.py",
+     "line": 306,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/sensor.py",
+     "line": 355,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/sensor.py",
+     "line": 406,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/sensor.py",
+     "line": 458,
+     "confidence": "high"
+    },
+    {
+     "rule_id": "device-info-via-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/warema_wms/sensor.py",
+     "line": 516,
+     "confidence": "high"
+    }
+   ]
+  },
+  {
    "full_name": "OtisPresley/control4-mediaplayer",
    "domain": "control4_mediaplayer",
    "domains": [
@@ -18291,7 +18749,7 @@
    "ref": "refs/tags/v1.5.4",
    "stargazers_count": 8,
    "repo_url": "https://github.com/emmeoerre/ave_dominaplus",
-   "scanned_utc": "2026-08-09T03:53:25Z",
+   "scanned_utc": "2026-08-17T03:34:44Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -18343,7 +18801,12 @@
      "line": 408,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "julcollas/hass-vigicrues",
@@ -18386,105 +18849,6 @@
      "file": "custom_components/dashie/__init__.py",
      "line": 355,
      "confidence": "medium"
-    }
-   ]
-  },
-  {
-   "full_name": "mike-goldfinger/ha-warema-wms",
-   "domain": "warema_wms",
-   "domains": [
-    "warema_wms"
-   ],
-   "version": "v1.7.0",
-   "ref": "refs/tags/v1.7.0",
-   "stargazers_count": 8,
-   "repo_url": "https://github.com/mike-goldfinger/ha-warema-wms",
-   "scanned_utc": "2026-08-11T03:54:57Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/binary_sensor.py",
-     "line": 121,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/binary_sensor.py",
-     "line": 163,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/button.py",
-     "line": 83,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/config_flow.py",
-     "line": 1334,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/cover.py",
-     "line": 293,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/light.py",
-     "line": 135,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/sensor.py",
-     "line": 266,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/sensor.py",
-     "line": 306,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/sensor.py",
-     "line": 355,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/sensor.py",
-     "line": 406,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/sensor.py",
-     "line": 458,
-     "confidence": "high"
-    },
-    {
-     "rule_id": "device-info-via-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/warema_wms/sensor.py",
-     "line": 516,
-     "confidence": "high"
     }
    ]
   },
@@ -18795,7 +19159,7 @@
    "ref": "refs/tags/v1.4.0",
    "stargazers_count": 7,
    "repo_url": "https://github.com/ernetas/junghome",
-   "scanned_utc": "2026-08-09T03:53:35Z",
+   "scanned_utc": "2026-08-17T03:34:57Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -18805,7 +19169,12 @@
      "line": 172,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_update_device"
+   }
   },
   {
    "full_name": "evilmarty/switch_fan",
@@ -18817,7 +19186,7 @@
    "ref": "refs/tags/v0.2.1",
    "stargazers_count": 7,
    "repo_url": "https://github.com/evilmarty/switch_fan",
-   "scanned_utc": "2026-08-09T03:53:38Z",
+   "scanned_utc": "2026-08-17T03:35:02Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -18834,7 +19203,12 @@
      "line": 49,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_remove_stale_devices_links_keep_current_device"
+   }
   },
   {
    "full_name": "flame4ever/homeassistant-controme-integration",
@@ -18846,7 +19220,7 @@
    "ref": "refs/tags/v1.1.2",
    "stargazers_count": 7,
    "repo_url": "https://github.com/flame4ever/homeassistant-controme-integration",
-   "scanned_utc": "2026-08-09T03:53:55Z",
+   "scanned_utc": "2026-08-17T03:35:25Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -18863,7 +19237,12 @@
      "line": 122,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "geertmeersman/youfone",
@@ -18875,7 +19254,7 @@
    "ref": "refs/tags/v1.0.0",
    "stargazers_count": 7,
    "repo_url": "https://github.com/geertmeersman/youfone",
-   "scanned_utc": "2026-08-09T03:54:31Z",
+   "scanned_utc": "2026-08-17T03:36:11Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -18885,7 +19264,12 @@
      "line": 186,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "izipuho/OpenWRT_control",
@@ -18897,7 +19281,7 @@
    "ref": "refs/tags/v2.3.2",
    "stargazers_count": 7,
    "repo_url": "https://github.com/izipuho/OpenWRT_control",
-   "scanned_utc": "2026-08-10T03:57:41Z",
+   "scanned_utc": "2026-08-17T03:39:00Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -18907,7 +19291,12 @@
      "line": 92,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "Koky05/ha-budgetbakers-wallet",
@@ -19369,7 +19758,7 @@
    "ref": "refs/tags/v1.0.0",
    "stargazers_count": 6,
    "repo_url": "https://github.com/exterrestris/home-assistant-raritan-px",
-   "scanned_utc": "2026-08-09T03:53:39Z",
+   "scanned_utc": "2026-08-17T03:35:03Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19379,7 +19768,12 @@
      "line": 82,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "GrandstreamEngineering/grandstream_home",
@@ -19409,6 +19803,33 @@
    }
   },
   {
+   "full_name": "hoizi89/advanced_switches",
+   "domain": "advanced_switches",
+   "domains": [
+    "advanced_switches"
+   ],
+   "version": "v1.6.0",
+   "ref": "refs/tags/v1.6.0",
+   "stargazers_count": 6,
+   "repo_url": "https://github.com/hoizi89/advanced_switches",
+   "scanned_utc": "2026-08-17T03:37:59Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-config-entry-mutation-params",
+     "breaks_in": "2027.8",
+     "file": "custom_components/advanced_switches/__init__.py",
+     "line": 128,
+     "confidence": "high"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_update_device"
+   }
+  },
+  {
    "full_name": "hoizi89/pv_management_fix",
    "domain": "pv_management_fix",
    "domains": [
@@ -19418,7 +19839,7 @@
    "ref": "refs/tags/v2.4.0",
    "stargazers_count": 6,
    "repo_url": "https://github.com/hoizi89/pv_management_fix",
-   "scanned_utc": "2026-08-10T03:56:57Z",
+   "scanned_utc": "2026-08-17T03:38:01Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19463,7 +19884,12 @@
      "line": 69,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "hzjchina/hass-welock",
@@ -19475,7 +19901,7 @@
    "ref": "refs/tags/v1.0.1",
    "stargazers_count": 6,
    "repo_url": "https://github.com/hzjchina/hass-welock",
-   "scanned_utc": "2026-08-10T03:57:08Z",
+   "scanned_utc": "2026-08-17T03:38:17Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19485,7 +19911,12 @@
      "line": 166,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "iu1jvo/meteobridge",
@@ -19497,7 +19928,7 @@
    "ref": "refs/tags/v3.5.4",
    "stargazers_count": 6,
    "repo_url": "https://github.com/iu1jvo/meteobridge",
-   "scanned_utc": "2026-08-10T03:57:40Z",
+   "scanned_utc": "2026-08-17T03:38:58Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19507,7 +19938,12 @@
      "line": 36,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "kclif9/hassactronneo",
@@ -19879,7 +20315,7 @@
    "ref": "refs/tags/v1.7.2",
    "stargazers_count": 5,
    "repo_url": "https://github.com/finder39/ha-dockge",
-   "scanned_utc": "2026-08-09T03:53:52Z",
+   "scanned_utc": "2026-08-17T03:35:20Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19896,7 +20332,12 @@
      "line": 44,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_update_device"
+   }
   },
   {
    "full_name": "hostcc/hass-gs-alarm",
@@ -19908,7 +20349,7 @@
    "ref": "refs/tags/3.14.0",
    "stargazers_count": 5,
    "repo_url": "https://github.com/hostcc/hass-gs-alarm",
-   "scanned_utc": "2026-08-10T03:57:00Z",
+   "scanned_utc": "2026-08-17T03:38:05Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19925,7 +20366,12 @@
      "line": 310,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "iluvdata/pdf_scrape",
@@ -19937,7 +20383,7 @@
    "ref": "refs/tags/2026.6.0",
    "stargazers_count": 5,
    "repo_url": "https://github.com/iluvdata/pdf_scrape",
-   "scanned_utc": "2026-08-10T03:57:22Z",
+   "scanned_utc": "2026-08-17T03:38:35Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -19954,7 +20400,12 @@
      "line": 83,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "primary_config_entry"
+   }
   },
   {
    "full_name": "jibrilsharafi/homeassistant-energyme",
@@ -21024,21 +21475,26 @@
    "domains": [
     "eltariff"
    ],
-   "version": "0.3.3",
-   "ref": "refs/tags/0.3.3",
+   "version": "0.3.5",
+   "ref": "refs/tags/0.3.5",
    "stargazers_count": 3,
    "repo_url": "https://github.com/elden1337/ha-eltariff",
-   "scanned_utc": "2026-08-09T03:53:18Z",
+   "scanned_utc": "2026-08-17T03:34:35Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/eltariff/sensor/cost_sensor_base.py",
-     "line": 78,
+     "line": 77,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "eseverson/hass-balena",
@@ -21050,16 +21506,9 @@
    "ref": "refs/tags/v1.0.5",
    "stargazers_count": 3,
    "repo_url": "https://github.com/eseverson/hass-balena",
-   "scanned_utc": "2026-08-09T03:53:36Z",
+   "scanned_utc": "2026-08-17T03:34:59Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/balena_cloud/api.py",
-     "line": 216,
-     "confidence": "medium"
-    },
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
@@ -21095,7 +21544,12 @@
      "line": 212,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "FaserF/ha-foodsharing",
@@ -21196,7 +21650,7 @@
    "ref": "refs/tags/v0.2.6",
    "stargazers_count": 3,
    "repo_url": "https://github.com/hitchin999/protector_net",
-   "scanned_utc": "2026-08-10T03:56:53Z",
+   "scanned_utc": "2026-08-17T03:37:56Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -21213,7 +21667,12 @@
      "line": 148,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "italo-lombardi/Home-Assistant-EntityDistance",
@@ -21225,7 +21684,7 @@
    "ref": "refs/tags/v0.4.3",
    "stargazers_count": 3,
    "repo_url": "https://github.com/italo-lombardi/Home-Assistant-EntityDistance",
-   "scanned_utc": "2026-08-10T03:57:29Z",
+   "scanned_utc": "2026-08-17T03:38:44Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -21242,7 +21701,12 @@
      "line": 68,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "lackas/ha-gridx",
@@ -21829,7 +22293,7 @@
    "ref": "refs/tags/v1.0.17",
    "stargazers_count": 2,
    "repo_url": "https://github.com/dn5qMDW3/ha-bsport",
-   "scanned_utc": "2026-08-09T03:52:52Z",
+   "scanned_utc": "2026-08-17T03:33:59Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -21853,7 +22317,12 @@
      "line": 76,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "duwi2024/ha_duwi_home",
@@ -21865,7 +22334,7 @@
    "ref": "refs/tags/v1.1.6",
    "stargazers_count": 2,
    "repo_url": "https://github.com/duwi2024/ha_duwi_home",
-   "scanned_utc": "2026-08-09T03:53:06Z",
+   "scanned_utc": "2026-08-17T03:34:18Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -21875,7 +22344,39 @@
      "line": 279,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
+  },
+  {
+   "full_name": "GamingonTour1/ha-groupalarm-api",
+   "domain": "groupalarm",
+   "domains": [
+    "groupalarm"
+   ],
+   "version": "v2.0.1",
+   "ref": "refs/tags/v2.0.1",
+   "stargazers_count": 2,
+   "repo_url": "https://github.com/GamingonTour1/ha-groupalarm-api",
+   "scanned_utc": "2026-08-14T03:59:49Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/groupalarm/__init__.py",
+     "line": 97,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "GeiserX/cashpilot-ha",
@@ -21914,7 +22415,7 @@
    "ref": "refs/tags/v0.2.7",
    "stargazers_count": 2,
    "repo_url": "https://github.com/gtxaspec/leviton-load-center",
-   "scanned_utc": "2026-08-09T03:55:00Z",
+   "scanned_utc": "2026-08-17T03:36:52Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -21938,7 +22439,12 @@
      "line": 140,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "hebrru/Hager-local",
@@ -21950,7 +22456,7 @@
    "ref": "refs/tags/0.2.19",
    "stargazers_count": 2,
    "repo_url": "https://github.com/hebrru/Hager-local",
-   "scanned_utc": "2026-08-09T03:55:35Z",
+   "scanned_utc": "2026-08-17T03:37:34Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -21967,7 +22473,12 @@
      "line": 292,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "Hovborg/intex-pool",
@@ -21995,49 +22506,6 @@
     "issues_enabled": true,
     "symbol": "async_get_device"
    }
-  },
-  {
-   "full_name": "iluvdata/august_access_codes",
-   "domain": "august_access_codes",
-   "domains": [
-    "august_access_codes"
-   ],
-   "version": "2026.6.0",
-   "ref": "refs/tags/2026.6.0",
-   "stargazers_count": 2,
-   "repo_url": "https://github.com/iluvdata/august_access_codes",
-   "scanned_utc": "2026-08-10T03:57:22Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/august_access_codes/binary_sensor.py",
-     "line": 29,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/august_access_codes/binary_sensor.py",
-     "line": 34,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/august_access_codes/sensor.py",
-     "line": 29,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/august_access_codes/sensor.py",
-     "line": 34,
-     "confidence": "medium"
-    }
-   ]
   },
   {
    "full_name": "joyfulhouse/brilliant-mqtt",
@@ -22244,6 +22712,55 @@
    ]
   },
   {
+   "full_name": "smarthomeshop/home-assistant-integration",
+   "domain": "smarthomeshop",
+   "domains": [
+    "smarthomeshop"
+   ],
+   "version": "v1.11.1",
+   "ref": "refs/tags/v1.11.1",
+   "stargazers_count": 2,
+   "repo_url": "https://github.com/smarthomeshop/home-assistant-integration",
+   "scanned_utc": "2026-08-12T04:00:44Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "core-call-async-remove-helper-config-entry-from-source-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/smarthomeshop/device_linking.py",
+     "line": 261,
+     "confidence": "medium"
+    }
+   ]
+  },
+  {
+   "full_name": "SmartServicePL/worx_vision_cloud_plus_github",
+   "domain": "worx_vision_cloud",
+   "domains": [
+    "worx_vision_cloud"
+   ],
+   "version": "1.3.1",
+   "ref": "refs/tags/1.3.1",
+   "stargazers_count": 2,
+   "repo_url": "https://github.com/SmartServicePL/worx_vision_cloud_plus_github",
+   "scanned_utc": "2026-08-15T03:30:05Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/worx_vision_cloud/__init__.py",
+     "line": 288,
+     "confidence": "medium"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
+  },
+  {
    "full_name": "tewke/ha-custom-integration",
    "domain": "tewke",
    "domains": [
@@ -22409,6 +22926,40 @@
    }
   },
   {
+   "full_name": "dale-sharp/sa-fuel-homeassistant",
+   "domain": "sa_fuel_pricing",
+   "domains": [
+    "sa_fuel_pricing"
+   ],
+   "version": "v1.1.10",
+   "ref": "refs/tags/v1.1.10",
+   "stargazers_count": 1,
+   "repo_url": "https://github.com/dale-sharp/sa-fuel-homeassistant",
+   "scanned_utc": "2026-08-16T03:37:43Z",
+   "earliest_breaks_in": "2027.8",
+   "findings": [
+    {
+     "rule_id": "device-registry-async-get-device",
+     "breaks_in": "2027.8",
+     "file": "custom_components/sa_fuel_pricing/coordinator.py",
+     "line": 257,
+     "confidence": "medium"
+    },
+    {
+     "rule_id": "device-registry-config-entry-mutation-params",
+     "breaks_in": "2027.8",
+     "file": "custom_components/sa_fuel_pricing/coordinator.py",
+     "line": 262,
+     "confidence": "high"
+    }
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
+  },
+  {
    "full_name": "dhover/ha-cumulusmx",
    "domain": "cumulusmx",
    "domains": [
@@ -22482,11 +23033,11 @@
    "domains": [
     "nodarion"
    ],
-   "version": "v1.17.7",
-   "ref": "refs/tags/v1.17.7",
+   "version": "v1.20.0",
+   "ref": "refs/tags/v1.20.0",
    "stargazers_count": 1,
    "repo_url": "https://github.com/engelsofta/nodarion",
-   "scanned_utc": "2026-08-09T03:53:27Z",
+   "scanned_utc": "2026-08-17T03:34:46Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -22496,7 +23047,12 @@
      "line": 146,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "funkadelic/ha-rainpoint",
@@ -22504,21 +23060,26 @@
    "domains": [
     "rainpoint"
    ],
-   "version": "v1.14.0",
-   "ref": "refs/tags/v1.14.0",
+   "version": "v1.18.0",
+   "ref": "refs/tags/v1.18.0",
    "stargazers_count": 1,
    "repo_url": "https://github.com/funkadelic/ha-rainpoint",
-   "scanned_utc": "2026-08-09T03:54:08Z",
+   "scanned_utc": "2026-08-17T03:35:42Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-registry-config-entry-mutation-params",
      "breaks_in": "2027.8",
      "file": "custom_components/rainpoint/__init__.py",
-     "line": 827,
+     "line": 1730,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_update_device"
+   }
   },
   {
    "full_name": "FWeinb/ha-sg-150",
@@ -22569,33 +23130,6 @@
    }
   },
   {
-   "full_name": "GamingonTour1/ha-groupalarm-api",
-   "domain": "groupalarm",
-   "domains": [
-    "groupalarm"
-   ],
-   "version": "v2.0.1",
-   "ref": "refs/tags/v2.0.1",
-   "stargazers_count": 1,
-   "repo_url": "https://github.com/GamingonTour1/ha-groupalarm-api",
-   "scanned_utc": "2026-08-14T03:59:49Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/groupalarm/__init__.py",
-     "line": 97,
-     "confidence": "medium"
-    }
-   ],
-   "upstream": {
-    "archived": false,
-    "issues_enabled": true,
-    "symbol": "async_get_device"
-   }
-  },
-  {
    "full_name": "geertmeersman/yoin",
    "domain": "yoin",
    "domains": [
@@ -22605,7 +23139,7 @@
    "ref": "refs/tags/v0.3.0",
    "stargazers_count": 1,
    "repo_url": "https://github.com/geertmeersman/yoin",
-   "scanned_utc": "2026-08-09T03:54:31Z",
+   "scanned_utc": "2026-08-17T03:36:11Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -22615,7 +23149,12 @@
      "line": 188,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "gibz104/ha-sproutlink",
@@ -22627,7 +23166,7 @@
    "ref": "refs/tags/v1.0.1",
    "stargazers_count": 1,
    "repo_url": "https://github.com/gibz104/ha-sproutlink",
-   "scanned_utc": "2026-08-09T03:54:37Z",
+   "scanned_utc": "2026-08-17T03:36:22Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -22637,7 +23176,12 @@
      "line": 172,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "italo-lombardi/Home-Assistant-EntityGuard",
@@ -22649,7 +23193,7 @@
    "ref": "refs/tags/v0.2.8",
    "stargazers_count": 1,
    "repo_url": "https://github.com/italo-lombardi/Home-Assistant-EntityGuard",
-   "scanned_utc": "2026-08-10T03:57:29Z",
+   "scanned_utc": "2026-08-17T03:38:45Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -22659,7 +23203,12 @@
      "line": 204,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "josa42/homeassistant-schwoerer-lueftung",
@@ -22999,55 +23548,6 @@
      "confidence": "high"
     }
    ]
-  },
-  {
-   "full_name": "smarthomeshop/home-assistant-integration",
-   "domain": "smarthomeshop",
-   "domains": [
-    "smarthomeshop"
-   ],
-   "version": "v1.11.1",
-   "ref": "refs/tags/v1.11.1",
-   "stargazers_count": 1,
-   "repo_url": "https://github.com/smarthomeshop/home-assistant-integration",
-   "scanned_utc": "2026-08-12T04:00:44Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "core-call-async-remove-helper-config-entry-from-source-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/smarthomeshop/device_linking.py",
-     "line": 261,
-     "confidence": "medium"
-    }
-   ]
-  },
-  {
-   "full_name": "SmartServicePL/worx_vision_cloud_plus_github",
-   "domain": "worx_vision_cloud",
-   "domains": [
-    "worx_vision_cloud"
-   ],
-   "version": "1.3.1",
-   "ref": "refs/tags/1.3.1",
-   "stargazers_count": 1,
-   "repo_url": "https://github.com/SmartServicePL/worx_vision_cloud_plus_github",
-   "scanned_utc": "2026-08-15T03:30:05Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/worx_vision_cloud/__init__.py",
-     "line": 288,
-     "confidence": "medium"
-    }
-   ],
-   "upstream": {
-    "archived": false,
-    "issues_enabled": true,
-    "symbol": "async_get_device"
-   }
   },
   {
    "full_name": "stuartp44/haduco",
@@ -23455,40 +23955,6 @@
    }
   },
   {
-   "full_name": "dale-sharp/sa-fuel-homeassistant",
-   "domain": "sa_fuel_pricing",
-   "domains": [
-    "sa_fuel_pricing"
-   ],
-   "version": "v1.1.10",
-   "ref": "refs/tags/v1.1.10",
-   "stargazers_count": 0,
-   "repo_url": "https://github.com/dale-sharp/sa-fuel-homeassistant",
-   "scanned_utc": "2026-08-16T03:37:43Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/sa_fuel_pricing/coordinator.py",
-     "line": 257,
-     "confidence": "medium"
-    },
-    {
-     "rule_id": "device-registry-config-entry-mutation-params",
-     "breaks_in": "2027.8",
-     "file": "custom_components/sa_fuel_pricing/coordinator.py",
-     "line": 262,
-     "confidence": "high"
-    }
-   ],
-   "upstream": {
-    "archived": false,
-    "issues_enabled": true,
-    "symbol": "async_get_device"
-   }
-  },
-  {
    "full_name": "DiUS/homeassistant-powersensor",
    "domain": "powersensor",
    "domains": [
@@ -23604,42 +24070,47 @@
    "domains": [
     "habitron"
    ],
-   "version": "v3.2.0",
-   "ref": "refs/tags/v3.2.0",
+   "version": "v3.2.1",
+   "ref": "refs/tags/v3.2.1",
    "stargazers_count": 0,
    "repo_url": "https://github.com/dneprojects/habitron",
-   "scanned_utc": "2026-08-09T03:52:53Z",
+   "scanned_utc": "2026-08-17T03:34:01Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/habitron/smart_hub.py",
-     "line": 197,
+     "line": 203,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/habitron/smart_hub.py",
-     "line": 208,
+     "line": 214,
      "confidence": "medium"
     },
     {
      "rule_id": "device-info-via-device",
      "breaks_in": "2027.8",
      "file": "custom_components/habitron/smart_hub.py",
-     "line": 215,
+     "line": 221,
      "confidence": "high"
     },
     {
      "rule_id": "device-registry-async-get-device",
      "breaks_in": "2027.8",
      "file": "custom_components/habitron/smart_hub.py",
-     "line": 229,
+     "line": 235,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "eccel-dev/ha-pepper-c1",
@@ -23651,7 +24122,7 @@
    "ref": "refs/tags/v2.0.3",
    "stargazers_count": 0,
    "repo_url": "https://github.com/eccel-dev/ha-pepper-c1",
-   "scanned_utc": "2026-08-09T03:53:11Z",
+   "scanned_utc": "2026-08-17T03:34:25Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -23661,7 +24132,12 @@
      "line": 284,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "elad-sudo/domiara-ha",
@@ -23673,7 +24149,7 @@
    "ref": "refs/tags/v1.0.1",
    "stargazers_count": 0,
    "repo_url": "https://github.com/elad-sudo/domiara-ha",
-   "scanned_utc": "2026-08-09T03:53:17Z",
+   "scanned_utc": "2026-08-17T03:34:33Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -23690,7 +24166,12 @@
      "line": 53,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "EVWorth/hass-adtpulse",
@@ -23770,7 +24251,7 @@
    "ref": "refs/tags/v1.1.0",
    "stargazers_count": 0,
    "repo_url": "https://github.com/geertmeersman/miwa",
-   "scanned_utc": "2026-08-09T03:54:29Z",
+   "scanned_utc": "2026-08-17T03:36:08Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -23780,7 +24261,12 @@
      "line": 159,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "ggiesen/ha-aprilaire-rs485",
@@ -23792,7 +24278,7 @@
    "ref": "refs/tags/v0.2.0",
    "stargazers_count": 0,
    "repo_url": "https://github.com/ggiesen/ha-aprilaire-rs485",
-   "scanned_utc": "2026-08-09T03:54:35Z",
+   "scanned_utc": "2026-08-17T03:36:17Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -23802,7 +24288,12 @@
      "line": 363,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "Gr33n93/ha-waveshare-relay",
@@ -23832,28 +24323,6 @@
    }
   },
   {
-   "full_name": "hitchin999/GAFVentControl-HA",
-   "domain": "gaf_masterflow",
-   "domains": [
-    "gaf_masterflow"
-   ],
-   "version": "v1.1.0",
-   "ref": "refs/tags/v1.1.0",
-   "stargazers_count": 0,
-   "repo_url": "https://github.com/hitchin999/GAFVentControl-HA",
-   "scanned_utc": "2026-08-10T03:56:48Z",
-   "earliest_breaks_in": "2027.8",
-   "findings": [
-    {
-     "rule_id": "device-registry-async-get-device",
-     "breaks_in": "2027.8",
-     "file": "custom_components/gaf_masterflow/coordinator.py",
-     "line": 51,
-     "confidence": "medium"
-    }
-   ]
-  },
-  {
    "full_name": "hoechstleistungshaartrockner/simplechores",
    "domain": "simplechores",
    "domains": [
@@ -23863,7 +24332,7 @@
    "ref": "refs/tags/v1.0.11",
    "stargazers_count": 0,
    "repo_url": "https://github.com/hoechstleistungshaartrockner/simplechores",
-   "scanned_utc": "2026-08-10T03:56:55Z",
+   "scanned_utc": "2026-08-17T03:37:58Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -23964,7 +24433,12 @@
      "line": 45,
      "confidence": "medium"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "async_get_device"
+   }
   },
   {
    "full_name": "Identity-labs/ha-maison-protegee2",
@@ -24003,7 +24477,7 @@
    "ref": "refs/tags/v0.21.0",
    "stargazers_count": 0,
    "repo_url": "https://github.com/jacobbjerregaard/homeassistant-growatt-modbus",
-   "scanned_utc": "2026-08-10T03:57:42Z",
+   "scanned_utc": "2026-08-17T03:39:01Z",
    "earliest_breaks_in": "2027.8",
    "findings": [
     {
@@ -24013,7 +24487,12 @@
      "line": 195,
      "confidence": "high"
     }
-   ]
+   ],
+   "upstream": {
+    "archived": false,
+    "issues_enabled": true,
+    "symbol": "via_device"
+   }
   },
   {
    "full_name": "LocknAlert-Pty-LTD/locknalert_mqtt",
@@ -24548,7 +25027,6 @@
   "advanced_history",
   "advanced_presence_detection",
   "advanced_snapshot",
-  "advanced_switches",
   "aemet",
   "aemo_nem",
   "afvalbeheer",
@@ -24665,6 +25143,7 @@
   "aucklandcouncil",
   "audac_mtx",
   "audiconnect",
+  "august_access_codes",
   "aula",
   "aula_easyiq",
   "aurum",
@@ -25265,6 +25744,7 @@
   "fuelprices_dk",
   "fusionsolarplus",
   "fxmarketapi",
+  "gaf_masterflow",
   "gaggiuino",
   "galatz_news",
   "gardena_smart_system",
@@ -25438,7 +25918,6 @@
   "hidromotic",
   "hifiberry",
   "hildebrandglow_dcc",
-  "hilo",
   "himoinsa_c4lan",
   "hinen",
   "hiper_drift",
