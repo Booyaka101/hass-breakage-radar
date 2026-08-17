@@ -15,25 +15,9 @@ import pytest
 
 from custom_components.breakage_radar.const import ATTR_SCHEDULE, MAX_DETAILS
 from custom_components.breakage_radar.discovery import discover_installed
+from conftest import FakeCoordinator
 from custom_components.breakage_radar.report import build_report, validate_index
 from custom_components.breakage_radar.sensor import BreakageRadarSensor
-
-
-@pytest.fixture
-def sample_index(fixtures_dir):
-    return json.loads(
-        (fixtures_dir / "index_sample.json").read_text(encoding="utf-8")
-    )
-
-
-class FakeCoordinator:
-    """Stands in for the DataUpdateCoordinator; the sensor only reads .data."""
-
-    def __init__(self, data, *, success=True, error=None):
-        self.data = data
-        self.last_update_success = success
-        self.last_error = error
-        self.index_url = "https://example.invalid/index.json"
 
 
 # --------------------------------------------------------------------------- #

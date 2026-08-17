@@ -109,7 +109,7 @@ under **Download diagnostics** on the integration's page.
 Findings come from two sources, and every `findings` entry says which:
 
 * `source: local` — the integration parsed the **installed bytes** in your own
-  `custom_components/` directory with the same eight AST matchers the crawler
+  `custom_components/` directory with the same nine AST matchers the crawler
   uses. Forks, renamed copies and integrations installed outside HACS get a real
   verdict this way, and there is no version skew: the scanned version *is* the
   installed version.
@@ -393,6 +393,7 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `classbase` | a `class` deriving from one of `bases` |
 | `attr` | a property or `_attr_` assignment named in `names` |
 | `attr_access` | reading `something.<name>` |
+| `attr_access_typed` | reading `something.<name>` where the receiver is first proved, by single-file inference, to come from the helper module the matcher names — built for `DeviceEntry.config_entries`, whose name collides with `hass.config_entries` |
 | `call` | a call to one of `names` |
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
 | `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
@@ -400,6 +401,25 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 
 Any matcher can be narrowed with `files` (exact basenames); `attr` matchers can also
 require `in_class_base`.
+
+`attr_access_typed` needs to know what counts as proof, so it carries the helper
+module it trusts rather than hard-coding one. Its keys, as used by
+`device-entry-config-entries` in `data/manual_rules.json`:
+
+| Key | Meaning |
+|---|---|
+| `module` | the helper module every proof below has to resolve to |
+| `registry_factory` | function returning the registry, e.g. `async_get` for `dr.async_get(hass)` |
+| `registry_types` | type names that prove a registry when used as an annotation |
+| `entry_types` | type names that prove an entry when used as an annotation |
+| `entry_methods` | registry methods returning an entry, called on a proved receiver |
+| `entry_containers` | mappings on a proved registry whose values are entries, e.g. `devices` |
+| `entry_functions` | module-level functions returning entries, resolved through the import map |
+| `entry_params` | `{function name: 1-based parameter}` typed by a platform contract rather than by an annotation |
+
+Names are proved per scope, nested scopes inherit their enclosing one, and a registry
+assigned to an attribute (`self._registry = dr.async_get(hass)`) is proved for the
+whole class, since that assignment usually lives in `__init__` and the lookups do not.
 
 The engine lives in `tools/rules_engine.py` and is vendored byte-for-byte at
 `custom_components/breakage_radar/rules_engine.py`, so the crawler and the
@@ -595,8 +615,14 @@ real package is used instead.
   newer than your interpreter (for example PEP 695 `type` aliases on Python 3.11) is
   counted in `unparsed_files` and the domain falls back to the index verdict — the
   crawler parses with 3.14, so the index side never has this gap.
-* **`DeviceEntry.config_entries` is informational only.** `config_entries` is also
-  `hass.config_entries`, which every integration touches, so no matcher ships for it.
+* **`attr_access_typed` infers types per scope, and errs towards silence.** It reports
+  `DeviceEntry.config_entries` only where the receiver is proved in the scope that
+  reads it, so a device entry built in another file, or handed over by a helper this
+  file cannot see, is missed rather than guessed at. Measured on home-assistant/core: 51 of the 54 device-entry reads
+  found, against 5 963 textual `.config_entries` occurrences, with no
+  `hass.config_entries` among them. A missed
+  call is a rule that stays quiet; a wrong one would waste a maintainer's afternoon,
+  so the matcher is built to under-report.
 * **`imminent` is computed from the release schedule, `broken_now` is not.** The
   first-Wednesday rule is Home Assistant's published schedule and has been exact all
   year, but it is applied locally, not fetched — a release moved for a one-off reason

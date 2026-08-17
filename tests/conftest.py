@@ -300,6 +300,60 @@ def repo_root() -> Path:
     return REPO_ROOT
 
 
+@pytest.fixture
+def sample_index(fixtures_dir) -> dict:
+    return json.loads((FIXTURES / "index_sample.json").read_text(encoding="utf-8"))
+
+
+@pytest.fixture
+def index_without_fixture_tracker(sample_index) -> dict:
+    """The published rules, but fixture_tracker is nowhere in the index --
+    the fork/non-HACS situation the local scan exists for."""
+    sample_index["integrations"] = []
+    sample_index["releases"] = {}
+    sample_index["clean_domains"] = []
+    return sample_index
+
+
+class FakeCoordinator:
+    """Stands in for the DataUpdateCoordinator; the sensor only reads .data."""
+
+    def __init__(self, data, *, success=True, error=None):
+        self.data = data
+        self.last_update_success = success
+        self.last_error = error
+        self.index_url = "https://example.invalid/index.json"
+
+
+def install_component(tmp_path, fixtures_dir, fixture, domain, version="0.1.0"):
+    """Copy a scanner fixture into a tmp custom_components tree, with a
+    manifest built on the fly.
+
+    Manifests are built here rather than committed because hacs/default
+    rejects a repository containing more than one ``manifest.json``.
+    """
+    import shutil
+
+    components = tmp_path / "custom_components"
+    target = components / domain
+    shutil.copytree(fixtures_dir / fixture / "custom_components" / domain, target)
+    (target / "manifest.json").write_text(
+        json.dumps({"domain": domain, "version": version}), encoding="utf-8"
+    )
+    return components
+
+
+def scan_components(components, index, **kwargs):
+    from custom_components.breakage_radar.scanner import scan_installed
+
+    return scan_installed(
+        str(components),
+        index["rules"],
+        current_version=index["core_version"],
+        **kwargs,
+    )
+
+
 @pytest.fixture(scope="session")
 def shipped_rules() -> dict:
     """The rules.json produced by a real run of tools/extract_rules.py."""

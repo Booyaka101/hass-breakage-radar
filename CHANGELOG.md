@@ -4,6 +4,55 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.5.0 — 2026-08-17
+
+### `DeviceEntry.config_entries` is now detected
+
+The last device-registry rule without a static check has one.
+`device-entry-config-entries` (removed in Core 2027.8) shipped
+`matchable: false` because the attribute name is also the ubiquitous
+`hass.config_entries`, so a plain `attr_access` matcher would have flagged
+nearly every integration in existence. The verdict a user saw was "check by
+hand". Now the board, the index and the local scan all report it like any
+other rule, at high confidence instead of low.
+
+A ninth matcher type, `attr_access_typed`, closes it. It fires only where the
+receiver is proven to be a `DeviceEntry` by single-file inference: a lookup on
+a proven registry (`reg = dr.async_get(hass)` then `reg.async_get_device(...)`,
+the walrus form included), a `DeviceEntry` annotation on an assignment or a
+parameter, the module helpers that return device lists, or the third parameter
+of `async_remove_config_entry_device`, which is a `DeviceEntry` by contract.
+It is an allowlist of proven receivers, not a denylist of `hass`:
+`hass.config_entries` can never match.
+
+Inference is per scope. A name proved in one function says nothing about a
+same-named local in another, which matters because `device` is one of the
+commonest variable names in this ecosystem: proving them file-wide would carry
+a proof out of the function that earned it. Nested scopes still inherit what
+encloses them, the way a closure really does read those names, and a parameter
+shadows whatever the enclosing scope proved about that spelling. A registry
+kept on an attribute is proved for its whole class, since that assignment
+lives in `__init__` and the lookups do not.
+
+Verified against real code before shipping, the way 1.3.1 was: 142 HACS
+integrations already hitting the sibling device-registry rules were rescanned,
+and every finding the new matcher produced was hand-checked against that
+repository's source at the scanned tag. 57 of 57 are genuine
+`DeviceEntry.config_entries` reads across 27 repositories; none is
+`hass.config_entries`.
+
+Then measured against home-assistant/core, which is the hardest corpus there
+is for this rule: 9 865 files carrying 5 963 textual `.config_entries`
+occurrences, the great majority of them `hass.config_entries`. The matcher
+reports 51, every one a device entry, and finds 51 of the 54 device-entry
+reads present. The three it misses are handed a device by another file, which
+no single-file matcher can follow; it stays quiet rather than guessing.
+
+Installs still on 1.4.1 read the same published index and silently skip the
+unknown matcher type, so nothing changes for them until they update; a pinned
+test keeps that true. `ENGINE_VERSION` is now 5, which makes the daily crawl
+rescan the full catalogue.
+
 ## 1.4.1 — 2026-08-13
 
 Publishing only. The Home Assistant integration is unchanged from 1.4.0, so

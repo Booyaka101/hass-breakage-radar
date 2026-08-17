@@ -7,7 +7,6 @@ gets summarised. All dates are injected, so these never depend on the clock.
 
 from __future__ import annotations
 
-import json
 from datetime import date
 
 import pytest
@@ -17,13 +16,6 @@ from custom_components.breakage_radar.report import (
     build_report,
     release_estimated_date,
 )
-
-
-@pytest.fixture
-def sample_index(fixtures_dir):
-    return json.loads(
-        (fixtures_dir / "index_sample.json").read_text(encoding="utf-8")
-    )
 
 
 def _report(index, **kwargs):

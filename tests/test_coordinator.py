@@ -40,13 +40,6 @@ class FakeHass:
 
 
 @pytest.fixture
-def sample_index(fixtures_dir):
-    return json.loads(
-        (fixtures_dir / "index_sample.json").read_text(encoding="utf-8")
-    )
-
-
-@pytest.fixture
 def coordinator(tmp_path, fixtures_dir, sample_index):
     """A coordinator over a tmp custom_components with the true-positive
     fixture installed, index fetch stubbed out."""
