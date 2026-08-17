@@ -26655,7 +26655,7 @@
       "version": "v0.4.2",
       "ref": "refs/tags/v0.4.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:52Z",
+      "scanned_utc": "2026-08-17T03:33:59Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -26669,7 +26669,7 @@
       "version": "0.2.13",
       "ref": "refs/tags/0.2.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:52Z",
+      "scanned_utc": "2026-08-17T03:33:59Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 8,
@@ -26683,10 +26683,10 @@
       "version": "v1.0.17",
       "ref": "refs/tags/v1.0.17",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:52Z",
+      "scanned_utc": "2026-08-17T03:33:59Z",
       "files_scanned": 16,
       "syntax_errors": 0,
-      "stargazers_count": 1,
+      "stargazers_count": 2,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -26712,14 +26712,19 @@
       ],
       "domains": [
         "bsport"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "dn5qMDW3/tzevaadom": {
       "domain": "tzevaadom",
       "version": "v1.7.0",
       "ref": "refs/tags/v1.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:53Z",
+      "scanned_utc": "2026-08-17T03:34:00Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -26730,10 +26735,10 @@
     },
     "dneprojects/habitron": {
       "domain": "habitron",
-      "version": "v3.2.0",
-      "ref": "refs/tags/v3.2.0",
+      "version": "v3.2.1",
+      "ref": "refs/tags/v3.2.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:53Z",
+      "scanned_utc": "2026-08-17T03:34:01Z",
       "files_scanned": 34,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -26742,44 +26747,49 @@
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/habitron/smart_hub.py",
-          "line": 197,
+          "line": 203,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/habitron/smart_hub.py",
-          "line": 208,
+          "line": 214,
           "confidence": "medium"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/habitron/smart_hub.py",
-          "line": 215,
+          "line": 221,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/habitron/smart_hub.py",
-          "line": 229,
+          "line": 235,
           "confidence": "medium"
         }
       ],
       "domains": [
         "habitron"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "dneprojects/mypv": {
       "domain": "mypv",
-      "version": "v1.7.3",
-      "ref": "refs/tags/v1.7.3",
+      "version": "v1.7.5",
+      "ref": "refs/tags/v1.7.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:55Z",
+      "scanned_utc": "2026-08-17T03:34:03Z",
       "files_scanned": 15,
       "syntax_errors": 0,
-      "stargazers_count": 48,
+      "stargazers_count": 49,
       "findings": [],
       "domains": [
         "mypv"
@@ -26790,10 +26800,10 @@
       "version": "2.2.6",
       "ref": "refs/tags/2.2.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:55Z",
+      "scanned_utc": "2026-08-17T03:34:03Z",
       "files_scanned": 5,
       "syntax_errors": 0,
-      "stargazers_count": 875,
+      "stargazers_count": 880,
       "findings": [],
       "domains": [
         "thermal_comfort"
@@ -26804,7 +26814,7 @@
       "version": "v4.2.10",
       "ref": "refs/tags/v4.2.10",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:56Z",
+      "scanned_utc": "2026-08-17T03:34:04Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 68,
@@ -26818,7 +26828,7 @@
       "version": "2.0.0",
       "ref": "refs/tags/2.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:56Z",
+      "scanned_utc": "2026-08-17T03:34:05Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -26832,10 +26842,10 @@
       "version": "v0.9.5",
       "ref": "refs/tags/v0.9.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:56Z",
+      "scanned_utc": "2026-08-17T03:34:05Z",
       "files_scanned": 19,
       "syntax_errors": 0,
-      "stargazers_count": 15,
+      "stargazers_count": 17,
       "findings": [],
       "domains": [
         "homesec"
@@ -26846,7 +26856,7 @@
       "version": "v4.1.4",
       "ref": "refs/tags/v4.1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:58Z",
+      "scanned_utc": "2026-08-17T03:34:07Z",
       "files_scanned": 21,
       "syntax_errors": 0,
       "stargazers_count": 19,
@@ -26938,14 +26948,19 @@
       ],
       "domains": [
         "octopus_french"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "doron1/ha-palgate": {
       "domain": "palgate",
       "version": "1.7.0",
       "ref": "refs/tags/1.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:59Z",
+      "scanned_utc": "2026-08-17T03:34:08Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "stargazers_count": 48,
@@ -26960,14 +26975,19 @@
       ],
       "domains": [
         "palgate"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "dotelpenguin/ha-integration-jirafilters": {
       "domain": "jira_filters",
       "version": "v1.1.0-HACS",
       "ref": "refs/tags/v1.1.0-HACS",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:59Z",
+      "scanned_utc": "2026-08-17T03:34:09Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -26981,7 +27001,7 @@
       "version": "v2.1.5",
       "ref": "refs/tags/v2.1.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:52:59Z",
+      "scanned_utc": "2026-08-17T03:34:09Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 15,
@@ -26995,10 +27015,10 @@
       "version": "2.5.0",
       "ref": "refs/tags/2.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:00Z",
+      "scanned_utc": "2026-08-17T03:34:10Z",
       "files_scanned": 7,
       "syntax_errors": 0,
-      "stargazers_count": 41,
+      "stargazers_count": 42,
       "findings": [],
       "domains": [
         "myjdownloader"
@@ -27006,11 +27026,11 @@
     },
     "dougrathbone/2n-doorman": {
       "domain": "doorman",
-      "version": "v0.4.0",
-      "ref": "refs/tags/v0.4.0",
+      "version": "v0.7.0",
+      "ref": "refs/tags/v0.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:00Z",
-      "files_scanned": 12,
+      "scanned_utc": "2026-08-17T03:34:10Z",
+      "files_scanned": 17,
       "syntax_errors": 0,
       "stargazers_count": 2,
       "findings": [],
@@ -27023,7 +27043,7 @@
       "version": "v1.3.5",
       "ref": "refs/tags/v1.3.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:00Z",
+      "scanned_utc": "2026-08-17T03:34:11Z",
       "files_scanned": 3,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -27066,7 +27086,7 @@
       "version": "",
       "ref": "refs/heads/main",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:01Z",
+      "scanned_utc": "2026-08-17T03:34:11Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -27080,7 +27100,7 @@
       "version": "0.3.2",
       "ref": "refs/tags/0.3.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:02Z",
+      "scanned_utc": "2026-08-17T03:34:12Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 14,
@@ -27094,10 +27114,10 @@
       "version": "v2.2.1",
       "ref": "refs/tags/v2.2.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:02Z",
+      "scanned_utc": "2026-08-17T03:34:12Z",
       "files_scanned": 14,
       "syntax_errors": 0,
-      "stargazers_count": 149,
+      "stargazers_count": 151,
       "findings": [],
       "domains": [
         "dreo"
@@ -27108,7 +27128,7 @@
       "version": "v1.1.1",
       "ref": "refs/tags/v1.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:03Z",
+      "scanned_utc": "2026-08-17T03:34:13Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -27122,10 +27142,10 @@
       "version": "0.10.3",
       "ref": "refs/tags/0.10.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:03Z",
+      "scanned_utc": "2026-08-17T03:34:13Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 71,
+      "stargazers_count": 73,
       "findings": [],
       "domains": [
         "mass_queue"
@@ -27136,7 +27156,7 @@
       "version": "1.0.36",
       "ref": "refs/tags/1.0.36",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:04Z",
+      "scanned_utc": "2026-08-17T03:34:14Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -27150,7 +27170,7 @@
       "version": "v2.3.1",
       "ref": "refs/tags/v2.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:04Z",
+      "scanned_utc": "2026-08-17T03:34:14Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 29,
@@ -27164,10 +27184,10 @@
       "version": "2026.2.13",
       "ref": "refs/tags/2026.2.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:04Z",
+      "scanned_utc": "2026-08-17T03:34:15Z",
       "files_scanned": 8,
       "syntax_errors": 0,
-      "stargazers_count": 93,
+      "stargazers_count": 94,
       "findings": [],
       "domains": [
         "ikuai"
@@ -27178,10 +27198,10 @@
       "version": "v0.24.6",
       "ref": "refs/tags/v0.24.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:04Z",
+      "scanned_utc": "2026-08-17T03:34:15Z",
       "files_scanned": 10,
       "syntax_errors": 0,
-      "stargazers_count": 67,
+      "stargazers_count": 68,
       "findings": [],
       "domains": [
         "ftms"
@@ -27192,7 +27212,7 @@
       "version": "0.4.7",
       "ref": "refs/tags/0.4.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:05Z",
+      "scanned_utc": "2026-08-17T03:34:16Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 69,
@@ -27214,17 +27234,22 @@
       ],
       "domains": [
         "aigues_barcelona"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_import_statistics"
+      }
     },
     "duhow/hass-cover-time-based": {
       "domain": "cover_time_based",
       "version": "0.4.0",
       "ref": "refs/tags/0.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:05Z",
+      "scanned_utc": "2026-08-17T03:34:16Z",
       "files_scanned": 5,
       "syntax_errors": 0,
-      "stargazers_count": 16,
+      "stargazers_count": 17,
       "findings": [
         {
           "rule_id": "core-call-async-remove-helper-config-entry-from-source-device",
@@ -27236,17 +27261,22 @@
       ],
       "domains": [
         "cover_time_based"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_remove_helper_config_entry_from_source_device"
+      }
     },
     "dummylabs/thewatchman": {
       "domain": "watchman",
       "version": "v0.8.4",
       "ref": "refs/tags/v0.8.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:05Z",
+      "scanned_utc": "2026-08-17T03:34:16Z",
       "files_scanned": 17,
       "syntax_errors": 0,
-      "stargazers_count": 675,
+      "stargazers_count": 677,
       "findings": [],
       "domains": [
         "watchman"
@@ -27257,7 +27287,7 @@
       "version": "2.2.3",
       "ref": "refs/tags/2.2.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:06Z",
+      "scanned_utc": "2026-08-17T03:34:17Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -27271,7 +27301,7 @@
       "version": "v1.1.6",
       "ref": "refs/tags/v1.1.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:06Z",
+      "scanned_utc": "2026-08-17T03:34:18Z",
       "files_scanned": 70,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -27286,31 +27316,56 @@
       ],
       "domains": [
         "duwi_home"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "dvd-dev/hilo": {
       "domain": "hilo",
-      "version": "v2026.8.1",
-      "ref": "refs/tags/v2026.8.1",
+      "version": "v2026.8.2",
+      "ref": "refs/tags/v2026.8.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:07Z",
+      "scanned_utc": "2026-08-17T03:34:19Z",
       "files_scanned": 11,
       "syntax_errors": 0,
-      "stargazers_count": 247,
-      "findings": [],
+      "stargazers_count": 248,
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/hilo/__init__.py",
+          "line": 160,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/hilo/__init__.py",
+          "line": 164,
+          "confidence": "medium"
+        }
+      ],
       "domains": [
         "hilo"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "dwainscheeren/dwains-lovelace-dashboard": {
       "domain": "dwains_dashboard",
       "version": "v3.10.0",
       "ref": "refs/tags/v3.10.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:07Z",
+      "scanned_utc": "2026-08-17T03:34:20Z",
       "files_scanned": 27,
       "syntax_errors": 0,
-      "stargazers_count": 2059,
+      "stargazers_count": 2062,
       "findings": [],
       "domains": [
         "dwains_dashboard"
@@ -27321,10 +27376,10 @@
       "version": "v0.17.0",
       "ref": "refs/tags/v0.17.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:08Z",
+      "scanned_utc": "2026-08-17T03:34:21Z",
       "files_scanned": 14,
       "syntax_errors": 0,
-      "stargazers_count": 57,
+      "stargazers_count": 56,
       "findings": [],
       "domains": [
         "trakt_tv"
@@ -27335,7 +27390,7 @@
       "version": "v0.4.8",
       "ref": "refs/tags/v0.4.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:09Z",
+      "scanned_utc": "2026-08-17T03:34:21Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -27346,13 +27401,13 @@
     },
     "eXPerience83/pollenlevels": {
       "domain": "pollenlevels",
-      "version": "v3.0.0",
-      "ref": "refs/tags/v3.0.0",
+      "version": "v3.0.2",
+      "ref": "refs/tags/v3.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:09Z",
+      "scanned_utc": "2026-08-17T03:34:22Z",
       "files_scanned": 15,
       "syntax_errors": 0,
-      "stargazers_count": 38,
+      "stargazers_count": 39,
       "findings": [
         {
           "rule_id": "device-registry-config-entry-mutation-params",
@@ -27378,14 +27433,26 @@
       ],
       "domains": [
         "pollenlevels"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 226,
+          "url": "https://github.com/eXPerience83/pollenlevels/issues/226",
+          "state": "open",
+          "title": "Track Home Assistant device registry move API deprecation",
+          "reactions": 0
+        },
+        "symbol": "async_update_device"
+      }
     },
     "earendil06/Windy-Webcams": {
       "domain": "windy_webcams",
       "version": "1.3.1",
       "ref": "refs/tags/1.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:10Z",
+      "scanned_utc": "2026-08-17T03:34:23Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 19,
@@ -27399,7 +27466,7 @@
       "version": "v1.3.0",
       "ref": "refs/tags/v1.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:10Z",
+      "scanned_utc": "2026-08-17T03:34:23Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -27413,7 +27480,7 @@
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:10Z",
+      "scanned_utc": "2026-08-17T03:34:24Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -27427,7 +27494,7 @@
       "version": "v1.1.1",
       "ref": "refs/tags/v1.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:11Z",
+      "scanned_utc": "2026-08-17T03:34:24Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 16,
@@ -27441,7 +27508,7 @@
       "version": "v2.0.3",
       "ref": "refs/tags/v2.0.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:11Z",
+      "scanned_utc": "2026-08-17T03:34:25Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -27456,14 +27523,19 @@
       ],
       "domains": [
         "pepper_c1"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "echocat/ha-companion-media-player": {
       "domain": "companion_media_player",
       "version": "0.2.1",
       "ref": "refs/tags/0.2.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:11Z",
+      "scanned_utc": "2026-08-17T03:34:25Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -27477,7 +27549,7 @@
       "version": "v0.3",
       "ref": "refs/tags/v0.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:11Z",
+      "scanned_utc": "2026-08-17T03:34:26Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 8,
@@ -27488,10 +27560,10 @@
     },
     "edoeel/homeassistant-sabiana-hvac": {
       "domain": "sabiana_hvac",
-      "version": "v0.1.3",
-      "ref": "refs/tags/v0.1.3",
+      "version": "v0.1.4",
+      "ref": "refs/tags/v0.1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:11Z",
+      "scanned_utc": "2026-08-17T03:34:26Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 19,
@@ -27505,7 +27577,7 @@
       "version": "v0.9.4",
       "ref": "refs/tags/v0.9.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:12Z",
+      "scanned_utc": "2026-08-17T03:34:26Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -27519,7 +27591,7 @@
       "version": "0.12.1",
       "ref": "refs/tags/0.12.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:12Z",
+      "scanned_utc": "2026-08-17T03:34:27Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 101,
@@ -27533,7 +27605,7 @@
       "version": "24.11.2",
       "ref": "refs/tags/24.11.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:12Z",
+      "scanned_utc": "2026-08-17T03:34:27Z",
       "files_scanned": 3,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -27547,7 +27619,7 @@
       "version": "v1.2.0",
       "ref": "refs/tags/v1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:12Z",
+      "scanned_utc": "2026-08-17T03:34:27Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -27561,7 +27633,7 @@
       "version": "v2.4.2",
       "ref": "refs/tags/v2.4.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:13Z",
+      "scanned_utc": "2026-08-17T03:34:28Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 21,
@@ -27576,17 +27648,22 @@
       ],
       "domains": [
         "foldingathomecontrol"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "eifinger/hass-weenect": {
       "domain": "weenect",
       "version": "v5.1.7",
       "ref": "refs/tags/v5.1.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:13Z",
+      "scanned_utc": "2026-08-17T03:34:28Z",
       "files_scanned": 11,
       "syntax_errors": 0,
-      "stargazers_count": 28,
+      "stargazers_count": 29,
       "findings": [],
       "domains": [
         "weenect"
@@ -27597,7 +27674,7 @@
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:13Z",
+      "scanned_utc": "2026-08-17T03:34:28Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -27611,10 +27688,10 @@
       "version": "v1.2.0",
       "ref": "refs/tags/v1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:13Z",
+      "scanned_utc": "2026-08-17T03:34:29Z",
       "files_scanned": 4,
       "syntax_errors": 0,
-      "stargazers_count": 34,
+      "stargazers_count": 35,
       "findings": [],
       "domains": [
         "openai_stt"
@@ -27625,7 +27702,7 @@
       "version": "v0.8.0",
       "ref": "refs/tags/v0.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:13Z",
+      "scanned_utc": "2026-08-17T03:34:29Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -27654,17 +27731,22 @@
       ],
       "domains": [
         "haikubox"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "ekutner/home-connect-hass": {
       "domain": "home_connect_alt",
       "version": "1.4.2",
       "ref": "refs/tags/1.4.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:14Z",
+      "scanned_utc": "2026-08-17T03:34:30Z",
       "files_scanned": 15,
       "syntax_errors": 0,
-      "stargazers_count": 988,
+      "stargazers_count": 992,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -27690,14 +27772,19 @@
       ],
       "domains": [
         "home_connect_alt"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "elad-bar/ha-blueiris": {
       "domain": "blueiris",
       "version": "v1.0.23",
       "ref": "refs/tags/v1.0.23",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:15Z",
+      "scanned_utc": "2026-08-17T03:34:30Z",
       "files_scanned": 28,
       "syntax_errors": 0,
       "stargazers_count": 196,
@@ -27712,17 +27799,22 @@
       ],
       "domains": [
         "blueiris"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "elad-bar/ha-edgeos": {
       "domain": "edgeos",
       "version": "v2.1.9",
       "ref": "refs/tags/v2.1.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:15Z",
+      "scanned_utc": "2026-08-17T03:34:31Z",
       "files_scanned": 32,
       "syntax_errors": 0,
-      "stargazers_count": 147,
+      "stargazers_count": 146,
       "findings": [
         {
           "rule_id": "device-info-via-device",
@@ -27762,14 +27854,19 @@
       ],
       "domains": [
         "edgeos"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "elad-bar/ha-hpprinter": {
       "domain": "hpprinter",
       "version": "v2.0.6",
       "ref": "refs/tags/v2.0.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:16Z",
+      "scanned_utc": "2026-08-17T03:34:32Z",
       "files_scanned": 19,
       "syntax_errors": 0,
       "stargazers_count": 110,
@@ -27805,14 +27902,19 @@
       ],
       "domains": [
         "hpprinter"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "elad-bar/ha-shinobi": {
       "domain": "shinobi",
       "version": "v3.0.14",
       "ref": "refs/tags/v3.0.14",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:16Z",
+      "scanned_utc": "2026-08-17T03:34:33Z",
       "files_scanned": 30,
       "syntax_errors": 0,
       "stargazers_count": 54,
@@ -27827,14 +27929,19 @@
       ],
       "domains": [
         "shinobi"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "elad-sudo/domiara-ha": {
       "domain": "domiara",
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:17Z",
+      "scanned_utc": "2026-08-17T03:34:33Z",
       "files_scanned": 17,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -27856,14 +27963,19 @@
       ],
       "domains": [
         "domiara"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "eladnahum5/ha-vouchervault": {
       "domain": "vouchervault",
       "version": "v2.2.0",
       "ref": "refs/tags/v2.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:17Z",
+      "scanned_utc": "2026-08-17T03:34:34Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -27877,7 +27989,7 @@
       "version": "v0.1.8",
       "ref": "refs/tags/v0.1.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:18Z",
+      "scanned_utc": "2026-08-17T03:34:34Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -27891,7 +28003,7 @@
       "version": "v0.1.5",
       "ref": "refs/tags/v0.1.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:18Z",
+      "scanned_utc": "2026-08-17T03:34:35Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -27905,7 +28017,7 @@
       "version": "1.2.0",
       "ref": "refs/tags/1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:18Z",
+      "scanned_utc": "2026-08-17T03:34:35Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -27916,11 +28028,11 @@
     },
     "elden1337/ha-eltariff": {
       "domain": "eltariff",
-      "version": "0.3.3",
-      "ref": "refs/tags/0.3.3",
+      "version": "0.3.5",
+      "ref": "refs/tags/0.3.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:18Z",
-      "files_scanned": 58,
+      "scanned_utc": "2026-08-17T03:34:35Z",
+      "files_scanned": 61,
       "syntax_errors": 0,
       "stargazers_count": 3,
       "findings": [
@@ -27928,23 +28040,28 @@
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/eltariff/sensor/cost_sensor_base.py",
-          "line": 78,
+          "line": 77,
           "confidence": "high"
         }
       ],
       "domains": [
         "eltariff"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "elden1337/hass-peaq": {
       "domain": "peaqev",
       "version": "3.7.5",
       "ref": "refs/tags/3.7.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:19Z",
+      "scanned_utc": "2026-08-17T03:34:36Z",
       "files_scanned": 127,
       "syntax_errors": 0,
-      "stargazers_count": 69,
+      "stargazers_count": 70,
       "findings": [],
       "domains": [
         "peaqev"
@@ -27955,10 +28072,10 @@
       "version": "3.1.9",
       "ref": "refs/tags/3.1.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:21Z",
+      "scanned_utc": "2026-08-17T03:34:38Z",
       "files_scanned": 88,
       "syntax_errors": 0,
-      "stargazers_count": 7,
+      "stargazers_count": 8,
       "findings": [],
       "domains": [
         "peaqhvac"
@@ -27969,7 +28086,7 @@
       "version": "0.6.0",
       "ref": "refs/tags/0.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:22Z",
+      "scanned_utc": "2026-08-17T03:34:39Z",
       "files_scanned": 31,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -27983,7 +28100,7 @@
       "version": "1.0.1",
       "ref": "refs/tags/1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:22Z",
+      "scanned_utc": "2026-08-17T03:34:40Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -27997,7 +28114,7 @@
       "version": "v0.1.10",
       "ref": "refs/tags/v0.1.10",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:22Z",
+      "scanned_utc": "2026-08-17T03:34:40Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -28011,7 +28128,7 @@
       "version": "v0.4.1",
       "ref": "refs/tags/v0.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:23Z",
+      "scanned_utc": "2026-08-17T03:34:41Z",
       "files_scanned": 23,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28022,10 +28139,10 @@
     },
     "elsbrock/cowboy-ha": {
       "domain": "cowboy",
-      "version": "v1.3.0",
-      "ref": "refs/tags/v1.3.0",
+      "version": "v1.3.1",
+      "ref": "refs/tags/v1.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:23Z",
+      "scanned_utc": "2026-08-17T03:34:41Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 29,
@@ -28036,25 +28153,23 @@
           "file": "custom_components/cowboy/__init__.py",
           "line": 134,
           "confidence": "medium"
-        },
-        {
-          "rule_id": "device-tracker-location-name",
-          "breaks_in": "2027.7",
-          "file": "custom_components/cowboy/device_tracker.py",
-          "line": 71,
-          "confidence": "high"
         }
       ],
       "domains": [
         "cowboy"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "emanuelbesliu/homeassistant-bft": {
       "domain": "bft",
       "version": "v2.1.4",
       "ref": "refs/tags/v2.1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:23Z",
+      "scanned_utc": "2026-08-17T03:34:42Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28068,7 +28183,7 @@
       "version": "v2.4.0",
       "ref": "refs/tags/v2.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:23Z",
+      "scanned_utc": "2026-08-17T03:34:42Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 26,
@@ -28082,7 +28197,7 @@
       "version": "v1.0.2",
       "ref": "refs/tags/v1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:25Z",
+      "scanned_utc": "2026-08-17T03:34:43Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 16,
@@ -28096,10 +28211,10 @@
       "version": "v1.1.6",
       "ref": "refs/tags/v1.1.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:25Z",
+      "scanned_utc": "2026-08-17T03:34:43Z",
       "files_scanned": 4,
       "syntax_errors": 0,
-      "stargazers_count": 54,
+      "stargazers_count": 55,
       "findings": [],
       "domains": [
         "ham_radio_propagation"
@@ -28110,7 +28225,7 @@
       "version": "v1.5.4",
       "ref": "refs/tags/v1.5.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:25Z",
+      "scanned_utc": "2026-08-17T03:34:44Z",
       "files_scanned": 20,
       "syntax_errors": 0,
       "stargazers_count": 8,
@@ -28167,14 +28282,19 @@
       ],
       "domains": [
         "ave_dominaplus"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "energiedaten-at/ha-energiedaten": {
       "domain": "energiedaten",
       "version": "v0.6.0",
       "ref": "refs/tags/v0.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:26Z",
+      "scanned_utc": "2026-08-17T03:34:45Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28203,14 +28323,19 @@
       ],
       "domains": [
         "energiedaten"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "energy-tracker/home-assistant-energy-tracker": {
       "domain": "energy_tracker",
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:26Z",
+      "scanned_utc": "2026-08-17T03:34:45Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -28224,7 +28349,7 @@
       "version": "2.6",
       "ref": "refs/tags/2.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:26Z",
+      "scanned_utc": "2026-08-17T03:34:46Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 22,
@@ -28238,7 +28363,7 @@
       "version": "v0.1.1",
       "ref": "refs/tags/v0.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:26Z",
+      "scanned_utc": "2026-08-17T03:34:46Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -28249,10 +28374,10 @@
     },
     "engelsofta/nodarion": {
       "domain": "nodarion",
-      "version": "v1.17.7",
-      "ref": "refs/tags/v1.17.7",
+      "version": "v1.20.0",
+      "ref": "refs/tags/v1.20.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:27Z",
+      "scanned_utc": "2026-08-17T03:34:46Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -28267,14 +28392,19 @@
       ],
       "domains": [
         "nodarion"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "enoch85/ge-spot": {
       "domain": "ge_spot",
       "version": "v1.8.2",
       "ref": "refs/tags/v1.8.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:28Z",
+      "scanned_utc": "2026-08-17T03:34:48Z",
       "files_scanned": 89,
       "syntax_errors": 0,
       "stargazers_count": 22,
@@ -28288,7 +28418,7 @@
       "version": "v1.7.2",
       "ref": "refs/tags/v1.7.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:30Z",
+      "scanned_utc": "2026-08-17T03:34:50Z",
       "files_scanned": 61,
       "syntax_errors": 0,
       "stargazers_count": 33,
@@ -28345,14 +28475,19 @@
       ],
       "domains": [
         "ovms"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "enovates/home-assistant-enovates": {
       "domain": "enovates",
       "version": "v0.1.2",
       "ref": "refs/tags/v0.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:32Z",
+      "scanned_utc": "2026-08-17T03:34:52Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -28366,7 +28501,7 @@
       "version": "0.5.0",
       "ref": "refs/tags/0.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:32Z",
+      "scanned_utc": "2026-08-17T03:34:53Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 35,
@@ -28380,7 +28515,7 @@
       "version": "0.5.3",
       "ref": "refs/tags/0.5.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:32Z",
+      "scanned_utc": "2026-08-17T03:34:53Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 72,
@@ -28391,11 +28526,11 @@
     },
     "erazorlll/SPAcentral-for-balboa": {
       "domain": "spacentral_for_balboa",
-      "version": "v0.8.0",
-      "ref": "refs/tags/v0.8.0",
+      "version": "v0.9.1",
+      "ref": "refs/tags/v0.9.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:32Z",
-      "files_scanned": 27,
+      "scanned_utc": "2026-08-17T03:34:54Z",
+      "files_scanned": 28,
       "syntax_errors": 0,
       "stargazers_count": 2,
       "findings": [],
@@ -28408,7 +28543,7 @@
       "version": "v4.15.2",
       "ref": "refs/tags/v4.15.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:33Z",
+      "scanned_utc": "2026-08-17T03:34:54Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 20,
@@ -28472,14 +28607,19 @@
       ],
       "domains": [
         "energa_mobile"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_import_statistics"
+      }
     },
     "eric-staedler/wiewarm-ha": {
       "domain": "wiewarm",
       "version": "1.1.0",
       "ref": "refs/tags/1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:34Z",
+      "scanned_utc": "2026-08-17T03:34:55Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28493,10 +28633,10 @@
       "version": "1.6.0",
       "ref": "refs/tags/1.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:34Z",
+      "scanned_utc": "2026-08-17T03:34:56Z",
       "files_scanned": 14,
       "syntax_errors": 0,
-      "stargazers_count": 69,
+      "stargazers_count": 68,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -28508,36 +28648,46 @@
       ],
       "domains": [
         "wemportal"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "eriknn/ha-pax_ble": {
       "domain": "pax_ble",
-      "version": "v1.1.24",
-      "ref": "refs/tags/v1.1.24",
+      "version": "v1.1.28",
+      "ref": "refs/tags/v1.1.28",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:34Z",
-      "files_scanned": 19,
+      "scanned_utc": "2026-08-17T03:34:56Z",
+      "files_scanned": 21,
       "syntax_errors": 0,
-      "stargazers_count": 84,
+      "stargazers_count": 86,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/pax_ble/config_flow.py",
-          "line": 497,
+          "line": 514,
           "confidence": "medium"
         }
       ],
       "domains": [
         "pax_ble"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "ernetas/junghome": {
       "domain": "junghome",
       "version": "v1.4.0",
       "ref": "refs/tags/v1.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:35Z",
+      "scanned_utc": "2026-08-17T03:34:57Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -28552,14 +28702,19 @@
       ],
       "domains": [
         "junghome"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device"
+      }
     },
     "esbenwiberg/easyiq": {
       "domain": "aula_easyiq",
       "version": "v0.5.16",
       "ref": "refs/tags/v0.5.16",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:35Z",
+      "scanned_utc": "2026-08-17T03:34:58Z",
       "files_scanned": 18,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -28570,11 +28725,11 @@
     },
     "eseglem/hass-wattbox": {
       "domain": "wattbox",
-      "version": "v1.0.0",
-      "ref": "refs/tags/v1.0.0",
+      "version": "v1.2.0",
+      "ref": "refs/tags/v1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:36Z",
-      "files_scanned": 8,
+      "scanned_utc": "2026-08-17T03:34:59Z",
+      "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 21,
       "findings": [],
@@ -28587,18 +28742,11 @@
       "version": "v1.0.5",
       "ref": "refs/tags/v1.0.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:36Z",
+      "scanned_utc": "2026-08-17T03:34:59Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 3,
       "findings": [
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/balena_cloud/api.py",
-          "line": 216,
-          "confidence": "medium"
-        },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
@@ -28637,14 +28785,19 @@
       ],
       "domains": [
         "balena_cloud"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "etiennec78/ha-artemis-rgb": {
       "domain": "artemis_rgb",
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:37Z",
+      "scanned_utc": "2026-08-17T03:35:00Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28658,7 +28811,7 @@
       "version": "v1.1.3",
       "ref": "refs/tags/v1.1.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:37Z",
+      "scanned_utc": "2026-08-17T03:35:00Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -28672,7 +28825,7 @@
       "version": "v0.1.2",
       "ref": "refs/tags/v0.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:37Z",
+      "scanned_utc": "2026-08-17T03:35:01Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -28686,7 +28839,7 @@
       "version": "2025.04.1",
       "ref": "refs/tags/2025.04.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:37Z",
+      "scanned_utc": "2026-08-17T03:35:01Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -28700,7 +28853,7 @@
       "version": "",
       "ref": "refs/heads/main",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:38Z",
+      "scanned_utc": "2026-08-17T03:35:01Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 29,
@@ -28714,10 +28867,10 @@
       "version": "v0.2.1",
       "ref": "refs/tags/v0.2.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:38Z",
+      "scanned_utc": "2026-08-17T03:35:02Z",
       "files_scanned": 4,
       "syntax_errors": 0,
-      "stargazers_count": 6,
+      "stargazers_count": 7,
       "findings": [
         {
           "rule_id": "core-call-async-remove-stale-devices-links-keep-current-device",
@@ -28736,14 +28889,19 @@
       ],
       "domains": [
         "switch_fan"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_remove_stale_devices_links_keep_current_device"
+      }
     },
     "exKAjFASH/media_player.elkoep_lara": {
       "domain": "elkoep_lara",
       "version": "v0.4.0",
       "ref": "refs/tags/v0.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:38Z",
+      "scanned_utc": "2026-08-17T03:35:02Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28757,7 +28915,7 @@
       "version": "v1.2.2",
       "ref": "refs/tags/v1.2.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:38Z",
+      "scanned_utc": "2026-08-17T03:35:02Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28771,7 +28929,7 @@
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:39Z",
+      "scanned_utc": "2026-08-17T03:35:03Z",
       "files_scanned": 23,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -28786,14 +28944,19 @@
       ],
       "domains": [
         "raritan_px"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "exxamalte/home-assistant-custom-components-nsw-rural-fire-service-fire-danger": {
       "domain": "nsw_rural_fire_service_fire_danger",
       "version": "v0.21",
       "ref": "refs/tags/v0.21",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:39Z",
+      "scanned_utc": "2026-08-17T03:35:04Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 13,
@@ -28807,7 +28970,7 @@
       "version": "1.0.1",
       "ref": "refs/tags/1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:39Z",
+      "scanned_utc": "2026-08-17T03:35:04Z",
       "files_scanned": 3,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -28821,7 +28984,7 @@
       "version": "1.0.12",
       "ref": "refs/tags/1.0.12",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:39Z",
+      "scanned_utc": "2026-08-17T03:35:04Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 41,
@@ -28835,10 +28998,10 @@
       "version": "v1.7.1",
       "ref": "refs/tags/v1.7.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:39Z",
+      "scanned_utc": "2026-08-17T03:35:05Z",
       "files_scanned": 20,
       "syntax_errors": 0,
-      "stargazers_count": 25,
+      "stargazers_count": 27,
       "findings": [],
       "domains": [
         "album_slideshow"
@@ -28849,7 +29012,7 @@
       "version": "V0.0.9",
       "ref": "refs/tags/V0.0.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:41Z",
+      "scanned_utc": "2026-08-17T03:35:06Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -28863,7 +29026,7 @@
       "version": "v1.1.33",
       "ref": "refs/tags/v1.1.33",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:42Z",
+      "scanned_utc": "2026-08-17T03:35:07Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -28877,7 +29040,7 @@
       "version": "1.3.3",
       "ref": "refs/tags/1.3.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:42Z",
+      "scanned_utc": "2026-08-17T03:35:08Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 105,
@@ -28891,7 +29054,7 @@
       "version": "3.1.0",
       "ref": "refs/tags/3.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:42Z",
+      "scanned_utc": "2026-08-17T03:35:08Z",
       "files_scanned": 21,
       "syntax_errors": 0,
       "stargazers_count": 30,
@@ -28905,7 +29068,7 @@
       "version": "2.0.4",
       "ref": "refs/tags/2.0.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:43Z",
+      "scanned_utc": "2026-08-17T03:35:09Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -28919,7 +29082,7 @@
       "version": "1.0.7",
       "ref": "refs/tags/1.0.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:43Z",
+      "scanned_utc": "2026-08-17T03:35:09Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 16,
@@ -28934,17 +29097,22 @@
       ],
       "domains": [
         "pilot_wire_climate"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_remove_stale_devices_links_keep_entity_device"
+      }
     },
     "fancyui/Gobel-Battery-HA-Integration": {
       "domain": "gobel_battery",
       "version": "2.0.12",
       "ref": "refs/tags/2.0.12",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:43Z",
+      "scanned_utc": "2026-08-17T03:35:09Z",
       "files_scanned": 12,
       "syntax_errors": 0,
-      "stargazers_count": 4,
+      "stargazers_count": 5,
       "findings": [],
       "domains": [
         "gobel_battery"
@@ -28955,7 +29123,7 @@
       "version": "",
       "ref": "refs/heads/master",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:45Z",
+      "scanned_utc": "2026-08-17T03:35:11Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -28969,7 +29137,7 @@
       "version": "v0.1.2",
       "ref": "refs/tags/v0.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:45Z",
+      "scanned_utc": "2026-08-17T03:35:11Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -28983,7 +29151,7 @@
       "version": "v1.0.2",
       "ref": "refs/tags/v1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:45Z",
+      "scanned_utc": "2026-08-17T03:35:12Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -28997,10 +29165,10 @@
       "version": "v0.2.9",
       "ref": "refs/tags/v0.2.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:45Z",
+      "scanned_utc": "2026-08-17T03:35:12Z",
       "files_scanned": 30,
       "syntax_errors": 0,
-      "stargazers_count": 20,
+      "stargazers_count": 22,
       "findings": [],
       "domains": [
         "tholz"
@@ -29011,7 +29179,7 @@
       "version": "v0.2.11",
       "ref": "refs/tags/v0.2.11",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:46Z",
+      "scanned_utc": "2026-08-17T03:35:13Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29025,7 +29193,7 @@
       "version": "v2.1.1",
       "ref": "refs/tags/v2.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:46Z",
+      "scanned_utc": "2026-08-17T03:35:13Z",
       "files_scanned": 38,
       "syntax_errors": 0,
       "stargazers_count": 147,
@@ -29047,14 +29215,19 @@
       ],
       "domains": [
         "marstek_venus_energy_manager"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "fhfhg1/smart-dehumidifier": {
       "domain": "smart_dehumidifier",
       "version": "v0.3.8",
       "ref": "refs/tags/v0.3.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:49Z",
+      "scanned_utc": "2026-08-17T03:35:17Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29068,7 +29241,7 @@
       "version": "v4.2.1",
       "ref": "refs/tags/v4.2.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:50Z",
+      "scanned_utc": "2026-08-17T03:35:18Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 15,
@@ -29082,7 +29255,7 @@
       "version": "1.7.0",
       "ref": "refs/tags/1.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:52Z",
+      "scanned_utc": "2026-08-17T03:35:20Z",
       "files_scanned": 24,
       "syntax_errors": 0,
       "stargazers_count": 37,
@@ -29096,7 +29269,7 @@
       "version": "v1.7.2",
       "ref": "refs/tags/v1.7.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:52Z",
+      "scanned_utc": "2026-08-17T03:35:20Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -29118,17 +29291,22 @@
       ],
       "domains": [
         "dockge"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device"
+      }
     },
     "fineemb/Colorfulclouds-weather": {
       "domain": "colorfulclouds",
-      "version": "v2.0.3",
-      "ref": "refs/tags/v2.0.3",
+      "version": "v2.1.1",
+      "ref": "refs/tags/v2.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:52Z",
+      "scanned_utc": "2026-08-17T03:35:21Z",
       "files_scanned": 6,
       "syntax_errors": 0,
-      "stargazers_count": 152,
+      "stargazers_count": 154,
       "findings": [],
       "domains": [
         "colorfulclouds"
@@ -29139,7 +29317,7 @@
       "version": "v1.24",
       "ref": "refs/tags/v1.24",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:52Z",
+      "scanned_utc": "2026-08-17T03:35:21Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -29153,7 +29331,7 @@
       "version": "v1.4",
       "ref": "refs/tags/v1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:53Z",
+      "scanned_utc": "2026-08-17T03:35:21Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -29164,11 +29342,11 @@
     },
     "fineemb/xiaomi-cloud": {
       "domain": "xiaomi_cloud",
-      "version": "v1.2.7",
-      "ref": "refs/tags/v1.2.7",
+      "version": "v1.3.0",
+      "ref": "refs/tags/v1.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:53Z",
-      "files_scanned": 4,
+      "scanned_utc": "2026-08-17T03:35:22Z",
+      "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 50,
       "findings": [
@@ -29176,20 +29354,25 @@
           "rule_id": "device-tracker-battery-level",
           "breaks_in": "2027.7",
           "file": "custom_components/xiaomi_cloud/device_tracker.py",
-          "line": 71,
+          "line": 55,
           "confidence": "high"
         }
       ],
       "domains": [
         "xiaomi_cloud"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "battery_level"
+      }
     },
     "finity69x2/nws_alerts": {
       "domain": "nws_alerts",
       "version": "6.7.3",
       "ref": "refs/tags/6.7.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:53Z",
+      "scanned_utc": "2026-08-17T03:35:22Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 174,
@@ -29203,7 +29386,7 @@
       "version": "1.5.0",
       "ref": "refs/tags/1.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:53Z",
+      "scanned_utc": "2026-08-17T03:35:22Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 65,
@@ -29218,14 +29401,19 @@
       ],
       "domains": [
         "gasbuddy"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "primary_config_entry"
+      }
     },
     "firstof9/ha-openei": {
       "domain": "openei",
       "version": "0.2.0",
       "ref": "refs/tags/0.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:54Z",
+      "scanned_utc": "2026-08-17T03:35:23Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 17,
@@ -29239,10 +29427,10 @@
       "version": "v0.5.0",
       "ref": "refs/tags/v0.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:54Z",
+      "scanned_utc": "2026-08-17T03:35:24Z",
       "files_scanned": 13,
       "syntax_errors": 0,
-      "stargazers_count": 8,
+      "stargazers_count": 9,
       "findings": [],
       "domains": [
         "eeve_mower_willow"
@@ -29253,7 +29441,7 @@
       "version": "v1.1.2",
       "ref": "refs/tags/v1.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:55Z",
+      "scanned_utc": "2026-08-17T03:35:25Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -29275,14 +29463,19 @@
       ],
       "domains": [
         "controme"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "flashg1/SolarCharger": {
       "domain": "solarcharger",
-      "version": "v0.10.1",
-      "ref": "refs/tags/v0.10.1",
+      "version": "v0.10.2",
+      "ref": "refs/tags/v0.10.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:55Z",
+      "scanned_utc": "2026-08-17T03:35:25Z",
       "files_scanned": 67,
       "syntax_errors": 0,
       "stargazers_count": 17,
@@ -29298,20 +29491,25 @@
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/solarcharger/state_machine/solar_charge.py",
-          "line": 160,
+          "line": 161,
           "confidence": "medium"
         }
       ],
       "domains": [
         "solarcharger"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "flcdrg/flipped_energy_ha": {
       "domain": "flipped_energy",
       "version": "v2.0.0",
       "ref": "refs/tags/v2.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:57Z",
+      "scanned_utc": "2026-08-17T03:35:27Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29326,14 +29524,19 @@
       ],
       "domains": [
         "flipped_energy"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "flexopus/flexopus-hass-sensor": {
       "domain": "flexopus",
       "version": "v1.0.3",
       "ref": "refs/tags/v1.0.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:57Z",
+      "scanned_utc": "2026-08-17T03:35:27Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29344,13 +29547,13 @@
     },
     "florianbaethge/simple_irrigation": {
       "domain": "simple_irrigation",
-      "version": "v1.0.0",
-      "ref": "refs/tags/v1.0.0",
+      "version": "v1.7.0",
+      "ref": "refs/tags/v1.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:57Z",
-      "files_scanned": 23,
+      "scanned_utc": "2026-08-17T03:35:27Z",
+      "files_scanned": 25,
       "syntax_errors": 0,
-      "stargazers_count": 6,
+      "stargazers_count": 9,
       "findings": [],
       "domains": [
         "simple_irrigation"
@@ -29361,7 +29564,7 @@
       "version": "v4.0.1",
       "ref": "refs/tags/v4.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:58Z",
+      "scanned_utc": "2026-08-17T03:35:29Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 815,
@@ -29375,7 +29578,7 @@
       "version": "v1.0.3",
       "ref": "refs/tags/v1.0.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:58Z",
+      "scanned_utc": "2026-08-17T03:35:29Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -29389,10 +29592,10 @@
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:58Z",
+      "scanned_utc": "2026-08-17T03:35:29Z",
       "files_scanned": 10,
       "syntax_errors": 0,
-      "stargazers_count": 1,
+      "stargazers_count": 2,
       "findings": [],
       "domains": [
         "whisker_ting"
@@ -29403,7 +29606,7 @@
       "version": "0.0.10",
       "ref": "refs/tags/0.0.10",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:59Z",
+      "scanned_utc": "2026-08-17T03:35:30Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29417,7 +29620,7 @@
       "version": "5.2.0",
       "ref": "refs/tags/5.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:59Z",
+      "scanned_utc": "2026-08-17T03:35:30Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 200,
@@ -29431,7 +29634,7 @@
       "version": "v1.2.0",
       "ref": "refs/tags/v1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:53:59Z",
+      "scanned_utc": "2026-08-17T03:35:31Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29445,7 +29648,7 @@
       "version": "0.27",
       "ref": "refs/tags/0.27",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:00Z",
+      "scanned_utc": "2026-08-17T03:35:31Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 40,
@@ -29459,7 +29662,7 @@
       "version": "v2.4.0",
       "ref": "refs/tags/v2.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:00Z",
+      "scanned_utc": "2026-08-17T03:35:32Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 185,
@@ -29473,7 +29676,7 @@
       "version": "v1.16.0",
       "ref": "refs/tags/v1.16.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:00Z",
+      "scanned_utc": "2026-08-17T03:35:32Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -29487,7 +29690,7 @@
       "version": "v0.1.0",
       "ref": "refs/tags/v0.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:01Z",
+      "scanned_utc": "2026-08-17T03:35:34Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 101,
@@ -29501,10 +29704,10 @@
       "version": "v5.0.0",
       "ref": "refs/tags/v5.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:03Z",
+      "scanned_utc": "2026-08-17T03:35:35Z",
       "files_scanned": 173,
       "syntax_errors": 0,
-      "stargazers_count": 1219,
+      "stargazers_count": 1225,
       "findings": [
         {
           "rule_id": "core-call-async-import-statistics-missing-mean-type",
@@ -29538,14 +29741,26 @@
       "domains": [
         "spook",
         "spook_inverse"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 1230,
+          "url": "https://github.com/frenck/spook/issues/1230",
+          "state": "closed",
+          "title": "Specify mean_type when calling async_import_statistics",
+          "reactions": 0
+        },
+        "symbol": "async_import_statistics"
+      }
     },
     "freol35241/ltss": {
       "domain": "ltss",
       "version": "v2.1.1",
       "ref": "refs/tags/v2.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:04Z",
+      "scanned_utc": "2026-08-17T03:35:37Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 99,
@@ -29559,7 +29774,7 @@
       "version": "1.4.0",
       "ref": "refs/tags/1.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:04Z",
+      "scanned_utc": "2026-08-17T03:35:38Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -29573,7 +29788,7 @@
       "version": "1.3.2",
       "ref": "refs/tags/1.3.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:05Z",
+      "scanned_utc": "2026-08-17T03:35:38Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -29587,7 +29802,7 @@
       "version": "v0.2.6",
       "ref": "refs/tags/v0.2.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:05Z",
+      "scanned_utc": "2026-08-17T03:35:39Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 119,
@@ -29601,7 +29816,7 @@
       "version": "v0.5.0",
       "ref": "refs/tags/v0.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:05Z",
+      "scanned_utc": "2026-08-17T03:35:39Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -29615,7 +29830,7 @@
       "version": "0.2.0",
       "ref": "refs/tags/0.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:05Z",
+      "scanned_utc": "2026-08-17T03:35:40Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 95,
@@ -29637,17 +29852,22 @@
       ],
       "domains": [
         "awox"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "fsaris/home-assistant-zonneplan-one": {
       "domain": "zonneplan_one",
       "version": "2026.8.0",
       "ref": "refs/tags/2026.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:06Z",
+      "scanned_utc": "2026-08-17T03:35:40Z",
       "files_scanned": 31,
       "syntax_errors": 0,
-      "stargazers_count": 179,
+      "stargazers_count": 180,
       "findings": [
         {
           "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
@@ -29659,17 +29879,22 @@
       ],
       "domains": [
         "zonneplan_one"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "fuatakgun/eufy_security": {
       "domain": "eufy_security",
       "version": "v8.2.4",
       "ref": "refs/tags/v8.2.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:07Z",
+      "scanned_utc": "2026-08-17T03:35:41Z",
       "files_scanned": 31,
       "syntax_errors": 0,
-      "stargazers_count": 1383,
+      "stargazers_count": 1385,
       "findings": [],
       "domains": [
         "eufy_security"
@@ -29680,7 +29905,7 @@
       "version": "v1.2.5",
       "ref": "refs/tags/v1.2.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:08Z",
+      "scanned_utc": "2026-08-17T03:35:42Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 13,
@@ -29694,7 +29919,7 @@
       "version": "v1.0.35",
       "ref": "refs/tags/v1.0.35",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:08Z",
+      "scanned_utc": "2026-08-17T03:35:42Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -29723,15 +29948,20 @@
       ],
       "domains": [
         "acwd"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "funkadelic/ha-rainpoint": {
       "domain": "rainpoint",
-      "version": "v1.14.0",
-      "ref": "refs/tags/v1.14.0",
+      "version": "v1.18.0",
+      "ref": "refs/tags/v1.18.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:08Z",
-      "files_scanned": 29,
+      "scanned_utc": "2026-08-17T03:35:42Z",
+      "files_scanned": 30,
       "syntax_errors": 0,
       "stargazers_count": 1,
       "findings": [
@@ -29739,23 +29969,28 @@
           "rule_id": "device-registry-config-entry-mutation-params",
           "breaks_in": "2027.8",
           "file": "custom_components/rainpoint/__init__.py",
-          "line": 827,
+          "line": 1730,
           "confidence": "high"
         }
       ],
       "domains": [
         "rainpoint"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device"
+      }
     },
     "fustom/ariston-remotethermo-home-assistant-v3": {
       "domain": "ariston",
       "version": "v0.19.9",
       "ref": "refs/tags/v0.19.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:10Z",
+      "scanned_utc": "2026-08-17T03:35:45Z",
       "files_scanned": 12,
       "syntax_errors": 0,
-      "stargazers_count": 279,
+      "stargazers_count": 282,
       "findings": [],
       "domains": [
         "ariston"
@@ -29766,7 +30001,7 @@
       "version": "v2.0.7",
       "ref": "refs/tags/v2.0.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:11Z",
+      "scanned_utc": "2026-08-17T03:35:45Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -29780,7 +30015,7 @@
       "version": "0.0.7",
       "ref": "refs/tags/0.0.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:11Z",
+      "scanned_utc": "2026-08-17T03:35:46Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -29794,7 +30029,7 @@
       "version": "v1.0.9",
       "ref": "refs/tags/v1.0.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:12Z",
+      "scanned_utc": "2026-08-17T03:35:47Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -29808,7 +30043,7 @@
       "version": "v0.0.1",
       "ref": "refs/tags/v0.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:12Z",
+      "scanned_utc": "2026-08-17T03:35:47Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -29822,7 +30057,7 @@
       "version": "0.0.10",
       "ref": "refs/tags/0.0.10",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:13Z",
+      "scanned_utc": "2026-08-17T03:35:48Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 26,
@@ -29833,13 +30068,13 @@
     },
     "ganhammar/hass-mcp-server": {
       "domain": "mcp_server_http_transport",
-      "version": "v1.14.0",
-      "ref": "refs/tags/v1.14.0",
+      "version": "v1.15.0",
+      "ref": "refs/tags/v1.15.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:13Z",
-      "files_scanned": 32,
+      "scanned_utc": "2026-08-17T03:35:48Z",
+      "files_scanned": 33,
       "syntax_errors": 0,
-      "stargazers_count": 61,
+      "stargazers_count": 64,
       "findings": [],
       "domains": [
         "mcp_server_http_transport"
@@ -29847,13 +30082,13 @@
     },
     "ganhammar/hass-oidc-server": {
       "domain": "oidc_provider",
-      "version": "v1.5.1",
-      "ref": "refs/tags/v1.5.1",
+      "version": "v1.5.2",
+      "ref": "refs/tags/v1.5.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:14Z",
+      "scanned_utc": "2026-08-17T03:35:50Z",
       "files_scanned": 7,
       "syntax_errors": 0,
-      "stargazers_count": 21,
+      "stargazers_count": 22,
       "findings": [],
       "domains": [
         "oidc_provider"
@@ -29864,7 +30099,7 @@
       "version": "0.7",
       "ref": "refs/tags/0.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:14Z",
+      "scanned_utc": "2026-08-17T03:35:50Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 157,
@@ -29878,7 +30113,7 @@
       "version": "v0.1.33",
       "ref": "refs/tags/v0.1.33",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:14Z",
+      "scanned_utc": "2026-08-17T03:35:51Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 127,
@@ -29892,10 +30127,10 @@
       "version": "v0.21.13",
       "ref": "refs/tags/v0.21.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:15Z",
+      "scanned_utc": "2026-08-17T03:35:51Z",
       "files_scanned": 36,
       "syntax_errors": 0,
-      "stargazers_count": 179,
+      "stargazers_count": 185,
       "findings": [
         {
           "rule_id": "device-tracker-location-name",
@@ -29914,17 +30149,22 @@
       ],
       "domains": [
         "padspan_ha"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "location_name"
+      }
     },
     "gcobb321/icloud3": {
       "domain": "icloud3",
       "version": "v3.5.1",
       "ref": "refs/tags/v3.5.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:20Z",
+      "scanned_utc": "2026-08-17T03:35:57Z",
       "files_scanned": 70,
       "syntax_errors": 0,
-      "stargazers_count": 889,
+      "stargazers_count": 892,
       "findings": [
         {
           "rule_id": "legacy-device-tracker-platform",
@@ -29957,17 +30197,22 @@
       ],
       "domains": [
         "icloud3"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "setup_scanner"
+      }
     },
     "gcorgnet/sensor.emby_upcoming_media": {
       "domain": "emby_upcoming_media",
       "version": "2024.7.0",
       "ref": "refs/tags/2024.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:26Z",
+      "scanned_utc": "2026-08-17T03:36:03Z",
       "files_scanned": 3,
       "syntax_errors": 0,
-      "stargazers_count": 24,
+      "stargazers_count": 25,
       "findings": [],
       "domains": [
         "emby_upcoming_media"
@@ -29978,7 +30223,7 @@
       "version": "v0.1.4",
       "ref": "refs/tags/v0.1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:26Z",
+      "scanned_utc": "2026-08-17T03:36:03Z",
       "files_scanned": 23,
       "syntax_errors": 0,
       "stargazers_count": 25,
@@ -29992,10 +30237,10 @@
       "version": "v1.2.4",
       "ref": "refs/tags/v1.2.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:26Z",
+      "scanned_utc": "2026-08-17T03:36:04Z",
       "files_scanned": 30,
       "syntax_errors": 0,
-      "stargazers_count": 14,
+      "stargazers_count": 17,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -30014,14 +30259,19 @@
       ],
       "domains": [
         "smarthq"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "geeks-r-us/maxstorage_ultimate": {
       "domain": "maxstorage_ultimate",
       "version": "v0.0.2",
       "ref": "refs/tags/v0.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:29Z",
+      "scanned_utc": "2026-08-17T03:36:06Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -30035,7 +30285,7 @@
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:29Z",
+      "scanned_utc": "2026-08-17T03:36:07Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -30049,10 +30299,10 @@
       "version": "v1.0.2",
       "ref": "refs/tags/v1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:29Z",
+      "scanned_utc": "2026-08-17T03:36:07Z",
       "files_scanned": 10,
       "syntax_errors": 0,
-      "stargazers_count": 9,
+      "stargazers_count": 10,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -30071,14 +30321,19 @@
       ],
       "domains": [
         "eeveemobility"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "battery_level"
+      }
     },
     "geertmeersman/miwa": {
       "domain": "miwa",
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:29Z",
+      "scanned_utc": "2026-08-17T03:36:08Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -30093,17 +30348,22 @@
       ],
       "domains": [
         "miwa"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "geertmeersman/mobile_vikings": {
       "domain": "mobile_vikings",
       "version": "v3.1.0",
       "ref": "refs/tags/v3.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:30Z",
+      "scanned_utc": "2026-08-17T03:36:08Z",
       "files_scanned": 10,
       "syntax_errors": 0,
-      "stargazers_count": 12,
+      "stargazers_count": 13,
       "findings": [],
       "domains": [
         "mobile_vikings"
@@ -30114,7 +30374,7 @@
       "version": "v1.1.1",
       "ref": "refs/tags/v1.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:30Z",
+      "scanned_utc": "2026-08-17T03:36:09Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 16,
@@ -30129,17 +30389,22 @@
       ],
       "domains": [
         "nexxtmove"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "geertmeersman/robonect": {
       "domain": "robonect",
       "version": "v5.1.13",
       "ref": "refs/tags/v5.1.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:30Z",
+      "scanned_utc": "2026-08-17T03:36:10Z",
       "files_scanned": 18,
       "syntax_errors": 0,
-      "stargazers_count": 50,
+      "stargazers_count": 51,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -30158,17 +30423,22 @@
       ],
       "domains": [
         "robonect"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "geertmeersman/yoin": {
       "domain": "yoin",
       "version": "v0.3.0",
       "ref": "refs/tags/v0.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:31Z",
+      "scanned_utc": "2026-08-17T03:36:11Z",
       "files_scanned": 10,
       "syntax_errors": 0,
-      "stargazers_count": 0,
+      "stargazers_count": 1,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -30180,17 +30450,22 @@
       ],
       "domains": [
         "yoin"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "geertmeersman/youfone": {
       "domain": "youfone",
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:31Z",
+      "scanned_utc": "2026-08-17T03:36:11Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 6,
+      "stargazers_count": 7,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -30202,14 +30477,19 @@
       ],
       "domains": [
         "youfone"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "genericJE/ha-heating-schedule": {
       "domain": "heating_schedule",
       "version": "v0.1.1",
       "ref": "refs/tags/v0.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:32Z",
+      "scanned_utc": "2026-08-17T03:36:12Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -30223,7 +30503,7 @@
       "version": "v1.0.3",
       "ref": "refs/tags/v1.0.3",
       "status": "no_custom_components",
-      "scanned_utc": "2026-08-09T03:54:32Z",
+      "scanned_utc": "2026-08-17T03:36:12Z",
       "files_scanned": 0,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -30234,7 +30514,7 @@
       "version": "v1.2.3",
       "ref": "refs/tags/v1.2.3",
       "status": "no_custom_components",
-      "scanned_utc": "2026-08-09T03:54:32Z",
+      "scanned_utc": "2026-08-17T03:36:13Z",
       "files_scanned": 0,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -30242,10 +30522,10 @@
     },
     "gensyn/task_tracker": {
       "domain": "task_tracker",
-      "version": "v1.7.1",
-      "ref": "refs/tags/v1.7.1",
+      "version": "v1.8.0",
+      "ref": "refs/tags/v1.8.0",
       "status": "no_custom_components",
-      "scanned_utc": "2026-08-09T03:54:32Z",
+      "scanned_utc": "2026-08-17T03:36:13Z",
       "files_scanned": 0,
       "syntax_errors": 0,
       "stargazers_count": 13,
@@ -30253,10 +30533,10 @@
     },
     "gentslava/elektronny-gorod": {
       "domain": "elektronny_gorod",
-      "version": "4.0.0",
-      "ref": "refs/tags/4.0.0",
+      "version": "4.0.1",
+      "ref": "refs/tags/4.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:32Z",
+      "scanned_utc": "2026-08-17T03:36:13Z",
       "files_scanned": 39,
       "syntax_errors": 0,
       "stargazers_count": 29,
@@ -30306,14 +30586,19 @@
       ],
       "domains": [
         "elektronny_gorod"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "geoffreylagaisse/Hass-Microsoft-Graph": {
       "domain": "microsoft_graph",
       "version": "1.6",
       "ref": "refs/tags/1.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:34Z",
+      "scanned_utc": "2026-08-17T03:36:15Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 34,
@@ -30327,7 +30612,7 @@
       "version": "v0.3.5",
       "ref": "refs/tags/v0.3.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:34Z",
+      "scanned_utc": "2026-08-17T03:36:15Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 30,
@@ -30338,10 +30623,10 @@
     },
     "gerbear1990/ha-esb-smart-meter": {
       "domain": "esb_smart_meter",
-      "version": "v0.4.0",
-      "ref": "refs/tags/v0.4.0",
+      "version": "v0.6.1",
+      "ref": "refs/tags/v0.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:34Z",
+      "scanned_utc": "2026-08-17T03:36:16Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -30350,30 +30635,35 @@
           "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
           "breaks_in": "2026.11",
           "file": "custom_components/esb_smart_meter/statistics.py",
-          "line": 43,
+          "line": 166,
           "confidence": "medium"
         },
         {
           "rule_id": "core-call-async-add-external-statistics-missing-unit-class",
           "breaks_in": "2026.11",
           "file": "custom_components/esb_smart_meter/statistics.py",
-          "line": 55,
+          "line": 178,
           "confidence": "medium"
         }
       ],
       "domains": [
         "esb_smart_meter"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "gerione/daikin-ha-ekrhh-modbus": {
       "domain": "daikin_ha_ekrhh_modbus",
       "version": "1.0.7",
       "ref": "refs/tags/1.0.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:34Z",
+      "scanned_utc": "2026-08-17T03:36:16Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 21,
+      "stargazers_count": 22,
       "findings": [],
       "domains": [
         "daikin_ha_ekrhh_modbus"
@@ -30384,7 +30674,7 @@
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:35Z",
+      "scanned_utc": "2026-08-17T03:36:17Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -30398,7 +30688,7 @@
       "version": "v0.2.0",
       "ref": "refs/tags/v0.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:35Z",
+      "scanned_utc": "2026-08-17T03:36:17Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -30413,14 +30703,19 @@
       ],
       "domains": [
         "aprilaire_rs485"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "ghotso/HAS-pCloud-Backup": {
       "domain": "pcloud_backup",
       "version": "v2.3.0",
       "ref": "refs/tags/v2.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:35Z",
+      "scanned_utc": "2026-08-17T03:36:18Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 21,
@@ -30434,7 +30729,7 @@
       "version": "v2026.5.2",
       "ref": "refs/tags/v2026.5.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:37Z",
+      "scanned_utc": "2026-08-17T03:36:20Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 31,
@@ -30448,7 +30743,7 @@
       "version": "v2024.9.1",
       "ref": "refs/tags/v2024.9.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:37Z",
+      "scanned_utc": "2026-08-17T03:36:21Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 32,
@@ -30463,14 +30758,19 @@
       ],
       "domains": [
         "mlgw"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "gibz104/ha-sproutlink": {
       "domain": "sproutlink",
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:37Z",
+      "scanned_utc": "2026-08-17T03:36:22Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -30485,14 +30785,19 @@
       ],
       "domains": [
         "sproutlink"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "gicamm/homeassistant-comelit": {
       "domain": "comelit",
       "version": "v1.0.9",
       "ref": "refs/tags/v1.0.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:38Z",
+      "scanned_utc": "2026-08-17T03:36:22Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 31,
@@ -30506,10 +30811,10 @@
       "version": "1.23.0",
       "ref": "refs/tags/1.23.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:38Z",
+      "scanned_utc": "2026-08-17T03:36:23Z",
       "files_scanned": 14,
       "syntax_errors": 0,
-      "stargazers_count": 251,
+      "stargazers_count": 252,
       "findings": [],
       "domains": [
         "divoom_pixoo"
@@ -30520,7 +30825,7 @@
       "version": "V1.2.3",
       "ref": "refs/tags/V1.2.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:40Z",
+      "scanned_utc": "2026-08-17T03:36:25Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 74,
@@ -30534,7 +30839,7 @@
       "version": "1.1.1",
       "ref": "refs/tags/1.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:40Z",
+      "scanned_utc": "2026-08-17T03:36:25Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -30548,7 +30853,7 @@
       "version": "v1.1.2",
       "ref": "refs/tags/v1.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:40Z",
+      "scanned_utc": "2026-08-17T03:36:25Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -30562,7 +30867,7 @@
       "version": "2.0.0",
       "ref": "refs/tags/2.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:40Z",
+      "scanned_utc": "2026-08-17T03:36:25Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 86,
@@ -30591,14 +30896,26 @@
       ],
       "domains": [
         "attribute_as_sensor"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 80,
+          "url": "https://github.com/gjohansson-ST/attribute_as_sensor/issues/80",
+          "state": "open",
+          "title": "Depricated call to 'async_remove_stale_devices_links_keep_entity_device'",
+          "reactions": 0
+        },
+        "symbol": "async_remove_stale_devices_links_keep_entity_device"
+      }
     },
     "gjohansson-ST/response_as_sensor": {
       "domain": "response_as_sensor",
       "version": "1.0",
       "ref": "refs/tags/1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:40Z",
+      "scanned_utc": "2026-08-17T03:36:26Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -30612,7 +30929,7 @@
       "version": "v0.7.0",
       "ref": "refs/tags/v0.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:40Z",
+      "scanned_utc": "2026-08-17T03:36:26Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 58,
@@ -30626,7 +30943,7 @@
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:41Z",
+      "scanned_utc": "2026-08-17T03:36:27Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 12,
@@ -30640,7 +30957,7 @@
       "version": "v1.0.9",
       "ref": "refs/tags/v1.0.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:41Z",
+      "scanned_utc": "2026-08-17T03:36:27Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 29,
@@ -30654,10 +30971,10 @@
       "version": "v2.9.0",
       "ref": "refs/tags/v2.9.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:41Z",
+      "scanned_utc": "2026-08-17T03:36:28Z",
       "files_scanned": 19,
       "syntax_errors": 0,
-      "stargazers_count": 92,
+      "stargazers_count": 93,
       "findings": [],
       "domains": [
         "hypervolt_charger"
@@ -30668,7 +30985,7 @@
       "version": "v2.1.0",
       "ref": "refs/tags/v2.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:42Z",
+      "scanned_utc": "2026-08-17T03:36:29Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -30682,7 +30999,7 @@
       "version": "1.1.0",
       "ref": "refs/tags/1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:42Z",
+      "scanned_utc": "2026-08-17T03:36:29Z",
       "files_scanned": 3,
       "syntax_errors": 0,
       "stargazers_count": 17,
@@ -30696,7 +31013,7 @@
       "version": "v0.1.4",
       "ref": "refs/tags/v0.1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:42Z",
+      "scanned_utc": "2026-08-17T03:36:30Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -30710,7 +31027,7 @@
       "version": "v3.2.0",
       "ref": "refs/tags/v3.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:43Z",
+      "scanned_utc": "2026-08-17T03:36:30Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 89,
@@ -30724,7 +31041,7 @@
       "version": "v3.0.6",
       "ref": "refs/tags/v3.0.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:43Z",
+      "scanned_utc": "2026-08-17T03:36:31Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 157,
@@ -30738,7 +31055,7 @@
       "version": "v0.1.2",
       "ref": "refs/tags/v0.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:43Z",
+      "scanned_utc": "2026-08-17T03:36:31Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -30752,7 +31069,7 @@
       "version": "1.1.7",
       "ref": "refs/tags/1.1.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:43Z",
+      "scanned_utc": "2026-08-17T03:36:31Z",
       "files_scanned": 32,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -30763,13 +31080,13 @@
     },
     "goruck/home-generative-agent": {
       "domain": "home_generative_agent",
-      "version": "v3.25.1",
-      "ref": "refs/tags/v3.25.1",
+      "version": "v3.30.5",
+      "ref": "refs/tags/v3.30.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:43Z",
-      "files_scanned": 156,
+      "scanned_utc": "2026-08-17T03:36:32Z",
+      "files_scanned": 166,
       "syntax_errors": 0,
-      "stargazers_count": 282,
+      "stargazers_count": 283,
       "findings": [],
       "domains": [
         "home_generative_agent"
@@ -30780,7 +31097,7 @@
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:54Z",
+      "scanned_utc": "2026-08-17T03:36:43Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -30794,10 +31111,10 @@
       "version": "v2.2.22",
       "ref": "refs/tags/v2.2.22",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:54Z",
+      "scanned_utc": "2026-08-17T03:36:44Z",
       "files_scanned": 33,
       "syntax_errors": 0,
-      "stargazers_count": 2286,
+      "stargazers_count": 2298,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -30893,14 +31210,19 @@
       ],
       "domains": [
         "bambu_lab"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "greghesp/ha-evonic": {
       "domain": "evonic",
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:57Z",
+      "scanned_utc": "2026-08-17T03:36:47Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 20,
@@ -30911,10 +31233,10 @@
     },
     "gregoryduckworth/GoogleGeocode-HASS": {
       "domain": "google_geocode",
-      "version": "v0.5.2",
-      "ref": "refs/tags/v0.5.2",
+      "version": "v0.5.3",
+      "ref": "refs/tags/v0.5.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:57Z",
+      "scanned_utc": "2026-08-17T03:36:47Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 22,
@@ -30928,7 +31250,7 @@
       "version": "v0.4.8",
       "ref": "refs/tags/v0.4.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:57Z",
+      "scanned_utc": "2026-08-17T03:36:47Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -30942,10 +31264,10 @@
       "version": "v1.5.10-bugfix-covers",
       "ref": "refs/tags/v1.5.10-bugfix-covers",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:58Z",
+      "scanned_utc": "2026-08-17T03:36:48Z",
       "files_scanned": 16,
       "syntax_errors": 0,
-      "stargazers_count": 72,
+      "stargazers_count": 73,
       "findings": [
         {
           "rule_id": "device-info-via-device",
@@ -30999,14 +31321,26 @@
       ],
       "domains": [
         "eltako"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 213,
+          "url": "https://github.com/grimmpp/home-assistant-eltako/issues/213",
+          "state": "closed",
+          "title": "Home Assistant 2027.8 API changes",
+          "reactions": 0
+        },
+        "symbol": "via_device"
+      }
     },
     "gritaro/gigachain": {
       "domain": "gigachain",
       "version": "0.1.8",
       "ref": "refs/tags/0.1.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:59Z",
+      "scanned_utc": "2026-08-17T03:36:49Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -31017,10 +31351,10 @@
     },
     "grotan1/denon-avr-3805": {
       "domain": "denon_avr_3805",
-      "version": "v3.0.3",
-      "ref": "refs/tags/v3.0.3",
+      "version": "v3.0.5",
+      "ref": "refs/tags/v3.0.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:59Z",
+      "scanned_utc": "2026-08-17T03:36:50Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -31034,10 +31368,10 @@
       "version": "v0.1.2",
       "ref": "refs/tags/v0.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:54:59Z",
+      "scanned_utc": "2026-08-17T03:36:50Z",
       "files_scanned": 13,
       "syntax_errors": 0,
-      "stargazers_count": 10,
+      "stargazers_count": 11,
       "findings": [],
       "domains": [
         "anycubic_kobra_x_lan"
@@ -31048,7 +31382,7 @@
       "version": "v1.0.2",
       "ref": "refs/tags/v1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:00Z",
+      "scanned_utc": "2026-08-17T03:36:51Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -31062,7 +31396,7 @@
       "version": "2021.2.0",
       "ref": "refs/tags/2021.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:00Z",
+      "scanned_utc": "2026-08-17T03:36:52Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31076,7 +31410,7 @@
       "version": "v2021.1.0",
       "ref": "refs/tags/v2021.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:00Z",
+      "scanned_utc": "2026-08-17T03:36:52Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -31090,7 +31424,7 @@
       "version": "v2021.2.0",
       "ref": "refs/tags/v2021.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:00Z",
+      "scanned_utc": "2026-08-17T03:36:52Z",
       "files_scanned": 3,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31104,7 +31438,7 @@
       "version": "v0.2.7",
       "ref": "refs/tags/v0.2.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:00Z",
+      "scanned_utc": "2026-08-17T03:36:52Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31133,50 +31467,46 @@
       ],
       "domains": [
         "leviton_load_center"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "guerrerotook/securitas-direct-new-api": {
       "domain": "securitas",
-      "version": "v5.4.1",
-      "ref": "refs/tags/v5.4.1",
+      "version": "v5.5.0",
+      "ref": "refs/tags/v5.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:01Z",
-      "files_scanned": 59,
+      "scanned_utc": "2026-08-17T03:36:53Z",
+      "files_scanned": 60,
       "syntax_errors": 0,
-      "stargazers_count": 134,
+      "stargazers_count": 135,
       "findings": [
         {
-          "rule_id": "device-info-via-device",
+          "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/securitas/entity.py",
-          "line": 32,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/securitas/lock.py",
-          "line": 191,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/securitas/lock.py",
-          "line": 239,
-          "confidence": "high"
+          "line": 49,
+          "confidence": "medium"
         }
       ],
       "domains": [
         "securitas"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "gunnjr/ha-logger-manager": {
       "domain": "logger_manager",
       "version": "v1.1.2",
       "ref": "refs/tags/v1.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:03Z",
+      "scanned_utc": "2026-08-17T03:36:55Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -31190,7 +31520,7 @@
       "version": "v1.0.27",
       "ref": "refs/tags/v1.0.27",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:03Z",
+      "scanned_utc": "2026-08-17T03:36:56Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -31204,7 +31534,7 @@
       "version": "0.5.6",
       "ref": "refs/tags/0.5.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:03Z",
+      "scanned_utc": "2026-08-17T03:36:56Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 17,
@@ -31218,7 +31548,7 @@
       "version": "v0.2",
       "ref": "refs/tags/v0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:03Z",
+      "scanned_utc": "2026-08-17T03:36:56Z",
       "files_scanned": 15,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -31232,10 +31562,10 @@
       "version": "0.8.4",
       "ref": "refs/tags/0.8.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:03Z",
+      "scanned_utc": "2026-08-17T03:36:57Z",
       "files_scanned": 16,
       "syntax_errors": 0,
-      "stargazers_count": 276,
+      "stargazers_count": 278,
       "findings": [],
       "domains": [
         "hon"
@@ -31246,7 +31576,7 @@
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:04Z",
+      "scanned_utc": "2026-08-17T03:36:58Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -31260,7 +31590,7 @@
       "version": "v0.4.4",
       "ref": "refs/tags/v0.4.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:04Z",
+      "scanned_utc": "2026-08-17T03:36:58Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31274,7 +31604,7 @@
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:05Z",
+      "scanned_utc": "2026-08-17T03:36:59Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -31288,7 +31618,7 @@
       "version": "2026.7.0",
       "ref": "refs/tags/2026.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:05Z",
+      "scanned_utc": "2026-08-17T03:36:59Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 206,
@@ -31302,7 +31632,7 @@
       "version": "2026.1.0",
       "ref": "refs/tags/2026.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:05Z",
+      "scanned_utc": "2026-08-17T03:36:59Z",
       "files_scanned": 20,
       "syntax_errors": 0,
       "stargazers_count": 51,
@@ -31313,13 +31643,13 @@
     },
     "ha-china/ai_hub": {
       "domain": "ai_hub",
-      "version": "2026.08.0",
-      "ref": "refs/tags/2026.08.0",
+      "version": "2026.08.1",
+      "ref": "refs/tags/2026.08.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:06Z",
+      "scanned_utc": "2026-08-17T03:37:00Z",
       "files_scanned": 61,
       "syntax_errors": 0,
-      "stargazers_count": 41,
+      "stargazers_count": 40,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -31331,14 +31661,19 @@
       ],
       "domains": [
         "ai_hub"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "ha-china/blueprint-studio": {
       "domain": "blueprint_studio",
       "version": "v2.5.0",
       "ref": "refs/tags/v2.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:08Z",
+      "scanned_utc": "2026-08-17T03:37:02Z",
       "files_scanned": 22,
       "syntax_errors": 0,
       "stargazers_count": 94,
@@ -31352,10 +31687,10 @@
       "version": "v2026.07.0",
       "ref": "refs/tags/v2026.07.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:11Z",
+      "scanned_utc": "2026-08-17T03:37:05Z",
       "files_scanned": 47,
       "syntax_errors": 0,
-      "stargazers_count": 39,
+      "stargazers_count": 42,
       "findings": [],
       "domains": [
         "cn_im_hub"
@@ -31363,13 +31698,13 @@
     },
     "ha-china/virtual_devices": {
       "domain": "virtual_devices",
-      "version": "2026.08.2",
-      "ref": "refs/tags/2026.08.2",
+      "version": "2026.08.3",
+      "ref": "refs/tags/2026.08.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:13Z",
+      "scanned_utc": "2026-08-17T03:37:07Z",
       "files_scanned": 35,
       "syntax_errors": 0,
-      "stargazers_count": 16,
+      "stargazers_count": 17,
       "findings": [],
       "domains": [
         "virtual_devices"
@@ -31377,13 +31712,13 @@
     },
     "ha-parcel-integrations/ha-dpd": {
       "domain": "dpd",
-      "version": "2.7.0",
-      "ref": "refs/tags/2.7.0",
+      "version": "2.9.0",
+      "ref": "refs/tags/2.9.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:15Z",
-      "files_scanned": 10,
+      "scanned_utc": "2026-08-17T03:37:10Z",
+      "files_scanned": 12,
       "syntax_errors": 0,
-      "stargazers_count": 9,
+      "stargazers_count": 11,
       "findings": [],
       "domains": [
         "dpd"
@@ -31394,7 +31729,7 @@
       "version": "v0.6.1",
       "ref": "refs/tags/v0.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:16Z",
+      "scanned_utc": "2026-08-17T03:37:10Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -31408,7 +31743,7 @@
       "version": "v2.3.1",
       "ref": "refs/tags/v2.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:16Z",
+      "scanned_utc": "2026-08-17T03:37:11Z",
       "files_scanned": 62,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -31479,14 +31814,19 @@
       ],
       "domains": [
         "termoweb"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_import_statistics"
+      }
     },
     "ha-warmup/warmup": {
       "domain": "warmup",
       "version": "v2024.3.6",
       "ref": "refs/tags/v2024.3.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:20Z",
+      "scanned_utc": "2026-08-17T03:37:15Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 43,
@@ -31500,7 +31840,7 @@
       "version": "v1.1.13",
       "ref": "refs/tags/v1.1.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:20Z",
+      "scanned_utc": "2026-08-17T03:37:15Z",
       "files_scanned": 46,
       "syntax_errors": 0,
       "stargazers_count": 22,
@@ -31514,10 +31854,10 @@
       "version": "2.0.5",
       "ref": "refs/tags/2.0.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:20Z",
+      "scanned_utc": "2026-08-17T03:37:16Z",
       "files_scanned": 59,
       "syntax_errors": 0,
-      "stargazers_count": 7605,
+      "stargazers_count": 7617,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -31530,14 +31870,26 @@
       "domains": [
         "example",
         "hacs"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 5471,
+          "url": "https://github.com/hacs/integration/issues/5471",
+          "state": "open",
+          "title": "DeviceRegistry.async_get_device() removal in Home Assistant 2027.8",
+          "reactions": 0
+        },
+        "symbol": "async_get_device"
+      }
     },
     "hannoeru/hass-nature-remo": {
       "domain": "nature_remo",
       "version": "v0.6.3",
       "ref": "refs/tags/v0.6.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:22Z",
+      "scanned_utc": "2026-08-17T03:37:17Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 28,
@@ -31551,10 +31903,10 @@
       "version": "v1.2.0",
       "ref": "refs/tags/v1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:22Z",
+      "scanned_utc": "2026-08-17T03:37:18Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 13,
+      "stargazers_count": 14,
       "findings": [],
       "domains": [
         "sg_bus_arrivals"
@@ -31565,7 +31917,7 @@
       "version": "1.0.5",
       "ref": "refs/tags/1.0.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:22Z",
+      "scanned_utc": "2026-08-17T03:37:18Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -31579,7 +31931,7 @@
       "version": "0.2.6",
       "ref": "refs/tags/0.2.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:22Z",
+      "scanned_utc": "2026-08-17T03:37:19Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -31593,10 +31945,10 @@
       "version": "v0.9.0",
       "ref": "refs/tags/v0.9.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:22Z",
+      "scanned_utc": "2026-08-17T03:37:19Z",
       "files_scanned": 11,
       "syntax_errors": 0,
-      "stargazers_count": 28,
+      "stargazers_count": 29,
       "findings": [],
       "domains": [
         "evnex"
@@ -31607,7 +31959,7 @@
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:23Z",
+      "scanned_utc": "2026-08-17T03:37:19Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -31621,10 +31973,10 @@
       "version": "4.0.0",
       "ref": "refs/tags/4.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:23Z",
+      "scanned_utc": "2026-08-17T03:37:20Z",
       "files_scanned": 26,
       "syntax_errors": 0,
-      "stargazers_count": 49,
+      "stargazers_count": 50,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -31657,14 +32009,19 @@
       ],
       "domains": [
         "hasl3"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "hass-chargeamps/hass-chargeamps": {
       "domain": "chargeamps",
       "version": "v1.12.1",
       "ref": "refs/tags/v1.12.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:23Z",
+      "scanned_utc": "2026-08-17T03:37:20Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 37,
@@ -31678,7 +32035,7 @@
       "version": "0.2.2",
       "ref": "refs/tags/0.2.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:24Z",
+      "scanned_utc": "2026-08-17T03:37:21Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -31692,7 +32049,7 @@
       "version": "0.4.0",
       "ref": "refs/tags/0.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:24Z",
+      "scanned_utc": "2026-08-17T03:37:21Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31703,10 +32060,10 @@
     },
     "hass-cortex/stt-corrector": {
       "domain": "stt_corrector",
-      "version": "0.7.0",
-      "ref": "refs/tags/0.7.0",
+      "version": "0.8.0",
+      "ref": "refs/tags/0.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:24Z",
+      "scanned_utc": "2026-08-17T03:37:22Z",
       "files_scanned": 26,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31720,7 +32077,7 @@
       "version": "0.1.0",
       "ref": "refs/tags/0.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:25Z",
+      "scanned_utc": "2026-08-17T03:37:22Z",
       "files_scanned": 15,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -31734,7 +32091,7 @@
       "version": "v2.0.1",
       "ref": "refs/tags/v2.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:25Z",
+      "scanned_utc": "2026-08-17T03:37:23Z",
       "files_scanned": 42,
       "syntax_errors": 0,
       "stargazers_count": 34,
@@ -31748,7 +32105,7 @@
       "version": "v0.4.1",
       "ref": "refs/tags/v0.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:27Z",
+      "scanned_utc": "2026-08-17T03:37:25Z",
       "files_scanned": 336,
       "syntax_errors": 0,
       "stargazers_count": 63,
@@ -31762,7 +32119,7 @@
       "version": "v0.5.4",
       "ref": "refs/tags/v0.5.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:34Z",
+      "scanned_utc": "2026-08-17T03:37:33Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 63,
@@ -31776,7 +32133,7 @@
       "version": "v0.7.7",
       "ref": "refs/tags/v0.7.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:35Z",
+      "scanned_utc": "2026-08-17T03:37:33Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 485,
@@ -31790,7 +32147,7 @@
       "version": "v1.4.2",
       "ref": "refs/tags/v1.4.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:35Z",
+      "scanned_utc": "2026-08-17T03:37:34Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 55,
@@ -31804,7 +32161,7 @@
       "version": "0.2.19",
       "ref": "refs/tags/0.2.19",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:35Z",
+      "scanned_utc": "2026-08-17T03:37:34Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31826,14 +32183,19 @@
       ],
       "domains": [
         "hager_local"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "hebrru/baillclim": {
       "domain": "baillclim",
       "version": "v6.2.2",
       "ref": "refs/tags/v6.2.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:36Z",
+      "scanned_utc": "2026-08-17T03:37:35Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 8,
@@ -31847,7 +32209,7 @@
       "version": "2026.7.19",
       "ref": "refs/tags/2026.7.19",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:36Z",
+      "scanned_utc": "2026-08-17T03:37:35Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -31861,7 +32223,7 @@
       "version": "v3.0.1",
       "ref": "refs/tags/v3.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:36Z",
+      "scanned_utc": "2026-08-17T03:37:35Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -31872,13 +32234,13 @@
     },
     "helgeklein/ha-smart-cover-automation": {
       "domain": "smart_cover_automation",
-      "version": "v6.1",
-      "ref": "refs/tags/v6.1",
+      "version": "v6.2",
+      "ref": "refs/tags/v6.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:36Z",
+      "scanned_utc": "2026-08-17T03:37:36Z",
       "files_scanned": 21,
       "syntax_errors": 0,
-      "stargazers_count": 26,
+      "stargazers_count": 27,
       "findings": [],
       "domains": [
         "smart_cover_automation"
@@ -31886,13 +32248,13 @@
     },
     "helv-io/ha-bluebubbles": {
       "domain": "bluebubbles",
-      "version": "v0.3.5",
-      "ref": "refs/tags/v0.3.5",
+      "version": "v0.6.0",
+      "ref": "refs/tags/v0.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:38Z",
-      "files_scanned": 3,
+      "scanned_utc": "2026-08-17T03:37:37Z",
+      "files_scanned": 10,
       "syntax_errors": 0,
-      "stargazers_count": 38,
+      "stargazers_count": 39,
       "findings": [],
       "domains": [
         "bluebubbles"
@@ -31900,11 +32262,11 @@
     },
     "helv-io/ha-gif": {
       "domain": "gif",
-      "version": "0.1.2",
-      "ref": "refs/tags/0.1.2",
+      "version": "0.3.1",
+      "ref": "refs/tags/0.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:38Z",
-      "files_scanned": 3,
+      "scanned_utc": "2026-08-17T03:37:38Z",
+      "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 0,
       "findings": [],
@@ -31917,7 +32279,7 @@
       "version": "v1.17.0",
       "ref": "refs/tags/v1.17.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:38Z",
+      "scanned_utc": "2026-08-17T03:37:38Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 39,
@@ -31931,7 +32293,7 @@
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:39Z",
+      "scanned_utc": "2026-08-17T03:37:39Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 14,
@@ -31945,7 +32307,7 @@
       "version": "v3.0.13",
       "ref": "refs/tags/v3.0.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:39Z",
+      "scanned_utc": "2026-08-17T03:37:39Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 17,
@@ -31959,7 +32321,7 @@
       "version": "v0.9.2",
       "ref": "refs/tags/v0.9.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:39Z",
+      "scanned_utc": "2026-08-17T03:37:40Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -31974,14 +32336,19 @@
       ],
       "domains": [
         "ista_calista"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "hestiia-engineering/hass_sql_request": {
       "domain": "sql_request",
       "version": "1.0.1",
       "ref": "refs/tags/1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:40Z",
+      "scanned_utc": "2026-08-17T03:37:41Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -31995,7 +32362,7 @@
       "version": "v1.5",
       "ref": "refs/tags/v1.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:40Z",
+      "scanned_utc": "2026-08-17T03:37:41Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 15,
@@ -32010,14 +32377,19 @@
       ],
       "domains": [
         "irsap_ha"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "heyajohnny/afvalinfo": {
       "domain": "afvalinfo",
       "version": "v2.2.7",
       "ref": "refs/tags/v2.2.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:40Z",
+      "scanned_utc": "2026-08-17T03:37:41Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 118,
@@ -32031,7 +32403,7 @@
       "version": "v1.0.10",
       "ref": "refs/tags/v1.0.10",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:40Z",
+      "scanned_utc": "2026-08-17T03:37:42Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 64,
@@ -32045,7 +32417,7 @@
       "version": "v2.0.1",
       "ref": "refs/tags/v2.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:41Z",
+      "scanned_utc": "2026-08-17T03:37:42Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -32059,10 +32431,10 @@
       "version": "2026.2.0",
       "ref": "refs/tags/2026.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:41Z",
+      "scanned_utc": "2026-08-17T03:37:43Z",
       "files_scanned": 5,
       "syntax_errors": 0,
-      "stargazers_count": 131,
+      "stargazers_count": 132,
       "findings": [],
       "domains": [
         "dwd"
@@ -32070,10 +32442,10 @@
     },
     "hiall-fyi/tado_ce": {
       "domain": "tado_ce",
-      "version": "v4.3.1",
-      "ref": "refs/tags/v4.3.1",
+      "version": "v4.3.3",
+      "ref": "refs/tags/v4.3.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:41Z",
+      "scanned_utc": "2026-08-17T03:37:43Z",
       "files_scanned": 95,
       "syntax_errors": 0,
       "stargazers_count": 154,
@@ -32102,17 +32474,22 @@
       ],
       "domains": [
         "tado_ce"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "hif2k1/battery_sim": {
       "domain": "battery_sim",
       "version": "v2.6.2",
       "ref": "refs/tags/v2.6.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-09T03:55:46Z",
+      "scanned_utc": "2026-08-17T03:37:48Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 220,
+      "stargazers_count": 223,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -32124,14 +32501,19 @@
       ],
       "domains": [
         "battery_sim"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "hilman2/ha-sunspec2": {
       "domain": "sunspec2",
       "version": "v0.13.3",
       "ref": "refs/tags/v0.13.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:47Z",
+      "scanned_utc": "2026-08-17T03:37:49Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -32145,19 +32527,11 @@
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:48Z",
+      "scanned_utc": "2026-08-17T03:37:50Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 0,
-      "findings": [
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/gaf_masterflow/coordinator.py",
-          "line": 51,
-          "confidence": "medium"
-        }
-      ],
+      "findings": [],
       "domains": [
         "gaf_masterflow"
       ]
@@ -32167,7 +32541,7 @@
       "version": "v0.8.3",
       "ref": "refs/tags/v0.8.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:48Z",
+      "scanned_utc": "2026-08-17T03:37:50Z",
       "files_scanned": 103,
       "syntax_errors": 0,
       "stargazers_count": 12,
@@ -32181,7 +32555,7 @@
       "version": "v0.2.6",
       "ref": "refs/tags/v0.2.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:53Z",
+      "scanned_utc": "2026-08-17T03:37:56Z",
       "files_scanned": 15,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -32203,14 +32577,19 @@
       ],
       "domains": [
         "protector_net"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "hiteule/rte-jours-signales": {
       "domain": "rte_jours_signales",
-      "version": "1.0.1",
-      "ref": "refs/tags/1.0.1",
+      "version": "1.0.2",
+      "ref": "refs/tags/1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:54Z",
+      "scanned_utc": "2026-08-17T03:37:57Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -32224,7 +32603,7 @@
       "version": "v2.2.13",
       "ref": "refs/tags/v2.2.13",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:54Z",
+      "scanned_utc": "2026-08-17T03:37:58Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 24,
@@ -32238,7 +32617,7 @@
       "version": "v1.0.11",
       "ref": "refs/tags/v1.0.11",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:55Z",
+      "scanned_utc": "2026-08-17T03:37:58Z",
       "files_scanned": 22,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -32344,28 +32723,46 @@
       ],
       "domains": [
         "simplechores"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "hoizi89/advanced_switches": {
       "domain": "advanced_switches",
-      "version": "v1.5.2",
-      "ref": "refs/tags/v1.5.2",
+      "version": "v1.6.0",
+      "ref": "refs/tags/v1.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:56Z",
+      "scanned_utc": "2026-08-17T03:37:59Z",
       "files_scanned": 5,
       "syntax_errors": 0,
-      "stargazers_count": 5,
-      "findings": [],
+      "stargazers_count": 6,
+      "findings": [
+        {
+          "rule_id": "device-registry-config-entry-mutation-params",
+          "breaks_in": "2027.8",
+          "file": "custom_components/advanced_switches/__init__.py",
+          "line": 128,
+          "confidence": "high"
+        }
+      ],
       "domains": [
         "advanced_switches"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device"
+      }
     },
     "hoizi89/pv_management": {
       "domain": "pv_management",
       "version": "v4.4.1",
       "ref": "refs/tags/v4.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:56Z",
+      "scanned_utc": "2026-08-17T03:38:00Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -32429,14 +32826,19 @@
       ],
       "domains": [
         "pv_management"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "hoizi89/pv_management_fix": {
       "domain": "pv_management_fix",
       "version": "v2.4.0",
       "ref": "refs/tags/v2.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:57Z",
+      "scanned_utc": "2026-08-17T03:38:01Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -32486,14 +32888,19 @@
       ],
       "domains": [
         "pv_management_fix"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "hokiebrian/eia_hourly_demand": {
       "domain": "eia_hourly_demand",
       "version": "v1.0.15",
       "ref": "refs/tags/v1.0.15",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:58Z",
+      "scanned_utc": "2026-08-17T03:38:03Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 8,
@@ -32507,10 +32914,10 @@
       "version": "v1.0.14",
       "ref": "refs/tags/v1.0.14",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:58Z",
+      "scanned_utc": "2026-08-17T03:38:03Z",
       "files_scanned": 6,
       "syntax_errors": 0,
-      "stargazers_count": 10,
+      "stargazers_count": 11,
       "findings": [],
       "domains": [
         "lubelogger"
@@ -32521,10 +32928,10 @@
       "version": "v0.5.25",
       "ref": "refs/tags/v0.5.25",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:59Z",
+      "scanned_utc": "2026-08-17T03:38:03Z",
       "files_scanned": 36,
       "syntax_errors": 0,
-      "stargazers_count": 150,
+      "stargazers_count": 151,
       "findings": [],
       "domains": [
         "homewhiz"
@@ -32535,7 +32942,7 @@
       "version": "v1.7.2",
       "ref": "refs/tags/v1.7.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:56:59Z",
+      "scanned_utc": "2026-08-17T03:38:04Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -32549,7 +32956,7 @@
       "version": "3.14.0",
       "ref": "refs/tags/3.14.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:00Z",
+      "scanned_utc": "2026-08-17T03:38:05Z",
       "files_scanned": 17,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -32571,14 +32978,19 @@
       ],
       "domains": [
         "gs_alarm"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "houthacker/remeha-modbus": {
       "domain": "remeha_modbus",
       "version": "v0.13.0",
       "ref": "refs/tags/v0.13.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:00Z",
+      "scanned_utc": "2026-08-17T03:38:06Z",
       "files_scanned": 39,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -32592,10 +33004,10 @@
       "version": "2026.4.0",
       "ref": "refs/tags/2026.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:01Z",
+      "scanned_utc": "2026-08-17T03:38:07Z",
       "files_scanned": 58,
       "syntax_errors": 0,
-      "stargazers_count": 34,
+      "stargazers_count": 35,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -32621,14 +33033,19 @@
       ],
       "domains": [
         "houzzkit_ai"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "hsakoh/ha-switchbot-kvs-camera": {
       "domain": "switchbot_camera",
       "version": "v0.2.2",
       "ref": "refs/tags/v0.2.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:03Z",
+      "scanned_utc": "2026-08-17T03:38:09Z",
       "files_scanned": 26,
       "syntax_errors": 0,
       "stargazers_count": 15,
@@ -32642,7 +33059,7 @@
       "version": "v3.3.3",
       "ref": "refs/tags/v3.3.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:03Z",
+      "scanned_utc": "2026-08-17T03:38:10Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 10,
@@ -32656,7 +33073,7 @@
       "version": "1.1.7",
       "ref": "refs/tags/1.1.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:04Z",
+      "scanned_utc": "2026-08-17T03:38:10Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 16,
@@ -32670,7 +33087,7 @@
       "version": "v1.2.5",
       "ref": "refs/tags/v1.2.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:04Z",
+      "scanned_utc": "2026-08-17T03:38:11Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -32684,7 +33101,7 @@
       "version": "v3.0.0",
       "ref": "refs/tags/v3.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:05Z",
+      "scanned_utc": "2026-08-17T03:38:11Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 39,
@@ -32699,14 +33116,19 @@
       ],
       "domains": [
         "drivvo"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device"
+      }
     },
     "hudsonbrendon/HA-solar-plus-intelbras": {
       "domain": "solar_plus_intelbras",
       "version": "v0.8.0",
       "ref": "refs/tags/v0.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:05Z",
+      "scanned_utc": "2026-08-17T03:38:12Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -32742,14 +33164,19 @@
       ],
       "domains": [
         "solar_plus_intelbras"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "hudsonbrendon/ha-gbs-control": {
       "domain": "gbs_control",
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:05Z",
+      "scanned_utc": "2026-08-17T03:38:12Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -32763,7 +33190,7 @@
       "version": "v0.1.6",
       "ref": "refs/tags/v0.1.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:05Z",
+      "scanned_utc": "2026-08-17T03:38:13Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -32777,7 +33204,7 @@
       "version": "v1.0.26217.1",
       "ref": "refs/tags/v1.0.26217.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:06Z",
+      "scanned_utc": "2026-08-17T03:38:13Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -32792,14 +33219,19 @@
       ],
       "domains": [
         "minvandforsyning"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics"
+      }
     },
     "hugobloem/stateful_scenes": {
       "domain": "stateful_scenes",
       "version": "v1.8.0",
       "ref": "refs/tags/v1.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:06Z",
+      "scanned_utc": "2026-08-17T03:38:13Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 112,
@@ -32813,7 +33245,7 @@
       "version": "v4.0.1",
       "ref": "refs/tags/v4.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:06Z",
+      "scanned_utc": "2026-08-17T03:38:14Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 324,
@@ -32827,7 +33259,7 @@
       "version": "v0.3.0",
       "ref": "refs/tags/v0.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:07Z",
+      "scanned_utc": "2026-08-17T03:38:15Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -32841,7 +33273,7 @@
       "version": "v0.3.0",
       "ref": "refs/tags/v0.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:07Z",
+      "scanned_utc": "2026-08-17T03:38:15Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -32855,7 +33287,7 @@
       "version": "v0.7.0",
       "ref": "refs/tags/v0.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:07Z",
+      "scanned_utc": "2026-08-17T03:38:15Z",
       "files_scanned": 26,
       "syntax_errors": 0,
       "stargazers_count": 82,
@@ -32869,7 +33301,7 @@
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:08Z",
+      "scanned_utc": "2026-08-17T03:38:16Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 51,
@@ -32883,7 +33315,7 @@
       "version": "v1.0.1",
       "ref": "refs/tags/v1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:08Z",
+      "scanned_utc": "2026-08-17T03:38:17Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -32898,17 +33330,22 @@
       ],
       "domains": [
         "welock"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "iKaew/hass-lifesmart-addon": {
       "domain": "lifesmart",
       "version": "v1.1.1",
       "ref": "refs/tags/v1.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:08Z",
+      "scanned_utc": "2026-08-17T03:38:17Z",
       "files_scanned": 19,
       "syntax_errors": 0,
-      "stargazers_count": 19,
+      "stargazers_count": 20,
       "findings": [],
       "domains": [
         "lifesmart"
@@ -32919,7 +33356,7 @@
       "version": "v0.4.3",
       "ref": "refs/tags/v0.4.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:10Z",
+      "scanned_utc": "2026-08-17T03:38:19Z",
       "files_scanned": 16,
       "syntax_errors": 0,
       "stargazers_count": 477,
@@ -32933,7 +33370,7 @@
       "version": "v1.2",
       "ref": "refs/tags/v1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:10Z",
+      "scanned_utc": "2026-08-17T03:38:19Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -32947,7 +33384,7 @@
       "version": "v1.19.2",
       "ref": "refs/tags/v1.19.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:10Z",
+      "scanned_utc": "2026-08-17T03:38:20Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 57,
@@ -32961,7 +33398,7 @@
       "version": "v1.0.15",
       "ref": "refs/tags/v1.0.15",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:11Z",
+      "scanned_utc": "2026-08-17T03:38:20Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -32972,13 +33409,13 @@
     },
     "iamkarlson/grocy": {
       "domain": "grocy",
-      "version": "v1.15.0",
-      "ref": "refs/tags/v1.15.0",
+      "version": "v1.16.0",
+      "ref": "refs/tags/v1.16.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:11Z",
+      "scanned_utc": "2026-08-17T03:38:21Z",
       "files_scanned": 13,
       "syntax_errors": 0,
-      "stargazers_count": 39,
+      "stargazers_count": 42,
       "findings": [],
       "domains": [
         "grocy"
@@ -32986,13 +33423,13 @@
     },
     "ideaalab/gui-recorder": {
       "domain": "gui_recorder",
-      "version": "v0.8.35",
-      "ref": "refs/tags/v0.8.35",
+      "version": "v0.8.37",
+      "ref": "refs/tags/v0.8.37",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:12Z",
+      "scanned_utc": "2026-08-17T03:38:22Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 58,
+      "stargazers_count": 62,
       "findings": [],
       "domains": [
         "gui_recorder"
@@ -33000,11 +33437,11 @@
     },
     "ifMike/homeyHASS": {
       "domain": "homey_hass",
-      "version": "v2.0.1",
-      "ref": "refs/tags/v2.0.1",
+      "version": "v2.1.0",
+      "ref": "refs/tags/v2.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:12Z",
-      "files_scanned": 23,
+      "scanned_utc": "2026-08-17T03:38:22Z",
+      "files_scanned": 24,
       "syntax_errors": 0,
       "stargazers_count": 11,
       "findings": [
@@ -33012,21 +33449,21 @@
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/homey_hass/__init__.py",
-          "line": 768,
+          "line": 800,
           "confidence": "medium"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/homey_hass/__init__.py",
-          "line": 880,
+          "line": 912,
           "confidence": "medium"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/homey_hass/__init__.py",
-          "line": 914,
+          "line": 946,
           "confidence": "medium"
         },
         {
@@ -33053,17 +33490,22 @@
       ],
       "domains": [
         "homey_hass"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "iioel/magiline-imagix-homeassistant": {
       "domain": "magiline_imagix",
       "version": "v1.0.3",
       "ref": "refs/tags/v1.0.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:14Z",
+      "scanned_utc": "2026-08-17T03:38:24Z",
       "files_scanned": 4,
       "syntax_errors": 0,
-      "stargazers_count": 3,
+      "stargazers_count": 5,
       "findings": [],
       "domains": [
         "magiline_imagix"
@@ -33074,7 +33516,7 @@
       "version": "v3.5.20",
       "ref": "refs/tags/v3.5.20",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:14Z",
+      "scanned_utc": "2026-08-17T03:38:24Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 41,
@@ -33088,7 +33530,7 @@
       "version": "0.1.2",
       "ref": "refs/tags/0.1.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:14Z",
+      "scanned_utc": "2026-08-17T03:38:25Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -33102,7 +33544,7 @@
       "version": "v2.4.0",
       "ref": "refs/tags/v2.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:14Z",
+      "scanned_utc": "2026-08-17T03:38:26Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -33116,7 +33558,7 @@
       "version": "0.0.6",
       "ref": "refs/tags/0.0.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:15Z",
+      "scanned_utc": "2026-08-17T03:38:26Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -33127,72 +33569,48 @@
     },
     "iluebbe/maintenance_supporter": {
       "domain": "maintenance_supporter",
-      "version": "v2.55.0",
-      "ref": "refs/tags/v2.55.0",
+      "version": "v2.58.0",
+      "ref": "refs/tags/v2.58.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:15Z",
-      "files_scanned": 130,
+      "scanned_utc": "2026-08-17T03:38:26Z",
+      "files_scanned": 132,
       "syntax_errors": 0,
-      "stargazers_count": 58,
+      "stargazers_count": 61,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/maintenance_supporter/helpers/device_link.py",
-          "line": 190,
+          "line": 198,
           "confidence": "medium"
         },
         {
           "rule_id": "core-call-async-remove-helper-config-entry-from-source-device",
           "breaks_in": "2027.8",
           "file": "custom_components/maintenance_supporter/helpers/device_link.py",
-          "line": 242,
+          "line": 250,
           "confidence": "medium"
         }
       ],
       "domains": [
         "maintenance_supporter"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "iluvdata/august_access_codes": {
       "domain": "august_access_codes",
-      "version": "2026.6.0",
-      "ref": "refs/tags/2026.6.0",
+      "version": "2026.8.0",
+      "ref": "refs/tags/2026.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:22Z",
-      "files_scanned": 8,
+      "scanned_utc": "2026-08-17T03:38:34Z",
+      "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 2,
-      "findings": [
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/august_access_codes/binary_sensor.py",
-          "line": 29,
-          "confidence": "medium"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/august_access_codes/binary_sensor.py",
-          "line": 34,
-          "confidence": "medium"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/august_access_codes/sensor.py",
-          "line": 29,
-          "confidence": "medium"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/august_access_codes/sensor.py",
-          "line": 34,
-          "confidence": "medium"
-        }
-      ],
+      "findings": [],
       "domains": [
         "august_access_codes"
       ]
@@ -33202,7 +33620,7 @@
       "version": "2026.7.1",
       "ref": "refs/tags/2026.7.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:22Z",
+      "scanned_utc": "2026-08-17T03:38:34Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "stargazers_count": 25,
@@ -33216,10 +33634,10 @@
       "version": "2026.6.0",
       "ref": "refs/tags/2026.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:22Z",
+      "scanned_utc": "2026-08-17T03:38:35Z",
       "files_scanned": 7,
       "syntax_errors": 0,
-      "stargazers_count": 4,
+      "stargazers_count": 5,
       "findings": [
         {
           "rule_id": "device-entry-primary-config-entry",
@@ -33238,14 +33656,19 @@
       ],
       "domains": [
         "pdf_scrape"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "primary_config_entry"
+      }
     },
     "imhotep/hass-unifi-access": {
       "domain": "unifi_access",
       "version": "3.0.14",
       "ref": "refs/tags/3.0.14",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:23Z",
+      "scanned_utc": "2026-08-17T03:38:35Z",
       "files_scanned": 17,
       "syntax_errors": 0,
       "stargazers_count": 184,
@@ -33259,7 +33682,7 @@
       "version": "v2026.6.1",
       "ref": "refs/tags/v2026.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:23Z",
+      "scanned_utc": "2026-08-17T03:38:36Z",
       "files_scanned": 26,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -33273,7 +33696,7 @@
       "version": "1.0.2",
       "ref": "refs/tags/1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:23Z",
+      "scanned_utc": "2026-08-17T03:38:36Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -33287,7 +33710,7 @@
       "version": "v0.1.0",
       "ref": "refs/tags/v0.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:24Z",
+      "scanned_utc": "2026-08-17T03:38:37Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -33301,7 +33724,7 @@
       "version": "2.40",
       "ref": "refs/tags/2.40",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:24Z",
+      "scanned_utc": "2026-08-17T03:38:37Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 4,
@@ -33312,13 +33735,13 @@
     },
     "iprak/sensi": {
       "domain": "sensi",
-      "version": "v2.1.5",
-      "ref": "refs/tags/v2.1.5",
+      "version": "v2.1.6",
+      "ref": "refs/tags/v2.1.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:24Z",
+      "scanned_utc": "2026-08-17T03:38:38Z",
       "files_scanned": 17,
       "syntax_errors": 0,
-      "stargazers_count": 108,
+      "stargazers_count": 109,
       "findings": [],
       "domains": [
         "sensi"
@@ -33329,7 +33752,7 @@
       "version": "v1.1.7",
       "ref": "refs/tags/v1.1.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:25Z",
+      "scanned_utc": "2026-08-17T03:38:38Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 8,
@@ -33340,13 +33763,13 @@
     },
     "iprak/winix": {
       "domain": "winix",
-      "version": "v1.6.0",
-      "ref": "refs/tags/v1.6.0",
+      "version": "v1.6.1",
+      "ref": "refs/tags/v1.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:25Z",
+      "scanned_utc": "2026-08-17T03:38:39Z",
       "files_scanned": 16,
       "syntax_errors": 0,
-      "stargazers_count": 196,
+      "stargazers_count": 197,
       "findings": [],
       "domains": [
         "winix"
@@ -33357,7 +33780,7 @@
       "version": "v1.5.5",
       "ref": "refs/tags/v1.5.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:25Z",
+      "scanned_utc": "2026-08-17T03:38:39Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 119,
@@ -33368,10 +33791,10 @@
     },
     "irstmon/homeassistant-duofern": {
       "domain": "duofern",
-      "version": "v2.3.4",
-      "ref": "refs/tags/v2.3.4",
+      "version": "v2.3.5",
+      "ref": "refs/tags/v2.3.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:26Z",
+      "scanned_utc": "2026-08-17T03:38:39Z",
       "files_scanned": 20,
       "syntax_errors": 0,
       "stargazers_count": 12,
@@ -33380,49 +33803,49 @@
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 434,
+          "line": 475,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 450,
+          "line": 491,
           "confidence": "medium"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 589,
+          "line": 630,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 605,
+          "line": 646,
           "confidence": "medium"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 698,
+          "line": 739,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 714,
+          "line": 755,
           "confidence": "medium"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/binary_sensor.py",
-          "line": 803,
+          "line": 844,
           "confidence": "high"
         },
         {
@@ -33443,14 +33866,14 @@
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/cover.py",
-          "line": 345,
+          "line": 365,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/cover.py",
-          "line": 361,
+          "line": 381,
           "confidence": "medium"
         },
         {
@@ -33520,37 +33943,42 @@
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/switch.py",
-          "line": 792,
+          "line": 804,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/switch.py",
-          "line": 810,
+          "line": 822,
           "confidence": "medium"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/duofern/switch.py",
-          "line": 966,
+          "line": 978,
           "confidence": "medium"
         }
       ],
       "domains": [
         "duofern"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "ishiharas/shelly_plug_led": {
       "domain": "shelly_plug_led",
       "version": "v1.1.1",
       "ref": "refs/tags/v1.1.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:27Z",
+      "scanned_utc": "2026-08-17T03:38:41Z",
       "files_scanned": 5,
       "syntax_errors": 0,
-      "stargazers_count": 4,
+      "stargazers_count": 5,
       "findings": [],
       "domains": [
         "shelly_plug_led"
@@ -33561,7 +33989,7 @@
       "version": "v1.4.1",
       "ref": "refs/tags/v1.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:27Z",
+      "scanned_utc": "2026-08-17T03:38:42Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -33575,7 +34003,7 @@
       "version": "v0.1.0",
       "ref": "refs/tags/v0.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:28Z",
+      "scanned_utc": "2026-08-17T03:38:42Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -33589,10 +34017,10 @@
       "version": "v0.4.1",
       "ref": "refs/tags/v0.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:28Z",
+      "scanned_utc": "2026-08-17T03:38:43Z",
       "files_scanned": 14,
       "syntax_errors": 0,
-      "stargazers_count": 17,
+      "stargazers_count": 19,
       "findings": [],
       "domains": [
         "entity_availability"
@@ -33603,7 +34031,7 @@
       "version": "v0.4.3",
       "ref": "refs/tags/v0.4.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:29Z",
+      "scanned_utc": "2026-08-17T03:38:44Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -33625,14 +34053,19 @@
       ],
       "domains": [
         "entity_distance"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "italo-lombardi/Home-Assistant-EntityGuard": {
       "domain": "entity_guard",
       "version": "v0.2.8",
       "ref": "refs/tags/v0.2.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:29Z",
+      "scanned_utc": "2026-08-17T03:38:45Z",
       "files_scanned": 14,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -33647,14 +34080,19 @@
       ],
       "domains": [
         "entity_guard"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "italo-lombardi/Home-Assistant-FuelCompare": {
       "domain": "fuelcompare_ie",
       "version": "v0.7.3",
       "ref": "refs/tags/v0.7.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:30Z",
+      "scanned_utc": "2026-08-17T03:38:46Z",
       "files_scanned": 49,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -33668,10 +34106,10 @@
       "version": "v0.2.6",
       "ref": "refs/tags/v0.2.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:32Z",
+      "scanned_utc": "2026-08-17T03:38:48Z",
       "files_scanned": 13,
       "syntax_errors": 0,
-      "stargazers_count": 6,
+      "stargazers_count": 7,
       "findings": [],
       "domains": [
         "washwise"
@@ -33682,7 +34120,7 @@
       "version": "1.16-Release",
       "ref": "refs/tags/1.16-Release",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:33Z",
+      "scanned_utc": "2026-08-17T03:38:49Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 34,
@@ -33696,10 +34134,10 @@
       "version": "1.68-Release",
       "ref": "refs/tags/1.68-Release",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:33Z",
+      "scanned_utc": "2026-08-17T03:38:50Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 395,
+      "stargazers_count": 394,
       "findings": [],
       "domains": [
         "fordpass"
@@ -33710,7 +34148,7 @@
       "version": "0.0.2",
       "ref": "refs/tags/0.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:34Z",
+      "scanned_utc": "2026-08-17T03:38:50Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -33724,7 +34162,7 @@
       "version": "1.18-Release",
       "ref": "refs/tags/1.18-Release",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:34Z",
+      "scanned_utc": "2026-08-17T03:38:50Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 32,
@@ -33738,7 +34176,7 @@
       "version": "1.2.2",
       "ref": "refs/tags/1.2.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:34Z",
+      "scanned_utc": "2026-08-17T03:38:51Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -33749,32 +34187,44 @@
     },
     "its-me-prash/vwgroup-connect-ha": {
       "domain": "vag_connect",
-      "version": "v3.0.1",
-      "ref": "refs/tags/v3.0.1",
+      "version": "v3.2.3",
+      "ref": "refs/tags/v3.2.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:34Z",
-      "files_scanned": 84,
+      "scanned_utc": "2026-08-17T03:38:51Z",
+      "files_scanned": 87,
       "syntax_errors": 0,
-      "stargazers_count": 75,
+      "stargazers_count": 86,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/vag_connect/coordinator.py",
-          "line": 4356,
+          "line": 3310,
+          "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/vag_connect/coordinator.py",
+          "line": 4500,
           "confidence": "medium"
         }
       ],
       "domains": [
         "vag_connect"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "itsyuni/homeassistant-customfonts": {
       "domain": "font_manager",
       "version": "v1.0.2",
       "ref": "refs/tags/v1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:40Z",
+      "scanned_utc": "2026-08-17T03:38:58Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -33788,7 +34238,7 @@
       "version": "v1.0.2",
       "ref": "refs/tags/v1.0.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:40Z",
+      "scanned_utc": "2026-08-17T03:38:58Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -33802,7 +34252,7 @@
       "version": "v3.5.4",
       "ref": "refs/tags/v3.5.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:40Z",
+      "scanned_utc": "2026-08-17T03:38:58Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 6,
@@ -33817,14 +34267,19 @@
       ],
       "domains": [
         "meteobridge"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "ivanb1989/sabiana-cloud": {
       "domain": "sabiana_cloud",
       "version": "v0.1.3",
       "ref": "refs/tags/v0.1.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:41Z",
+      "scanned_utc": "2026-08-17T03:38:58Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -33838,7 +34293,7 @@
       "version": "1.0.1",
       "ref": "refs/tags/1.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:41Z",
+      "scanned_utc": "2026-08-17T03:38:59Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -33852,7 +34307,7 @@
       "version": "1.2.5",
       "ref": "refs/tags/1.2.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:41Z",
+      "scanned_utc": "2026-08-17T03:38:59Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 67,
@@ -33866,7 +34321,7 @@
       "version": "v2.3.2",
       "ref": "refs/tags/v2.3.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:41Z",
+      "scanned_utc": "2026-08-17T03:39:00Z",
       "files_scanned": 20,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -33881,14 +34336,19 @@
       ],
       "domains": [
         "openwrt_updater"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "j9brown/scenery": {
       "domain": "scenery",
       "version": "v0.7.1",
       "ref": "refs/tags/v0.7.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:42Z",
+      "scanned_utc": "2026-08-17T03:39:00Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "stargazers_count": 52,
@@ -33902,7 +34362,7 @@
       "version": "v0.6.0",
       "ref": "refs/tags/v0.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:42Z",
+      "scanned_utc": "2026-08-17T03:39:01Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 18,
@@ -33916,7 +34376,7 @@
       "version": "v0.21.0",
       "ref": "refs/tags/v0.21.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:42Z",
+      "scanned_utc": "2026-08-17T03:39:01Z",
       "files_scanned": 34,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -33931,14 +34391,19 @@
       ],
       "domains": [
         "growatt_modbus"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "jaidenlabelle/tuya-vacuum-maps": {
       "domain": "tuya_vacuum_maps",
       "version": "v0.1.4",
       "ref": "refs/tags/v0.1.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:43Z",
+      "scanned_utc": "2026-08-17T03:39:02Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 24,
@@ -33952,7 +34417,7 @@
       "version": "v0.9.2",
       "ref": "refs/tags/v0.9.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:43Z",
+      "scanned_utc": "2026-08-17T03:39:02Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -33966,10 +34431,10 @@
       "version": "2025.12.4",
       "ref": "refs/tags/2025.12.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:43Z",
+      "scanned_utc": "2026-08-17T03:39:03Z",
       "files_scanned": 8,
       "syntax_errors": 0,
-      "stargazers_count": 44,
+      "stargazers_count": 45,
       "findings": [],
       "domains": [
         "dvla"
@@ -33980,7 +34445,7 @@
       "version": "2024.10.5",
       "ref": "refs/tags/2024.10.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:43Z",
+      "scanned_utc": "2026-08-17T03:39:03Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -33994,7 +34459,7 @@
       "version": "2024.10.0",
       "ref": "refs/tags/2024.10.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:44Z",
+      "scanned_utc": "2026-08-17T03:39:03Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 2,
@@ -34008,7 +34473,7 @@
       "version": "2024.10.0",
       "ref": "refs/tags/2024.10.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:44Z",
+      "scanned_utc": "2026-08-17T03:39:04Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -34022,7 +34487,7 @@
       "version": "2024.10.8",
       "ref": "refs/tags/2024.10.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:44Z",
+      "scanned_utc": "2026-08-17T03:39:04Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 7,
@@ -34036,10 +34501,10 @@
       "version": "2024.10.1",
       "ref": "refs/tags/2024.10.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:44Z",
+      "scanned_utc": "2026-08-17T03:39:04Z",
       "files_scanned": 9,
       "syntax_errors": 0,
-      "stargazers_count": 5,
+      "stargazers_count": 6,
       "findings": [],
       "domains": [
         "ryanair"
@@ -34050,7 +34515,7 @@
       "version": "2026.4.1",
       "ref": "refs/tags/2026.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:45Z",
+      "scanned_utc": "2026-08-17T03:39:05Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -34064,7 +34529,7 @@
       "version": "2026.06.3",
       "ref": "refs/tags/2026.06.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:45Z",
+      "scanned_utc": "2026-08-17T03:39:05Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -34078,7 +34543,7 @@
       "version": "2024.10.4",
       "ref": "refs/tags/2024.10.4",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:45Z",
+      "scanned_utc": "2026-08-17T03:39:05Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -34092,7 +34557,7 @@
       "version": "v1.0.0",
       "ref": "refs/tags/v1.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:45Z",
+      "scanned_utc": "2026-08-17T03:39:06Z",
       "files_scanned": 20,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -34106,10 +34571,10 @@
       "version": "1.0.8",
       "ref": "refs/tags/1.0.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:46Z",
+      "scanned_utc": "2026-08-17T03:39:06Z",
       "files_scanned": 7,
       "syntax_errors": 0,
-      "stargazers_count": 18,
+      "stargazers_count": 19,
       "findings": [],
       "domains": [
         "abetterrouteplanner"
@@ -34120,7 +34585,7 @@
       "version": "v0.0.5",
       "ref": "refs/tags/v0.0.5",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:46Z",
+      "scanned_utc": "2026-08-17T03:39:06Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -34134,7 +34599,7 @@
       "version": "1.5.0",
       "ref": "refs/tags/1.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:46Z",
+      "scanned_utc": "2026-08-17T03:39:07Z",
       "files_scanned": 41,
       "syntax_errors": 0,
       "stargazers_count": 1,
@@ -34148,7 +34613,7 @@
       "version": "1.8.3",
       "ref": "refs/tags/1.8.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:46Z",
+      "scanned_utc": "2026-08-17T03:39:07Z",
       "files_scanned": 15,
       "syntax_errors": 0,
       "stargazers_count": 68,
@@ -34163,14 +34628,19 @@
       ],
       "domains": [
         "myuplink"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "jaruba/ha-samsungtv-tizen": {
       "domain": "samsungtv_tizen",
       "version": "v1.6.1",
       "ref": "refs/tags/v1.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:47Z",
+      "scanned_utc": "2026-08-17T03:39:08Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "stargazers_count": 318,
@@ -34184,10 +34654,10 @@
       "version": "v0.10.6",
       "ref": "refs/tags/v0.10.6",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:47Z",
+      "scanned_utc": "2026-08-17T03:39:08Z",
       "files_scanned": 31,
       "syntax_errors": 0,
-      "stargazers_count": 235,
+      "stargazers_count": 236,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -34199,14 +34669,19 @@
       ],
       "domains": [
         "hubitat"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device"
+      }
     },
     "jasonjhofmann/visiblair-homeassistant": {
       "domain": "visiblair",
-      "version": "v0.8.0",
-      "ref": "refs/tags/v0.8.0",
+      "version": "v0.9.0",
+      "ref": "refs/tags/v0.9.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:48Z",
+      "scanned_utc": "2026-08-17T03:39:09Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 0,
@@ -34220,7 +34695,7 @@
       "version": "v0.3.1",
       "ref": "refs/tags/v0.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:48Z",
+      "scanned_utc": "2026-08-17T03:39:10Z",
       "files_scanned": 3,
       "syntax_errors": 0,
       "stargazers_count": 11,
@@ -34234,7 +34709,7 @@
       "version": "v1.3.1",
       "ref": "refs/tags/v1.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:48Z",
+      "scanned_utc": "2026-08-17T03:39:10Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 5,
@@ -34248,10 +34723,10 @@
       "version": "v2.5.9",
       "ref": "refs/tags/v2.5.9",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:49Z",
+      "scanned_utc": "2026-08-17T03:39:11Z",
       "files_scanned": 31,
       "syntax_errors": 0,
-      "stargazers_count": 22,
+      "stargazers_count": 23,
       "findings": [],
       "domains": [
         "ithodaalderop"
@@ -34262,7 +34737,7 @@
       "version": "v2.0.7",
       "ref": "refs/tags/v2.0.7",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:49Z",
+      "scanned_utc": "2026-08-17T03:39:11Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -34276,7 +34751,7 @@
       "version": "v1.1.0",
       "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:50Z",
+      "scanned_utc": "2026-08-17T03:39:12Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "stargazers_count": 37,
@@ -34291,14 +34766,19 @@
       ],
       "domains": [
         "openirblaster"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device"
+      }
     },
     "jaydeethree/Home-Assistant-weatherdotcom": {
       "domain": "weatherdotcom",
-      "version": "1.3.2",
-      "ref": "refs/tags/1.3.2",
+      "version": "1.3.3",
+      "ref": "refs/tags/1.3.3",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:50Z",
+      "scanned_utc": "2026-08-17T03:39:13Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "stargazers_count": 91,
@@ -34312,7 +34792,7 @@
       "version": "v_1.8",
       "ref": "refs/tags/v_1.8",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:51Z",
+      "scanned_utc": "2026-08-17T03:39:13Z",
       "files_scanned": 4,
       "syntax_errors": 0,
       "stargazers_count": 21,
@@ -34326,7 +34806,7 @@
       "version": "v0.2.2",
       "ref": "refs/tags/v0.2.2",
       "status": "scanned",
-      "scanned_utc": "2026-08-10T03:57:51Z",
+      "scanned_utc": "2026-08-17T03:39:13Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "stargazers_count": 3,
@@ -56628,7 +57108,7 @@
       ]
     }
   },
-  "updated_utc": "2026-08-16T03:42:31Z",
+  "updated_utc": "2026-08-17T03:43:37Z",
   "rules_hash": "64cf0073cfcb345f",
   "core_version": "2026.9"
 }

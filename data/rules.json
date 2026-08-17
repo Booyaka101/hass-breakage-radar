@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-16T03:33:36Z",
+  "generated_utc": "2026-08-17T03:33:37Z",
   "core_ref": "dev",
   "core_version": "2026.9",
-  "core_tarball_sha256": "84b2adaabcb95f10b1ba44704e0d2e0636b4042b96b542561c735b4a3c9d6265",
+  "core_tarball_sha256": "869ef45dc4901784220a265354d2fcdf330ad9c8c49d878981aa104e2762bcd5",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
@@ -1209,13 +1209,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.9",
-      "source": "homeassistant/components/flexit_bacnet/switch.py:90",
+      "source": "homeassistant/components/libre_hardware_monitor/__init__.py:87",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
-      "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/flexit_bacnet/switch.py#L90"
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/libre_hardware_monitor/__init__.py#L87"
     },
     {
       "id": "core-issue-async-setup-platform-2026.9",
@@ -2365,5 +2365,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L702"
     }
   ],
-  "blog_merged_utc": "2026-08-17T04:21:29Z"
+  "blog_merged_utc": "2026-08-17T04:58:52Z"
 }
