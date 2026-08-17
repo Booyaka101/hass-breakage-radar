@@ -596,14 +596,15 @@ real package is used instead.
   newer than your interpreter (for example PEP 695 `type` aliases on Python 3.11) is
   counted in `unparsed_files` and the domain falls back to the index verdict — the
   crawler parses with 3.14, so the index side never has this gap.
-* **`attr_access_typed` infers types from one file, and errs towards silence.** It
-  reports `DeviceEntry.config_entries` only where the receiver is proved in the same
-  file, so a device entry that arrives from another module, or through a shape the
-  binder does not model (`registry.devices.get(device_id)`), is missed rather than
-  guessed at. Measured on home-assistant/core: 50 of the 54 device-entry reads found,
-  against 5 963 textual `.config_entries` occurrences, with no `hass.config_entries`
-  among them. A missed call is a rule that stays quiet; a wrong one would waste a
-  maintainer's afternoon, so the matcher is built to under-report.
+* **`attr_access_typed` infers types per scope, and errs towards silence.** It reports
+  `DeviceEntry.config_entries` only where the receiver is proved in the scope that
+  reads it, so a device entry that arrives from another module, from a registry held
+  on `self`, or through a shape the binder does not model
+  (`registry.devices.get(device_id)`), is missed rather than guessed at. Measured on
+  home-assistant/core: 46 of the 54 device-entry reads found, against 5 963 textual
+  `.config_entries` occurrences, with no `hass.config_entries` among them. A missed
+  call is a rule that stays quiet; a wrong one would waste a maintainer's afternoon,
+  so the matcher is built to under-report.
 * **`imminent` is computed from the release schedule, `broken_now` is not.** The
   first-Wednesday rule is Home Assistant's published schedule and has been exact all
   year, but it is applied locally, not fetched — a release moved for a one-off reason

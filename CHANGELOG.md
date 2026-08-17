@@ -25,20 +25,27 @@ of `async_remove_config_entry_device`, which is a `DeviceEntry` by contract.
 It is an allowlist of proven receivers, not a denylist of `hass`:
 `hass.config_entries` can never match.
 
+Inference is per scope. A name proved in one function says nothing about a
+same-named local in another, which matters because `device` is one of the
+commonest variable names in this ecosystem: proving them file-wide would carry
+a proof out of the function that earned it. Nested scopes still inherit what
+encloses them, the way a closure really does read those names, and a parameter
+shadows whatever the enclosing scope proved about that spelling.
+
 Verified against real code before shipping, the way 1.3.1 was: 142 HACS
 integrations already hitting the sibling device-registry rules were rescanned,
 and every finding the new matcher produced was hand-checked against that
-repository's source at the scanned tag. 63 of 63 are genuine
-`DeviceEntry.config_entries` reads across 30 repositories; none is
+repository's source at the scanned tag. 56 of 56 are genuine
+`DeviceEntry.config_entries` reads across 27 repositories; none is
 `hass.config_entries`.
 
 Then measured against home-assistant/core, which is the hardest corpus there
 is for this rule: 9 865 files carrying 5 963 textual `.config_entries`
 occurrences, the great majority of them `hass.config_entries`. The matcher
-reports 50, every one a device entry, and finds 50 of the 54 device-entry
-reads present. The four it misses come from another module or from
-`registry.devices.get(...)`, shapes one file cannot prove; it stays quiet
-rather than guessing, and a test pins that boundary.
+reports 46, every one a device entry, and finds 46 of the 54 device-entry
+reads present. The eight it misses arrive from another module, from a registry
+held on `self`, or from `registry.devices.get(...)`, none of which one scope
+can prove; it stays quiet rather than guessing, and a test pins that boundary.
 
 Installs still on 1.4.1 read the same published index and silently skip the
 unknown matcher type, so nothing changes for them until they update; a pinned

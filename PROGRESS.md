@@ -7,7 +7,7 @@ as history, newest first.
 
 The one device-registry rule shipped `matchable: false` (the name collides with
 `hass.config_entries`) is now detected by a ninth matcher type,
-`attr_access_typed`: two flow-insensitive passes over each file prove
+`attr_access_typed`: two flow-insensitive passes per scope prove
 DeviceRegistry-typed names, then DeviceEntry-typed names (registry lookups
 including the walrus form, annotations on assignments and parameters, the
 module-level `async_entries_for_*` helpers, and the third parameter of
@@ -28,7 +28,7 @@ read the same index. A NEW matcher type is silently skipped there
 old-engine behaviour with a simulated 1.4.1 dispatch table.
 
 VERIFIED (all by hand on this machine, 2026-08-17):
-* pytest 236 passed, 3 skipped (was 226/3; +10 tests).
+* pytest 242 passed, 3 skipped (was 226/3; +16 tests).
 * Phase 0 re-verified live: the deprecation post (2027.8 window), core dev
   `device_registry.py` signatures, and the published index (3 088 scanned,
   623 affected, sibling repos_hit 340/216/70/17/0 exactly as expected).
@@ -37,15 +37,25 @@ VERIFIED (all by hand on this machine, 2026-08-17):
   must still resolve to the device_registry module to bind) for code written
   against older cores.
 * Real-repo validation: rescanned 142 HACS integrations that hit the sibling
-  device-registry rules with `tools/scan.py --force --only`. 63 findings in 30
-  repos; all 63 hand-checked against the repository source at the scanned tag,
-  63/63 genuine, zero `hass.config_entries`. Measurement also added
+  device-registry rules with `tools/scan.py --force --only`. 56 findings in 27
+  repos, all hand-checked against the repository source at the scanned tag,
+  56/56 genuine, zero `hass.config_entries`. Measurement also added
   `async_get` (the `DeviceRegistry.async_get(device_id)` method form) to
   `entry_methods`, which nearly half the true positives use.
+* Adversarial corpus, added during review: home-assistant/core itself, 9 865
+  files and 5 963 textual `.config_entries` occurrences. 46 findings, every one
+  a device entry, covering 46 of the 54 device-entry reads present.
+* Review found and fixed a real false-positive vector: bindings were module-
+  wide, so a name proved in one function leaked into an unrelated function
+  reusing the spelling (`device` from a dict was flagged). Binding is per scope
+  now, with inheritance into nested scopes and parameter shadowing. Cost 5 of
+  the core hits, each of which had been found by leakage rather than by proof.
+  Comprehension generators now bind like `for` statements, which is how core's
+  `zwave_js` iterates the area helper.
 * `build_index.py` validates schema 1 with the new match object published.
-* repos_hit lands at 30 on the verification slice. Higher than the sibling
+* repos_hit lands at 27 on the verification slice. Higher than the sibling
   `primary_config_entry`'s 17 because `.config_entries` is the old,
-  long-standing API; precision is what was verified, and it is 63/63.
+  long-standing API; precision is what was verified, and it is 56/56.
 
 `state/`, `data/findings.json` and `docs/` were deliberately left to the daily
 crawl: ENGINE_VERSION 5 changes the rules hash, so the 03:17 UTC job rescans

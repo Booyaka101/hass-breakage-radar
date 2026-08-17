@@ -161,6 +161,86 @@ def test_entry_function_from_another_module_does_not_bind(rule):
     assert match_source("custom_components/x/__init__.py", source, [rule]) == []
 
 
+def test_a_proof_does_not_leak_into_another_function(rule):
+    """`device` is one of the commonest names in this ecosystem.
+
+    A binder that proved names file-wide would carry the proof from `real`
+    into `unrelated`, whose `device` came out of a dict.
+    """
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        "def real(hass):\n"
+        "    reg = dr.async_get(hass)\n"
+        '    device = reg.async_get_device({("x", "y")})\n'
+        "    return device.config_entries\n"
+        "\n"
+        "def unrelated(payload):\n"
+        '    device = payload["device"]\n'
+        "    return device.config_entries\n"
+    )
+    hits = match_source("custom_components/x/__init__.py", source, [rule])
+    assert [f.line for f in hits] == [6]
+
+
+def test_a_parameter_shadows_what_the_enclosing_scope_proved(rule):
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        'device = dr.async_get(HASS).async_get_device({("x", "y")})\n'
+        "\n"
+        "def go(device):\n"
+        "    return device.config_entries\n"
+    )
+    assert match_source("custom_components/x/__init__.py", source, [rule]) == []
+
+
+def test_a_closure_inherits_the_enclosing_proof(rule):
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        "def outer(hass):\n"
+        "    reg = dr.async_get(hass)\n"
+        '    device = reg.async_get_device({("x", "y")})\n'
+        "\n"
+        "    def inner():\n"
+        "        return device.config_entries\n"
+        "\n"
+        "    return inner\n"
+    )
+    hits = match_source("custom_components/x/__init__.py", source, [rule])
+    assert [f.line for f in hits] == [8]
+
+
+def test_the_platform_contract_survives_its_own_parameter_shadowing(rule):
+    """The contract binds a parameter, so it has to be applied after the
+    shadowing that clears inherited names of the same spelling."""
+    source = (
+        "device_entry = 1\n"
+        "\n"
+        "async def async_remove_config_entry_device(hass, config_entry, device_entry):\n"
+        "    return len(device_entry.config_entries) <= 1\n"
+    )
+    hits = match_source("custom_components/x/__init__.py", source, [rule])
+    assert [f.line for f in hits] == [4]
+
+
+def test_a_comprehension_generator_binds_like_a_for_statement(rule):
+    """`zwave_js` iterates the area helper inside a genexp, in core today."""
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        "def go(reg, area_id):\n"
+        "    return any(\n"
+        "        entry_id\n"
+        "        for device in dr.async_entries_for_area(reg, area_id)\n"
+        "        for entry_id in device.config_entries\n"
+        "    )\n"
+    )
+    hits = match_source("custom_components/x/__init__.py", source, [rule])
+    assert [f.line for f in hits] == [7]
+
+
 def test_a_receiver_the_binder_cannot_model_stays_quiet(rule):
     """Reading the registry's own dict is a real DeviceEntry, and is missed.
 
