@@ -79,9 +79,21 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/rules.json data/catalog.json data/findings.json \
+          git add data/catalog.json data/findings.json \
                   state/crawl.json state/feed.json \
                   docs/index.json docs/index.html docs/feed.xml docs/.nojekyll
+
+          # The rule set is rebuilt every run, so its provenance stamps move
+          # daily even when no rule did. Committing that keeps the file in
+          # conflict with every open pull request that touches it, and GitHub
+          # skips pull_request workflows on a conflicted PR -- the checks do
+          # not fail, they never run. The published index carries the rules
+          # either way.
+          if python tools/rules_changed.py; then
+            git add data/rules.json
+          else
+            git checkout -- data/rules.json
+          fi
           if git diff --cached --quiet; then
             echo "No index changes to commit."
             exit 0
