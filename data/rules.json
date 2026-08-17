@@ -9,7 +9,7 @@
   "counts": {
     "total": 145,
     "future": 87,
-    "matchable_future": 34,
+    "matchable_future": 35,
     "core_files_scanned": 9883,
     "core_files_unparsed": 0,
     "from_core_ast": 120,
@@ -2238,13 +2238,44 @@
       "id": "device-entry-config-entries",
       "kind": "attr",
       "symbol": "DeviceEntry.config_entries",
-      "message": "DeviceEntry.config_entries is deprecated -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Removed in Home Assistant Core 2027.8. Not auto-detected: the attribute name 'config_entries' is also the ubiquitous hass.config_entries, so a static matcher would fire on nearly every integration. Check by hand if your code reads .config_entries off a DeviceEntry.",
+      "message": "DeviceEntry.config_entries is deprecated -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Removed in Home Assistant Core 2027.8. Detected only where the receiver is proven to be a DeviceEntry (a registry lookup, a DeviceEntry annotation, or the async_remove_config_entry_device contract); hass.config_entries is never flagged.",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
       "origin": "manual",
-      "confidence": "low",
+      "confidence": "high",
       "replacement": "DeviceEntry.config_entry_id",
-      "matchable": false,
+      "match": {
+        "type": "attr_access_typed",
+        "names": [
+          "config_entries"
+        ],
+        "module": "homeassistant.helpers.device_registry",
+        "registry_factory": "async_get",
+        "registry_types": [
+          "DeviceRegistry"
+        ],
+        "entry_types": [
+          "DeviceEntry"
+        ],
+        "entry_methods": [
+          "async_get",
+          "async_get_device",
+          "async_get_device_by_connection",
+          "async_get_device_by_identifier",
+          "async_get_or_create",
+          "async_update_device"
+        ],
+        "entry_functions": [
+          "async_entries_for_area",
+          "async_entries_for_config_entry",
+          "async_entries_for_config_subentry",
+          "async_entries_for_label"
+        ],
+        "entry_params": {
+          "async_remove_config_entry_device": 3
+        }
+      },
+      "matchable": true,
       "expired": false
     },
     {
@@ -2358,5 +2389,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L702"
     }
   ],
-  "blog_merged_utc": "2026-08-14T03:58:51Z"
+  "blog_merged_utc": "2026-08-17T02:59:22Z"
 }

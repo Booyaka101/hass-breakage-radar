@@ -1,7 +1,59 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.4.1 session (2026-08-13); earlier sections are kept
+Status at the end of the v1.5.0 session (2026-08-17); earlier sections are kept
 as history, newest first.
+
+## v1.5.0 — DeviceEntry.config_entries finally has a matcher (2026-08-17)
+
+The one device-registry rule shipped `matchable: false` (the name collides with
+`hass.config_entries`) is now detected by a ninth matcher type,
+`attr_access_typed`: two flow-insensitive passes over each file prove
+DeviceRegistry-typed names, then DeviceEntry-typed names (registry lookups
+including the walrus form, annotations on assignments and parameters, the
+module-level `async_entries_for_*` helpers, and the third parameter of
+`async_remove_config_entry_device`, a DeviceEntry by contract). Fires only on
+proven receivers; `hass.config_entries` structurally cannot match.
+
+Design point worth keeping: the binder is data-driven. The engine knows nothing
+about the device registry; the rule's `match` object carries `module`,
+`registry_factory`, `registry_types`, `entry_types`, `entry_methods`,
+`entry_functions` and `entry_params`, so a future registry deprecation reuses
+the type without an engine change.
+
+Compatibility was the hard constraint: 1.4.1 installs vendor the old engine and
+read the same index. A NEW matcher type is silently skipped there
+(`_DISPATCH.get` returns None, `Rule.matchable` is False), whereas a new key on
+`attr_access` would have made every old install fire on every
+`hass.config_entries` in the world. `tests/test_typed_receiver.py` pins the
+old-engine behaviour with a simulated 1.4.1 dispatch table.
+
+VERIFIED (all by hand on this machine, 2026-08-17):
+* pytest 236 passed, 3 skipped (was 226/3; +10 tests).
+* Phase 0 re-verified live: the deprecation post (2027.8 window), core dev
+  `device_registry.py` signatures, and the published index (3 088 scanned,
+  623 affected, sibling repos_hit 340/216/70/17/0 exactly as expected).
+  One drift found: `async_entries_for_config_subentry` no longer exists at
+  module level on core dev. It stays in `entry_functions` (harmless: a call
+  must still resolve to the device_registry module to bind) for code written
+  against older cores.
+* Real-repo validation: rescanned 142 HACS integrations that hit the sibling
+  device-registry rules with `tools/scan.py --force --only`. 63 findings in 30
+  repos; all 63 hand-checked against the repository source at the scanned tag,
+  63/63 genuine, zero `hass.config_entries`. Measurement also added
+  `async_get` (the `DeviceRegistry.async_get(device_id)` method form) to
+  `entry_methods`, which nearly half the true positives use.
+* `build_index.py` validates schema 1 with the new match object published.
+* repos_hit lands at 30 on the verification slice. Higher than the sibling
+  `primary_config_entry`'s 17 because `.config_entries` is the old,
+  long-standing API; precision is what was verified, and it is 63/63.
+
+`state/`, `data/findings.json` and `docs/` were deliberately left to the daily
+crawl: ENGINE_VERSION 5 changes the rules hash, so the 03:17 UTC job rescans
+the whole catalogue and republishes the index (same as the 1.3.1 rollout).
+
+The brief mentioned PyPI as a target registry; the package has never been on
+PyPI (404) and no publish workflow exists, so distribution stays GitHub + HACS,
+unchanged.
 
 ## v1.4.1 — RSS feed of announced removals (2026-08-13)
 

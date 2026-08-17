@@ -109,7 +109,7 @@ under **Download diagnostics** on the integration's page.
 Findings come from two sources, and every `findings` entry says which:
 
 * `source: local` — the integration parsed the **installed bytes** in your own
-  `custom_components/` directory with the same eight AST matchers the crawler
+  `custom_components/` directory with the same nine AST matchers the crawler
   uses. Forks, renamed copies and integrations installed outside HACS get a real
   verdict this way, and there is no version skew: the scanned version *is* the
   installed version.
@@ -393,6 +393,7 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `classbase` | a `class` deriving from one of `bases` |
 | `attr` | a property or `_attr_` assignment named in `names` |
 | `attr_access` | reading `something.<name>` |
+| `attr_access_typed` | reading `something.<name>` where the receiver is first proved, by single-file inference, to come from the helper module the matcher names — built for `DeviceEntry.config_entries`, whose name collides with `hass.config_entries` |
 | `call` | a call to one of `names` |
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
 | `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
@@ -595,8 +596,6 @@ real package is used instead.
   newer than your interpreter (for example PEP 695 `type` aliases on Python 3.11) is
   counted in `unparsed_files` and the domain falls back to the index verdict — the
   crawler parses with 3.14, so the index side never has this gap.
-* **`DeviceEntry.config_entries` is informational only.** `config_entries` is also
-  `hass.config_entries`, which every integration touches, so no matcher ships for it.
 * **`imminent` is computed from the release schedule, `broken_now` is not.** The
   first-Wednesday rule is Home Assistant's published schedule and has been exact all
   year, but it is applied locally, not fetched — a release moved for a one-off reason

@@ -4,12 +4,15 @@ A *rule* says "this piece of Python stops working in Home Assistant release X".
 A *matcher* is the machine-checkable half of a rule.  :func:`match_source` runs
 every matcher over one parsed file and yields findings.
 
-Eight matcher types cover every deprecation Breakage Radar currently ships:
+Nine matcher types cover every deprecation Breakage Radar currently ships:
 
 ``moduledef``          a module-level ``def``/``async def`` with one of ``names``
 ``classbase``          a ``class`` whose base list mentions one of ``bases``
 ``attr``               a property or ``_attr_`` assignment named in ``names``
 ``attr_access``        reading ``something.<name>`` for a name in ``names``
+``attr_access_typed``  ``attr_access`` restricted to receivers proved, by
+                       single-file inference, to hold an object from the
+                       helper module the matcher names
 ``call``               a call to one of ``names`` (bare or attribute access)
 ``call_kwarg``         a call to one of ``names`` passing any keyword in ``kwargs``
 ``call_missing_kwarg`` a call to one of ``names`` *not* passing keyword ``kwarg``
@@ -45,6 +48,7 @@ MATCHER_TYPES = frozenset(
         "classbase",
         "attr",
         "attr_access",
+        "attr_access_typed",
         "call",
         "call_kwarg",
         "call_missing_kwarg",
@@ -55,7 +59,7 @@ MATCHER_TYPES = frozenset(
 #: Bumped whenever matching semantics change. It is folded into the crawl's
 #: rules hash, so an engine change forces a rescan instead of leaving stale
 #: findings that the current engine would no longer produce.
-ENGINE_VERSION = 4
+ENGINE_VERSION = 5
 
 VERSION_RE = re.compile(r"^\d{4}\.\d+(?:\.\d+)?$")
 
@@ -416,6 +420,198 @@ def _match_attr_access(
             yield node.lineno, node.attr
 
 
+def _annotation_resolves(
+    annotation: ast.expr | None, imports: dict[str, str], wanted: set[str]
+) -> bool:
+    """True when an annotation names one of ``wanted`` fully-qualified types.
+
+    Handles ``DeviceEntry`` (through the import map, so a bare name that was
+    never imported from the right module does not count), ``dr.DeviceEntry``,
+    ``DeviceEntry | None``, ``Optional[DeviceEntry]`` and string annotations.
+    """
+    if annotation is None:
+        return False
+    if isinstance(annotation, ast.Constant) and isinstance(annotation.value, str):
+        try:
+            annotation = ast.parse(annotation.value.strip(), mode="eval").body
+        except SyntaxError:
+            return False
+    if isinstance(annotation, ast.BinOp) and isinstance(annotation.op, ast.BitOr):
+        return _annotation_resolves(
+            annotation.left, imports, wanted
+        ) or _annotation_resolves(annotation.right, imports, wanted)
+    if isinstance(annotation, ast.Subscript):
+        base = _dotted(annotation.value)
+        if base and base.rsplit(".", 1)[-1] == "Optional":
+            return _annotation_resolves(annotation.slice, imports, wanted)
+        return False
+    if isinstance(annotation, ast.Name):
+        return imports.get(annotation.id) in wanted
+    if isinstance(annotation, ast.Attribute):
+        dotted = _dotted(annotation)
+        if dotted is None:
+            return False
+        head, _, tail = dotted.partition(".")
+        base = imports.get(head)
+        return bool(base and tail) and f"{base}.{tail}" in wanted
+    return False
+
+
+def _all_args(node: ast.FunctionDef | ast.AsyncFunctionDef) -> list[ast.arg]:
+    return [*node.args.posonlyargs, *node.args.args, *node.args.kwonlyargs]
+
+
+def _bound_names(node: ast.Assign | ast.AnnAssign | ast.NamedExpr) -> list[str]:
+    """Plain-``Name`` targets only: ``self.device = ...`` proves nothing."""
+    targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+    return [target.id for target in targets if isinstance(target, ast.Name)]
+
+
+def _is_factory_call(
+    matcher: dict[str, Any], node: ast.Call, imports: dict[str, str]
+) -> bool:
+    name = _called_name(node)
+    if name is None:
+        return False
+    factory = f"{matcher.get('module', '')}.{matcher.get('registry_factory', '')}"
+    return _resolve_call_module(node, name, imports) == factory
+
+
+def _typed_receiver_names(
+    matcher: dict[str, Any], tree: ast.Module, imports: dict[str, str]
+) -> set[str]:
+    """Pass 1: local names proved to hold the matcher module's registry."""
+    module = matcher.get("module", "")
+    wanted = {f"{module}.{name}" for name in matcher.get("registry_types", ())}
+    bound: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.NamedExpr)):
+            if isinstance(node.value, ast.Call) and _is_factory_call(
+                matcher, node.value, imports
+            ):
+                bound.update(_bound_names(node))
+            if isinstance(node, ast.AnnAssign) and _annotation_resolves(
+                node.annotation, imports, wanted
+            ):
+                bound.update(_bound_names(node))
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            for arg in _all_args(node):
+                if _annotation_resolves(arg.annotation, imports, wanted):
+                    bound.add(arg.arg)
+    return bound
+
+
+def _entry_call(
+    matcher: dict[str, Any],
+    node: ast.Call,
+    imports: dict[str, str],
+    receivers: set[str],
+) -> bool:
+    """True when ``node`` provably returns entry objects.
+
+    Either a method from ``entry_methods`` on a receiver proved in pass 1
+    (or chained straight off the factory call), or a module-level function
+    from ``entry_functions`` that the import map pins to the matcher module.
+    """
+    name = _called_name(node)
+    if name is None:
+        return False
+    func = node.func
+    if isinstance(func, ast.Attribute) and name in set(
+        matcher.get("entry_methods", ())
+    ):
+        receiver = func.value
+        if isinstance(receiver, ast.Name) and receiver.id in receivers:
+            return True
+        return isinstance(receiver, ast.Call) and _is_factory_call(
+            matcher, receiver, imports
+        )
+    if name in set(matcher.get("entry_functions", ())):
+        module = matcher.get("module", "")
+        return _resolve_call_module(node, name, imports) == f"{module}.{name}"
+    return False
+
+
+def _typed_entry_names(
+    matcher: dict[str, Any],
+    tree: ast.Module,
+    imports: dict[str, str],
+    receivers: set[str],
+) -> set[str]:
+    """Pass 2: local names proved to hold entry objects."""
+    module = matcher.get("module", "")
+    wanted = {f"{module}.{name}" for name in matcher.get("entry_types", ())}
+    entry_params = matcher.get("entry_params") or {}
+
+    bound: set[str] = set()
+    for node in tree.body:
+        # The platform contract: the third parameter of a module-level
+        # ``async def async_remove_config_entry_device(hass, entry, device)``
+        # is an entry even when unannotated -- Home Assistant calls it so.
+        if isinstance(node, ast.AsyncFunctionDef) and node.name in entry_params:
+            params = [*node.args.posonlyargs, *node.args.args]
+            index = entry_params[node.name] - 1
+            if 0 <= index < len(params):
+                bound.add(params[index].arg)
+
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.NamedExpr)):
+            # An awaited value is wrapped in ``ast.Await`` and never binds:
+            # every entry method here is a plain ``def`` in core, so an await
+            # is somebody else's method of the same name.
+            if isinstance(node.value, ast.Call) and _entry_call(
+                matcher, node.value, imports, receivers
+            ):
+                bound.update(_bound_names(node))
+            if isinstance(node, ast.AnnAssign) and _annotation_resolves(
+                node.annotation, imports, wanted
+            ):
+                bound.update(_bound_names(node))
+        elif isinstance(node, ast.For):
+            if (
+                isinstance(node.target, ast.Name)
+                and isinstance(node.iter, ast.Call)
+                and _entry_call(matcher, node.iter, imports, receivers)
+            ):
+                bound.add(node.target.id)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            for arg in _all_args(node):
+                if _annotation_resolves(arg.annotation, imports, wanted):
+                    bound.add(arg.arg)
+    return bound
+
+
+def _match_attr_access_typed(
+    matcher: dict[str, Any], tree: ast.Module, imports: dict[str, str]
+) -> Iterator[tuple[int, str]]:
+    """``attr_access`` gated on proving what the receiver is.
+
+    Exists for ``DeviceEntry.config_entries``, whose name collides with the
+    ubiquitous ``hass.config_entries``: a plain ``attr_access`` matcher would
+    fire on nearly every integration ever written. This one is an allowlist
+    of proven receivers -- an attribute read fires only off a local name bound
+    in pass 2, or chained straight off a registry lookup. Everything else,
+    ``hass.config_entries`` included, never matches.
+    """
+    names = set(matcher.get("names", ()))
+    receivers = _typed_receiver_names(matcher, tree, imports)
+    entries = _typed_entry_names(matcher, tree, imports, receivers)
+    for node in ast.walk(tree):
+        if not (
+            isinstance(node, ast.Attribute)
+            and node.attr in names
+            and isinstance(node.ctx, ast.Load)
+        ):
+            continue
+        value = node.value
+        if isinstance(value, ast.Name) and value.id in entries:
+            yield node.lineno, node.attr
+        elif isinstance(value, ast.Call) and _entry_call(
+            matcher, value, imports, receivers
+        ):
+            yield node.lineno, node.attr
+
+
 def _matcher_kwargs(matcher: dict[str, Any]) -> set[str]:
     wanted = set(matcher.get("kwargs", ()))
     if matcher.get("kwarg"):
@@ -491,6 +687,7 @@ _DISPATCH = {
     "classbase": _match_classbase,
     "attr": _match_attr,
     "attr_access": _match_attr_access,
+    "attr_access_typed": _match_attr_access_typed,
     "call": _match_call,
     "call_kwarg": _match_call_kwarg,
     "call_missing_kwarg": _match_call_missing_kwarg,
