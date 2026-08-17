@@ -3,6 +3,35 @@
 Status at the end of the v1.5.0 session (2026-08-17); earlier sections are kept
 as history, newest first.
 
+## The daily crawl was silently switching off CI on open PRs (2026-08-17)
+
+Noticed while shipping 1.5.0: two of the five pushes to that branch produced no
+`Validate` run at all, while the other three ran normally. Not a failure, no
+run. It looks exactly like a branch whose checks are green, because the only
+thing left on the commit is CodeQL, which runs on push.
+
+Cause, and the correlation is 5 for 5: the crawl commits `data/rules.json`
+every day. The rule set itself rarely changes, but `generated_utc`,
+`blog_merged_utc` and `core_tarball_sha256` move on every run, so any open pull
+request that touches the file conflicts within a day. **GitHub cannot build
+`refs/pull/N/merge` for a conflicted pull request, so it skips that PR's
+`pull_request` workflows entirely.** The two pushes made while the branch was
+conflicted got nothing; the three made while it was mergeable all ran.
+
+Fixed by not committing a provenance-only rewrite: `tools/rules_changed.py`
+compares the regenerated file against the committed one ignoring those stamps,
+and the crawl stages `data/rules.json` only when a rule really changed.
+Verified on the real file, where a fresh `blog_rules.py` run produces exactly
+one changed line and the tool correctly declines it.
+
+Not a release: the shipped integration is unchanged, so there is nothing for a
+user to update to. The published index carries the rules either way, and
+`build_index.py` stamps it with its own timestamp, so the board stays dated
+daily as before.
+
+Worth keeping in mind: a conflicted PR cannot be merged anyway, so nothing
+could have shipped unchecked. The cost was diagnostic, not correctness.
+
 ## v1.5.0 — DeviceEntry.config_entries finally has a matcher (2026-08-17)
 
 The one device-registry rule shipped `matchable: false` (the name collides with
