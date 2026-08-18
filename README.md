@@ -97,8 +97,9 @@ Assistant install.
 Copy `custom_components/breakage_radar/` into your Home Assistant `config/custom_components/`
 directory and restart, then add the integration from the UI.
 
-The config flow has a single confirmation step. One setting is available afterwards
-under **Configure**: how far ahead a deadline gets its own notification.
+The config flow has a single confirmation step. Two settings are available afterwards
+under **Configure**: how far ahead a deadline gets its own notification, and any
+integrations you want left out of the report entirely.
 
 ### What you get
 
@@ -202,6 +203,11 @@ lists every date anyway.
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/options.png" alt="The options dialog, choosing how far ahead to be alerted" width="760">
 </p>
+
+The same dialog takes a list of integrations to leave out. It offers whatever is
+currently reported on your system, and anything you pick stops producing findings,
+notifications and counts altogether. Nothing is ever excluded on your behalf: the
+list starts empty, including for HACS itself, which is affected like anything else.
 
 The point of the split is that Repairs has no snooze button. A dozen cards for
 deadlines a year away would only teach you to ignore the panel — which is where every

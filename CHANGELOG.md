@@ -4,6 +4,32 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+### An ignore list in the options
+
+A second setting under **Configure** takes integrations to leave out of the
+report. Anything on it produces no finding, no notification and no count. The
+list starts empty and nothing is excluded on a user's behalf.
+
+It came from a request to drop HACS from the results. HACS is genuinely
+affected, it calls `device_registry.async_get_device` in
+`repositories/base.py` and that goes away in Core 2027.8, so excluding it by
+default would mean hiding a true positive. Everyone installs Breakage Radar
+through HACS though, so that single finding reaches every user and none of them
+can act on it. Letting each user decide keeps the default honest.
+
+The picker offers the domains actually affected on that system rather than the
+catalogue, so it is a handful of rows. It carries whatever is already ignored,
+since an ignored domain is filtered out of the report and would otherwise
+disappear from the list that ignores it, and it accepts values outside its own
+options so a stored entry survives the integration being fixed upstream and
+dropping off the affected list.
+
+`sensor.breakage_radar_affected` gained an `ignored_domains` attribute, and
+diagnostics reports the setting, so a missing integration reads as a choice
+rather than a bug.
+
 ## 1.5.0 — 2026-08-17
 
 ### `DeviceEntry.config_entries` is now detected
