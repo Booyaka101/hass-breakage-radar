@@ -37,7 +37,8 @@ def _install_homeassistant_stubs() -> None:
     core = module("homeassistant.core")
 
     class HomeAssistant:  # noqa: D101
-        pass
+        def __init__(self):
+            self.data: dict = {}
 
     def callback(func):  # noqa: D103
         return func
@@ -75,6 +76,8 @@ def _install_homeassistant_stubs() -> None:
 
     class OptionsFlow(_FlowBase):  # noqa: D101
         config_entry = ConfigEntry()
+        #: Home Assistant has always set this by the time a step runs.
+        hass = HomeAssistant()
 
     config_entries.ConfigEntry = ConfigEntry
     config_entries.ConfigFlow = ConfigFlow
@@ -88,10 +91,20 @@ def _install_homeassistant_stubs() -> None:
         LIST = "list"
 
     class SelectSelectorConfig:  # noqa: D101
-        def __init__(self, options=None, mode=None, translation_key=None, **kwargs):
+        def __init__(
+            self,
+            options=None,
+            mode=None,
+            translation_key=None,
+            multiple=False,
+            custom_value=False,
+            **kwargs,
+        ):
             self.options = options or []
             self.mode = mode
             self.translation_key = translation_key
+            self.multiple = multiple
+            self.custom_value = custom_value
 
     class SelectSelector:  # noqa: D101
         def __init__(self, config):

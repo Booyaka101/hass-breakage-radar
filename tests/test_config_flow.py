@@ -57,7 +57,7 @@ def test_options_flow_stores_the_window_as_an_int():
 
     assert result["type"] == "create_entry"
     # A selector hands back a string; the coordinator does date maths with it.
-    assert result["data"] == {CONF_ALERT_WINDOW_DAYS: 180}
+    assert result["data"][CONF_ALERT_WINDOW_DAYS] == 180
     assert isinstance(result["data"][CONF_ALERT_WINDOW_DAYS], int)
 
 
