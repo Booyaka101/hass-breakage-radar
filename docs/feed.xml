@@ -5,11 +5,19 @@
     <link>https://booyaka101.github.io/hass-breakage-radar/</link>
     <description>Home Assistant APIs scheduled for removal, and how many HACS custom integrations still use each one.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 17 Aug 2026 05:14:35 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 03:39:59 +0000</lastBuildDate>
     <atom:link href="https://booyaka101.github.io/hass-breakage-radar/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title>2027.9: async_update_device(merge_connections=...)</title>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3667</link>
+      <guid isPermaLink="false">breakage-radar:core-call-async-update-device-merge-connections</guid>
+      <pubDate>Tue, 18 Aug 2026 03:39:59 +0000</pubDate>
+      <category>2027.9</category>
+      <description>calls `device_registry.async_update_device` with `merge_connections` or `merge_identifiers`; these only add to the device's existing connections or identifiers. Pass the full set as `new_connections` or `new_identifiers` instead Confidence: medium.</description>
+    </item>
+    <item>
       <title>2027.8: sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3458</link>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3464</link>
       <guid isPermaLink="false">breakage-radar:core-prose-sets-disabled-by-to-deviceentrydisabler-device-enabled</guid>
       <pubDate>Fri, 14 Aug 2026 04:06:47 +0000</pubDate>
       <category>2027.8</category>
@@ -17,7 +25,7 @@
     </item>
     <item>
       <title>2027.8: sets disabled_by to None {...} disabled</title>
-      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3471</link>
+      <link>https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3477</link>
       <guid isPermaLink="false">breakage-radar:core-prose-sets-disabled-by-to-none-disabled</guid>
       <pubDate>Fri, 14 Aug 2026 04:06:47 +0000</pubDate>
       <category>2027.8</category>
@@ -478,14 +486,6 @@
       <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
       <category>2027.6</category>
       <description>that calls the MQTT publish API with `None` for qos or retain. The `qos` argument must be an `int`, and the `retain` argument must be a `bool` Confidence: medium.</description>
-    </item>
-    <item>
-      <title>2027.7: device tracker changes</title>
-      <link>https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/</link>
-      <guid isPermaLink="false">breakage-radar:blog-device-tracker-changes-2027.7</guid>
-      <pubDate>Wed, 12 Aug 2026 12:18:57 +0000</pubDate>
-      <category>2027.7</category>
-      <description>Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Frontend component updates in 2026.8 Standard event types for button event entities Devices are restricted to a single config entry and at most one sub... Confidence: info.</description>
     </item>
   </channel>
 </rss>
