@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-18T03:31:14Z",
+  "generated_utc": "2026-08-19T03:32:04Z",
   "core_ref": "dev",
   "core_version": "2026.9",
-  "core_tarball_sha256": "5eb0ed6db526f374738b8003bfee0718f5b0c8e3a89d2cdef12d8fd31368df06",
+  "core_tarball_sha256": "f9fe03c3b7bcc9e1d703274d6c348d188a7027a2c0f74746c231e6c293deb42e",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 144,
     "future": 88,
     "matchable_future": 36,
-    "core_files_scanned": 9891,
+    "core_files_scanned": 9896,
     "core_files_unparsed": 0,
     "from_core_ast": 119,
     "from_manual": 10,
@@ -597,7 +597,7 @@
       "symbol": "async_add_external_statistics(missing unit_class)",
       "message": "doesn't specify unit_class when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2890",
+      "source": "homeassistant/components/recorder/statistics.py:2894",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -613,7 +613,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2890"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2894"
     },
     {
       "id": "core-call-async-import-statistics-missing-mean-type",
@@ -621,7 +621,7 @@
       "symbol": "async_import_statistics(missing mean_type)",
       "message": "doesn't specify mean_type when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2847",
+      "source": "homeassistant/components/recorder/statistics.py:2851",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -637,7 +637,7 @@
       },
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2847"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2851"
     },
     {
       "id": "core-call-async-import-statistics-missing-unit-class",
@@ -645,7 +645,7 @@
       "symbol": "async_import_statistics(missing unit_class)",
       "message": "doesn't specify unit_class when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2853",
+      "source": "homeassistant/components/recorder/statistics.py:2857",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -661,7 +661,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2853"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2857"
     },
     {
       "id": "core-call-async-update-statistics-metadata-missing-unit-class",
@@ -2391,5 +2391,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L702"
     }
   ],
-  "blog_merged_utc": "2026-08-18T03:31:35Z"
+  "blog_merged_utc": "2026-08-19T03:32:19Z"
 }
