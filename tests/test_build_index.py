@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 
 import pytest
@@ -230,3 +231,26 @@ def test_coverage_never_claims_more_scanned_than_the_catalogue_holds():
     assert coverage["repos_scanned"] == 1
     assert coverage["repos_delisted"] == 1
     assert coverage["repos_scanned"] <= coverage["catalog_total"]
+
+
+def test_confidence_comes_from_the_rule_not_the_crawl_record():
+    """A re-rating has to reach the board without a full rescan.
+
+    ``rules_hash`` deliberately ignores confidence, so raising or lowering a
+    rule's rating never invalidates a cached scan and the stored findings keep
+    whatever they were rated when that repository was last visited.
+    """
+    rules = copy.deepcopy(RULES_DOC)
+    findings = copy.deepcopy(FINDINGS_DOC)
+    findings["repos"]["example/affected"]["findings"][0]["confidence"] = "medium"
+
+    payload = build_payload(rules, findings, CATALOG_DOC)
+    assert payload["integrations"][0]["findings"][0]["confidence"] == "high"
+
+
+def test_a_finding_whose_rule_vanished_keeps_its_own_confidence():
+    rules = copy.deepcopy(RULES_DOC)
+    rules["rules"] = [r for r in rules["rules"] if r["id"] != "legacy-device-tracker-platform"]
+    payload = build_payload(rules, copy.deepcopy(FINDINGS_DOC), CATALOG_DOC)
+
+    assert payload["integrations"][0]["findings"][0]["confidence"] == "high"
