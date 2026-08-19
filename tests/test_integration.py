@@ -63,7 +63,13 @@ def test_pages_root_holds_only_published_artifacts(repo_root):
     means a stray file can never shadow the board or the index.
     """
     published = sorted(p.name for p in (repo_root / "docs").iterdir())
-    assert published == [".nojekyll", "feed.xml", "index.html", "index.json"], published
+    assert published == [
+        ".nojekyll",
+        "feed.xml",
+        "feed.xsl",
+        "index.html",
+        "index.json",
+    ], published
 
 
 def test_the_crawl_commits_every_published_artifact(repo_root):
