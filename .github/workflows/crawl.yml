@@ -81,7 +81,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/catalog.json data/findings.json \
                   state/crawl.json state/feed.json \
-                  docs/index.json docs/index.html docs/feed.xml docs/.nojekyll
+                  docs/index.json docs/index.html docs/feed.xml docs/feed.xsl \
+                  docs/.nojekyll
 
           # The rule set is rebuilt every run, so its provenance stamps move
           # daily even when no rule did. Committing that keeps the file in

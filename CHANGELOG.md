@@ -4,6 +4,33 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+### The feed carries releases instead of bookmarks
+
+`feed.xml` published one item per rule, titled `2027.8: <symbol>` with a
+sentence of description and a link into home-assistant/core. A reader showed
+that as sixty bookmarks. Each item is now a Home Assistant release, carrying
+what that release removes and which HACS integrations still use it, and
+linking to that release's section of the board.
+
+The body carries the rule list in full plus the twenty most starred affected
+integrations. Embedding every affected integration would be 475 KB against a
+31 KB feed, four fifths of it 2027.8 alone, growing with every crawl. As
+built it is 27 925 bytes over five items, against 31 867 over sixty.
+
+An item is news when a rule joins its release. The integration count moves
+daily as the crawl widens, and dating items on that would re-notify every
+subscriber several times a day, so `pubDate` is the newest first-seen date
+among the release's rules. Nothing in `state/feed.json` had to change, so no
+existing subscription churns.
+
+Opening the feed in a browser now renders a page rather than raw XML. Feed
+readers ignore the stylesheet, so nothing about the XML changed for them.
+
+Nothing to update on a Home Assistant box: this is the published feed, not the
+integration.
+
 ## 1.6.0 — 2026-08-18
 
 ### An ignore list in the options

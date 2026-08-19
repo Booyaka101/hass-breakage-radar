@@ -433,7 +433,7 @@ def render_html(payload: dict[str, Any]) -> str:
             )
 
         sections.append(
-            f'<section class="release">'
+            f'<section class="release" id="release-{html.escape(release)}">'
             f"<h2>Home Assistant {html.escape(release)}"
             f'<span class="pill">{len(entries)} integrations</span></h2>'
             f'<ul class="rulelist">{rule_items}</ul>'
