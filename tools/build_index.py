@@ -106,6 +106,16 @@ def build_payload(
         if isinstance(entry, dict)
     }
 
+    # Confidence is a property of the rule, not of the hit. A crawl record
+    # keeps whatever it was rated when that repository was last scanned, and
+    # rules_hash deliberately ignores confidence, so a re-rating never triggers
+    # a rescan. Read it from the rule and it applies on the next build.
+    confidence_by_rule = {
+        rule["id"]: rule["confidence"]
+        for rule in rules_doc.get("rules", [])
+        if rule.get("confidence")
+    }
+
     repos: dict[str, Any] = findings_doc.get("repos", {})
     integrations: list[dict[str, Any]] = []
     clean_domains: list[str] = []
@@ -119,6 +129,11 @@ def build_payload(
         domain = record.get("domain") or catalog_entry.get("domain") or ""
         findings = [
             {key: finding[key] for key in REQUIRED_FINDING_KEYS}
+            | {
+                "confidence": confidence_by_rule.get(
+                    finding["rule_id"], finding["confidence"]
+                )
+            }
             for finding in record.get("findings", [])
         ]
 

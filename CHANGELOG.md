@@ -4,6 +4,35 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+### `DeviceRegistry.async_get_device` is rated high confidence
+
+That rule is the single biggest in the set, 609 findings across 340
+repositories, 36% of everything the crawl reports. It shipped at medium, which
+means the board's "High only" filter hid all of it.
+
+Checked before changing it: 197 findings across 100 of those repositories were
+verified against the source at the tag that was scanned. All 197 are genuine,
+none is a false positive. That sits on top of the 1.3.1 pass, which
+hand-checked 45 findings, fixed the one error class with `not_awaited` and
+re-scanned 36 repositories at zero. With no failures in 197, the upper bound
+on the false positive rate is about 1.5%.
+
+Considered and rejected: rewriting the matcher to prove the receiver is a
+`DeviceRegistry`, the way `attr_access_typed` does for `DeviceEntry`. The rule
+is already accurate, so that would have cost recall for nothing. It would also
+have needed a new matcher type, and an install running an older engine skips
+an unknown type, which for a rule that currently matches means a local scan
+reporting clean over an index finding. Widening a rule can afford a new
+matcher type; narrowing one cannot.
+
+The board now takes each finding's confidence from the rule rather than from
+the crawl record. `rules_hash` deliberately ignores confidence, so a re-rating
+never invalidates a cached scan and would otherwise have sat unpublished until
+each repository happened to be scanned again. Verified as a no-op on the
+current crawl: all 1 695 findings already agree with their rule.
+
 ## 1.6.1 — 2026-08-19
 
 ### The feed carries releases instead of bookmarks
