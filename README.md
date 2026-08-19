@@ -37,8 +37,10 @@ of **your** installed integrations are on the list and when they die.
 📊 **Board:** <https://booyaka101.github.io/hass-breakage-radar/>
 🤖 **Index:** <https://booyaka101.github.io/hass-breakage-radar/index.json> (schema 1)
 📡 **Feed:** <https://booyaka101.github.io/hass-breakage-radar/feed.xml> — one item per
-announced removal, so you can follow what Home Assistant is retiring without polling
-the index.
+Home Assistant release, carrying what that release removes and which integrations still
+use it, so you can follow along without polling the index. Paste it into a feed reader,
+or into Home Assistant's own `feedreader` integration; open it in a browser and it
+renders as a page.
 
 **In the published index right now:** 2 500 of the 3 088 HACS custom integrations
 crawled (18 unreachable), **508 affected**, **1 259 findings**, across 5 Home Assistant
