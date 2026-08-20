@@ -355,9 +355,23 @@ def _scan_card(
             f"only minified bundles installed ({skipped_minified} skipped); "
             "the source repository's verdict applies"
         )
-    elif unreadable_dirs or unparsed or skipped_minified or skipped_files:
+    elif unreadable_dirs:
         status = "unknown"
-        reason = "scan truncated: some files were skipped or unreadable"
+        reason = "directory could not be fully read"
+    elif unparsed:
+        status = "unknown"
+        reason = f"{unparsed} of {len(files)} card file(s) could not be read"
+    elif skipped_minified or skipped_files:
+        status = "unknown"
+        skipped = []
+        if skipped_minified:
+            skipped.append(f"{skipped_minified} minified")
+        if skipped_files:
+            skipped.append(f"{skipped_files} over the size caps")
+        reason = (
+            f"scan truncated: {' and '.join(skipped)} of {len(files)} "
+            "card file(s) skipped"
+        )
     else:
         status = "clean"
 
