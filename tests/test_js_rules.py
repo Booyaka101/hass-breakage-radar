@@ -325,3 +325,30 @@ def test_card_repairs_issues_carry_the_card_name_and_clear(repo_root, sample_ind
     imminent_key = (DOMAIN, "card_imminent_power-card")
     assert imminent_key in ir.created
     assert ir.created[imminent_key]["translation_key"] == "card_imminent"
+
+
+def test_a_partly_skipped_card_says_what_was_skipped(repo_root, tmp_path):
+    """A card shipping source alongside a bundle is neither fully scanned nor
+    bundle-only, and that verdict has to name its cause: the reason string is
+    what a user sees when an integration is reported unknown."""
+    from custom_components.breakage_radar.scanner import scan_cards
+
+    manual = json.loads(
+        (repo_root / "data" / "manual_rules.json").read_text(encoding="utf-8")
+    )
+    rules = [
+        {**r, "matchable": True}
+        for r in manual["rules"]
+        if (r.get("match") or {}).get("type") == "js"
+    ]
+    card = tmp_path / "community" / "mixed-card"
+    card.mkdir(parents=True)
+    (card / "card.js").write_text("export const hello = 1;\n", encoding="utf-8")
+    (card / "card.min.js").write_text("const a=1;\n", encoding="utf-8")
+
+    result = scan_cards(str(card.parent), rules, current_version="2026.9")["cards"][
+        "mixed-card"
+    ]
+    assert result["status"] == "unknown"
+    assert result["reason"] == "scan truncated: 1 minified of 2 card file(s) skipped"
+    assert result["files_scanned"] == 1 and result["skipped_minified"] == 1
