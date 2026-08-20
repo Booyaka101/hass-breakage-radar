@@ -4,7 +4,7 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
-## Unreleased
+## 1.7.0 — 2026-08-20
 
 ### Lovelace cards are now covered
 
