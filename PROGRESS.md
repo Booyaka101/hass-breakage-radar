@@ -20,7 +20,20 @@ board, and a `www/community/**` scan in the integration with card-worded
 Repairs issues. ENGINE_VERSION is 6.
 
 VERIFIED (all by hand on this machine, 2026-08-20):
-* pytest 282 passed, 3 skipped (was 232/3). New offline fixtures under
+* Ran the branch in a real Home Assistant container (docker, port 8124, the
+  v1.3.0 method; reproduce with `.cache/seed_1_7_0.py`, the docker run in its
+  header, then `.cache/ha_onboard.py`), seeded with pycupra plus three cards
+  under `www/community`: adguard-card as source, mini-graph-card as its real
+  released minified bundle, and a card that exists in no index. The local scan
+  found adguard-card at the same file and line the crawler found in its
+  repository, the unknown card got a local verdict, and the bundle-only card
+  landed clean through the index's `clean_cards` with the skip counted
+  (56 card files scanned, 1 minified skipped). The summary Repairs issue reads
+  "3 custom integrations and cards" with both cards on the dated schedule
+  (verified over the WebSocket API), the options picker offers the cards, and
+  ignoring one removed it from the report, the counts and the picker's
+  results. Diagnostics carries the full card section.
+* pytest 283 passed, 3 skipped (was 232/3). New offline fixtures under
   tests/fixtures/plugins cover the brief's worked example byte for byte, the
   comment-only negative, minified and vendor skips, and the TS-plus-bundle
   dedupe.

@@ -252,3 +252,76 @@ def test_a_type_declaration_is_not_a_read(repo_root):
     )
     ids = {f.rule_id for f in match_js_source("src/hass.ts", read, rules)}
     assert ids == {"device-registry-config-entries-field"}
+
+
+def test_card_repairs_issues_carry_the_card_name_and_clear(repo_root, sample_index):
+    import pytest
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar.const import DOMAIN
+    from custom_components.breakage_radar.repairs import async_sync_issue
+    from custom_components.breakage_radar.report import build_report
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own test harness")
+
+    manual = json.loads(
+        (repo_root / "data" / "manual_rules.json").read_text(encoding="utf-8")
+    )
+    js_rules = [
+        {**r, "matchable": True}
+        for r in manual["rules"]
+        if (r.get("match") or {}).get("type") == "js"
+    ]
+    sample_index["rules"] = js_rules
+    sample_index["integrations"] = [
+        {
+            "full_name": "someone/power-card",
+            "category": "plugin",
+            "domain": "",
+            "repo_url": "https://github.com/someone/power-card",
+            "findings": [
+                {
+                    "rule_id": "device-registry-config-entries-field",
+                    "breaks_in": "2027.8",
+                    "file": "src/power-card.js",
+                    "line": 4,
+                    "confidence": "medium",
+                }
+            ],
+        }
+    ]
+
+    ir.created.clear()
+    # Running 2027.8: the card's deadline has arrived.
+    report = build_report(
+        sample_index, {}, cards=["power-card"], current_version="2027.8"
+    )
+    assert report["broken_now_cards"] == {"power-card": "2027.8"}
+    async_sync_issue(None, report)
+    broken_key = (DOMAIN, "card_broken_power-card")
+    assert broken_key in ir.created
+    assert ir.created[broken_key]["translation_key"] == "card_broken"
+    assert (
+        ir.created[broken_key]["translation_placeholders"]["domain"] == "power-card"
+    )
+
+    # Card uninstalled: the issue clears.
+    async_sync_issue(None, build_report(sample_index, {}, current_version="2027.8"))
+    assert broken_key not in ir.created
+
+    # Inside the alert window instead: a WARNING with the card wording.
+    from datetime import date
+
+    report = build_report(
+        sample_index,
+        {},
+        cards=["power-card"],
+        current_version="2026.9",
+        today=date(2027, 7, 20),
+    )
+    assert "power-card" in report["imminent_cards"]
+    async_sync_issue(None, report)
+    imminent_key = (DOMAIN, "card_imminent_power-card")
+    assert imminent_key in ir.created
+    assert ir.created[imminent_key]["translation_key"] == "card_imminent"
