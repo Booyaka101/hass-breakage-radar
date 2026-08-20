@@ -6,6 +6,62 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+### Lovelace cards are now covered
+
+On 2026-08-19 Home Assistant [deprecated parts of the device registry
+WebSocket API](https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/):
+the device fields `config_entries`, `config_entries_subentries` and
+`primary_config_entry` are replaced by `config_entry_id` and
+`config_subentry_id` and removed in Core 2027.8, and the command
+`config/device_registry/remove_config_entry` is replaced by
+`config/device_registry/remove` and removed in Core 2027.9. That breaks
+WebSocket clients rather than Python integrations, and the population that
+breaks is HACS Lovelace cards, which nothing here looked at.
+
+Now covered end to end:
+
+* **The crawl takes the HACS plugin category** alongside integrations, from
+  `data-v2.hacs.xyz/plugin/data.json` with the same `hacs/default` fallback.
+  The catalogue is schema 2: every entry carries `category`, and plugins carry
+  `domain: null`. 728 plugin repositories on the first fetch.
+* **A tenth matcher kind, `js`**, for `.js`/`.ts`/`.mjs` source. Not a parser:
+  an anchored token match, run only after `//` and `/* */` comments are
+  stripped, and only in files that demonstrably talk to the WebSocket API
+  (`callWS`, `sendMessagePromise`, `subscribeDeviceRegistry`, or a
+  `config/device_registry` string). A card that only mentions a field in a doc
+  comment can never match, and neither can a URL path segment: the first live
+  crawl flagged `config_entries` inside the REST path
+  `"config/config_entries/flow"` on a real card, so `/` joined the anchor's
+  exclusions and that case is pinned as a test. Installs older than 1.5.0 read
+  the same index and silently skip the unknown matcher kind, as they did when
+  `attr_access_typed` shipped.
+* **Four rules carry the blog post's exact replacement mapping**:
+  `config_entries` -> `config_entry_id` (2027.8), `config_entries_subentries`
+  -> `config_subentry_id` (2027.8), `primary_config_entry` ->
+  `config_entry_id` (2027.8), and the remove command ->
+  `config/device_registry/remove` (2027.9). All four classify as `upcoming`,
+  never `broken_now`: core derives the old fields from the new ones until the
+  removal, so nothing is broken today.
+* **Minified bundles are skipped and counted**, not guessed at: a `.min.js`
+  name or any line over 5000 characters, plus `node_modules` and vendored
+  paths, are recorded as `skipped_minified` and `skipped_vendor` per
+  repository and in the index coverage, so the card coverage number stays
+  honest. Many card repositories publish only a dist bundle. A TypeScript card
+  that also ships its compiled bundle is deduplicated to one finding per rule,
+  pointing at the source file.
+* **The board gained a category facet**: integrations and cards get their own
+  counts, a filter, and a skipped-bundles tile.
+* **The integration scans `www/community/**`**, where HACS installs cards,
+  with the same js rules, and raises the same `broken_now` / `imminent` /
+  `upcoming` Repairs issues with the card name in the title. A card installed
+  only as a minified bundle falls back to the index's verdict on its source
+  repository, joined on the repository basename, and is reported as not
+  analysed rather than clean when neither side has one.
+
+`ENGINE_VERSION` is 6, so the daily crawl rescans the full catalogue.
+
+### `DeviceRegistry.async_get_device` is rated high confidence
+
 ### `DeviceRegistry.async_get_device` is rated high confidence
 
 That rule is the single biggest in the set, 609 findings across 340

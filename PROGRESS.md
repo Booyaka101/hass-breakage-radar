@@ -1,7 +1,69 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.5.0 session (2026-08-17); earlier sections are kept
+Status at the end of the v1.7.0 session (2026-08-20); earlier sections are kept
 as history, newest first.
+
+## v1.7.0 — Lovelace cards are covered (2026-08-20)
+
+Home Assistant's 2026-08-19 post deprecates the device-registry WebSocket
+fields (`config_entries`, `config_entries_subentries`, `primary_config_entry`
+-> `config_entry_id` / `config_subentry_id`, removed 2027.8) and the
+`config/device_registry/remove_config_entry` command (-> `.../remove`, removed
+2027.9). That breaks HACS Lovelace cards, a surface we did not crawl at all.
+This release adds it: the plugin catalogue (schema 2, `category` on every
+entry, plugins carry `domain: null`), a tenth matcher kind `js` (anchored
+tokens over comment-stripped `.js`/`.ts`/`.mjs`, gated on the file referencing
+the WebSocket API), four manual rules carrying the post's exact replacement
+mapping, extension dispatch in the crawler with `skipped_minified` /
+`skipped_vendor` counted per repo and in coverage, a category facet on the
+board, and a `www/community/**` scan in the integration with card-worded
+Repairs issues. ENGINE_VERSION is 6.
+
+VERIFIED (all by hand on this machine, 2026-08-20):
+* Ran the branch in a real Home Assistant container (docker, port 8124, the
+  v1.3.0 method; reproduce with `.cache/seed_1_7_0.py`, the docker run in its
+  header, then `.cache/ha_onboard.py`), seeded with pycupra plus three cards
+  under `www/community`: adguard-card as source, mini-graph-card as its real
+  released minified bundle, and a card that exists in no index. The local scan
+  found adguard-card at the same file and line the crawler found in its
+  repository, the unknown card got a local verdict, and the bundle-only card
+  landed clean through the index's `clean_cards` with the skip counted
+  (56 card files scanned, 1 minified skipped). The summary Repairs issue reads
+  "3 custom integrations and cards" with both cards on the dated schedule
+  (verified over the WebSocket API), the options picker offers the cards, and
+  ignoring one removed it from the report, the counts and the picker's
+  results. Diagnostics carries the full card section.
+* pytest 283 passed, 3 skipped (was 232/3). New offline fixtures under
+  tests/fixtures/plugins cover the brief's worked example byte for byte, the
+  comment-only negative, minified and vendor skips, and the TS-plus-bundle
+  dedupe.
+* Full plugin crawl, live: 728/728 plugin repositories scanned, 4 affected,
+  716 clean, 8 unreachable (recorded, no crash), 308 minified bundles and
+  2 963 vendored files skipped and counted. All 4 findings hand-verified as
+  genuine runtime reads of `device.config_entries` at the exact tag and line
+  (unifi-device-card, adguard-card, pi-hole-card, toothbrush-card).
+* Two false-positive classes found by the live crawl and killed before ship,
+  both pinned as regression tests: `config_entries` inside the REST path
+  "config/config_entries/flow" (ha-pluviometer-card), and a TypeScript
+  interface member that types the field but never reads it (ha-sankey-chart).
+  The token anchor now excludes `/` neighbours and an immediate `:`/`?:`.
+* Clean `pip install` in a fresh 3.12 venv; `breakage-radar-catalog
+  --force-fallback` produced a real two-category catalogue from the
+  `hacs/default` fallback (fallback path live-verified, 733 plugins).
+* Board renders 681 affected integrations + 4 affected cards, a category
+  filter, card badges, and the skipped-bundles tile.
+
+Trap hit and cleaned up: a scan slice on this box's bare Python 3.11 rescanned
+122 integrations and would have committed under-reported records (PEP 695
+files fail to parse on 3.11, see LESSONS 2026-08-08/-11) with the new
+rules_hash, which would have stopped the daily 3.14 crawl from ever
+correcting them. Those 122 records were restored from HEAD, so the daily job
+rescans every integration under ENGINE_VERSION 6 as designed. Plugin scans are
+regex-only and interpreter-safe, so the 728 plugin records stand.
+
+Also hit: two concurrent scan.py processes clobber each other's findings.json
+(whole-file checkpoints, last writer wins). Ran the remaining slices strictly
+sequentially; nothing structural changed.
 
 ## The daily crawl was silently switching off CI on open PRs (2026-08-17)
 

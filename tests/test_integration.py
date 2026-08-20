@@ -124,6 +124,7 @@ def test_worked_example_report(sample_index):
     assert report["details"] == [
         {
             "domain": "fixture_tracker",
+            "kind": "integration",
             "rule_id": "legacy-device-tracker-platform",
             "breaks_in": "2027.5",
             "file": "custom_components/fixture_tracker/device_tracker.py",

@@ -119,14 +119,26 @@ def build_payload(
     repos: dict[str, Any] = findings_doc.get("repos", {})
     integrations: list[dict[str, Any]] = []
     clean_domains: list[str] = []
+    clean_cards: list[str] = []
     unreachable: list[str] = []
     rule_hits: collections.Counter[str] = collections.Counter()
     rule_repos: collections.Counter[str] = collections.Counter()
+    by_category: dict[str, collections.Counter[str]] = {
+        "integration": collections.Counter(),
+        "plugin": collections.Counter(),
+    }
+    skipped = {"skipped_minified": 0, "skipped_vendor": 0}
 
     for full_name in sorted(repos):
         record = repos[full_name]
         catalog_entry = catalog_by_name.get(full_name, {})
         domain = record.get("domain") or catalog_entry.get("domain") or ""
+        category = record.get("category") or catalog_entry.get("category") or "integration"
+        counts = by_category.setdefault(category, collections.Counter())
+        if full_name in catalog_by_name:
+            counts["scanned"] += 1
+        for key in skipped:
+            skipped[key] += record.get(key, 0)
         findings = [
             {key: finding[key] for key in REQUIRED_FINDING_KEYS}
             | {
@@ -138,15 +150,22 @@ def build_payload(
         ]
 
         if record.get("status") in ("unreachable", "error"):
+            counts["unreachable"] += 1
             if domain:
                 unreachable.append(domain)
             continue
 
         if not findings:
+            counts["clean"] += 1
             if domain:
                 clean_domains.append(domain)
+            elif category == "plugin":
+                # Cards have no domain; the installed-card lookup joins on the
+                # repository basename, which is the directory HACS installs to.
+                clean_cards.append(full_name.rsplit("/", 1)[-1].lower())
             continue
 
+        counts["affected"] += 1
         for finding in findings:
             rule_hits[finding["rule_id"]] += 1
         for rule_id in {f["rule_id"] for f in findings}:
@@ -155,6 +174,7 @@ def build_payload(
         findings.sort(key=lambda f: (parse_version(f["breaks_in"]), f["file"], f["line"]))
         entry = {
             "full_name": full_name,
+            "category": category,
             "domain": domain,
             "domains": record.get("domains", [domain] if domain else []),
             "version": record.get("version", ""),
@@ -212,6 +232,25 @@ def build_payload(
             "findings_total": sum(len(i["findings"]) for i in integrations),
             "rules_published": len(published_rules),
             "rules_matchable": sum(1 for r in published_rules if r.get("matchable")),
+            # Bundles the scan refused to guess at, so the plugin coverage
+            # number can be read honestly: many card repos publish only a
+            # minified dist file.
+            "skipped_minified_files": skipped["skipped_minified"],
+            "skipped_vendor_files": skipped["skipped_vendor"],
+            "by_category": {
+                category: {
+                    "catalog": sum(
+                        1
+                        for entry in catalog_by_name.values()
+                        if (entry.get("category") or "integration") == category
+                    ),
+                    **{
+                        key: counts.get(key, 0)
+                        for key in ("scanned", "affected", "clean", "unreachable")
+                    },
+                }
+                for category, counts in sorted(by_category.items())
+            },
         },
         "releases": {
             release: sorted(set(domains))
@@ -222,6 +261,7 @@ def build_payload(
         "rules": published_rules,
         "integrations": integrations,
         "clean_domains": sorted(set(clean_domains)),
+        "clean_cards": sorted(set(clean_cards)),
         "unreachable_domains": sorted(set(unreachable)),
     }
 
@@ -293,13 +333,17 @@ footer {{ max-width:1180px; margin:0 auto; padding:0 20px 50px; color:var(--mute
   font-size:13px; }}
 .conf-high {{ color:var(--bad); }} .conf-medium {{ color:var(--warn); }}
 .conf-low {{ color:var(--muted); }}
+.cat {{ font-size:11px; font-weight:600; padding:1px 7px; border-radius:999px;
+  border:1px solid var(--line); color:var(--muted); margin-left:6px;
+  text-transform:uppercase; letter-spacing:.05em; }}
 </style>
 </head>
 <body>
 <header>
   <h1>Breakage Radar for Home Assistant</h1>
-  <p class="sub">Which HACS custom integrations use Home Assistant APIs that are
-  already scheduled for removal &mdash; and exactly which release removes them.
+  <p class="sub">Which HACS custom integrations and Lovelace cards use Home
+  Assistant APIs that are already scheduled for removal &mdash; and exactly
+  which release removes them.
   Generated from a real crawl of the HACS catalogue; nothing here is hand-entered
   or simulated.</p>
   <div class="stats">{stats}</div>
@@ -308,6 +352,11 @@ footer {{ max-width:1180px; margin:0 auto; padding:0 20px 50px; color:var(--mute
   <div class="controls">
     <input id="q" type="search" placeholder="Filter by repository, domain or rule&hellip;"
            aria-label="Filter">
+    <select id="cat" aria-label="Category">
+      <option value="">Integrations + cards</option>
+      <option value="integration">Integrations only</option>
+      <option value="plugin">Cards only</option>
+    </select>
     <select id="conf" aria-label="Minimum confidence">
       <option value="">All confidences</option>
       <option value="high">High only</option>
@@ -329,6 +378,7 @@ footer {{ max-width:1180px; margin:0 auto; padding:0 20px 50px; color:var(--mute
 </footer>
 <script>
 const q = document.getElementById('q'), conf = document.getElementById('conf');
+const cat = document.getElementById('cat');
 const RANK = {{high: 3, medium: 2, low: 1, info: 0}};
 function apply() {{
   const needle = q.value.trim().toLowerCase();
@@ -338,16 +388,18 @@ function apply() {{
     section.querySelectorAll('tbody tr').forEach(row => {{
       const okText = !needle || row.dataset.search.includes(needle);
       const okConf = RANK[row.dataset.conf] >= floor;
-      const visible = okText && okConf;
+      const okCat = !cat.value || row.dataset.cat === cat.value;
+      const visible = okText && okConf && okCat;
       row.hidden = !visible;
       if (visible) shown++;
     }});
     section.hidden = shown === 0;
     const counter = section.querySelector('.pill');
-    if (counter) counter.textContent = shown + ' integration' + (shown === 1 ? '' : 's');
+    if (counter) counter.textContent = shown + ' repositor' + (shown === 1 ? 'y' : 'ies');
   }});
 }}
 q.addEventListener('input', apply);
+cat.addEventListener('change', apply);
 conf.addEventListener('change', apply);
 document.querySelectorAll('table').forEach(table => {{
   table.querySelectorAll('th').forEach((th, column) => {{
@@ -381,12 +433,22 @@ def _stat(value: Any, label: str) -> str:
 
 def render_html(payload: dict[str, Any]) -> str:
     coverage = payload["coverage"]
+    by_category = coverage.get("by_category", {})
+    integration_cov = by_category.get("integration", {})
+    plugin_cov = by_category.get("plugin", {})
     stats = "".join(
         [
-            _stat(coverage["repos_affected"], "affected integrations"),
+            _stat(
+                integration_cov.get("affected", coverage["repos_affected"]),
+                "affected integrations",
+            ),
+            _stat(plugin_cov.get("affected", 0), "affected cards"),
             _stat(coverage["findings_total"], "findings"),
             _stat(coverage["repos_scanned"], "repos scanned"),
             _stat(coverage["catalog_total"], "in HACS catalogue"),
+            _stat(
+                coverage.get("skipped_minified_files", 0), "minified bundles skipped"
+            ),
             _stat(coverage["rules_matchable"], "active rules"),
             _stat(payload["core_version"], "core version"),
         ]
@@ -424,8 +486,10 @@ def render_html(payload: dict[str, Any]) -> str:
                 key=lambda c: {"high": 3, "medium": 2, "low": 1, "info": 0}.get(c, 0),
                 default="medium",
             )
+            category = integration.get("category") or "integration"
+            badge = '<span class="cat">card</span>' if category == "plugin" else ""
             search = " ".join(
-                [integration["full_name"], integration["domain"]]
+                [integration["full_name"], integration["domain"], category]
                 + [f["rule_id"] for f in hits]
             ).lower()
             detail = "".join(
@@ -436,9 +500,10 @@ def render_html(payload: dict[str, Any]) -> str:
             if len(hits) > 6:
                 detail += f'<span class="hit">&hellip; and {len(hits) - 6} more</span>'
             rows.append(
-                f'<tr data-search="{html.escape(search)}" data-conf="{html.escape(best)}">'
+                f'<tr data-search="{html.escape(search)}" data-conf="{html.escape(best)}"'
+                f' data-cat="{html.escape(category)}">'
                 f'<td><a href="{html.escape(integration["repo_url"])}">'
-                f'{html.escape(integration["full_name"])}</a></td>'
+                f'{html.escape(integration["full_name"])}</a>{badge}</td>'
                 f'<td class="mono">{html.escape(integration["domain"])}</td>'
                 f'<td class="mono">{html.escape(integration["version"])}</td>'
                 f'<td data-sort="{int(integration.get("stargazers_count") or 0)}">'
@@ -450,7 +515,8 @@ def render_html(payload: dict[str, Any]) -> str:
         sections.append(
             f'<section class="release" id="release-{html.escape(release)}">'
             f"<h2>Home Assistant {html.escape(release)}"
-            f'<span class="pill">{len(entries)} integrations</span></h2>'
+            f'<span class="pill">{len(entries)} '
+            f'{"repository" if len(entries) == 1 else "repositories"}</span></h2>'
             f'<ul class="rulelist">{rule_items}</ul>'
             "<table><thead><tr>"
             "<th>Repository</th><th>Domain</th><th>Version</th><th>Stars</th>"

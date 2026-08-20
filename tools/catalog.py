@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Fetch the catalogue of every HACS custom integration.
+"""Fetch the catalogue of HACS custom integrations and Lovelace plugins.
 
-Primary source: ``https://data-v2.hacs.xyz/integration/data.json`` -- an object
+Primary sources: ``https://data-v2.hacs.xyz/{category}/data.json`` -- an object
 keyed by numeric GitHub repository id, each value carrying ``full_name``,
-``domain``, ``last_version``, ``stargazers_count``, ``open_issues`` and
-``last_updated``.
+``last_version``, ``stargazers_count``, ``open_issues`` and ``last_updated``
+(integrations also carry ``domain``; plugins have none).
 
-Fallback: ``https://raw.githubusercontent.com/hacs/default/master/integration``
+Fallback per category: ``https://raw.githubusercontent.com/hacs/default/master/{category}``
 -- a plain JSON array of ``owner/repo`` slugs. The fallback has no domain or
 version, so the scanner discovers those from the repository itself.
 
-Writes ``data/catalog.json``.
+Writes ``data/catalog.json`` (schema 2: every entry carries ``category``).
 
 Usage::
 
@@ -36,11 +36,15 @@ from tools.common import (  # noqa: E402
     write_json,
 )
 
-PRIMARY_URL = "https://data-v2.hacs.xyz/integration/data.json"
-FALLBACK_URL = "https://raw.githubusercontent.com/hacs/default/master/integration"
+#: ``integration`` repos ship Python under ``custom_components/``;
+#: ``plugin`` repos are Lovelace cards and other frontend JavaScript.
+CATEGORIES = ("integration", "plugin")
+
+PRIMARY_URL = "https://data-v2.hacs.xyz/{category}/data.json"
+FALLBACK_URL = "https://raw.githubusercontent.com/hacs/default/master/{category}"
 
 
-def normalise_primary(payload: Any) -> list[dict[str, Any]]:
+def normalise_primary(payload: Any, category: str = "integration") -> list[dict[str, Any]]:
     """Normalise the data-v2 object into ``[{full_name, domain, last_version, ...}]``."""
     if not isinstance(payload, dict):
         raise ValueError(
@@ -57,7 +61,12 @@ def normalise_primary(payload: Any) -> list[dict[str, Any]]:
         entries.append(
             {
                 "full_name": full_name,
-                "domain": value.get("domain") or "",
+                "category": category,
+                # Plugins have no domain: null, not "", so a consumer joining
+                # on domain can tell "none exists" from "not discovered yet".
+                "domain": (value.get("domain") or "")
+                if category == "integration"
+                else None,
                 "last_version": value.get("last_version") or "",
                 "stargazers_count": int(value.get("stargazers_count") or 0),
                 "open_issues": int(value.get("open_issues") or 0),
@@ -68,7 +77,7 @@ def normalise_primary(payload: Any) -> list[dict[str, Any]]:
     return entries
 
 
-def normalise_fallback(payload: Any) -> list[dict[str, Any]]:
+def normalise_fallback(payload: Any, category: str = "integration") -> list[dict[str, Any]]:
     """Normalise the hacs/default array of ``owner/repo`` slugs."""
     if not isinstance(payload, list):
         raise ValueError(
@@ -81,7 +90,8 @@ def normalise_fallback(payload: Any) -> list[dict[str, Any]]:
         entries.append(
             {
                 "full_name": slug,
-                "domain": "",
+                "category": category,
+                "domain": "" if category == "integration" else None,
                 "last_version": "",
                 "stargazers_count": 0,
                 "open_issues": 0,
@@ -94,15 +104,19 @@ def normalise_fallback(payload: Any) -> list[dict[str, Any]]:
 
 def fetch_catalog(
     *,
-    primary_url: str = PRIMARY_URL,
-    fallback_url: str = FALLBACK_URL,
+    category: str = "integration",
+    primary_url: str | None = None,
+    fallback_url: str | None = None,
     force_fallback: bool = False,
 ) -> tuple[list[dict[str, Any]], str]:
-    """Return ``(entries, source_url)``, falling back on any primary failure."""
+    """Return ``(entries, source_url)`` for one category, falling back on any
+    primary failure."""
+    primary_url = primary_url or PRIMARY_URL.format(category=category)
+    fallback_url = fallback_url or FALLBACK_URL.format(category=category)
     if not force_fallback:
         try:
             payload = http_get_json(primary_url, timeout=120)
-            entries = normalise_primary(payload)
+            entries = normalise_primary(payload, category)
             if entries:
                 return entries, primary_url
             LOGGER.warning("%s returned zero usable entries", primary_url)
@@ -111,7 +125,7 @@ def fetch_catalog(
 
     LOGGER.info("falling back to %s", fallback_url)
     payload = http_get_json(fallback_url, timeout=120)
-    entries = normalise_fallback(payload)
+    entries = normalise_fallback(payload, category)
     if not entries:
         raise RuntimeError(
             f"both {primary_url} and {fallback_url} returned an unusable catalogue"
@@ -125,30 +139,43 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--force-fallback",
         action="store_true",
-        help="skip data-v2.hacs.xyz and use the hacs/default list",
+        help="skip data-v2.hacs.xyz and use the hacs/default lists",
     )
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
     setup_logging(args.verbose)
 
-    try:
-        entries, source = fetch_catalog(force_fallback=args.force_fallback)
-    except Exception as err:
-        LOGGER.error("could not build a catalogue: %s", err)
-        return 1
+    entries: list[dict[str, Any]] = []
+    sources: dict[str, str] = {}
+    for category in CATEGORIES:
+        try:
+            found, source = fetch_catalog(
+                category=category, force_fallback=args.force_fallback
+            )
+        except Exception as err:
+            LOGGER.error("could not build the %s catalogue: %s", category, err)
+            return 1
+        entries.extend(found)
+        sources[category] = source
 
     entries.sort(key=lambda e: e["full_name"].lower())
+    by_category = {
+        category: sum(1 for e in entries if e["category"] == category)
+        for category in CATEGORIES
+    }
     with_domain = sum(1 for e in entries if e["domain"])
     with_version = sum(1 for e in entries if e["last_version"])
 
     write_json(
         args.output,
         {
-            "schema": 1,
+            "schema": 2,
             "generated_utc": utc_now_iso(),
-            "source": source,
+            "source": sources["integration"],
+            "sources": sources,
             "counts": {
                 "total": len(entries),
+                **by_category,
                 "with_domain": with_domain,
                 "with_last_version": with_version,
             },
@@ -156,10 +183,12 @@ def main(argv: list[str] | None = None) -> int:
         },
     )
     LOGGER.info(
-        "wrote %s: %d integrations from %s (%d with a domain, %d with a version)",
+        "wrote %s: %d repositories (%d integrations, %d plugins; "
+        "%d with a domain, %d with a version)",
         args.output,
         len(entries),
-        source,
+        by_category["integration"],
+        by_category["plugin"],
         with_domain,
         with_version,
     )
