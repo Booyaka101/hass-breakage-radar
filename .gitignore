@@ -28,3 +28,6 @@ htmlcov/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Test fixtures are real inputs, not build output.
+!tests/fixtures/plugins/**

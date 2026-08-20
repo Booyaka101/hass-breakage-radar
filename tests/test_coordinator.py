@@ -21,7 +21,12 @@ class FakeConfig:
         self._dir = str(components_dir)
 
     def path(self, *parts):
-        return self._dir
+        # The real hass.config.path resolves relative to the config dir; here
+        # only custom_components exists, so www/community resolves to a path
+        # that does not, the way a box with no cards installed looks.
+        if parts and parts[0] == "custom_components":
+            return self._dir
+        return self._dir + "-" + "-".join(p.replace("/", "-") for p in parts)
 
 
 class FakeHass:

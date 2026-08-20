@@ -51,10 +51,14 @@ from tools.common import (  # noqa: E402
 )
 from tools.rules_engine import (  # noqa: E402
     ENGINE_VERSION,
+    JS_SUFFIXES,
     Finding,
     Rule,
     ScanStats,
+    dedupe_js_findings,
     load_rules,
+    looks_minified_js,
+    match_js_source,
     match_source,
     matchable_rules,
 )
@@ -124,6 +128,45 @@ def iter_component_python(body: bytes) -> Iterator[tuple[str, bytes]]:
             yield path, handle.read()
 
 
+def iter_javascript(
+    body: bytes, skipped: dict[str, int], *, whole_repo: bool
+) -> Iterator[tuple[str, str]]:
+    """Yield ``(path, text)`` for every scannable ``.js``/``.ts``/``.mjs``.
+
+    Plugin repositories keep their card anywhere (``src/``, ``dist/``, the
+    root), so ``whole_repo`` walks everything; integration repositories only
+    ship frontend files inside ``custom_components/``. Vendored paths and
+    minified bundles are skipped and counted in ``skipped``, because a repo
+    that publishes only a dist bundle must show up as *not scanned* rather
+    than as clean.
+    """
+    with tarfile.open(fileobj=io.BytesIO(body), mode="r:gz") as archive:
+        for member in archive:
+            if not member.isfile() or member.size > 4 * 1024 * 1024:
+                continue
+            _, _, relative = member.name.partition("/")
+            if whole_repo:
+                path = relative
+            else:
+                index = relative.find("custom_components/")
+                if index == -1:
+                    continue
+                path = relative[index:]
+            if not path.endswith(JS_SUFFIXES) or path.endswith(".d.ts"):
+                continue
+            if any(marker in "/" + path for marker in VENDOR_MARKERS):
+                skipped["skipped_vendor"] += 1
+                continue
+            handle = archive.extractfile(member)
+            if handle is None:
+                continue
+            text = handle.read().decode("utf-8", "replace")
+            if looks_minified_js(path, text):
+                skipped["skipped_minified"] += 1
+                continue
+            yield path, text
+
+
 def iter_manifest_domains(body: bytes) -> list[str]:
     """Domains declared by ``custom_components/*/manifest.json`` in the tarball."""
     domains: list[str] = []
@@ -181,14 +224,18 @@ def scan_repo(
     failure is captured in ``record["status"]``.
     """
     full_name = entry["full_name"]
+    category = entry.get("category") or "integration"
     record: dict[str, Any] = {
         "domain": entry.get("domain") or "",
+        "category": category,
         "version": entry.get("last_version") or "",
         "ref": "",
         "status": "scanned",
         "scanned_utc": utc_now_iso(),
         "files_scanned": 0,
         "syntax_errors": 0,
+        "skipped_minified": 0,
+        "skipped_vendor": 0,
         "stargazers_count": entry.get("stargazers_count", 0),
         "findings": [],
     }
@@ -207,13 +254,27 @@ def scan_repo(
         return record, []
 
     record["ref"] = ref
+    skipped = {"skipped_minified": 0, "skipped_vendor": 0}
 
     try:
-        domains = iter_manifest_domains(body)
         stats = ScanStats()
         findings: list[Finding] = []
-        for path, source in iter_component_python(body):
-            findings.extend(match_source(path, source, rules, stats))
+        if category == "plugin":
+            domains: list[str] = []
+            js_findings: list[Finding] = []
+            for path, text in iter_javascript(body, skipped, whole_repo=True):
+                js_findings.extend(match_js_source(path, text, rules, stats))
+            findings = dedupe_js_findings(js_findings)
+        else:
+            domains = iter_manifest_domains(body)
+            for path, source in iter_component_python(body):
+                findings.extend(match_source(path, source, rules, stats))
+            # Frontend modules shipped inside custom_components/ break on the
+            # WebSocket rules the same way a standalone card does.
+            js_findings = []
+            for path, text in iter_javascript(body, skipped, whole_repo=False):
+                js_findings.extend(match_js_source(path, text, rules, stats))
+            findings.extend(dedupe_js_findings(js_findings))
     except tarfile.TarError as err:
         record["status"] = "error"
         record["error"] = f"bad tarball: {err}"[:200]
@@ -225,11 +286,13 @@ def scan_repo(
         record["domains"] = domains
         if not record["domain"]:
             record["domain"] = domains[0]
-    elif stats.files_scanned == 0:
+    elif category == "integration" and stats.files_scanned == 0:
         record["status"] = "no_custom_components"
 
     record["files_scanned"] = stats.files_scanned
     record["syntax_errors"] = len(stats.syntax_errors)
+    record["skipped_minified"] = skipped["skipped_minified"]
+    record["skipped_vendor"] = skipped["skipped_vendor"]
     record["findings"] = [f.to_dict() for f in findings]
     return record, findings
 
@@ -376,6 +439,8 @@ def main(argv: list[str] | None = None) -> int:
         "error": 0,
         "with_findings": 0,
         "findings": 0,
+        "skipped_minified": 0,
+        "skipped_vendor": 0,
     }
     stopped_early = False
 
@@ -396,6 +461,8 @@ def main(argv: list[str] | None = None) -> int:
         if findings:
             counters["with_findings"] += 1
             counters["findings"] += len(findings)
+        counters["skipped_minified"] += record.get("skipped_minified", 0)
+        counters["skipped_vendor"] += record.get("skipped_vendor", 0)
 
         repos[full_name] = record
         state[full_name] = {

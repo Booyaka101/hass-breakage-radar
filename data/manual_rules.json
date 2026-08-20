@@ -173,6 +173,70 @@
       }
     },
     {
+      "id": "device-registry-config-entries-field",
+      "kind": "js",
+      "symbol": "config_entries (device registry WebSocket field)",
+      "message": "Reads the config_entries field of a device registry WebSocket result. 'Old fields: config_entries, config_entries_subentries, and primary_config_entry. Replacements: config_entry_id and config_subentry_id. Removal: Home Assistant Core 2027.8.' Until then the old field is derived from the new one, so nothing is broken today.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
+      "origin": "manual",
+      "confidence": "medium",
+      "surface": "websocket",
+      "replacement": "config_entry_id",
+      "match": {
+        "type": "js",
+        "token": "config_entries"
+      }
+    },
+    {
+      "id": "device-registry-config-entries-subentries-field",
+      "kind": "js",
+      "symbol": "config_entries_subentries (device registry WebSocket field)",
+      "message": "Reads the config_entries_subentries field of a device registry WebSocket result, removed in Home Assistant Core 2027.8. Use config_subentry_id (and config_entry_id) instead; the old field is derived from them during the deprecation period.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "surface": "websocket",
+      "replacement": "config_subentry_id",
+      "match": {
+        "type": "js",
+        "token": "config_entries_subentries"
+      }
+    },
+    {
+      "id": "device-registry-primary-config-entry-field",
+      "kind": "js",
+      "symbol": "primary_config_entry (device registry WebSocket field)",
+      "message": "Reads the primary_config_entry field of a device registry WebSocket result, removed in Home Assistant Core 2027.8. Use config_entry_id instead; a device now belongs to exactly one config entry, so they are the same value.",
+      "breaks_in": "2027.8",
+      "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "surface": "websocket",
+      "replacement": "config_entry_id",
+      "match": {
+        "type": "js",
+        "token": "primary_config_entry"
+      }
+    },
+    {
+      "id": "device-registry-remove-config-entry-command",
+      "kind": "js",
+      "symbol": "config/device_registry/remove_config_entry (WebSocket command)",
+      "message": "Calls the config/device_registry/remove_config_entry WebSocket command. 'Old command: config/device_registry/remove_config_entry ... Replacement: config/device_registry/remove ... Removal: Home Assistant Core 2027.9.' The replacement takes only device_id.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "surface": "websocket",
+      "replacement": "config/device_registry/remove",
+      "match": {
+        "type": "js",
+        "token": "config/device_registry/remove_config_entry"
+      }
+    },
+    {
       "id": "device-entry-config-entries",
       "kind": "attr",
       "symbol": "DeviceEntry.config_entries",

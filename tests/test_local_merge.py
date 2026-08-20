@@ -41,6 +41,7 @@ def test_true_positive_not_in_index_gets_a_local_finding(
     assert report["details"] == [
         {
             "domain": "fixture_tracker",
+            "kind": "integration",
             "rule_id": "legacy-device-tracker-platform",
             "breaks_in": "2027.5",
             "file": "custom_components/fixture_tracker/device_tracker.py",

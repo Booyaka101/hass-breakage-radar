@@ -61,8 +61,8 @@ usually ahead of these figures — `coverage` in `index.json` is always authorit
 
 | | What it is | Where it runs |
 |---|---|---|
-| **A. The crawler** | `tools/` — extracts rules from Home Assistant core, fetches the HACS catalogue, scans each repository's `custom_components/**/*.py`, publishes `docs/index.json` + a static board | GitHub Actions, daily |
-| **B. The integration** | `custom_components/breakage_radar/` — downloads the index every 12 h, matches it against what is installed, **runs the same matchers over your own installed source**, exposes one sensor and raises a repairs issue | Your Home Assistant box |
+| **A. The crawler** | `tools/` — extracts rules from Home Assistant core, fetches the HACS integration **and plugin** catalogues, scans each repository's `custom_components/**/*.py` and card JavaScript, publishes `docs/index.json` + a static board | GitHub Actions, daily |
+| **B. The integration** | `custom_components/breakage_radar/` — downloads the index every 12 h, matches it against what is installed, **runs the same matchers over your own installed source and cards**, exposes one sensor and raises a repairs issue | Your Home Assistant box |
 
 No server, no account, no API key, no third-party runtime dependency. The integration's
 `manifest.json` declares `"requirements": []`.
@@ -406,6 +406,7 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
 | `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
 | `call_hass_argument` | a call to one of `names` that passes `hass` — for `@deprecated_hass_argument`, where the *argument* is deprecated, not the function |
+| `js` | an anchored `token` in `.js`/`.ts`/`.mjs` source, comments stripped, only in files that reference the WebSocket API. Built for the device registry WebSocket deprecations, which break Lovelace cards rather than Python integrations |
 
 Any matcher can be narrowed with `files` (exact basenames); `attr` matchers can also
 require `in_class_base`.
@@ -485,6 +486,42 @@ list core dispatches on in `homeassistant/components/device_tracker/legacy.py`:
 "async_setup_scanner",
 "setup_scanner",
 ```
+
+---
+
+## Lovelace cards are covered too
+
+On 2026-08-19 Home Assistant [deprecated parts of the device registry WebSocket
+API](https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/).
+The device fields `config_entries`, `config_entries_subentries` and
+`primary_config_entry` are replaced by `config_entry_id` and
+`config_subentry_id` (removed in Core 2027.8), and the command
+`config/device_registry/remove_config_entry` is replaced by
+`config/device_registry/remove` (removed in Core 2027.9). Nothing is broken
+today, since core derives the old fields from the new ones until then. What
+breaks on the deadline is not Python: it is the HACS **Lovelace cards** that
+read device registry results over the WebSocket.
+
+So the crawl now takes the HACS plugin category too, and matches `.js`, `.ts`
+and `.mjs` source with anchored token rules: comments are stripped first, and a
+rule only fires in a file that also references the WebSocket API (`callWS`,
+`sendMessagePromise`, `subscribeDeviceRegistry`, or a `config/device_registry`
+string). A card whose only mention of a field is in a doc comment produces
+nothing.
+
+**How skipped bundles are counted.** Many card repositories publish only a
+compiled bundle. A `.min.js` file, or any file with a line over 5000
+characters, is never matched. It is counted as `skipped_minified`, and
+`node_modules`/vendored paths as `skipped_vendor`, per repository and in the
+index's `coverage`. The board shows the total, so "0 findings" on a repo whose
+only file was skipped reads as *not analysed*, never as clean. A TypeScript
+card that ships both its source and its bundle is deduplicated to one finding
+per rule, pointing at the source file.
+
+On your own box the integration scans `www/community/**`, where HACS installs
+cards, with the same rules, and raises the same Repairs issues with the card
+name in the title. A card installed only as a minified bundle falls back to
+the index's verdict on its source repository.
 
 ---
 
@@ -636,7 +673,12 @@ real package is used instead.
   year, but it is applied locally, not fetched — a release moved for a one-off reason
   would shift the window by a few days. Whether a deadline has already *passed* is
   decided by version comparison alone, so that half can never be wrong.
-* **Integrations only.** HACS plugins, themes and AppDaemon apps are out of scope for v1.
+* **Card matching is text-level, not parsed.** The `js` rules anchor on the
+  deprecated token, strip comments first, and require the file to reference the
+  WebSocket API, but there is no JavaScript parser behind them. A minified
+  bundle is never guessed at: it is skipped and counted instead.
+* **Themes and AppDaemon apps are out of scope.** Integrations and Lovelace
+  plugins are covered; the other HACS categories are not.
 * **No automatic fixing.** v1 tells you what breaks and when; it does not rewrite code.
 
 ---

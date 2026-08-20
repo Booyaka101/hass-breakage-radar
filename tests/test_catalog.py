@@ -51,6 +51,7 @@ def test_normalise_primary_keeps_the_verified_shape():
     elk = next(e for e in entries if e["full_name"] == "dave-code-ruiz/elkbledom")
     assert elk == {
         "full_name": "dave-code-ruiz/elkbledom",
+        "category": "integration",
         "domain": "elkbledom",
         "last_version": "1.6.5",
         "stargazers_count": 198,
@@ -68,6 +69,14 @@ def test_normalise_fallback_drops_non_slugs():
         "0xAHA/airtouch4_advanced",
     ]
     assert all(e["domain"] == "" and e["last_version"] == "" for e in entries)
+
+
+def test_plugin_entries_carry_category_and_null_domain():
+    entries = normalise_primary(PRIMARY_SAMPLE, "plugin")
+    assert len(entries) == 2
+    assert all(e["category"] == "plugin" and e["domain"] is None for e in entries)
+    fallback = normalise_fallback(FALLBACK_SAMPLE, "plugin")
+    assert all(e["category"] == "plugin" and e["domain"] is None for e in fallback)
 
 
 def test_normalise_rejects_the_wrong_container_type():
@@ -127,7 +136,10 @@ def test_cli_writes_a_sorted_catalogue(monkeypatch, tmp_path):
     output = tmp_path / "catalog.json"
     assert main(["--output", str(output)]) == 0
     payload = json.loads(output.read_text(encoding="utf-8"))
-    assert payload["counts"]["total"] == 2
+    assert payload["schema"] == 2
+    assert payload["counts"]["total"] == 4, "both categories get the sample"
+    assert payload["counts"]["integration"] == 2
+    assert payload["counts"]["plugin"] == 2
     names = [e["full_name"] for e in payload["integrations"]]
     assert names == sorted(names, key=str.lower)
 
@@ -140,3 +152,5 @@ def test_shipped_catalogue_has_more_than_100_entries(repo_root):
     payload = json.loads(path.read_text(encoding="utf-8"))
     assert payload["counts"]["total"] > 100
     assert payload["source"].startswith("https://")
+    if payload.get("schema", 1) >= 2:
+        assert payload["counts"]["plugin"] > 0

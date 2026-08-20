@@ -110,6 +110,24 @@ def test_coverage_counts(payload):
         "findings_total": 1,
         "rules_published": 1,
         "rules_matchable": 1,
+        "skipped_minified_files": 0,
+        "skipped_vendor_files": 0,
+        "by_category": {
+            "integration": {
+                "catalog": 3,
+                "scanned": 3,
+                "affected": 1,
+                "clean": 1,
+                "unreachable": 1,
+            },
+            "plugin": {
+                "catalog": 0,
+                "scanned": 0,
+                "affected": 0,
+                "clean": 0,
+                "unreachable": 0,
+            },
+        },
     }
 
 
