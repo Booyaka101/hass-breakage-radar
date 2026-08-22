@@ -55,6 +55,12 @@ Every number comes from a real crawl; nothing is seeded or simulated. The daily 
 keeps these moving — `coverage` in `index.json` is always authoritative.
 
 <p align="center">
+  <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/board.png"
+       alt="The public board: a count of integrations breaking within 90 days, then each Home Assistant release with its estimated date and the time remaining"
+       width="760">
+</p>
+
+<p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/schedule-summary.png"
        alt="A Home Assistant repair notification listing which custom integrations break in which release, with dates"
        width="760">
