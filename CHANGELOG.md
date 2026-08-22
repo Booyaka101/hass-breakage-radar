@@ -4,6 +4,48 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.8.0 — 2026-08-22
+
+### The board answers when, not just what (#3)
+
+The second half of [#3](https://github.com/Booyaka101/hass-breakage-radar/issues/3):
+1.3.0 gave the Home Assistant integration a dated schedule, but the public
+board still grouped everything under bare version headings with no calendar
+date anywhere. Now:
+
+* **Three sections instead of one flat list**: anything already past its
+  release date, then **Breaking within 90 days**, then everything later
+  collapsed behind a `Later (633 repositories)` disclosure. A release exactly
+  90 days out counts as within the window, and past releases sort newest
+  first. An empty section is not rendered.
+* **Every release heading carries its date and the time remaining**:
+  `Home Assistant 2026.10 - 7 October 2026 - in 46 days`. The date is the
+  first Wednesday of the month, Home Assistant's published schedule, computed
+  by the same `release_estimated_date` the integration has used since 1.2.1
+  rather than a second copy. The function now lives in `schedule.py`, vendored
+  into both halves the way `rules_engine.py` is and pinned byte-identical by
+  a test.
+* **A hero line under the tiles**: "99 integrations break within the next
+  90 days". It counts each repository once, by its earliest deadline, as does
+  the `Later` count; the per-release tables still list a repository under
+  every release it has a finding in, so the tables sum to more than the
+  headline on purpose.
+* **`index.json` carries the dates as data**: `release_date` (ISO) and
+  `days_until` on every affected entry, and a top-level `release_dates` map
+  per release, all computed against `generated_utc` so anyone recomputing
+  gets the same integers. The index stays schema 1: the fields are additive,
+  like `upstream` in 1.4.0, because every installed copy of the integration
+  rejects any other schema number outright.
+* **Feed item titles carry the date too**: `Home Assistant 2026.10 -
+  7 October 2026`. The date never moves for a given release, so titles stay
+  stable in readers.
+* A release label that does not map to a date is listed under its own
+  heading with a note, never dropped. Same rule as everywhere else here:
+  nothing silently disappears.
+
+Nothing changed in the integration beyond the `schedule.py` refactor, which
+is behaviour-neutral and covered by the existing tests.
+
 ## 1.7.0 — 2026-08-20
 
 ### Lovelace cards are now covered

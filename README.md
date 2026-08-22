@@ -34,20 +34,25 @@ source, crawls every custom integration in the HACS catalogue for them, publishe
 result as a public index, and ships a Home Assistant integration that tells you which
 of **your** installed integrations are on the list and when they die.
 
-📊 **Board:** <https://booyaka101.github.io/hass-breakage-radar/>
-🤖 **Index:** <https://booyaka101.github.io/hass-breakage-radar/index.json> (schema 1)
+📊 **Board:** <https://booyaka101.github.io/hass-breakage-radar/> — what breaks
+*when*: anything already past its release date first, then what breaks within
+90 days, with everything later collapsed below. Every release heading carries
+its estimated date ("Home Assistant 2026.10 - 7 October 2026 - in 46 days",
+first Wednesday of the month per Home Assistant's published schedule).
+🤖 **Index:** <https://booyaka101.github.io/hass-breakage-radar/index.json> (schema 1,
+with `release_date` and `days_until` on every entry and release)
 📡 **Feed:** <https://booyaka101.github.io/hass-breakage-radar/feed.xml> — one item per
 Home Assistant release, carrying what that release removes and which integrations still
 use it, so you can follow along without polling the index. Paste it into a feed reader,
 or into Home Assistant's own `feedreader` integration; open it in a browser and it
 renders as a page.
 
-**In the published index right now:** 2 500 of the 3 088 HACS custom integrations
-crawled (18 unreachable), **508 affected**, **1 259 findings**, across 5 Home Assistant
-releases — 7 in 2026.10, 71 in 2026.11, 9 in 2027.5, 28 in 2027.7 and 418 in 2027.8
-(counted by distinct integration domain). Every number comes from a real crawl; nothing
-is seeded or simulated. The daily job widens coverage on its own, so the index is
-usually ahead of these figures — `coverage` in `index.json` is always authoritative.
+**In the published index right now:** all 3 905 HACS repositories crawled
+(3 157 integrations and 748 Lovelace plugins, 21 unreachable), **732 affected**,
+**1 892 findings**, across 5 Home Assistant releases — 11 in 2026.10, 88 in 2026.11,
+12 in 2027.5, 30 in 2027.7 and 626 in 2027.8 (counted by distinct integration domain).
+Every number comes from a real crawl; nothing is seeded or simulated. The daily job
+keeps these moving — `coverage` in `index.json` is always authoritative.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/schedule-summary.png"
@@ -78,6 +83,7 @@ Inside `custom_components/breakage_radar/`, one job per module:
 | `report.py` | decide what index + local scan add up to, and at which level |
 | `repairs.py`, `sensor.py` | how that surfaces in Home Assistant |
 | `rules_engine.py` | the AST matchers, vendored byte-for-byte from `tools/` |
+| `schedule.py` | release label → estimated date, vendored the same way |
 
 `discovery.py`, `scanner.py` and `report.py` import no `homeassistant` symbols at all,
 which is why the exact code that runs on your box is unit-tested without a Home
@@ -534,6 +540,7 @@ the index's verdict on its source repository.
   "core_version": "2026.9",
   "coverage": { "catalog_total": 3088, "repos_scanned": 900, "repos_affected": 190, ... },
   "releases": { "2027.5": ["some_tracker"], "2027.8": ["another"] },
+  "release_dates": { "2027.5": { "release_date": "2027-05-05", "days_until": 256 }, ... },
   "rules": [
     { "id": "legacy-device-tracker-platform", "breaks_in": "2027.5",
       "message": "...", "source": "https://developers.home-assistant.io/blog/...",
@@ -546,6 +553,7 @@ the index's verdict on its source repository.
   "integrations": [
     { "full_name": "someone/some-tracker", "domain": "some_tracker",
       "version": "1.4.0", "stargazers_count": 42, "earliest_breaks_in": "2027.5",
+      "release_date": "2027-05-05", "days_until": 256,
       "findings": [ { "rule_id": "...", "breaks_in": "2027.5",
                       "file": "...", "line": 12, "confidence": "high" } ] }
   ],

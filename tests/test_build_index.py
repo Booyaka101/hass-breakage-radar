@@ -272,3 +272,167 @@ def test_a_finding_whose_rule_vanished_keeps_its_own_confidence():
     payload = build_payload(rules, copy.deepcopy(FINDINGS_DOC), CATALOG_DOC)
 
     assert payload["integrations"][0]["findings"][0]["confidence"] == "high"
+
+
+# --------------------------------------------------------------------------- #
+# release dates on the index and the three-way split on the board (#3)
+# --------------------------------------------------------------------------- #
+
+NOW = "2026-08-22T03:39:23Z"
+
+
+def _docs(repos):
+    """One affected repo per ``(name, releases)`` pair, one rule per release."""
+    releases = sorted({r for _, rs in repos for r in rs})
+    rules = {
+        "schema": 1,
+        "core_version": "2026.9",
+        "rules": [
+            {
+                "id": f"rule-{release}",
+                "kind": "call",
+                "symbol": f"symbol_{i}",
+                "message": "m",
+                "breaks_in": release,
+                "source": "https://example.test/rule",
+                "origin": "manual",
+                "confidence": "high",
+                "matchable": True,
+            }
+            for i, release in enumerate(releases)
+        ],
+    }
+    findings = {
+        "schema": 1,
+        "repos": {
+            name: {
+                "domain": name.split("/")[1],
+                "version": "1.0.0",
+                "status": "scanned",
+                "findings": [
+                    {
+                        "rule_id": f"rule-{release}",
+                        "breaks_in": release,
+                        "file": "x.py",
+                        "line": 1,
+                        "confidence": "high",
+                    }
+                    for release in releases_hit
+                ],
+            }
+            for name, releases_hit in repos
+        },
+    }
+    catalog = {
+        "schema": 1,
+        "source": "https://example.test/catalog",
+        "integrations": [
+            {"full_name": name, "domain": name.split("/")[1], "stargazers_count": 1}
+            for name, _ in repos
+        ],
+    }
+    return rules, findings, catalog
+
+
+def _payload(repos, now=NOW):
+    return build_payload(*_docs(repos), now=now)
+
+
+THREE_WAY = [
+    ("example/past", ["2026.8"]),
+    ("example/near", ["2026.10"]),
+    ("example/far", ["2027.8"]),
+]
+
+
+def test_release_dates_are_reproducible_from_generated_utc():
+    payload = _payload(THREE_WAY)
+    assert payload["generated_utc"] == NOW
+
+    by_name = {i["full_name"]: i for i in payload["integrations"]}
+    assert by_name["example/past"]["release_date"] == "2026-08-05"
+    assert by_name["example/past"]["days_until"] == -17
+    assert by_name["example/near"]["release_date"] == "2026-10-07"
+    assert by_name["example/near"]["days_until"] == 46
+    assert by_name["example/far"]["release_date"] == "2027-08-04"
+    assert by_name["example/far"]["days_until"] == 347
+
+    assert payload["release_dates"] == {
+        "2026.8": {"release_date": "2026-08-05", "days_until": -17},
+        "2026.10": {"release_date": "2026-10-07", "days_until": 46},
+        "2027.8": {"release_date": "2027-08-04", "days_until": 347},
+    }
+
+
+def test_board_splits_into_three_ordered_buckets():
+    board = render_html(_payload(THREE_WAY))
+    broken = board.index('id="already-broken"')
+    soon = board.index('id="within-90-days"')
+    later = board.index('id="later"')
+    assert broken < soon < later
+    # Collapsed by default: no open attribute on the details.
+    assert '<details class="bucket" id="later"><summary>Later ' in board
+    assert "Later (1 repository)" in board
+
+
+def test_release_headings_carry_version_date_and_remaining_time():
+    board = render_html(_payload(THREE_WAY))
+    assert "Home Assistant 2026.10 - 7 October 2026 - in 46 days" in board
+    assert "Home Assistant 2026.8 - 5 August 2026 - 17 days ago" in board
+    assert "Home Assistant 2027.8 - 4 August 2027 - in 347 days" in board
+
+
+def test_the_hero_and_later_counts_use_the_earliest_deadline_per_repo():
+    """A repo breaking in 2026.10 and again in 2027.8 is one repo breaking
+    within 90 days -- summing the per-release table rows would count it twice."""
+    board = render_html(
+        _payload(
+            [
+                ("example/both", ["2026.10", "2027.8"]),
+                ("example/late", ["2027.8"]),
+            ]
+        )
+    )
+    assert "<b>1</b> integration breaks within the next 90 days" in board
+    assert "Later (1 repository)" in board
+    # The 2027.8 table itself still lists both repos.
+    assert '<span class="pill">2 repositories</span>' in board
+
+
+def test_an_empty_bucket_renders_no_heading():
+    board = render_html(_payload([("example/far", ["2027.8"])]))
+    assert 'id="already-broken"' not in board
+    assert 'id="within-90-days"' not in board
+    assert 'id="later"' in board
+
+
+def test_a_release_exactly_90_days_out_counts_as_within_the_window():
+    board = render_html(
+        _payload([("example/edge", ["2026.12"])], now="2026-09-03T00:00:00Z")
+    )
+    assert 'id="within-90-days"' in board
+    assert 'id="later"' not in board
+    assert "Home Assistant 2026.12 - 2 December 2026 - in 90 days" in board
+    assert "<b>1</b> integration breaks within the next 90 days" in board
+
+
+def test_already_broken_sorts_newest_broken_first():
+    board = render_html(
+        _payload([("example/old", ["2026.5"]), ("example/new", ["2026.8"])])
+    )
+    assert board.index("Home Assistant 2026.8") < board.index("Home Assistant 2026.5")
+
+
+def test_an_unparseable_release_is_listed_with_a_note_not_dropped():
+    """Same rule as everywhere else: nothing silently disappears."""
+    payload = _payload([("example/odd", ["unknown"]), ("example/near", ["2026.10"])])
+    by_name = {i["full_name"]: i for i in payload["integrations"]}
+    assert by_name["example/odd"]["release_date"] is None
+    assert by_name["example/odd"]["days_until"] is None
+
+    board = render_html(payload)
+    assert 'id="unscheduled"' in board
+    assert "did not map to a calendar date" in board
+    assert "Home Assistant unknown - release date unknown" in board
+    # And it never leaks into the dated counts.
+    assert "<b>1</b> integration breaks within the next 90 days" in board

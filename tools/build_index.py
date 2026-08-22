@@ -22,6 +22,7 @@ import argparse
 import collections
 import html
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -41,6 +42,7 @@ from tools.common import (  # noqa: E402
 from tools.feed import build as build_feed  # noqa: E402
 from tools.feed import update_first_seen
 from tools.rules_engine import is_future, parse_version  # noqa: E402
+from tools.schedule import days_until, long_date, release_estimated_date  # noqa: E402
 
 SCHEMA_VERSION = 1
 INDEX_URL = "https://booyaka101.github.io/hass-breakage-radar/index.json"
@@ -88,11 +90,29 @@ def validate_index(payload: dict[str, Any]) -> list[str]:
     return problems
 
 
+def _as_of(generated_utc: str) -> date:
+    """The UTC date the index was generated, which every days_until counts
+    from -- anyone recomputing from ``generated_utc`` gets the same integers."""
+    return date.fromisoformat(generated_utc[:10])
+
+
+def _dated(release: str, today: date) -> dict[str, Any]:
+    when = release_estimated_date(release)
+    return {
+        "release_date": when.isoformat() if when else None,
+        "days_until": (when - today).days if when else None,
+    }
+
+
 def build_payload(
     rules_doc: dict[str, Any],
     findings_doc: dict[str, Any],
     catalog_doc: dict[str, Any],
+    *,
+    now: str | None = None,
 ) -> dict[str, Any]:
+    generated = now or utc_now_iso()
+    today = _as_of(generated)
     current = rules_doc.get("core_version", "2026.9")
     future_rules = [
         rule
@@ -185,6 +205,7 @@ def build_payload(
             "repo_url": f"https://github.com/{full_name}",
             "scanned_utc": record.get("scanned_utc", ""),
             "earliest_breaks_in": findings[0]["breaks_in"],
+            **_dated(findings[0]["breaks_in"], today),
             "findings": findings,
         }
         if record.get("upstream"):
@@ -214,7 +235,7 @@ def build_payload(
 
     return {
         "schema": SCHEMA_VERSION,
-        "generated_utc": utc_now_iso(),
+        "generated_utc": generated,
         "index_url": INDEX_URL,
         "core_version": current,
         "core_tarball_sha256": rules_doc.get("core_tarball_sha256", ""),
@@ -257,6 +278,10 @@ def build_payload(
             for release, domains in sorted(
                 by_release.items(), key=lambda kv: parse_version(kv[0])
             )
+        },
+        "release_dates": {
+            release: _dated(release, today)
+            for release in sorted(by_release, key=parse_version)
         },
         "rules": published_rules,
         "integrations": integrations,
@@ -336,6 +361,16 @@ footer {{ max-width:1180px; margin:0 auto; padding:0 20px 50px; color:var(--mute
 .cat {{ font-size:11px; font-weight:600; padding:1px 7px; border-radius:999px;
   border:1px solid var(--line); color:var(--muted); margin-left:6px;
   text-transform:uppercase; letter-spacing:.05em; }}
+.hero {{ margin:-8px 0 0; font-size:16px; }}
+.hero b {{ color:var(--warn); font-size:18px; }}
+.bucket-h {{ font-size:22px; letter-spacing:-.01em; margin:38px 0 16px;
+  padding-bottom:8px; border-bottom:1px solid var(--line); }}
+details.bucket {{ margin:38px 0 34px; }}
+details.bucket > summary {{ cursor:pointer; font-size:22px; font-weight:600;
+  letter-spacing:-.01em; padding-bottom:8px; border-bottom:1px solid var(--line);
+  list-style-position:outside; }}
+details.bucket[open] > summary {{ margin-bottom:16px; }}
+.note {{ color:var(--muted); font-size:13px; margin:0 0 14px; }}
 </style>
 </head>
 <body>
@@ -347,6 +382,7 @@ footer {{ max-width:1180px; margin:0 auto; padding:0 20px 50px; color:var(--mute
   Generated from a real crawl of the HACS catalogue; nothing here is hand-entered
   or simulated.</p>
   <div class="stats">{stats}</div>
+  {hero}
 </header>
 <main>
   <div class="controls">
@@ -397,6 +433,11 @@ function apply() {{
     const counter = section.querySelector('.pill');
     if (counter) counter.textContent = shown + ' repositor' + (shown === 1 ? 'y' : 'ies');
   }});
+  document.querySelectorAll('.bucket').forEach(bucket => {{
+    const sections = bucket.querySelectorAll('section.release');
+    bucket.hidden = sections.length > 0 &&
+      Array.from(sections).every(s => s.hidden);
+  }});
 }}
 q.addEventListener('input', apply);
 cat.addEventListener('change', apply);
@@ -431,6 +472,29 @@ def _stat(value: Any, label: str) -> str:
     return f'<div class="stat"><b>{html.escape(str(value))}</b><span>{html.escape(label)}</span></div>'
 
 
+def _relative(days: int) -> str:
+    if days > 1:
+        return f"in {days} days"
+    if days == 1:
+        return "tomorrow"
+    if days == 0:
+        return "today"
+    if days == -1:
+        return "yesterday"
+    return f"{-days} days ago"
+
+
+def release_heading(release: str, today: date) -> str:
+    """'Home Assistant 2026.10 - 7 October 2026 - in 46 days'."""
+    when = release_estimated_date(release)
+    if when is None:
+        return f"Home Assistant {release} - release date unknown"
+    return (
+        f"Home Assistant {release} - {long_date(when)} - "
+        f"{_relative((when - today).days)}"
+    )
+
+
 def render_html(payload: dict[str, Any]) -> str:
     coverage = payload["coverage"]
     by_category = coverage.get("by_category", {})
@@ -460,8 +524,9 @@ def render_html(payload: dict[str, Any]) -> str:
         for release in sorted({f["breaks_in"] for f in integration["findings"]}):
             by_release[release].append(integration)
 
-    sections: list[str] = []
-    for release in sorted(by_release, key=parse_version):
+    today = _as_of(payload["generated_utc"])
+
+    def _section(release: str) -> str:
         entries = by_release[release]
         release_rules = sorted(
             {
@@ -512,9 +577,9 @@ def render_html(payload: dict[str, Any]) -> str:
                 f"<td>{detail}</td></tr>"
             )
 
-        sections.append(
+        return (
             f'<section class="release" id="release-{html.escape(release)}">'
-            f"<h2>Home Assistant {html.escape(release)}"
+            f"<h2>{html.escape(release_heading(release, today))}"
             f'<span class="pill">{len(entries)} '
             f'{"repository" if len(entries) == 1 else "repositories"}</span></h2>'
             f'<ul class="rulelist">{rule_items}</ul>'
@@ -524,15 +589,86 @@ def render_html(payload: dict[str, Any]) -> str:
             "</tr></thead><tbody>" + "".join(rows) + "</tbody></table></section>"
         )
 
-    if not sections:
-        sections.append(
+    # Three ordered buckets by the release's estimated date (#3): what is
+    # already broken, what breaks within 90 days, and everything later behind
+    # a collapsed details. A label with no date is listed, never dropped --
+    # the same rule as the index: nothing silently reads as clean.
+    broken: list[str] = []
+    soon: list[str] = []
+    later: list[str] = []
+    undated: list[str] = []
+    for release in sorted(by_release, key=parse_version):
+        days = days_until(release, today)
+        if days is None:
+            undated.append(release)
+        elif days < 0:
+            broken.append(release)
+        elif days <= 90:
+            soon.append(release)
+        else:
+            later.append(release)
+    broken.sort(key=parse_version, reverse=True)  # newest-broken first
+
+    # The bucket summaries count each repository once, by its earliest
+    # deadline; the tables inside keep listing a repository under every
+    # release it has a finding in, so summing table rows would double-count.
+    earliest_days = [
+        entry.get("days_until")
+        for entry in payload["integrations"]
+        if entry.get("days_until") is not None
+    ]
+    hero_count = sum(1 for days in earliest_days if 0 <= days <= 90)
+    later_count = sum(1 for days in earliest_days if days > 90)
+
+    hero = (
+        f'<p class="hero"><b>{hero_count}</b> '
+        f'{"integration breaks" if hero_count == 1 else "integrations break"} '
+        "within the next 90 days</p>"
+    )
+
+    def _bucket(anchor: str, heading: str, releases: list[str], note: str = "") -> str:
+        return (
+            f'<section class="bucket" id="{anchor}">'
+            f'<h2 class="bucket-h">{heading}</h2>\n{note}'
+            + "\n".join(_section(release) for release in releases)
+            + "\n</section>"
+        )
+
+    groups: list[str] = []
+    if broken:
+        groups.append(_bucket("already-broken", "Already broken", broken))
+    if soon:
+        groups.append(_bucket("within-90-days", "Breaking within 90 days", soon))
+    if later:
+        groups.append(
+            '<details class="bucket" id="later"><summary>Later '
+            f'({later_count} {"repository" if later_count == 1 else "repositories"})'
+            "</summary>\n"
+            + "\n".join(_section(release) for release in later)
+            + "\n</details>"
+        )
+    if undated:
+        groups.append(
+            _bucket(
+                "unscheduled",
+                "No release date",
+                undated,
+                '<p class="note">These release labels did not map to a calendar '
+                "date. The deadlines are still real, so they are listed here "
+                "rather than dropped.</p>\n",
+            )
+        )
+
+    if not groups:
+        groups.append(
             '<p class="empty">No affected integrations in the crawled slice yet. '
             "The daily crawl widens coverage automatically.</p>"
         )
 
     return PAGE_TEMPLATE.format(
         stats=stats,
-        sections="\n".join(sections),
+        hero=hero,
+        sections="\n".join(groups),
         generated=html.escape(payload["generated_utc"]),
         core=html.escape(payload["core_version"]),
     )
