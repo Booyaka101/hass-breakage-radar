@@ -33,6 +33,9 @@ def _report(index, **kwargs):
         ("2027.5", date(2027, 5, 5)),
         ("2027.12", date(2027, 12, 1)),
         ("2026.10.3", date(2026, 10, 7)),
+        # Either side of a December-to-January rollover.
+        ("2026.12", date(2026, 12, 2)),
+        ("2027.1", date(2027, 1, 6)),
         ("2027", None),
         ("", None),
         ("not.a.version", None),

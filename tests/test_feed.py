@@ -91,7 +91,10 @@ def test_the_feed_is_valid_rss(payload):
 def test_one_item_per_release_not_per_rule(payload):
     channel = _channel(build(payload, {}))
     titles = [i.findtext("title") for i in channel.findall("item")]
-    assert titles == ["Home Assistant 2026.10", "Home Assistant 2027.5"]
+    assert titles == [
+        "Home Assistant 2026.10 - 7 October 2026",
+        "Home Assistant 2027.5 - 5 May 2027",
+    ]
 
 
 def test_an_item_links_to_its_own_section_of_the_board(payload):
@@ -122,11 +125,20 @@ def test_the_body_is_markup_not_escaped_text(payload):
     assert "&lt;table&gt;" not in feed
 
 
-def test_a_title_carries_no_count(payload):
+def test_a_title_carries_the_date_but_no_count(payload):
     """The count moves daily; a title that moves makes an unchanged item look
-    new in some readers."""
+    new in some readers. The release date never moves, so it can be there."""
     for item in _channel(build(payload, {})).findall("item"):
-        assert item.findtext("title").count(" ") == 2
+        title = item.findtext("title")
+        assert " - " in title
+        assert "integration" not in title
+        assert "repositor" not in title
+
+
+def test_a_release_without_a_date_keeps_the_bare_title(payload):
+    from tools.feed import title_for
+
+    assert title_for("nonsense") == "Home Assistant nonsense"
 
 
 # --------------------------------------------------------------------------- #

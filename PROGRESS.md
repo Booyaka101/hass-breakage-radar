@@ -1,7 +1,57 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.7.0 session (2026-08-20); earlier sections are kept
+Status at the end of the v1.8.0 session (2026-08-22); earlier sections are kept
 as history, newest first.
+
+## v1.8.0 — the board answers when, not just what (2026-08-22)
+
+The second half of issue #3 (DunLaoghaire1): 1.3.0 dated the integration's
+schedule, but the public board still grouped everything under bare version
+headings. Now the board leads with what breaks within 90 days, collapses the
+rest behind "Later (633 repositories)", and every heading carries the date:
+"Home Assistant 2026.10 - 7 October 2026 - in 46 days". A hero line under the
+tiles reads "99 integrations break within the next 90 days". The index gained
+`release_date` + `days_until` per entry and a `release_dates` map per release,
+computed against `generated_utc` so the integers are reproducible.
+
+Design decisions worth keeping:
+* **The index stays schema 1.** The brief asked for a schema bump, but every
+  installed copy's `validate_index` hard-rejects any schema other than 1
+  (documented at 1.4.0, when `upstream` was added additively for exactly this
+  reason). Bumping would have bricked the index fetch on every deployed
+  install. The new fields are additive instead.
+* **The date logic exists once.** `release_estimated_date` / `describe_when`
+  moved from `report.py` into `schedule.py`, vendored byte-identically into
+  `tools/` the way `rules_engine.py` is, with the same kind of identity test.
+  The board, the feed and the integration all call the same functions.
+* **Two counting modes, deliberately.** Bucket summaries (hero, "Later (N)")
+  count each repository once by its earliest deadline; the per-release tables
+  keep listing a repository under every release it has a finding in. Summing
+  table rows would double-count and the code comments say so.
+* A release label that maps to no date renders under "No release date" with a
+  visible note, never dropped; empty buckets render nothing; past releases
+  sort newest-broken first; exactly 90 days out counts as within the window.
+
+VERIFIED (all by hand on this machine, 2026-08-22):
+* pytest 298 passed, 3 skipped (was 283/3). Ruff at the pre-existing 20-error
+  baseline (the one new error introduced was fixed).
+* Real `build_index.py` run over the live crawl (3 905 scanned, 732 affected)
+  reproduced the worked example exactly: hero 99, Later 633, 2026.10 =
+  2026-10-07 / 46 days, 2026.11 = 2026-11-04 / 74 days, 2027.5/7/8 collapsed.
+* Board screenshot taken in headless Chrome: hero line, dated headings and
+  pills all render; `<details id="later">` ships without `open`.
+* `docs/feed.xml` parses as XML; item titles now
+  "Home Assistant 2026.10 - 7 October 2026".
+* Trap avoided: `Set-Content -Encoding utf8` (PS 5.1) writes a BOM; the first
+  version bump corrupted pyproject/manifest and was redone via python.
+
+Remaining for this release (in order):
+1. PR CI green on the exact commit, then merge. The PR touches
+   `docs/index.json`, which the 03:17 UTC crawl also commits daily, so merge
+   the same day or rebase — a conflicted PR silently skips CI (2026-08-17).
+2. Tag v1.8.0 + release after the green run.
+3. Reply on issue #3 with the live board link (draft in the PR body), and
+   leave the issue OPEN for the reporter to confirm, per standing practice.
 
 ## v1.7.0 — Lovelace cards are covered (2026-08-20)
 

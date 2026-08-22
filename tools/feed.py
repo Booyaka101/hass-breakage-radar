@@ -27,6 +27,7 @@ from typing import Any
 from xml.sax.saxutils import escape
 
 from tools.rules_engine import parse_version
+from tools.schedule import long_date, release_estimated_date
 
 BOARD = "https://booyaka101.github.io/hass-breakage-radar/"
 FEED_URL = f"{BOARD}feed.xml"
@@ -104,12 +105,16 @@ def rule_label(rule: dict[str, Any]) -> str:
 
 
 def title_for(release: str) -> str:
-    """What the board's own heading says, so the two read as one thing.
+    """The release and its estimated date, matching the board's heading.
 
     Deliberately carries no count: that changes daily, and a title that moves
-    makes an unchanged item look new in some readers.
+    makes an unchanged item look new in some readers. The date is fixed for a
+    given release, so it can live in the title.
     """
-    return f"Home Assistant {release}"
+    when = release_estimated_date(release)
+    if when is None:
+        return f"Home Assistant {release}"
+    return f"Home Assistant {release} - {long_date(when)}"
 
 
 def guid_for(release: str, rules: list[dict[str, Any]]) -> str:

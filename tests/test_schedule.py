@@ -52,6 +52,33 @@ def many_releases(sample_index):
     return sample_index, {d: "1.0" for ds in releases.values() for d in ds}
 
 
+def test_shared_schedule_module_is_byte_identical(repo_root):
+    """The date logic exists once, vendored like the rules engine: tools/ and
+    custom_components/ stay separable, so the file is copied, not imported
+    across the boundary, and this test is what keeps the copies one thing."""
+    crawler = (repo_root / "tools" / "schedule.py").read_bytes()
+    integration = (
+        repo_root / "custom_components" / "breakage_radar" / "schedule.py"
+    ).read_bytes()
+    assert crawler == integration
+
+
+def test_days_until_counts_from_the_given_day():
+    from custom_components.breakage_radar.schedule import days_until
+
+    assert days_until("2026.10", date(2026, 8, 22)) == 46
+    assert days_until("2026.11", date(2026, 8, 22)) == 74
+    assert days_until("2026.8", date(2026, 8, 22)) == -17
+    assert days_until("nonsense", date(2026, 8, 22)) is None
+
+
+def test_long_date_reads_day_month_year():
+    from custom_components.breakage_radar.schedule import long_date
+
+    assert long_date(date(2026, 10, 7)) == "7 October 2026"
+    assert long_date(date(2027, 5, 5)) == "5 May 2027"
+
+
 @pytest.mark.parametrize(
     "release,days,expected",
     [
