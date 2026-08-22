@@ -45,13 +45,13 @@ VERIFIED (all by hand on this machine, 2026-08-22):
 * Trap avoided: `Set-Content -Encoding utf8` (PS 5.1) writes a BOM; the first
   version bump corrupted pyproject/manifest and was redone via python.
 
-Remaining for this release (in order):
-1. PR CI green on the exact commit, then merge. The PR touches
-   `docs/index.json`, which the 03:17 UTC crawl also commits daily, so merge
-   the same day or rebase — a conflicted PR silently skips CI (2026-08-17).
-2. Tag v1.8.0 + release after the green run.
-3. Reply on issue #3 with the live board link (draft in the PR body), and
-   leave the issue OPEN for the reporter to confirm, per standing practice.
+SHIPPED (2026-08-22): PR #35, all 9 PR checks green, squash-merged as
+`914240e`, all 12 main checks green including the Pages deploy. Live board,
+index.json and feed.xml all verified serving the new content. Released as
+<https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.8.0>.
+Replied on issue #3 with the live link; the issue stays OPEN for
+DunLaoghaire1 to confirm, per standing practice (the brief said close it;
+the reporter-confirms rule wins).
 
 ## v1.7.0 — Lovelace cards are covered (2026-08-20)
 
