@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-22T03:29:51Z",
+  "generated_utc": "2026-08-23T03:34:51Z",
   "core_ref": "dev",
   "core_version": "2026.9",
-  "core_tarball_sha256": "a207aee4df219a3f8c23068c7f5a0b79bbbc6df578331b5b0803ec8a84cc30bc",
+  "core_tarball_sha256": "2c0fd625885551066585b9dfc348dd684790dc6e3dc76c8285ccd959218ed177",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 153,
-    "future": 97,
+    "total": 154,
+    "future": 98,
     "matchable_future": 41,
-    "core_files_scanned": 9905,
+    "core_files_scanned": 9908,
     "core_files_unparsed": 0,
-    "from_core_ast": 122,
+    "from_core_ast": 123,
     "from_manual": 14,
     "from_blog": 17
   },
@@ -1523,6 +1523,20 @@
       "expired": false
     },
     {
+      "id": "core-issue-async-import-2027.3",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.3",
+      "source": "homeassistant/components/remember_the_milk/__init__.py:101",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/__init__.py#L101"
+    },
+    {
       "id": "core-issue-deprecated-notify-action-call-2027.3",
       "kind": "issue",
       "symbol": "hass",
@@ -2538,5 +2552,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-22T03:30:17Z"
+  "blog_merged_utc": "2026-08-23T03:35:16Z"
 }
