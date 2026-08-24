@@ -76,3 +76,57 @@ def test_the_action_declares_every_input_it_uses(action, scan_step):
 
 def test_it_is_a_composite_action_with_no_container_pull(action):
     assert action["runs"]["using"] == "composite"
+
+
+# --------------------------------------------------------------------------- #
+# GitHub Marketplace metadata limits
+#
+# These are only reported on the release page, after ticking the publish box,
+# and a failure there blocks the listing rather than the build. v1.9.0 shipped
+# a 142-character description and could not be published.
+# --------------------------------------------------------------------------- #
+
+#: Marketplace rejects a description of 125 characters or more.
+MAX_DESCRIPTION = 124
+
+#: Feather icons GitHub excludes from action branding, plus their nine colours.
+OMITTED_ICONS = frozenset(
+    {
+        "coffee", "columns", "divide-circle", "divide-square", "divide",
+        "frown", "hexagon", "key", "meh", "mouse-pointer", "smile", "tool",
+        "x-octagon",
+    }
+)
+BRANDING_COLOURS = frozenset(
+    {"white", "black", "yellow", "blue", "green", "orange", "red", "purple", "gray-dark"}
+)
+
+
+def test_the_description_fits_marketplace(action):
+    description = action["description"]
+    assert len(description) <= MAX_DESCRIPTION, (
+        f"{len(description)} characters; Marketplace rejects 125 or more, and "
+        "only tells you on the release page"
+    )
+
+
+def test_the_description_still_says_what_it_finds_and_when(action):
+    """Trimming it to fit must not cost the two halves of the point."""
+    description = action["description"].lower()
+    assert "home assistant" in description
+    assert "removal" in description or "removed" in description
+    assert "release" in description or "when" in description
+
+
+def test_the_branding_is_one_marketplace_accepts(action):
+    branding = action["branding"]
+    assert branding["color"] in BRANDING_COLOURS
+    assert branding["icon"] not in OMITTED_ICONS
+    # Feather names are lowercase and hyphenated; anything else is a typo that
+    # only surfaces on the release page.
+    assert branding["icon"] == branding["icon"].lower().strip()
+
+
+def test_it_has_a_name_and_an_author(action):
+    assert action["name"].strip()
+    assert action["author"].strip()

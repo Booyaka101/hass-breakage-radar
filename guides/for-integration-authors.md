@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: Booyaka101/hass-breakage-radar@v1.9.0
+      - uses: Booyaka101/hass-breakage-radar@v1.9.1
 ```
 
 That is the whole thing. It works unchanged on a card repository.
@@ -129,7 +129,7 @@ workflow file, and then it is not there to warn you about the one landing next
 month either. When you want a gate, ask for one:
 
 ```yaml
-      - uses: Booyaka101/hass-breakage-radar@v1.9.0
+      - uses: Booyaka101/hass-breakage-radar@v1.9.1
         with:
           fail-on: imminent    # already released, or within window-days
           window-days: "90"

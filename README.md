@@ -816,7 +816,7 @@ person who can actually fix a finding:
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: Booyaka101/hass-breakage-radar@v1.9.0
+- uses: Booyaka101/hass-breakage-radar@v1.9.1
 ```
 
 It annotates the exact line and writes a job summary, and by default it does **not**

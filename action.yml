@@ -1,7 +1,9 @@
 name: "Home Assistant Breakage Radar"
+# GitHub Marketplace rejects a description of 125 characters or more, and the
+# release page only says so once you tick the publish box. Pinned by a test.
 description: >-
-  Find Home Assistant APIs your custom integration or Lovelace card uses that
-  are already scheduled for removal, and which release removes them.
+  Finds Home Assistant APIs scheduled for removal in your custom integration
+  or Lovelace card, and names the release.
 author: "Booyaka101"
 
 branding:
