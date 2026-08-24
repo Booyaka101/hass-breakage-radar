@@ -47,10 +47,12 @@ use it, so you can follow along without polling the index. Paste it into a feed 
 or into Home Assistant's own `feedreader` integration; open it in a browser and it
 renders as a page.
 
-**In the published index right now:** all 3 905 HACS repositories crawled
-(3 157 integrations and 748 Lovelace plugins, 21 unreachable), **732 affected**,
-**1 892 findings**, across 5 Home Assistant releases — 11 in 2026.10, 88 in 2026.11,
-12 in 2027.5, 30 in 2027.7 and 626 in 2027.8 (counted by distinct integration domain).
+**In the published index right now:** all 3 908 HACS repositories crawled
+(3 159 integrations and 749 Lovelace plugins, 21 unreachable), **779 affected**,
+**2 049 findings**, across 6 Home Assistant releases — 11 in 2026.10, 89 in 2026.11,
+12 in 2027.5, 19 in 2027.6, 30 in 2027.7 and 663 in 2027.8 (counted by distinct
+integration domain). 54 of the 111 announced removals have a matcher behind them; the
+board says so on itself, and the other 57 are carried for their deadline only.
 Every number comes from a real crawl; nothing is seeded or simulated. The daily job
 keeps these moving — `coverage` in `index.json` is always authoritative.
 
