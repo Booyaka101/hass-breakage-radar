@@ -1,0 +1,35 @@
+name: PR health
+
+# A conflicted pull request gets its checks skipped rather than failed, so the
+# pull request page shows no checks at all. Nothing inside the repository can
+# report that, because the workflow that would report it is the one being
+# skipped. This runs from the default branch instead.
+on:
+  schedule:
+    # Just after the daily crawl (03:17 UTC), which is what usually causes it.
+    - cron: "40 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: pr-health
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  conflicts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+
+      - name: Label pull requests whose checks are being skipped
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python tools/pr_health.py --repo "$GITHUB_REPOSITORY" -v

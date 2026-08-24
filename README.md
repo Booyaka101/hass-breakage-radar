@@ -367,6 +367,33 @@ Real finds from that crawl, each hand-verified against the repository's own sour
 revisits repositories that actually changed. `--limit` caps a run; least-recently-scanned
 repositories go first, so coverage rotates on its own.
 
+### The crawl conflicts with open pull requests, and that hides checks
+
+The crawl commits `data/rules.json`, `docs/` and `state/` daily. A branch that touches
+any of them conflicts within hours, and **GitHub cannot build `refs/pull/N/merge` for a
+conflicted pull request, so it skips that pull request's checks entirely.** They do not
+fail, they never run, and the page shows no checks rather than a red one. It reads like a
+branch nobody pushed to.
+
+Two things address it, because the cause cannot be removed entirely:
+
+* `tools/rules_changed.py` keeps `data/rules.json` out of the commit when only its
+  provenance stamps moved, which was the commonest trigger.
+* `tools/pr_health.py`, run daily by `.github/workflows/pr-health.yml` just after the
+  crawl, labels any open pull request GitHub reports as `CONFLICTING` and explains once
+  what the missing checks mean. It runs from the default branch, because a workflow
+  inside a skipped pull request cannot report on itself. `UNKNOWN` mergeability is left
+  alone rather than guessed at, in either direction.
+
+If a board PR conflicts, take `main`'s crawl output and regenerate rather than resolving
+`docs/index.json` by hand:
+
+```bash
+git rebase origin/main
+git checkout origin/main -- docs/index.json docs/index.html docs/feed.xml
+python tools/build_index.py
+```
+
 ### Which Python
 
 Home Assistant's `dev` branch tracks the newest CPython syntax. As of core 2026.9 dev
