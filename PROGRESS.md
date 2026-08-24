@@ -134,6 +134,46 @@ VERIFIED (all by hand on this machine, 2026-08-24):
 SHIPPED (2026-08-24): PRs #36, #37, #38, #39, squash-merged as `29cbc03`,
 `5a6ff09`, `80ef3df`, `700cb74`. Issues #19, #23, #24, #21, #25 closed. #22
 left open with the correction recorded; #3 left open for DunLaoghaire1.
+Released as <https://github.com/Booyaka101/hass-breakage-radar/releases/tag/v1.9.0>,
+tagged at the crawl commit `dee1d09` rather than the last PR merge, so the
+action's default `rules: pinned` reads a rule set that actually contains the 13
+import rules. Crawl commits carry no pytest checks (a `GITHUB_TOKEN` push does
+not trigger workflows), so `validate.yml` was dispatched on that exact sha
+first and all 12 checks confirmed green.
+
+Round trip verified after release: fetched `action.yml` and `data/rules.json`
+from the published tag, ran the action's shell step against a leafspy-shaped
+integration, and got line 4 (`config_entry import TrackerEntity`) flagged with
+line 3 (the replacement path) clean, `fail-on: never` exit 0 and `fail-on: any`
+exit 1.
+
+### After the release, same day
+
+* **The conflicted-PR blind spot now has a watchdog (PR #41).** The failure
+  mode recorded above is that GitHub *skips* a conflicted pull request's checks
+  rather than failing them, and nothing inside the repository can report it
+  because the reporting workflow is the one being skipped.
+  `tools/pr_health.py` runs daily from the default branch, 23 minutes after the
+  crawl, labels what GitHub calls `CONFLICTING` and explains once what the
+  missing checks mean. Two things the tests caught: clearing the label on
+  `UNKNOWN` would have dropped a real warning, and `gh pr list` can report
+  `UNKNOWN` because mergeability is computed lazily, so it is re-asked rather
+  than taken at face value. Dispatched in production and confirmed reporting
+  `0 open pull request(s), 0 action(s)`; both real label paths exercised
+  against PR #41 and cleaned up.
+* **Two details from self-reviewing the session's own diff (PR #42).** The
+  `scan_sources` extraction had quietly changed which files `check_local` walks
+  (dotted files are now read, which matches the crawler and is the behaviour
+  worth having, but it was an accident) and `pr_health.apply` bailed on the
+  first pull request it could not update, dropping the rest.
+* **Measured the new rules against the README's own bar**, that a rule firing
+  on a large fraction of the catalogue is a tax rather than a signal. Two
+  dispatched crawl slices, 1 600 repositories rescanned: 97 repo-hits across
+  the 13 import rules, widest single rule 35 repositories, against
+  `device-registry-async-get-device` at 152. Affected went 742 -> 779 and a new
+  2027.6 bucket appeared with 19 integrations. Five of the 13 rules have no
+  hits yet. Still partial: `rules_hash` changed, so the whole catalogue needs a
+  rescan and the daily job is still rotating through it.
 
 ## v1.8.0 — the board answers when, not just what (2026-08-22)
 
