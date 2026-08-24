@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-24T03:36:21Z",
+  "generated_utc": "2026-08-24T04:52:21Z",
   "core_ref": "dev",
   "core_version": "2026.9",
   "core_tarball_sha256": "20cceaf83fb103f65a7553e752dacabd25ff2dd961274165c231516a1302896f",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 154,
-    "future": 98,
-    "matchable_future": 41,
+    "total": 167,
+    "future": 111,
+    "matchable_future": 54,
     "core_files_scanned": 9909,
     "core_files_unparsed": 0,
-    "from_core_ast": 123,
+    "from_core_ast": 136,
     "from_manual": 14,
     "from_blog": 17
   },
@@ -1719,6 +1719,126 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/infrared/entity.py#L181"
     },
     {
+      "id": "core-import-config-entry-basetrackerentity",
+      "kind": "import",
+      "symbol": "BaseTrackerEntity",
+      "message": "BaseTrackerEntity imported from homeassistant.components.device_tracker.config_entry is deprecated and is removed in Home Assistant 2027.6. Import it from homeassistant.components.device_tracker instead.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/device_tracker/config_entry.py:26",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "homeassistant.components.device_tracker.BaseTrackerEntity",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.components.device_tracker.config_entry"
+        ],
+        "names": [
+          "BaseTrackerEntity"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/config_entry.py#L26"
+    },
+    {
+      "id": "core-import-config-entry-scannerentity",
+      "kind": "import",
+      "symbol": "ScannerEntity",
+      "message": "ScannerEntity imported from homeassistant.components.device_tracker.config_entry is deprecated and is removed in Home Assistant 2027.6. Import it from homeassistant.components.device_tracker instead.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/device_tracker/config_entry.py:23",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "homeassistant.components.device_tracker.ScannerEntity",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.components.device_tracker.config_entry"
+        ],
+        "names": [
+          "ScannerEntity"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/config_entry.py#L23"
+    },
+    {
+      "id": "core-import-config-entry-sourcetype",
+      "kind": "import",
+      "symbol": "SourceType",
+      "message": "SourceType imported from homeassistant.components.device_tracker.config_entry is deprecated and is removed in Home Assistant 2027.6. Import it from homeassistant.components.device_tracker instead.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/device_tracker/config_entry.py:36",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "homeassistant.components.device_tracker.SourceType",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.components.device_tracker.config_entry"
+        ],
+        "names": [
+          "SourceType"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/config_entry.py#L36"
+    },
+    {
+      "id": "core-import-config-entry-trackerentity",
+      "kind": "import",
+      "symbol": "TrackerEntity",
+      "message": "TrackerEntity imported from homeassistant.components.device_tracker.config_entry is deprecated and is removed in Home Assistant 2027.6. Import it from homeassistant.components.device_tracker instead.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/device_tracker/config_entry.py:20",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "homeassistant.components.device_tracker.TrackerEntity",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.components.device_tracker.config_entry"
+        ],
+        "names": [
+          "TrackerEntity"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/config_entry.py#L20"
+    },
+    {
+      "id": "core-import-config-entry-trackerentitydescription",
+      "kind": "import",
+      "symbol": "TrackerEntityDescription",
+      "message": "TrackerEntityDescription imported from homeassistant.components.device_tracker.config_entry is deprecated and is removed in Home Assistant 2027.6. Import it from homeassistant.components.device_tracker instead.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/device_tracker/config_entry.py:31",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "homeassistant.components.device_tracker.TrackerEntityDescription",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.components.device_tracker.config_entry"
+        ],
+        "names": [
+          "TrackerEntityDescription"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/config_entry.py#L31"
+    },
+    {
       "id": "core-prose-infraredentity",
       "kind": "prose",
       "symbol": "InfraredEntity",
@@ -2105,6 +2225,192 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3733"
+    },
+    {
+      "id": "core-import-const-attr-via-device",
+      "kind": "import",
+      "symbol": "ATTR_VIA_DEVICE",
+      "message": "ATTR_VIA_DEVICE imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from via_device instead.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:400",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "via_device",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_VIA_DEVICE"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L400"
+    },
+    {
+      "id": "core-import-const-concentration-grams-per-cubic-meter",
+      "kind": "import",
+      "symbol": "CONCENTRATION_GRAMS_PER_CUBIC_METER",
+      "message": "CONCENTRATION_GRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:809",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_GRAMS_PER_CUBIC_METER"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L809"
+    },
+    {
+      "id": "core-import-const-concentration-micrograms-per-cubic-foot",
+      "kind": "import",
+      "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT",
+      "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:818",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L818"
+    },
+    {
+      "id": "core-import-const-concentration-micrograms-per-cubic-meter",
+      "kind": "import",
+      "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+      "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:815",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L815"
+    },
+    {
+      "id": "core-import-const-concentration-milligrams-per-cubic-meter",
+      "kind": "import",
+      "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
+      "message": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:812",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L812"
+    },
+    {
+      "id": "core-import-const-concentration-parts-per-billion",
+      "kind": "import",
+      "symbol": "CONCENTRATION_PARTS_PER_BILLION",
+      "message": "CONCENTRATION_PARTS_PER_BILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:827",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_PARTS_PER_BILLION"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L827"
+    },
+    {
+      "id": "core-import-const-concentration-parts-per-cubic-meter",
+      "kind": "import",
+      "symbol": "CONCENTRATION_PARTS_PER_CUBIC_METER",
+      "message": "CONCENTRATION_PARTS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from p/m³ instead.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:821",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "p/m³",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_PARTS_PER_CUBIC_METER"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L821"
+    },
+    {
+      "id": "core-import-const-concentration-parts-per-million",
+      "kind": "import",
+      "symbol": "CONCENTRATION_PARTS_PER_MILLION",
+      "message": "CONCENTRATION_PARTS_PER_MILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
+      "breaks_in": "2027.8",
+      "source": "homeassistant/const.py:824",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "CONCENTRATION_PARTS_PER_MILLION"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L824"
     },
     {
       "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
@@ -2552,5 +2858,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-24T03:36:37Z"
+  "blog_merged_utc": "2026-08-24T04:52:32Z"
 }
