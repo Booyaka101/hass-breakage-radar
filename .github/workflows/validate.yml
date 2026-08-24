@@ -25,8 +25,56 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -m pip install --disable-pip-version-check --quiet pytest
+      - run: python -m pip install --disable-pip-version-check --quiet pytest pyyaml
       - run: python -m pytest
+
+  action:
+    name: action self-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: A clean checkout passes
+        uses: ./
+        with:
+          path: tests/fixtures/false_positive
+
+      - name: A card repository is scanned, not refused
+        uses: ./
+        with:
+          path: tests/fixtures/plugins/config_entries_card
+
+      - name: A finding annotates without failing, which is the default
+        uses: ./
+        with:
+          path: tests/fixtures/true_positive
+
+      - name: fail-on any turns the same finding into a failure
+        id: gate
+        continue-on-error: true
+        uses: ./
+        with:
+          path: tests/fixtures/true_positive
+          fail-on: any
+
+      - name: The gate must have failed
+        if: steps.gate.outcome != 'failure'
+        run: |
+          echo "::error::fail-on: any did not fail the job"
+          exit 1
+
+      - name: A repository with nothing scannable is not reported as clean
+        id: unscannable
+        continue-on-error: true
+        uses: ./
+        with:
+          path: tests/fixtures/plugins/minified_card
+
+      - name: Nothing scannable must not pass
+        if: steps.unscannable.outcome != 'failure'
+        run: |
+          echo "::error::a repository of one minified bundle reported as clean"
+          exit 1
 
   hassfest:
     name: hassfest

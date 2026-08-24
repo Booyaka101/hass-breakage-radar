@@ -767,7 +767,23 @@ python tools/check_local.py /path/to/your-integration
 ```
 
 It exits `0` clean, `1` with findings, `2` if it could not check — so it works as a
-release gate in your own CI.
+release gate in your own CI. A checkout with `custom_components/` is read as an
+integration, one without is read as a Lovelace card repository; you do not have to say
+which.
+
+The same scan runs as a GitHub Action, which is the only way this project reaches the
+person who can actually fix a finding:
+
+```yaml
+- uses: actions/checkout@v7
+- uses: Booyaka101/hass-breakage-radar@v1.9.0
+```
+
+It annotates the exact line and writes a job summary, and by default it does **not**
+fail the job — a removal scheduled for 2027.8 turning an unrelated pull request red is
+how a check gets deleted from a workflow file. `fail-on: imminent` gates on what is
+close; `fail-on: any` is the strict gate. Inputs are documented in
+[the authors' guide](guides/for-integration-authors.md#in-your-ci-as-a-github-action).
 
 ---
 

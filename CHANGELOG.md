@@ -4,9 +4,55 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
-## Unreleased
+## 1.9.0 — 2026-08-24
 
-Board and README only; the integration is unchanged, so there is no version bump.
+### The scanner runs in an integration author's CI (#21)
+
+Every finding this project produces lands on a *user*, and a user cannot fix an
+integration they did not write. `action.yml` puts the same scan in the
+maintainer's own pull requests, where it reaches the one person who can act on
+it.
+
+```yaml
+- uses: Booyaka101/hass-breakage-radar@v1.9.0
+```
+
+* **It annotates, it does not fail, by default.** A removal scheduled for
+  2027.8 turning an unrelated pull request red is how a check gets deleted
+  from a workflow file, and then it is not there for the one landing next
+  month either. `fail-on: imminent` gates on what is already released or
+  within `window-days` (90 by default, the same horizon the board leads with);
+  `fail-on: any` is the strict release gate. The CLI still defaults to `any`,
+  because a release gate is what it was already being used as.
+* **Annotations and a job summary, not one or the other.** GitHub displays 10
+  annotations per level per step and 50 per job, so thirty findings would show
+  as ten and read as though that was all of them. The summary table carries
+  every one. A finding that will fail the job is an `error`, the rest are
+  `warning`s, which also puts them on separate display budgets.
+* **Rules are pinned to the tag you pin.** `rules: pinned` (the default) reads
+  the rule set committed at that tag, so there is no network call in anyone
+  else's CI. `rules: index` fetches the published index instead, for rules
+  that stay current without a version bump. The daily crawl rewrites
+  `data/rules.json`, so pin an exact tag rather than a moving major.
+* **Card repositories work too, unasked.** `tools/check_local.py` now reads a
+  checkout without `custom_components/` as a Lovelace card repository and
+  scans its JavaScript wherever it lives, deduplicating `src` against `dist`
+  the way the crawler does. It used to exit 2 on all 748 plugin repositories
+  in the catalogue, which would have made the action useless to every one of
+  them.
+* **Nothing scannable is still not clean.** A card repository whose only file
+  is a minified bundle exits 2, not 0. The action's own self-test in CI
+  asserts that, along with the clean, annotated, gated and card cases, by
+  running the action against this repository's fixtures.
+
+`scan_sources()` in `rules_engine.py` is the one place that decides what a
+repository's Python and JavaScript add up to. The crawler reading a tarball and
+the self-check reading a directory now differ only in where the bytes come
+from, so a repository gets the same verdict whichever side looked at it.
+Verified as a no-op on the crawler over 16 fixture repositories covering both
+category branches and both status branches: identical records and findings.
+
+### Board and README
 
 * **The board states its own coverage gap
   ([#24](https://github.com/Booyaka101/hass-breakage-radar/issues/24)).** A new

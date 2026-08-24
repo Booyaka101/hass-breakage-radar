@@ -54,8 +54,8 @@ checkout you point it at. Real output against this repository's own test
 fixture:
 
 ```
-INFO breakage_radar.tools: 34 matchable rule(s) from https://booyaka101.github.io/hass-breakage-radar/index.json
-INFO breakage_radar.tools: scanned 1 file(s) across 1 component(s); 0 unparseable, 0 skipped
+INFO breakage_radar.tools: 41 matchable rule(s) from https://booyaka101.github.io/hass-breakage-radar/index.json
+INFO breakage_radar.tools: scanned 1 file(s); 0 unparseable, 0 skipped
 
 custom_components/fixture_tracker/device_tracker.py:12
     breaks in Home Assistant 2027.5 (high confidence, rule legacy-device-tracker-platform)
@@ -75,18 +75,25 @@ Exit codes make it usable as a release gate in your own CI:
 
 | Code | Meaning |
 |---|---|
-| `0` | nothing found |
-| `1` | at least one finding |
-| `2` | **could not check** — no `custom_components/`, unreachable index, or no rules left |
+| `0` | nothing found, or nothing that `--fail-on` says is worth failing over |
+| `1` | at least one finding, and `--fail-on` counts it |
+| `2` | **could not check** — nothing scannable, unreachable index, or no rules left |
 
 Exit 2 is deliberately not exit 0. A check that could not run has proved
-nothing, and must never be mistaken for a clean result.
+nothing, and must never be mistaken for a clean result. A card repository
+whose only file is a minified bundle lands here for the same reason.
+
+A checkout with `custom_components/` is read as an integration: its Python,
+plus any frontend module shipped alongside it. A checkout without one is read
+as a Lovelace card repository, and its JavaScript is scanned wherever it lives.
+You do not have to say which.
 
 Useful flags:
 
 ```bash
 python tools/check_local.py . --ha-version 2027.5   # only removals still ahead of 2027.5
 python tools/check_local.py . --rules data/rules.json   # offline, no index fetch
+python tools/check_local.py . --fail-on imminent    # only fail on what is close
 ```
 
 > **Use Python 3.12 or newer, ideally 3.14.** The checker parses your code with
@@ -94,6 +101,57 @@ python tools/check_local.py . --rules data/rules.json   # offline, no index fetc
 > (PEP 695 `type X = ...`, PEP 758 `except A, B:`) fails to parse and is
 > reported as unparseable rather than checked. The count of unparseable files is
 > always printed — if it is not zero, upgrade before trusting the result.
+
+---
+
+## In your CI, as a GitHub Action
+
+Same scanner, same rules, wired into pull requests so the finding lands on the
+line rather than in someone else's Home Assistant log.
+
+```yaml
+name: Breakage Radar
+on: [pull_request]
+
+jobs:
+  removals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: Booyaka101/hass-breakage-radar@v1.9.0
+```
+
+That is the whole thing. It works unchanged on a card repository.
+
+By default it **annotates and does not fail**. A removal scheduled for 2027.8
+turning an unrelated pull request red is how a check gets deleted from a
+workflow file, and then it is not there to warn you about the one landing next
+month either. When you want a gate, ask for one:
+
+```yaml
+      - uses: Booyaka101/hass-breakage-radar@v1.9.0
+        with:
+          fail-on: imminent    # already released, or within window-days
+          window-days: "90"
+```
+
+| Input | Default | What it does |
+|---|---|---|
+| `path` | `.` | checkout root, or a `custom_components` directory |
+| `fail-on` | `never` | `never`, `imminent`, or `any` |
+| `window-days` | `90` | how far ahead `imminent` reaches |
+| `rules` | `pinned` | `pinned` uses the rules committed at the tag you pinned, with no network call. `index` fetches the published index instead |
+| `ha-version` | *(empty)* | only report removals still ahead of this release |
+| `python-version` | `3.13` | the interpreter that parses your source |
+
+Findings come out as annotations on the exact line, **and** as a job summary
+table. Both, because GitHub only displays 10 annotations per level per step and
+50 per job — with the summary, thirty findings read as thirty rather than as
+ten.
+
+Pin an exact tag rather than a moving major. `data/rules.json` is rewritten by
+the daily crawl, so a floating ref would quietly change what your CI checks
+against; a tag is a rule set you chose.
 
 ---
 
