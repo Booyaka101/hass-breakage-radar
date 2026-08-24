@@ -223,6 +223,132 @@ def test_no_matchers_and_no_index_entry_is_unknown_with_a_reason(
 
 
 # --------------------------------------------------------------------------- #
+# a local clean only speaks for the rules the local engine could run
+# --------------------------------------------------------------------------- #
+
+
+def _unknown_matcher_index(index: dict) -> dict:
+    """The index gains a rule whose matcher type this engine predates.
+
+    Exactly what an install one version behind sees the day a new matcher
+    type ships: Rule.matchable is False for it, so the engine cannot look for
+    it and cannot have an opinion about it.
+    """
+    index["rules"].append(
+        {
+            "id": "from-the-future",
+            "breaks_in": "2027.6",
+            "message": "Imported from the deprecated path.",
+            "source": "https://developers.home-assistant.io/blog/",
+            "confidence": "high",
+            "matchable": True,
+            "match": {
+                "type": "matcher_type_this_engine_does_not_have",
+                "modules": ["homeassistant.components.device_tracker.config_entry"],
+                "names": ["TrackerEntity"],
+            },
+        }
+    )
+    return index
+
+
+def test_a_clean_local_scan_cannot_bury_a_rule_it_could_not_run(
+    tmp_path, fixtures_dir, sample_index
+):
+    """The #22 trap. Without this the user is told the integration is fine
+    while the index says it breaks in 2027.6."""
+    sample_index = _unknown_matcher_index(sample_index)
+    entry = sample_index["integrations"][0]
+    entry["domain"] = entry["domains"][0] = "lookalike_tracker"
+    entry["findings"] = [
+        {
+            "rule_id": "from-the-future",
+            "breaks_in": "2027.6",
+            "file": "custom_components/lookalike_tracker/device_tracker.py",
+            "line": 3,
+            "confidence": "high",
+        }
+    ]
+    components = _install(tmp_path, fixtures_dir, "false_positive", "lookalike_tracker")
+    local = _scan(components, sample_index)
+
+    assert local["domains"]["lookalike_tracker"]["status"] == "clean"
+    assert "from-the-future" not in local["rule_ids"]
+
+    report = build_report(sample_index, {"lookalike_tracker": "0.1.0"}, local)
+    assert report["clean_domains"] == []
+    assert report["affected_domains"] == ["lookalike_tracker"]
+    assert [d["rule_id"] for d in report["details"]] == ["from-the-future"]
+    assert report["details"][0]["source"] == "index"
+
+
+def test_a_clean_local_scan_still_beats_a_rule_it_did_run(
+    tmp_path, fixtures_dir, sample_index
+):
+    """The behaviour that must not regress: the installed bytes are newer
+    than the scanned tag, so local clean wins for rules the engine ran."""
+    entry = sample_index["integrations"][0]
+    entry["domain"] = entry["domains"][0] = "lookalike_tracker"
+    entry["findings"][0]["file"] = "custom_components/lookalike_tracker/device_tracker.py"
+    components = _install(tmp_path, fixtures_dir, "false_positive", "lookalike_tracker")
+    local = _scan(components, sample_index)
+
+    assert "legacy-device-tracker-platform" in local["rule_ids"]
+    report = build_report(sample_index, {"lookalike_tracker": "0.1.0"}, local)
+    assert report["clean_domains"] == ["lookalike_tracker"]
+    assert report["affected_domains"] == []
+
+
+def test_a_local_finding_and_an_unrunnable_rule_are_both_reported(
+    tmp_path, fixtures_dir, sample_index
+):
+    sample_index = _unknown_matcher_index(sample_index)
+    sample_index["integrations"][0]["findings"].append(
+        {
+            "rule_id": "from-the-future",
+            "breaks_in": "2027.6",
+            "file": "custom_components/fixture_tracker/device_tracker.py",
+            "line": 3,
+            "confidence": "high",
+        }
+    )
+    components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
+    local = _scan(components, sample_index)
+    report = build_report(sample_index, {"fixture_tracker": "0.1.0"}, local)
+
+    assert report["affected_domains"] == ["fixture_tracker"]  # listed once
+    assert sorted(d["rule_id"] for d in report["details"]) == [
+        "from-the-future",
+        "legacy-device-tracker-platform",
+    ]
+    assert {d["source"] for d in report["details"]} == {"index", "local"}
+
+
+def test_a_scan_from_an_engine_without_rule_ids_keeps_the_old_behaviour(
+    tmp_path, fixtures_dir, sample_index
+):
+    """Nothing to compare against is not a licence to resurrect the index."""
+    sample_index = _unknown_matcher_index(sample_index)
+    entry = sample_index["integrations"][0]
+    entry["domain"] = entry["domains"][0] = "lookalike_tracker"
+    entry["findings"] = [
+        {
+            "rule_id": "from-the-future",
+            "breaks_in": "2027.6",
+            "file": "custom_components/lookalike_tracker/device_tracker.py",
+            "line": 3,
+            "confidence": "high",
+        }
+    ]
+    components = _install(tmp_path, fixtures_dir, "false_positive", "lookalike_tracker")
+    local = _scan(components, sample_index)
+    local.pop("rule_ids")
+
+    report = build_report(sample_index, {"lookalike_tracker": "0.1.0"}, local)
+    assert report["clean_domains"] == ["lookalike_tracker"]
+
+
+# --------------------------------------------------------------------------- #
 # v1.1.1 regressions: a passed deadline must get MORE visible, never less
 # --------------------------------------------------------------------------- #
 

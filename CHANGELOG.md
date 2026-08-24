@@ -6,6 +6,32 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## 1.9.0 — 2026-08-24
 
+### A local "clean" only speaks for the rules it could run
+
+`report.py` let a local scan's `clean` verdict beat an index finding whenever
+the scan had run any rules at all. That is right when the local engine looked
+for the rule and did not find it: the installed code is newer than the tag the
+crawler scanned. It is wrong when the engine could not look at all.
+
+An installed integration carries a vendored `rules_engine.py`. `Rule.matchable`
+is `self.match.get("type") in MATCHER_TYPES`, so the day the index ships a
+matcher type an installed copy predates, that copy silently skips the rule,
+finds nothing, reports `clean`, and the index's finding was thrown away. The
+user is told an integration is fine while the index says it breaks in 2027.6.
+This is the false-all-clear class #22 recorded as a trap, and it is why #22
+concluded that narrowing a rule could not afford a new matcher type.
+
+The local scan now reports `rule_ids`, the rules it actually ran, and any index
+finding whose rule is not in that list survives, attributed to the index. A
+domain can now carry a local finding and an index finding at once and is still
+listed once.
+
+This removes the constraint rather than working around it: a new matcher type
+is safe to ship once installs are on this, in either direction.
+
+Found by the #25 audit, which needs a new matcher type to cover the
+`DeprecatedAlias` class of removal and walked straight into it.
+
 ### The scanner runs in an integration author's CI (#21)
 
 Every finding this project produces lands on a *user*, and a user cannot fix an
