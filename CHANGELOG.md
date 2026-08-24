@@ -4,6 +4,27 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.9.1 — 2026-08-24
+
+Marketplace metadata only. No code change, and the action behaves identically.
+
+`action.yml` shipped a 142-character `description`, and **GitHub Marketplace
+rejects 125 or more**. That limit is only reported on the release page, after
+ticking "Publish this Action to the GitHub Marketplace", so it passed every
+check in CI and blocked the listing at the one point nobody automates. The
+release page validated the name, icon, colour and README fine and failed on
+this alone.
+
+Shortened to 115 characters, keeping both halves of the point (what it finds,
+and which release). `tests/test_action.py` now pins the limit, the nine
+allowed branding colours and the thirteen Feather icons GitHub excludes, so the
+next person to touch this metadata finds out in `pytest` rather than on the
+release page.
+
+Marketplace validates `action.yml` as of the release's **tag**, so the fix
+needed its own tag rather than a correction on `main`. `@v1.9.0` still works as
+an action; it just cannot be listed.
+
 ## 1.9.0 — 2026-08-24
 
 ### Core's other way of announcing a removal is now read (#25)
