@@ -185,20 +185,33 @@ def ensure_label(repo: str) -> None:
     )
 
 
-def apply(repo: str, actions: list[dict[str, Any]]) -> None:
+def apply(repo: str, actions: list[dict[str, Any]]) -> int:
+    """Carry out the plan. Returns how many pull requests could not be updated.
+
+    One pull request failing does not skip the rest: this exists so a missing
+    signal gets noticed, and dropping the other pull requests on the floor
+    because of the first would be the same bug in a different place. The count
+    comes back so the run still fails loudly.
+    """
+    failed = 0
     for action in actions:
         number = str(action["number"])
-        if action["action"] == "add":
-            _gh(["pr", "edit", number, "--repo", repo, "--add-label", LABEL])
-            if action["comment"]:
-                _gh(["pr", "comment", number, "--repo", repo, "--body", COMMENT])
-            LOGGER.warning(
-                "PR #%s conflicts with its base, so its checks are being skipped",
-                number,
-            )
-        else:
-            _gh(["pr", "edit", number, "--repo", repo, "--remove-label", LABEL])
-            LOGGER.info("PR #%s is mergeable again; label removed", number)
+        try:
+            if action["action"] == "add":
+                _gh(["pr", "edit", number, "--repo", repo, "--add-label", LABEL])
+                if action["comment"]:
+                    _gh(["pr", "comment", number, "--repo", repo, "--body", COMMENT])
+                LOGGER.warning(
+                    "PR #%s conflicts with its base, so its checks are being skipped",
+                    number,
+                )
+            else:
+                _gh(["pr", "edit", number, "--repo", repo, "--remove-label", LABEL])
+                LOGGER.info("PR #%s is mergeable again; label removed", number)
+        except RuntimeError as err:
+            failed += 1
+            LOGGER.error("could not update PR #%s: %s", number, err)
+    return failed
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -224,10 +237,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"would {action['action']} {LABEL} on #{action['number']}")
         return 0
 
-    if actions:
-        ensure_label(args.repo)
-        apply(args.repo, actions)
-    return 0
+    if not actions:
+        return 0
+    ensure_label(args.repo)
+    failed = apply(args.repo, actions)
+    if failed:
+        LOGGER.error("%d of %d pull request(s) could not be updated", failed, len(actions))
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

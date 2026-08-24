@@ -12,7 +12,7 @@ from datetime import date, timedelta
 
 import pytest
 
-from tools.check_local import is_blocking, main
+from tools.check_local import is_blocking, iter_python_files, main
 from tools.rules_engine import Finding
 
 
@@ -136,6 +136,31 @@ def test_an_unreachable_index_cannot_be_checked(fixtures_dir):
         ]
     )
     assert code == 2
+
+
+def test_the_walk_skips_dotted_directories_but_not_dotted_files(tmp_path):
+    """The crawler's tarball reader filters vendored paths and nothing else, so
+    it reads a dotted *file*. Skipping it here would make a local check
+    disagree with the index about the same repository. A dotted *directory* is
+    not source either way.
+
+    Whether a rule then fires on it is the matcher's business: the shipped
+    device-tracker rule constrains `files` to the exact basename
+    `device_tracker.py`, so it would not match `.device_tracker.py`.
+    """
+    domain = tmp_path / "dotty"
+    (domain / ".hidden").mkdir(parents=True)
+    (domain / "node_modules").mkdir()
+    for relative in (
+        "sensor.py",
+        ".generated.py",
+        ".hidden/sensor.py",
+        "node_modules/dep.py",
+    ):
+        (domain / relative).write_text("x = 1\n", encoding="utf-8")
+
+    walked = [relative for _path, relative in iter_python_files(domain)]
+    assert walked == [".generated.py", "sensor.py"]
 
 
 # --------------------------------------------------------------------------- #

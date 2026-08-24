@@ -77,7 +77,13 @@ def find_components_dir(target: Path) -> Path | None:
 
 def _walkable(relative: Path) -> bool:
     """Neither vendored nor hidden. A finding in ``node_modules`` is not the
-    repository's to fix, and ``.git`` is not source."""
+    repository's to fix, and ``.git`` is not source.
+
+    Only the directories are judged, not the filename. A dotted *file* like
+    ``.generated.py`` still runs on the user's box, and the crawler reads it
+    too, so skipping it here would make a local check disagree with the index
+    about the same repository.
+    """
     return not any(
         part in _SKIP_DIRECTORIES or part.startswith(".") for part in relative.parts[:-1]
     )
