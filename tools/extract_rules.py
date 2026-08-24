@@ -86,6 +86,18 @@ ISSUE_CALLS = frozenset(
     }
 )
 
+#: Core's *other* removal mechanism. A module declares
+#: ``_DEPRECATED_<Name> = DeprecatedAlias(replacement, "new.path", "2027.6")``
+#: and hands its ``__getattr__`` to ``check_if_deprecated_constant``, so the
+#: warning fires on the import rather than on a call. No ``breaks_in_ha_version``
+#: keyword is involved anywhere, which is why the ``report_usage`` pass above
+#: has never seen any of it. Found by the #25 log audit.
+DEPRECATED_CONSTANT_CALLS = frozenset(
+    {"DeprecatedAlias", "DeprecatedConstant", "DeprecatedConstantEnum"}
+)
+
+_DEPRECATED_PREFIX = "_DEPRECATED_"
+
 #: Minimum length for an auto-derived symbol to be trusted as a matcher.
 #: Short names like ``async_listen`` collide with everybody's own helpers.
 #: See LESSONS 2026-07-27: a rule written from a spec is a hypothesis.
@@ -341,24 +353,36 @@ def _parent_map(tree: ast.Module) -> dict[ast.AST, ast.AST]:
     return parents
 
 
-def extract_from_source(
-    path: str, source: bytes, unparsed: list[str] | None = None
-) -> Iterator[dict[str, Any]]:
-    """Yield raw call-site records from one core file.
+def _parse_if_interesting(
+    path: str, source: bytes, marker: bytes, unparsed: list[str] | None
+) -> ast.Module | None:
+    """Parse a core file that contains ``marker``, or record why not.
 
     Home Assistant's ``dev`` branch tracks the newest CPython syntax, so an
     older interpreter cannot parse every core file (2026.9 dev uses PEP 758
     unparenthesized ``except A, B:``, which needs Python 3.14). Rather than
     pretend, every unparseable file is recorded and reported in ``rules.json``.
+    Both extraction passes look at the same files, so a file that fails for
+    both is recorded once.
     """
-    if b"breaks_in_ha_version" not in source:
-        return
+    if marker not in source:
+        return None
     try:
-        tree = ast.parse(source, filename=path)
+        return ast.parse(source, filename=path)
     except (SyntaxError, ValueError) as err:
         LOGGER.warning("skipping %s: %s", path, err)
-        if unparsed is not None:
-            unparsed.append(f"{path}: {err}")
+        entry = f"{path}: {err}"
+        if unparsed is not None and entry not in unparsed:
+            unparsed.append(entry)
+        return None
+
+
+def extract_from_source(
+    path: str, source: bytes, unparsed: list[str] | None = None
+) -> Iterator[dict[str, Any]]:
+    """Yield raw call-site records from one core file."""
+    tree = _parse_if_interesting(path, source, b"breaks_in_ha_version", unparsed)
+    if tree is None:
         return
 
     parents = _parent_map(tree)
@@ -395,6 +419,93 @@ def extract_from_source(
         }
 
 
+def extract_deprecated_constants(
+    path: str, source: bytes, unparsed: list[str] | None = None
+) -> Iterator[dict[str, Any]]:
+    """Yield one record per ``_DEPRECATED_X = DeprecatedAlias(...)`` declaration.
+
+    The release is whichever string argument looks like a release label, not a
+    fixed position: ``DeprecatedConstantEnum`` takes two arguments and
+    ``DeprecatedAlias`` three, and the replacement path is a string too.
+    """
+    tree = _parse_if_interesting(
+        path, source, _DEPRECATED_PREFIX.encode(), unparsed
+    )
+    if tree is None:
+        return
+
+    module = module_of(path)
+    for node in tree.body:
+        if not isinstance(node, ast.Assign) or not isinstance(node.value, ast.Call):
+            continue
+        target = next(
+            (
+                t.id
+                for t in node.targets
+                if isinstance(t, ast.Name) and t.id.startswith(_DEPRECATED_PREFIX)
+            ),
+            None,
+        )
+        if target is None:
+            continue
+        func = node.value.func
+        callee = func.attr if isinstance(func, ast.Attribute) else getattr(func, "id", "")
+        if callee not in DEPRECATED_CONSTANT_CALLS:
+            continue
+        literals = [
+            arg.value
+            for arg in node.value.args
+            if isinstance(arg, ast.Constant) and isinstance(arg.value, str)
+        ]
+        version = next((v for v in reversed(literals) if VERSION_RE.match(v)), None)
+        if not version:
+            LOGGER.debug("%s:%d: %s carries no release label", path, node.lineno, target)
+            continue
+        replacement = next((v for v in literals if v != version), "")
+        yield {
+            "callee": callee,
+            "version": version,
+            "symbol": target[len(_DEPRECATED_PREFIX) :],
+            "module": module,
+            "replacement": replacement,
+            "what": "",
+            "enclosing": "",
+            "path": path,
+            "line": node.lineno,
+        }
+
+
+def _import_rule(record: dict[str, Any], release: str) -> dict[str, Any]:
+    """The rule for one deprecated import, as ``build_rules`` wants it."""
+    symbol = record["symbol"]
+    module = record["module"]
+    replacement = record["replacement"]
+    tail = module.rsplit(".", 1)[-1]
+    advice = (
+        f" Import it from {replacement.rsplit('.', 1)[0]} instead."
+        if replacement
+        else ""
+    )
+    return {
+        "id": f"core-import-{_slug(tail)}-{_slug(symbol)}"[:90],
+        "symbol": symbol,
+        "message": (
+            f"{symbol} imported from {module} is deprecated and is removed in "
+            f"Home Assistant {release}.{advice}"
+        ),
+        # A named import from an exact module: there is no receiver to infer
+        # and nothing to confuse it with, so the length gate that protects
+        # call matchers does not apply here.
+        "confidence": "high",
+        "match": {
+            "type": "import_from",
+            "modules": [module],
+            "names": [symbol],
+        },
+        "replacement": replacement,
+    }
+
+
 def build_rules(records: list[dict[str, Any]], current: str) -> list[dict[str, Any]]:
     """Collapse raw call sites into deduplicated, published rules."""
     by_id: dict[str, dict[str, Any]] = {}
@@ -406,22 +517,31 @@ def build_rules(records: list[dict[str, Any]], current: str) -> list[dict[str, A
             LOGGER.debug("skipping non-release version %r", version)
             continue
 
-        matcher = (
-            derive_matcher(
-                callee, record["what"], record["enclosing"], record["path"]
-            )
-            if callee in API_DEPRECATION_CALLS
-            else None
-        )
-        symbol = _symbol_for(callee, record["what"], record["enclosing"], matcher)
-        kind = _kind_for(callee, matcher)
         release = normalise_version(version)
+        imported = _import_rule(record, release) if callee in DEPRECATED_CONSTANT_CALLS else None
 
-        if callee in ISSUE_CALLS:
-            rule_id = f"core-issue-{_slug(record['enclosing'] or record['path'])}-{release}"
+        if imported:
+            matcher = imported["match"]
+            symbol = imported["symbol"]
+            kind = "import"
+            rule_id = imported["id"]
         else:
-            rule_id = f"core-{kind}-{_slug(symbol)}"
-        rule_id = rule_id[:90]
+            matcher = (
+                derive_matcher(
+                    callee, record["what"], record["enclosing"], record["path"]
+                )
+                if callee in API_DEPRECATION_CALLS
+                else None
+            )
+            symbol = _symbol_for(callee, record["what"], record["enclosing"], matcher)
+            kind = _kind_for(callee, matcher)
+            if callee in ISSUE_CALLS:
+                rule_id = (
+                    f"core-issue-{_slug(record['enclosing'] or record['path'])}-{release}"
+                )
+            else:
+                rule_id = f"core-{kind}-{_slug(symbol)}"
+            rule_id = rule_id[:90]
 
         existing = by_id.get(rule_id)
         if existing:
@@ -435,14 +555,19 @@ def build_rules(records: list[dict[str, Any]], current: str) -> list[dict[str, A
             id=rule_id,
             kind=kind,
             symbol=symbol,
-            message=record["what"] or _message_for(callee, symbol, release),
+            message=(
+                imported["message"]
+                if imported
+                else record["what"] or _message_for(callee, symbol, release)
+            ),
             breaks_in=release,
             source=f"homeassistant/{record['path'].split('homeassistant/', 1)[-1]}:{record['line']}"
             if record["path"].startswith("homeassistant/")
             else f"{record['path']}:{record['line']}",
             origin="core-ast",
-            confidence="medium",
+            confidence=imported["confidence"] if imported else "medium",
             match=matcher,
+            replacement=imported["replacement"] if imported else None,
         )
         payload = rule.to_dict()
         payload["expired"] = not is_future(release, current)
@@ -507,10 +632,22 @@ def main(argv: list[str] | None = None) -> int:
     records: list[dict[str, Any]] = []
     unparsed: list[str] = []
     files = 0
+    imports = 0
     for path, source in iter_core_python(tarball):
         files += 1
         records.extend(extract_from_source(path, source, unparsed))
-    LOGGER.info("scanned %d core files, %d deprecation call sites", files, len(records))
+        # Core announces removals two ways. Reading only report_usage() missed
+        # the DeprecatedAlias class entirely until the #25 log audit found a
+        # real integration warned about one.
+        found = list(extract_deprecated_constants(path, source, unparsed))
+        imports += len(found)
+        records.extend(found)
+    LOGGER.info(
+        "scanned %d core files, %d deprecation call sites, %d deprecated import(s)",
+        files,
+        len(records) - imports,
+        imports,
+    )
     if unparsed:
         LOGGER.warning(
             "%d core file(s) could not be parsed by Python %d.%d - rules defined in "

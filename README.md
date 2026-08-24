@@ -157,7 +157,7 @@ under **Download diagnostics** on the integration's page.
 Findings come from two sources, and every `findings` entry says which:
 
 * `source: local` — the integration parsed the **installed bytes** in your own
-  `custom_components/` directory with the same nine AST matchers the crawler
+  `custom_components/` directory with the same ten AST matchers the crawler
   uses. Forks, renamed copies and integrations installed outside HACS get a real
   verdict this way, and there is no version skew: the scanned version *is* the
   installed version.
@@ -405,6 +405,15 @@ a matcher only when it names something specific enough:
 Auto-derived symbols must be at least 18 characters and survive a denylist. Everything
 else is published for the board but never claims a repository is affected.
 
+The same pass also reads core's *other* removal mechanism, which has nothing to do with
+`report_usage`. A module declares
+`_DEPRECATED_TrackerEntity = DeprecatedAlias(_TrackerEntity, "homeassistant.components.device_tracker.TrackerEntity", "2027.6")`
+and hands its `__getattr__` to `check_if_deprecated_constant`, so the warning fires on
+the *import*. Those become `import_from` rules at `high` confidence: a named import from
+an exact module has no receiver to infer, so the 18-character gate does not apply. They
+are keyed on the deprecating module, never the symbol alone, because the same name
+imported from the replacement path is the fix rather than the problem.
+
 **2. Hand-curated (`origin: manual`, `data/manual_rules.json`).** Removals announced in
 prose with no `report_usage` call behind them — the legacy device tracker platform API,
 the device registry single-config-entry changes, the device tracker property removals.
@@ -451,6 +460,7 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
 | `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
 | `call_hass_argument` | a call to one of `names` that passes `hass` — for `@deprecated_hass_argument`, where the *argument* is deprecated, not the function |
+| `import_from` | `from <module in modules> import <name in names>` — for core's other removal mechanism, `_DEPRECATED_X = DeprecatedAlias(...)` behind a module `__getattr__`, where the import itself is what breaks. The module is the whole rule: the same name imported from the replacement path is the fix |
 | `js` | an anchored `token` in `.js`/`.ts`/`.mjs` source, comments stripped, only in files that reference the WebSocket API. Built for the device registry WebSocket deprecations, which break Lovelace cards rather than Python integrations |
 
 Any matcher can be narrowed with `files` (exact basenames); `attr` matchers can also
