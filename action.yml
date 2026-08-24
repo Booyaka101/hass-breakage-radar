@@ -1,0 +1,78 @@
+name: "Home Assistant Breakage Radar"
+description: >-
+  Find Home Assistant APIs your custom integration or Lovelace card uses that
+  are already scheduled for removal, and which release removes them.
+author: "Booyaka101"
+
+branding:
+  icon: radio
+  color: purple
+
+inputs:
+  path:
+    description: "Directory to check. A checkout root, or a custom_components directory."
+    required: false
+    default: "."
+  fail-on:
+    description: >-
+      Which findings fail the job. never (annotate only, the default),
+      imminent (anything already past its release or within window-days), or
+      any (every finding, a strict release gate).
+    required: false
+    default: "never"
+  window-days:
+    description: "How far ahead fail-on: imminent reaches."
+    required: false
+    default: "90"
+  rules:
+    description: >-
+      pinned uses the rule set shipped with the version of this action you
+      pinned, with no network call. index fetches the published index, so
+      rules stay current without a version bump.
+    required: false
+    default: "pinned"
+  ha-version:
+    description: >-
+      Only report removals still ahead of this Home Assistant release. Leave
+      empty to report every future removal.
+    required: false
+    default: ""
+  python-version:
+    description: "Python used to parse your source. Newer parses more syntax."
+    required: false
+    default: "3.13"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Scan for scheduled removals
+      shell: bash
+      env:
+        RADAR_PATH: ${{ inputs.path }}
+        RADAR_FAIL_ON: ${{ inputs.fail-on }}
+        RADAR_WINDOW_DAYS: ${{ inputs.window-days }}
+        RADAR_RULES: ${{ inputs.rules }}
+        RADAR_HA_VERSION: ${{ inputs.ha-version }}
+        RADAR_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        args=(
+          "$RADAR_PATH"
+          --format github
+          --fail-on "$RADAR_FAIL_ON"
+          --window-days "$RADAR_WINDOW_DAYS"
+        )
+        # "pinned" is the rule set committed at the tag this action was
+        # resolved from, so the version you pin is the pin. No network.
+        if [ "$RADAR_RULES" = "pinned" ]; then
+          args+=(--rules "$RADAR_ACTION_PATH/data/rules.json")
+        fi
+        if [ -n "$RADAR_HA_VERSION" ]; then
+          args+=(--ha-version "$RADAR_HA_VERSION")
+        fi
+        python "$RADAR_ACTION_PATH/tools/check_local.py" "${args[@]}"

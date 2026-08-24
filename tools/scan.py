@@ -52,15 +52,14 @@ from tools.common import (  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     ENGINE_VERSION,
     JS_SUFFIXES,
+    VENDOR_DIRECTORIES,
     Finding,
     Rule,
     ScanStats,
-    dedupe_js_findings,
     load_rules,
     looks_minified_js,
-    match_js_source,
-    match_source,
     matchable_rules,
+    scan_sources,
 )
 from tools.upstream import annotate  # noqa: E402
 
@@ -70,8 +69,9 @@ CODELOAD = "https://codeload.github.com/{full_name}/tar.gz/{ref}"
 #: firmware blobs; the Python we care about is always tiny.
 MAX_TARBALL_BYTES = 80 * 1024 * 1024
 
-#: Skip vendored third-party code shipped inside a custom component.
-VENDOR_MARKERS = ("/site-packages/", "/node_modules/", "/.venv/", "/vendor/")
+#: Skip vendored third-party code shipped inside a custom component. Tarball
+#: paths are filtered by substring, so the shared name list becomes markers.
+VENDOR_MARKERS = tuple(f"/{name}/" for name in sorted(VENDOR_DIRECTORIES))
 
 
 def candidate_refs(last_version: str) -> list[str]:
@@ -258,23 +258,18 @@ def scan_repo(
 
     try:
         stats = ScanStats()
-        findings: list[Finding] = []
-        if category == "plugin":
-            domains: list[str] = []
-            js_findings: list[Finding] = []
-            for path, text in iter_javascript(body, skipped, whole_repo=True):
-                js_findings.extend(match_js_source(path, text, rules, stats))
-            findings = dedupe_js_findings(js_findings)
-        else:
-            domains = iter_manifest_domains(body)
-            for path, source in iter_component_python(body):
-                findings.extend(match_source(path, source, rules, stats))
-            # Frontend modules shipped inside custom_components/ break on the
-            # WebSocket rules the same way a standalone card does.
-            js_findings = []
-            for path, text in iter_javascript(body, skipped, whole_repo=False):
-                js_findings.extend(match_js_source(path, text, rules, stats))
-            findings.extend(dedupe_js_findings(js_findings))
+        # A plugin repository keeps its card anywhere, so the whole tree is
+        # walked and there is no Python to read. An integration ships frontend
+        # modules inside custom_components/, where they break on the WebSocket
+        # rules the same way a standalone card does.
+        plugin = category == "plugin"
+        domains = [] if plugin else iter_manifest_domains(body)
+        findings = scan_sources(
+            () if plugin else iter_component_python(body),
+            iter_javascript(body, skipped, whole_repo=plugin),
+            rules,
+            stats,
+        )
     except tarfile.TarError as err:
         record["status"] = "error"
         record["error"] = f"bad tarball: {err}"[:200]

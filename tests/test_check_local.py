@@ -8,10 +8,12 @@ must never be reported as clean.
 from __future__ import annotations
 
 import json
+from datetime import date, timedelta
 
 import pytest
 
-from tools.check_local import main
+from tools.check_local import is_blocking, main
+from tools.rules_engine import Finding
 
 
 @pytest.fixture
@@ -134,3 +136,223 @@ def test_an_unreachable_index_cannot_be_checked(fixtures_dir):
         ]
     )
     assert code == 2
+
+
+# --------------------------------------------------------------------------- #
+# Card repositories
+# --------------------------------------------------------------------------- #
+
+
+@pytest.fixture
+def card_rules(tmp_path):
+    """The two device-registry WebSocket fields the card fixtures read."""
+    path = tmp_path / "card-rules.json"
+    path.write_text(
+        json.dumps(
+            {
+                "rules": [
+                    {
+                        "id": f"device-registry-{token.replace('_', '-')}-field",
+                        "breaks_in": "2027.8",
+                        "message": f"Reads {token} from a device registry result.",
+                        "source": "https://developers.home-assistant.io/blog/",
+                        "confidence": "high",
+                        "match": {"type": "js", "token": token},
+                    }
+                    for token in ("config_entries", "primary_config_entry")
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
+def test_a_card_repository_is_scanned_without_custom_components(
+    fixtures_dir, card_rules, capsys
+):
+    """748 of the catalogue's repositories are cards. Exit 2 for all of them
+    would make the action useless to every one."""
+    code = main(
+        [str(fixtures_dir / "plugins" / "config_entries_card"), "--rules", str(card_rules)]
+    )
+    assert code == 1
+    assert "power-card.js" in capsys.readouterr().out
+
+
+def test_a_card_shipping_source_and_bundle_reports_the_source_once(
+    fixtures_dir, card_rules, capsys
+):
+    code = main(
+        [str(fixtures_dir / "plugins" / "ts_plus_bundle"), "--rules", str(card_rules)]
+    )
+    out = capsys.readouterr().out
+    assert code == 1
+    assert "1 finding(s)." in out
+    assert "src/card.ts" in out
+    assert "dist/card.js" not in out
+
+
+def test_a_repository_of_nothing_but_a_bundle_is_not_clean(
+    fixtures_dir, card_rules
+):
+    """Its only file is skipped, so nothing was analysed. That is exit 2."""
+    assert (
+        main([str(fixtures_dir / "plugins" / "minified_card"), "--rules", str(card_rules)])
+        == 2
+    )
+
+
+# --------------------------------------------------------------------------- #
+# --fail-on
+# --------------------------------------------------------------------------- #
+
+
+def _finding(breaks_in: str) -> Finding:
+    return Finding(
+        rule_id="r", breaks_in=breaks_in, file="f.py", line=1, confidence="high"
+    )
+
+
+def test_fail_on_never_reports_without_failing(fixtures_dir, local_rules, capsys):
+    code = main(
+        [str(fixtures_dir / "true_positive"), "--rules", str(local_rules), "--fail-on", "never"]
+    )
+    assert code == 0
+    assert "1 finding(s)." in capsys.readouterr().out
+
+
+def test_fail_on_any_is_the_default_release_gate():
+    assert is_blocking(_finding("2099.1"), "any", 90, date(2026, 8, 24))
+
+
+def test_fail_on_imminent_uses_the_window():
+    today = date(2026, 8, 24)
+    # 2026.10 lands 7 October 2026, 44 days out; 2027.8 is years away.
+    assert is_blocking(_finding("2026.10"), "imminent", 90, today)
+    assert not is_blocking(_finding("2027.8"), "imminent", 90, today)
+    assert not is_blocking(_finding("2026.10"), "imminent", 30, today)
+
+
+def test_fail_on_imminent_covers_a_release_that_already_landed():
+    assert is_blocking(_finding("2026.1"), "imminent", 90, date(2026, 8, 24))
+
+
+def test_fail_on_imminent_forms_no_opinion_about_an_undated_label():
+    """Same refusal to guess as the integration: reported, never fatal."""
+    assert not is_blocking(_finding("next"), "imminent", 3650, date(2026, 8, 24))
+
+
+def test_an_imminent_finding_fails_the_job_end_to_end(fixtures_dir, tmp_path, capsys):
+    """Dated from today so the assertion cannot rot."""
+    soon = date.today().replace(day=1) + timedelta(days=40)
+    rules = tmp_path / "soon.json"
+    rules.write_text(
+        json.dumps(
+            {
+                "rules": [
+                    {
+                        "id": "legacy-device-tracker-platform",
+                        "breaks_in": f"{soon.year}.{soon.month}",
+                        "message": "Implements the legacy device tracker platform API.",
+                        "confidence": "high",
+                        "match": {
+                            "type": "moduledef",
+                            "names": ["setup_scanner"],
+                            "files": ["device_tracker.py"],
+                        },
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    args = [str(fixtures_dir / "true_positive"), "--rules", str(rules)]
+    assert main([*args, "--fail-on", "imminent"]) == 1
+    assert main([*args, "--fail-on", "imminent", "--window-days", "1"]) == 0
+    assert "finding(s)." in capsys.readouterr().out
+
+
+# --------------------------------------------------------------------------- #
+# --format github
+# --------------------------------------------------------------------------- #
+
+
+def test_github_format_annotates_the_exact_line(
+    fixtures_dir, local_rules, tmp_path, monkeypatch, capsys
+):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    code = main(
+        [
+            str(fixtures_dir / "true_positive"),
+            "--rules",
+            str(local_rules),
+            "--format",
+            "github",
+        ]
+    )
+    out = capsys.readouterr().out
+    assert code == 1
+    assert "::error file=custom_components/fixture_tracker/device_tracker.py," in out
+    assert "line=12," in out
+    assert "title=Breaks in Home Assistant 2027.5" in out
+    # A blocking finding is an error, so it survives the 10-warnings cap on its
+    # own budget.
+    assert "::warning" not in out
+
+
+def test_github_format_downgrades_what_will_not_fail_the_job(
+    fixtures_dir, local_rules, capsys
+):
+    main(
+        [
+            str(fixtures_dir / "true_positive"),
+            "--rules",
+            str(local_rules),
+            "--format",
+            "github",
+            "--fail-on",
+            "never",
+        ]
+    )
+    out = capsys.readouterr().out
+    assert "::warning file=" in out
+    assert "::error" not in out
+
+
+def test_github_format_writes_every_finding_to_the_job_summary(
+    fixtures_dir, card_rules, tmp_path, monkeypatch
+):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    main(
+        [
+            str(fixtures_dir / "plugins" / "config_entries_card"),
+            "--rules",
+            str(card_rules),
+            "--format",
+            "github",
+        ]
+    )
+    written = summary.read_text(encoding="utf-8")
+    assert "## Home Assistant Breakage Radar" in written
+    assert "| Breaks in | When | File | Rule | Confidence |" in written
+    assert "`power-card.js:" in written
+    assert "not a guarantee of breakage" in written
+
+
+def test_github_format_survives_no_summary_file(fixtures_dir, local_rules, monkeypatch):
+    monkeypatch.delenv("GITHUB_STEP_SUMMARY", raising=False)
+    assert (
+        main(
+            [
+                str(fixtures_dir / "true_positive"),
+                "--rules",
+                str(local_rules),
+                "--format",
+                "github",
+            ]
+        )
+        == 1
+    )

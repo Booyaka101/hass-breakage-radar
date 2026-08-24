@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hass-breakage-radar"
-version = "1.8.0"
+version = "1.9.0"
 description = "Find out which of your Home Assistant custom integrations stop working, and in which future release."
 readme = "README.md"
 license = { text = "MIT" }
@@ -32,7 +32,9 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4"]
+# PyYAML only parses action.yml in the tests. Nothing shipped imports it, so
+# the integration's "requirements": [] stays honest.
+dev = ["pytest>=7.4", "pyyaml>=6"]
 
 [project.urls]
 Homepage = "https://github.com/Booyaka101/hass-breakage-radar"
