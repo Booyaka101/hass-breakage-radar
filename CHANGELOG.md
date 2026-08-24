@@ -4,6 +4,26 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+Board and README only; the integration is unchanged, so there is no version bump.
+
+* **The board states its own coverage gap
+  ([#24](https://github.com/Booyaka101/hass-breakage-radar/issues/24)).** A new
+  `removals with no detector` tile next to `active rules`, and a footer line
+  spelling out what it means: at the time of writing 41 of the 98 announced
+  removals have a matcher behind them, the other 57 are carried for their
+  deadline only, so a repository with no findings has not been checked against
+  those 57. Sourced
+  from the `coverage` object already in `index.json`, so the numbers move with
+  the daily crawl.
+* **README answers the two questions the launch thread kept asking
+  ([#23](https://github.com/Booyaka101/hass-breakage-radar/issues/23)).** How
+  this differs from Spook, which inspects a running instance for what is wrong
+  now and never reads integration source, and from reading
+  `home-assistant.log`, which is a real answer for code that actually ran and
+  silent about every branch that did not.
+
 ## 1.8.0 — 2026-08-22
 
 ### The board answers when, not just what (#3)

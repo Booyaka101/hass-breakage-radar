@@ -68,6 +68,39 @@ keeps these moving — `coverage` in `index.json` is always authoritative.
 
 ---
 
+## How this differs from Spook, and from reading the log
+
+Two questions come up every time this gets posted, so they belong here rather than in
+a comment thread.
+
+**Spook** inspects the instance you are running and reports what is wrong with it
+*now*: entities an automation references that no longer exist, action calls that point
+at nothing, orphaned entities an integration left behind, YAML it cannot parse.
+It surfaces those through Repairs and will often fix them for you. It does not read the
+source of your custom integrations, and it has no opinion about a core API that works
+perfectly today and is deleted in 2027.8. That second thing is the only thing Breakage
+Radar looks at, so the two barely touch. Run both. If Spook has since grown a check that
+overlaps, open an issue and this paragraph gets corrected.
+
+**The log** is the closer call, and it is a real answer. Home Assistant calls
+`report_usage()` when deprecated code actually runs, and for a custom integration that
+lands in `home-assistant.log` naming the release that removes it. Grep your log and you
+will catch a lot of this.
+
+What a log cannot report is a call that did not happen. A deprecated call inside an
+error handler, or behind a config option you never set, stays silent until the day it
+fires, which may well be the upgrade that removes it. A log also cannot tell you about
+an integration you have not installed yet, and it cannot help an author check their own
+repository without a running instance. Static analysis reads every branch of the source,
+covers the whole HACS catalogue, and runs in a checkout.
+
+Where the log wins is precision, and that is worth saying plainly: it observed the call,
+so there is nothing to argue about, while a finding here is a static match and can be
+wrong. [#25](https://github.com/Booyaka101/hass-breakage-radar/issues/25) tracks running
+a real log against the rule set as an answer key, in both directions.
+
+---
+
 ## Two halves in one repository
 
 | | What it is | Where it runs |
@@ -705,6 +738,9 @@ time of archiving the integration has not worked in over a year."* It compared i
 components against *published* breaking changes — after the fact. Breakage Radar looks at
 removals that have **not happened yet**, from a static analysis of the integration's own
 source, so there is time to act.
+
+Spook is the tool people most often expect to cover this; it does not, for the reasons
+in [How this differs from Spook, and from reading the log](#how-this-differs-from-spook-and-from-reading-the-log).
 
 ---
 

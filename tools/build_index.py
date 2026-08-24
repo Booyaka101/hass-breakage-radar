@@ -411,6 +411,7 @@ details.bucket[open] > summary {{ margin-bottom:16px; }}
   <p>A finding is a static-analysis result, not a guarantee of breakage. Rules
   marked <span class="conf-medium">medium</span> can match a same-named symbol
   from a different module when the receiver is only known at runtime.</p>
+  <p>{gap}</p>
 </footer>
 <script>
 const q = document.getElementById('q'), conf = document.getElementById('conf');
@@ -472,6 +473,31 @@ def _stat(value: Any, label: str) -> str:
     return f'<div class="stat"><b>{html.escape(str(value))}</b><span>{html.escape(label)}</span></div>'
 
 
+def coverage_gap_note(coverage: dict[str, Any]) -> str:
+    """State how many announced removals ship no matcher.
+
+    Without it the "active rules" tile reads as the whole rule set, and a
+    repository with no findings reads as clean.
+    """
+    published = coverage["rules_published"]
+    matchable = coverage["rules_matchable"]
+    gap = published - matchable
+    if gap <= 0:
+        return (
+            f"All {published} announced removals tracked here have a matcher "
+            "behind them."
+        )
+    return (
+        f"{matchable} of the {published} announced removals tracked here have a "
+        f"matcher behind them. The other {gap} are listed for their deadline "
+        "only: some are core's own internal migrations that no custom "
+        "integration calls, the rest are announced behaviour changes with no "
+        "reliable static signal to anchor a rule on. No repository is ever "
+        f"listed under those {gap}, so a repository with no findings has not "
+        "been checked against them."
+    )
+
+
 def _relative(days: int) -> str:
     if days > 1:
         return f"in {days} days"
@@ -514,6 +540,10 @@ def render_html(payload: dict[str, Any]) -> str:
                 coverage.get("skipped_minified_files", 0), "minified bundles skipped"
             ),
             _stat(coverage["rules_matchable"], "active rules"),
+            _stat(
+                coverage["rules_published"] - coverage["rules_matchable"],
+                "removals with no detector",
+            ),
             _stat(payload["core_version"], "core version"),
         ]
     )
@@ -667,6 +697,7 @@ def render_html(payload: dict[str, Any]) -> str:
 
     return PAGE_TEMPLATE.format(
         stats=stats,
+        gap=coverage_gap_note(coverage),
         hero=hero,
         sections="\n".join(groups),
         generated=html.escape(payload["generated_utc"]),
