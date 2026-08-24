@@ -1,7 +1,139 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.8.0 session (2026-08-22); earlier sections are kept
+Status at the end of the v1.9.0 session (2026-08-24); earlier sections are kept
 as history, newest first.
+
+## v1.9.0 — the backlog session: five issues, and one found by running it (2026-08-24)
+
+Worked the open issues rather than a single feature. #19 was already shipped
+and just needed closing; #24, #23, #21 and #25 all landed; #22 got its record
+corrected. Four PRs, all squash-merged with every check green on the exact
+commit.
+
+### #24 + #23 — the board states its gap, the README answers Spook (PR #36)
+
+The board showed "41 active rules" and nothing about the 57 announced removals
+with no matcher. A tile plus a footer line, both from the `coverage` object
+already in `index.json`. The wording was the work, not the code: checked what
+the 57 actually are before writing it (46 `core-ast`, 11 `blog`, and a real
+chunk of the `core-ast` ones are core migrating its own integrations, e.g.
+`core-issue-opnsenseconfigflow-*`), so the line says that rather than claiming
+57 blind spots that affect anybody.
+
+README gained a section on Spook, checked against spook.boo rather than
+written from memory, and on reading `home-assistant.log`, which gets the
+honest version including that the log beats the scanner on precision.
+
+### #21 — the scanner runs in an author's CI (PR #37)
+
+`action.yml`, composite, annotating by default and not failing. `fail-on`
+reuses the alert-window idea (`never` / `imminent` / `any`), rules come pinned
+from the tag so there is no network call in anyone else's CI, and findings go
+out as annotations *and* a job summary because GitHub only shows 10
+annotations per level per step.
+
+Two things worth keeping:
+* **The issue said settle the five design questions before writing any of it,
+  so nothing was written first.** Posted a recommendation on each with the
+  reasoning, then built it. One recommendation was wrong and got reversed
+  during the build: I proposed a quiet no-op for card repositories, but the
+  exit-code contract in `test_check_local.py` says "could not check" must
+  never read as clean, and a silent green is exactly that. Closed the gap
+  instead — `check_local.py` now reads a checkout without `custom_components/`
+  as a card repository. It used to exit 2 on all 748 plugin repos.
+* **`scan_sources()` was extracted rather than writing a fourth scan loop.**
+  `tools/scan.py` and `check_local.py` now differ only in where the bytes come
+  from. Proved it a no-op instead of arguing it: old and new `scan_repo` over
+  16 tarballs built from every fixture tree, both categories for every tree,
+  identical records and findings, both status branches hit. Stopped at
+  `custom_components/.../scanner.py`, which has caps, caching and an executor
+  and was already deduplicated in #34.
+
+### #25 — the audit, which found a whole mechanism (PRs #38, #39)
+
+Ran what the issue proposed. 60 affected integrations installed at the exact
+ref the crawl scanned, plus a fabricated config entry per domain written into
+`.storage` — without that Home Assistant never imports a custom integration at
+all, and the audit would have measured nothing. HA 2026.8.2 in Docker, two
+runs (`warning` then `info`, logs merged because `report_usage` dedupes per
+process). 61 domains installed, 57 set up, 11 deprecation observations.
+
+**9 of 11 already matched a finding. Both misses were the same thing**, and it
+was not a missing rule but a missing mechanism:
+
+```python
+_DEPRECATED_TrackerEntity = DeprecatedAlias(
+    _TrackerEntity, "homeassistant.components.device_tracker.TrackerEntity", "2027.6"
+)
+__getattr__ = partial(check_if_deprecated_constant, module_globals=globals())
+```
+
+No `breaks_in_ha_version` anywhere in it, so `extract_rules.py` had never seen
+any of it. 12 declarations in core, every one with a future release.
+
+* 12 new rules, a tenth matcher type `import_from`, `high` confidence.
+* **Keyed on the deprecating module, never the symbol.** The audit is what
+  proves that matters: `colota` and `comma_ai` import `TrackerEntity` from the
+  *replacement* path and Home Assistant correctly logged nothing for them.
+* Old and new extractor over the same tarball: the 114 existing rules are
+  byte-identical and the unparsed list is identical.
+
+### The trap the audit walked into, and #22's rule of thumb
+
+#22 recorded "widening a rule can afford a new matcher type. Narrowing one
+cannot." Checking that before writing `import_from` showed the first half is
+wrong. `report.py` had:
+
+```python
+elif local and local.get("status") == "clean" and rules_in_play > 0:
+    clean.append(domain)
+```
+
+`rules_in_play` is a *count*. An install one version behind runs the rules it
+understands, skips the unknown matcher type, finds nothing, reports `clean`,
+and that clean discards the index finding. The user is told an integration is
+fine while the index says 2027.6. #17 was safe for a narrower reason than
+"widening": its rule shipped `matchable: false`, so there was no index finding
+to bury.
+
+Fixed rather than worked around (PR #38, merged first and deliberately
+sequenced ahead of the rules). The scan now reports `rule_ids` and `report.py`
+keeps any index finding whose rule it could not run. A `clean` speaks only for
+what was actually checked. That removes the constraint in both directions,
+including the narrowing case #22 had to rule out. Commented the correction on
+#22 since it is kept as a record.
+
+### Two harness lessons
+
+* **The audit manufactured its own false gaps.** The first pass ran the scan
+  side on Python 3.11 and reported four gaps; two were files 3.11 cannot
+  parse, silently contributing nothing to match against. Exactly the failure
+  the README warns users about, biting the audit. Anything doing this has to
+  parse with the crawler's 3.14 and print the unparseable count.
+* **A branch touching `docs/` conflicts with the daily crawl within hours,**
+  and GitHub then skips `pull_request` workflows entirely rather than failing
+  them. That is #18's failure mode reaching `docs/` instead of
+  `data/rules.json`. The first push of PR #36 produced no `Validate` run at
+  all and it is invisible unless you look for the *absence* of a check.
+
+VERIFIED (all by hand on this machine, 2026-08-24):
+* pytest 339 passed, 3 skipped (was 300/3). Ruff at the pre-existing baseline;
+  every new file clean.
+* Clone check per the 1.7.0 lesson: difflib over new functions against the
+  ones they parallel. Highest pair among anything written here is 39%
+  (`extract_deprecated_constants` vs `extract_from_source`, since reduced to
+  30% by extracting the shared parse-or-record), `read_python` vs
+  `read_javascript` 5%, `render_text` vs `render_github` 6%.
+* The action's shell step run locally over all five self-test cases before it
+  was ever pushed: exits 0, 0, 1, 0, 2 as intended. It then passed as a real
+  CI job.
+* New rules re-run over the audit sample: 13 findings across 7 of 61
+  integrations, catching exactly the two Home Assistant warned about, with
+  `colota` and `comma_ai` staying clean.
+
+SHIPPED (2026-08-24): PRs #36, #37, #38, #39, squash-merged as `29cbc03`,
+`5a6ff09`, `80ef3df`, `700cb74`. Issues #19, #23, #24, #21, #25 closed. #22
+left open with the correction recorded; #3 left open for DunLaoghaire1.
 
 ## v1.8.0 — the board answers when, not just what (2026-08-22)
 
