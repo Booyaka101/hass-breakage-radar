@@ -166,6 +166,20 @@ def test_html_board_has_a_non_empty_table(payload):
     assert html.count("<tr") >= 2  # header + at least one data row
 
 
+def test_html_board_states_the_undetectable_removals(payload):
+    payload["coverage"]["rules_published"] = 97
+    payload["coverage"]["rules_matchable"] = 41
+    board = render_html(payload)
+    assert "<b>56</b><span>removals with no detector</span>" in board
+    assert "41 of the 97 announced removals" in board
+    assert "has not been checked against them" in board
+
+
+def test_html_board_says_so_when_every_removal_has_a_matcher(payload):
+    board = render_html(payload)  # fixture ships 1 published, 1 matchable
+    assert "All 1 announced removals tracked here have a matcher" in board
+
+
 def test_html_board_handles_an_empty_crawl():
     empty = build_payload(RULES_DOC, {"schema": 1, "repos": {}}, CATALOG_DOC)
     html = render_html(empty)
