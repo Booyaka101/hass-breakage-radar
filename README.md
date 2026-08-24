@@ -667,6 +667,7 @@ Everything below is covered by a test.
 | Home Assistant is upgraded past a finding's deadline | the finding stays, reclassified `broken_now`, and Repairs escalates to ERROR |
 | A release label cannot be turned into a date | no `imminent` opinion is formed; the finding is summarised rather than guessed at |
 | The index ships no matchable rules | domains scan `unknown` with a reason — an empty rule set never reads as clean |
+| The index ships a rule this installed engine is too old to run | the local scan reports which rule IDs it ran; any index finding it could not look for survives, attributed to the index. A local `clean` only speaks for the rules it actually ran |
 | An integration directory is renamed or forked | matched by the domain its `manifest.json` declares, not the directory name |
 | Very affected system | `details` caps at 100 entries and sets `details_truncated` |
 
