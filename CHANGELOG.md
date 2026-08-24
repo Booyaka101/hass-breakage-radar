@@ -6,6 +6,46 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## 1.9.0 — 2026-08-24
 
+### Core's other way of announcing a removal is now read (#25)
+
+The rule extractor read `report_usage(..., breaks_in_ha_version=)` and nothing
+else. Core has a second mechanism with no `breaks_in_ha_version` anywhere in
+it:
+
+```python
+_DEPRECATED_TrackerEntity = DeprecatedAlias(
+    _TrackerEntity, "homeassistant.components.device_tracker.TrackerEntity", "2027.6"
+)
+__getattr__ = partial(check_if_deprecated_constant, module_globals=globals())
+```
+
+The warning fires on the *import*. The rule set had never seen any of it.
+
+Found by running it. 60 affected integrations in a real Home Assistant
+container, with a fabricated config entry each so the code actually loads, and
+the resulting deprecation log diffed against the scanner. 9 of 11 observations
+already matched a finding. Both misses were this.
+
+* **12 new rules**, every one carrying a future release: 5 in 2027.6
+  (`TrackerEntity`, `ScannerEntity`, `BaseTrackerEntity`,
+  `TrackerEntityDescription`, `SourceType` from
+  `device_tracker.config_entry`) and 7 in 2027.8 (the `CONCENTRATION_*`
+  constants from `homeassistant.const`).
+* **A tenth matcher type, `import_from`**, keyed on the deprecating module
+  rather than the symbol. That distinction is the whole rule: `colota` and
+  `comma_ai` import `TrackerEntity` from the *replacement* path, which is the
+  fix, and Home Assistant logged nothing for them. Matching the name alone
+  would have flagged correct code.
+* **`high` confidence.** A named import from an exact module has no receiver
+  to infer and nothing to collide with, so the 18-character gate that protects
+  auto-derived call matchers does not apply.
+* On the 61-integration audit sample this is **13 findings across 7
+  integrations**, and it catches exactly the two Home Assistant warned about.
+
+`ENGINE_VERSION` goes to 7. The new rules change `rules_hash` anyway, so the
+crawl re-scans the catalogue either way; the bump keeps the engine's identity
+honest about it.
+
 ### A local "clean" only speaks for the rules it could run
 
 `report.py` let a local scan's `clean` verdict beat an index finding whenever

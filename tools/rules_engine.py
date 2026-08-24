@@ -4,7 +4,7 @@ A *rule* says "this piece of Python stops working in Home Assistant release X".
 A *matcher* is the machine-checkable half of a rule.  :func:`match_source` runs
 every matcher over one parsed file and yields findings.
 
-Nine matcher types cover every deprecation Breakage Radar currently ships:
+Ten matcher types cover every deprecation Breakage Radar currently ships:
 
 ``moduledef``          a module-level ``def``/``async def`` with one of ``names``
 ``classbase``          a ``class`` whose base list mentions one of ``bases``
@@ -19,6 +19,9 @@ Nine matcher types cover every deprecation Breakage Radar currently ships:
 ``call_hass_argument`` a call to one of ``names`` that passes ``hass`` (first
                        positional or keyword) -- for ``@deprecated_hass_argument``,
                        where the *argument* is deprecated, not the function
+``import_from``        ``from <module in modules> import <name in names>`` --
+                       for ``_DEPRECATED_X = DeprecatedAlias(...)``, where the
+                       import itself is what breaks and the module is the rule
 ``js``                 an anchored ``token`` in JavaScript/TypeScript source --
                        for the device-registry WebSocket API, which breaks
                        Lovelace cards rather than Python integrations. Handled
@@ -57,6 +60,7 @@ MATCHER_TYPES = frozenset(
         "call_kwarg",
         "call_missing_kwarg",
         "call_hass_argument",
+        "import_from",
         "js",
     }
 )
@@ -64,7 +68,7 @@ MATCHER_TYPES = frozenset(
 #: Bumped whenever matching semantics change. It is folded into the crawl's
 #: rules hash, so an engine change forces a rescan instead of leaving stale
 #: findings that the current engine would no longer produce.
-ENGINE_VERSION = 6
+ENGINE_VERSION = 7
 
 VERSION_RE = re.compile(r"^\d{4}\.\d+(?:\.\d+)?$")
 
@@ -423,6 +427,29 @@ def _match_attr_access(
             and isinstance(node.ctx, ast.Load)
         ):
             yield node.lineno, node.attr
+
+
+def _match_import_from(
+    matcher: dict[str, Any], tree: ast.Module, imports: dict[str, str]
+) -> Iterator[tuple[int, str]]:
+    """``from <deprecating module> import <name>``.
+
+    Core's second removal mechanism, ``_DEPRECATED_X = DeprecatedAlias(...)``
+    behind a module ``__getattr__``, fires on the import itself. The module is
+    the whole rule: the same name imported from the replacement path is the
+    fix, so matching on the name alone would flag correct code. A relative
+    import cannot name the deprecating module, so it is never a match.
+    """
+    modules = set(matcher.get("modules", ()))
+    names = set(matcher.get("names", ()))
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.ImportFrom) or node.level or node.module is None:
+            continue
+        if node.module not in modules:
+            continue
+        for alias in node.names:
+            if alias.name in names:
+                yield node.lineno, f"{node.module}.{alias.name}"
 
 
 def _annotation_resolves(
@@ -1014,6 +1041,7 @@ _DISPATCH = {
     "call_kwarg": _match_call_kwarg,
     "call_missing_kwarg": _match_call_missing_kwarg,
     "call_hass_argument": _match_call_hass_argument,
+    "import_from": _match_import_from,
 }
 
 
