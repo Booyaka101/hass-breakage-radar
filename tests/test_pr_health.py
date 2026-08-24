@@ -207,6 +207,45 @@ def test_no_actions_means_the_label_is_not_even_created(calls):
     assert not any("label create" in " ".join(a) for a in seen)
 
 
+def test_one_failing_pull_request_does_not_drop_the_others(monkeypatch):
+    """The whole point is that a missing signal gets noticed. Bailing on the
+    first failure would lose the rest of the signals."""
+    touched: list[str] = []
+
+    def fake(args, *, check=True):
+        if args[0] == "pr" and args[1] == "edit":
+            number = args[2]
+            if number == "1":
+                raise RuntimeError("no permission")
+            touched.append(number)
+        return ""
+
+    monkeypatch.setattr(pr_health, "_gh", fake)
+    failed = pr_health.apply(
+        "acme/thing",
+        [
+            {"number": 1, "action": "add", "comment": False},
+            {"number": 2, "action": "add", "comment": False},
+            {"number": 3, "action": "remove", "comment": False},
+        ],
+    )
+    assert failed == 1
+    assert touched == ["2", "3"]
+
+
+def test_a_failure_still_makes_the_run_fail(calls, monkeypatch):
+    seen, answers = calls
+    answers["pr list"] = json.dumps([_pr(1, "CONFLICTING")])
+    monkeypatch.setattr(pr_health, "apply", lambda repo, actions: 1)
+    assert pr_health.main(["--repo", "acme/thing"]) == 1
+
+
+def test_a_clean_run_succeeds(calls):
+    seen, answers = calls
+    answers["pr list"] = json.dumps([_pr(1, "CONFLICTING")])
+    assert pr_health.main(["--repo", "acme/thing"]) == 0
+
+
 def test_the_comment_explains_that_checks_are_skipped_not_failed():
     """The whole point. A generic "please rebase" would bury it."""
     assert "skips" in pr_health.COMMENT
