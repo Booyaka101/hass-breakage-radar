@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-25T03:33:08Z",
+  "generated_utc": "2026-08-26T03:37:09Z",
   "core_ref": "dev",
   "core_version": "2026.9",
-  "core_tarball_sha256": "5bf00c6f02827de1573cd06e5acef939208367f859cefb96a6f7f8d1a990cb84",
+  "core_tarball_sha256": "fc010ec643910e5ae0f31b2cfd41adb00f33bb9e635d0359d90f161ba74d6c30",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 170,
-    "future": 114,
+    "total": 171,
+    "future": 115,
     "matchable_future": 54,
-    "core_files_scanned": 9947,
+    "core_files_scanned": 9974,
     "core_files_unparsed": 0,
-    "from_core_ast": 137,
+    "from_core_ast": 138,
     "from_manual": 14,
     "from_blog": 19
   },
@@ -707,13 +707,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/homeassistant/__init__.py:459",
+      "source": "homeassistant/components/homeassistant/__init__.py:460",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L459"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L460"
     },
     {
       "id": "core-issue-async-setup-platform-2026.11",
@@ -989,13 +989,13 @@
       "symbol": "self.hass",
       "message": "self.hass",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/bluesound/media_player.py:483",
+      "source": "homeassistant/components/bluesound/media_player.py:484",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluesound/media_player.py#L483"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluesound/media_player.py#L484"
     },
     {
       "id": "core-issue-bluesoundplayer-async-bluesound-unjoin-2026.7",
@@ -1003,13 +1003,13 @@
       "symbol": "self.hass",
       "message": "self.hass",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/bluesound/media_player.py:507",
+      "source": "homeassistant/components/bluesound/media_player.py:508",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluesound/media_player.py#L507"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluesound/media_player.py#L508"
     },
     {
       "id": "core-issue-data-async-check-for-not-normalized-usernames-2026.7",
@@ -1535,6 +1535,20 @@
       "expired": false,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/__init__.py#L101"
+    },
+    {
+      "id": "core-issue-async-setup-platform-2027.3",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.3",
+      "source": "homeassistant/components/flexit/climate.py:90",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/flexit/climate.py#L90"
     },
     {
       "id": "core-issue-deprecated-notify-action-call-2027.3",
@@ -2896,5 +2910,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-25T03:33:39Z"
+  "blog_merged_utc": "2026-08-26T03:37:40Z"
 }
