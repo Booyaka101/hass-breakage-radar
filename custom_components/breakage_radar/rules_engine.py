@@ -177,11 +177,14 @@ def normalise_version(version: str) -> str:
     return version
 
 
+def _release_key(version: str) -> tuple[int, ...]:
+    """Sortable key for a release label, ignoring any patch part."""
+    return parse_version(normalise_version(version))
+
+
 def is_future(breaks_in: str, current: str) -> bool:
     """True when ``breaks_in`` is a release strictly after ``current``."""
-    return parse_version(normalise_version(breaks_in)) > parse_version(
-        normalise_version(current)
-    )
+    return _release_key(breaks_in) > _release_key(current)
 
 
 def is_pending(breaks_in: str, core_version: str) -> bool:
@@ -192,9 +195,7 @@ def is_pending(breaks_in: str, core_version: str) -> bool:
     release is still ahead of every user -- and the most urgent thing the tool
     has. Compare a *running* version with :func:`is_future` instead.
     """
-    return parse_version(normalise_version(breaks_in)) >= parse_version(
-        normalise_version(core_version)
-    )
+    return _release_key(breaks_in) >= _release_key(core_version)
 
 
 # --------------------------------------------------------------------------- #
