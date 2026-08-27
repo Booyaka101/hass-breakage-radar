@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-26T03:37:09Z",
+  "generated_utc": "2026-08-27T05:36:25Z",
   "core_ref": "dev",
-  "core_version": "2026.9",
-  "core_tarball_sha256": "fc010ec643910e5ae0f31b2cfd41adb00f33bb9e635d0359d90f161ba74d6c30",
+  "core_version": "2026.10",
+  "core_tarball_sha256": "a39958dc3077a38ee990644fd762ce4e8ec075e332322491244cac5ae01b745b",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 171,
+    "total": 170,
     "future": 115,
     "matchable_future": 54,
-    "core_files_scanned": 9974,
+    "core_files_scanned": 10024,
     "core_files_unparsed": 0,
-    "from_core_ast": 138,
+    "from_core_ast": 137,
     "from_manual": 14,
     "from_blog": 19
   },
@@ -136,13 +136,13 @@
       "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
       "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
       "breaks_in": "2025.1",
-      "source": "homeassistant/config_entries.py:1441",
+      "source": "homeassistant/config_entries.py:1455",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1441"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1455"
     },
     {
       "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
@@ -150,13 +150,13 @@
       "symbol": "does not use FlowResultType enum for data entry flow result type",
       "message": "does not use FlowResultType enum for data entry flow result type",
       "breaks_in": "2025.1",
-      "source": "homeassistant/data_entry_flow.py:507",
+      "source": "homeassistant/data_entry_flow.py:523",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L507"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L523"
     },
     {
       "id": "core-issue-huelight-async-turn-on-2025.10",
@@ -204,13 +204,13 @@
       "symbol": "self.hass",
       "message": "self.hass",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:2970",
+      "source": "homeassistant/config_entries.py:2984",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2970"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2984"
     },
     {
       "id": "blog-area-squared-units-2025.12",
@@ -881,13 +881,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3161",
+      "source": "homeassistant/config_entries.py:3175",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3161"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3175"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -935,13 +935,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1791",
+      "source": "homeassistant/config_entries.py:1805",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1791"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1805"
     },
     {
       "id": "blog-frontend-component-updates-2026-4-2026.5",
@@ -1148,20 +1148,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L832"
     },
     {
-      "id": "core-issue-action-called-without-config-entry-2026.9",
-      "kind": "issue",
-      "symbol": "hass",
-      "message": "hass",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/duckdns/issue.py:12",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/duckdns/issue.py#L12"
-    },
-    {
       "id": "core-issue-async-create-deprecated-yaml-issue-2026.9",
       "kind": "issue",
       "symbol": "hass",
@@ -1293,13 +1279,13 @@
       "symbol": "passes a suggested_area to device_registry.async_update device",
       "message": "passes a suggested_area to device_registry.async_update device",
       "breaks_in": "2026.9",
-      "source": "homeassistant/helpers/device_registry.py:3748",
+      "source": "homeassistant/helpers/device_registry.py:3752",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3748"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3752"
     },
     {
       "id": "core-call-async-register-info",
@@ -1528,13 +1514,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.3",
-      "source": "homeassistant/components/remember_the_milk/__init__.py:101",
+      "source": "homeassistant/components/remember_the_milk/__init__.py:99",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/__init__.py#L101"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/__init__.py#L99"
     },
     {
       "id": "core-issue-async-setup-platform-2027.3",
@@ -1709,7 +1695,7 @@
       "symbol": "FlowHandler.show_advanced_options",
       "message": "a user friendly way to present additional options in the UI, for example a section",
       "breaks_in": "2027.6",
-      "source": "homeassistant/data_entry_flow.py:646",
+      "source": "homeassistant/data_entry_flow.py:656",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1724,7 +1710,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L646"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L656"
     },
     {
       "id": "core-classbase-infraredentitydescription",
@@ -2246,7 +2232,7 @@
       "symbol": "async_update_device(one=...)",
       "message": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `add_config_subentry_id`, `remove_config_entry_id` or `remove_config_subentry_id`; a device now belongs to a single config entry and subentry. Move a device with `new_config_entry_id` and/or `new_config_subentry_id`, or remove it with `async_remove_device`",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3736",
+      "source": "homeassistant/helpers/device_registry.py:3740",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2264,7 +2250,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3736"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3740"
     },
     {
       "id": "core-import-const-attr-via-device",
@@ -2829,7 +2815,7 @@
       "symbol": "async_update_device(merge_connections=...)",
       "message": "calls `device_registry.async_update_device` with `merge_connections` or `merge_identifiers`; these only add to the device's existing connections or identifiers. Pass the full set as `new_connections` or `new_identifiers` instead",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:3754",
+      "source": "homeassistant/helpers/device_registry.py:3758",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2847,7 +2833,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3754"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3758"
     },
     {
       "id": "core-prose-accesses-childdeviceentry-which-does-not-exist-on-child-devices",
@@ -2910,5 +2896,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-26T03:37:40Z"
+  "blog_merged_utc": "2026-08-27T05:36:29Z"
 }
