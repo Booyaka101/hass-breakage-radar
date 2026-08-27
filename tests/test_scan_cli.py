@@ -8,7 +8,7 @@ import pytest
 
 from tools import scan as scan_module
 from tools.common import NotFound, RateLimited
-from tools.rules_engine import Rule
+from tools.rules_engine import Rule, matchable_rules
 from tools.scan import main, rules_hash, scan_repo, select_slice
 
 RULE = Rule(
@@ -75,6 +75,13 @@ def test_rules_hash_changes_with_the_engine_version(monkeypatch):
     before = rules_hash([RULE])
     monkeypatch.setattr(scan_module, "ENGINE_VERSION", 999)
     assert rules_hash([RULE]) != before
+
+
+def test_a_rule_breaking_in_the_dev_release_stays_active():
+    # dev carries the release being built, so 2027.5 there means nobody is
+    # running it yet and the rule is at its most urgent, not expired.
+    assert matchable_rules([RULE], current_version="2027.5") == [RULE]
+    assert matchable_rules([RULE], current_version="2027.6") == []
 
 
 def test_missing_tag_falls_back_then_marks_unreachable(monkeypatch):
@@ -166,6 +173,63 @@ def test_slice_ends_cleanly_and_commits_state_when_rate_limited(tmp_path, monkey
     findings = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
     assert list(state) == ["a/one"], "work done before the 429 must be kept"
     assert list(findings["repos"]) == ["a/one"]
+
+
+def test_findings_for_a_retired_rule_are_dropped(tmp_path):
+    """A rule retires when its release lands in dev. Only a slice of the
+    catalogue is rescanned a day, so without this the leftover hits outlive the
+    rule they name and build_index refuses to publish the index at all."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+    (tmp_path / "findings.json").write_text(
+        json.dumps(
+            {
+                "schema": 1,
+                "repos": {
+                    "a/one": {
+                        "domain": "one",
+                        "status": "scanned",
+                        "findings": [
+                            {
+                                "rule_id": "gone-in-the-last-release",
+                                "breaks_in": "2026.9",
+                                "file": "custom_components/one/sensor.py",
+                                "line": 3,
+                                "confidence": "high",
+                            },
+                            {
+                                "rule_id": RULE.id,
+                                "breaks_in": "2027.5",
+                                "file": "custom_components/one/device_tracker.py",
+                                "line": 7,
+                                "confidence": "high",
+                            },
+                        ],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    # Every repository is already up to date, so nothing gets rescanned and the
+    # prune is the only thing that can clear the stale hit.
+    (tmp_path / "crawl.json").write_text(
+        json.dumps(
+            {
+                entry["full_name"]: {
+                    "last_version_scanned": entry["last_version"],
+                    "rules_hash": rules_hash([RULE]),
+                    "last_scanned_utc": "2026-08-08T00:00:00Z",
+                }
+                for entry in CATALOG
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert main(_argv(tmp_path, rules_path, catalog_path)) == 0
+
+    findings = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    assert [f["rule_id"] for f in findings["repos"]["a/one"]["findings"]] == [RULE.id]
 
 
 def test_missing_inputs_exit_with_a_clear_code(tmp_path):

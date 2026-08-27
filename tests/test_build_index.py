@@ -99,6 +99,20 @@ def test_expired_rules_are_not_published(payload):
     ]
 
 
+def test_a_removal_landing_in_the_dev_release_is_still_published():
+    """core_version comes from dev, which carries the release being built. A
+    removal scheduled for it has reached nobody yet, so dropping it would both
+    lose the most urgent warning the tool has and strand the findings naming
+    it -- which is a schema violation, not a quiet omission."""
+    rules_doc = copy.deepcopy(RULES_DOC)
+    rules_doc["core_version"] = "2027.5"
+    payload = build_payload(rules_doc, FINDINGS_DOC, CATALOG_DOC)
+    assert [rule["id"] for rule in payload["rules"]] == [
+        "legacy-device-tracker-platform"
+    ]
+    assert validate_index(payload) == []
+
+
 def test_coverage_counts(payload):
     assert payload["coverage"] == {
         "catalog_total": 3,
