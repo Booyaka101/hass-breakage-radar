@@ -49,7 +49,7 @@ from tools.common import (  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     MATCHER_TYPES,
     VERSION_RE,
-    is_future,
+    is_pending,
     normalise_version,
 )
 
@@ -241,7 +241,7 @@ def merge(
         merged[rule["id"]] = rule
 
     for rule in merged.values():
-        rule["expired"] = not is_future(rule["breaks_in"], current_version)
+        rule["expired"] = not is_pending(rule["breaks_in"], current_version)
 
     return sorted(merged.values(), key=lambda r: (r["breaks_in"], r["id"]))
 

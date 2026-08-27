@@ -57,6 +57,7 @@ from tools.rules_engine import (  # noqa: E402
     VERSION_RE,
     Rule,
     is_future,
+    is_pending,
     normalise_version,
 )
 
@@ -570,7 +571,7 @@ def build_rules(records: list[dict[str, Any]], current: str) -> list[dict[str, A
             replacement=imported["replacement"] if imported else None,
         )
         payload = rule.to_dict()
-        payload["expired"] = not is_future(release, current)
+        payload["expired"] = not is_pending(release, current)
         payload["occurrences"] = 1
         payload["source_url"] = (
             f"https://github.com/home-assistant/core/blob/dev/{record['path']}"

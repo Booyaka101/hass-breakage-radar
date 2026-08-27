@@ -184,6 +184,19 @@ def is_future(breaks_in: str, current: str) -> bool:
     )
 
 
+def is_pending(breaks_in: str, core_version: str) -> bool:
+    """True when the removal has not reached anybody's Home Assistant yet.
+
+    ``core_version`` comes from core's ``dev`` branch, which carries the release
+    being built rather than one anyone runs, so a removal landing in that same
+    release is still ahead of every user -- and the most urgent thing the tool
+    has. Compare a *running* version with :func:`is_future` instead.
+    """
+    return parse_version(normalise_version(breaks_in)) >= parse_version(
+        normalise_version(core_version)
+    )
+
+
 # --------------------------------------------------------------------------- #
 # matching
 # --------------------------------------------------------------------------- #
@@ -1141,9 +1154,9 @@ def load_rules(payload: Iterable[dict[str, Any]]) -> list[Rule]:
 
 
 def matchable_rules(rules: Iterable[Rule], *, current_version: str) -> list[Rule]:
-    """Rules that can actually be matched *and* break in a future release."""
+    """Rules that can actually be matched *and* whose removal is still pending."""
     return [
         rule
         for rule in rules
-        if rule.matchable and is_future(rule.breaks_in, current_version)
+        if rule.matchable and is_pending(rule.breaks_in, current_version)
     ]

@@ -292,6 +292,26 @@ def scan_repo(
     return record, findings
 
 
+def prune_retired_findings(repos: dict[str, Any], active_ids: set[str]) -> int:
+    """Drop hits the active rule set can no longer produce, return how many.
+
+    A rule retires the moment its release lands in core's dev branch. That
+    changes rules_hash, so every repository is queued for a rescan, but a slice
+    only covers a few hundred a day -- and until a repository comes round, its
+    record still carries hits for a rule the index no longer publishes, which
+    the schema check rejects. Same reasoning as folding ENGINE_VERSION into the
+    hash: never keep findings the current engine would not produce.
+    """
+    retired = 0
+    for record in repos.values():
+        findings = record.get("findings") or []
+        kept = [f for f in findings if f.get("rule_id") in active_ids]
+        retired += len(findings) - len(kept)
+        if len(kept) != len(findings):
+            record["findings"] = kept
+    return retired
+
+
 def select_slice(
     catalog: list[dict[str, Any]],
     state: dict[str, Any],
@@ -359,7 +379,7 @@ def main(argv: list[str] | None = None) -> int:
     all_rules = load_rules(rules_payload.get("rules", []))
     active = matchable_rules(all_rules, current_version=current_version)
     if not active:
-        LOGGER.error("no matchable future rules; refusing to scan")
+        LOGGER.error("no matchable pending rules; refusing to scan")
         return 2
     rhash = rules_hash(active)
     LOGGER.info(
@@ -395,6 +415,24 @@ def main(argv: list[str] | None = None) -> int:
     }
     repos: dict[str, Any] = findings_doc.setdefault("repos", {})
 
+    def checkpoint() -> None:
+        """Persist progress mid-slice.
+
+        A long crawl that only writes at the end is indistinguishable from a
+        hung one, and loses everything if the runner is killed.
+        """
+        findings_doc["schema"] = 1
+        findings_doc["updated_utc"] = utc_now_iso()
+        findings_doc["rules_hash"] = rhash
+        findings_doc["core_version"] = current_version
+        write_json(args.findings, findings_doc)
+        write_json(args.state, state)
+
+    retired = prune_retired_findings(repos, {rule.id for rule in active})
+    if retired:
+        LOGGER.info("dropped %d finding(s) whose rule has retired", retired)
+        checkpoint()
+
     pending = select_slice(
         catalog,
         state,
@@ -412,19 +450,6 @@ def main(argv: list[str] | None = None) -> int:
     if not todo:
         LOGGER.info("nothing to do -- every repository is up to date")
         return 0
-
-    def checkpoint() -> None:
-        """Persist progress mid-slice.
-
-        A long crawl that only writes at the end is indistinguishable from a
-        hung one, and loses everything if the runner is killed.
-        """
-        findings_doc["schema"] = 1
-        findings_doc["updated_utc"] = utc_now_iso()
-        findings_doc["rules_hash"] = rhash
-        findings_doc["core_version"] = current_version
-        write_json(args.findings, findings_doc)
-        write_json(args.state, state)
 
     started = time.time()
     counters = {
