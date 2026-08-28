@@ -641,6 +641,12 @@ def main(argv: list[str] | None = None) -> int:
         latest.source,
         latest.floor,
     )
+    if latest.rc:
+        LOGGER.info(
+            "Home Assistant %s is in its release candidate period -- its "
+            "removals land within days",
+            latest.rc,
+        )
 
     records: list[dict[str, Any]] = []
     unparsed: list[str] = []
@@ -680,6 +686,7 @@ def main(argv: list[str] | None = None) -> int:
         "core_ref": args.ref,
         "core_version": current,
         "latest_release": latest.latest,
+        "rc_release": latest.rc,
         "pending_floor": latest.floor,
         "pending_floor_source": latest.source,
         "core_tarball_sha256": digest,

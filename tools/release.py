@@ -23,6 +23,7 @@ consumer says which it used instead of degrading silently.
 from __future__ import annotations
 
 import time
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -44,7 +45,35 @@ class ReleaseFloor:
 
     floor: str
     latest: str | None  # the released version this was resolved from, if known
-    source: str  # "pypi" | "cache" | "dev-minus-one"
+    source: str  # "pypi" | "cache" | "stale-cache" | "dev-minus-one"
+    rc: str | None = None  # the release in its candidate period, when known
+
+
+def release_in_rc(versions: Iterable[str], latest_stable: str) -> str | None:
+    """The release with pre-releases published but no final yet.
+
+    PyPI lists every version it has, so ``2026.9.0b1`` alongside a newest
+    release of ``2026.8.3`` says 2026.9 is in its candidate period. That is the
+    window #46 is about, and naming it is the difference between "2026.9
+    removes this" and "2026.9 removes this and ships in about a week".
+    """
+    ahead = {
+        normalise_version(version)
+        for version in versions
+        if isinstance(version, str) and not VERSION_RE.match(version)
+    }
+    return max(
+        (release for release in ahead if is_future(release, latest_stable)),
+        key=lambda release: parse_version(normalise_version(release)),
+        default=None,
+    )
+
+
+def _rc_still_ahead(rc: Any, latest_stable: str) -> str | None:
+    """A remembered RC that has since shipped is no longer in candidacy."""
+    if isinstance(rc, str) and is_future(rc, latest_stable):
+        return rc
+    return None
 
 
 def _at_least(release: str, other: str) -> bool:
@@ -104,7 +133,12 @@ def resolve_latest_release(
     cached = cached if isinstance(cached, dict) else {}
     remembered = _released_version(cached.get("version"), dev_version)
     if remembered and now - cached.get("fetched_at", 0) < ttl:
-        return ReleaseFloor(next_release(remembered), remembered, "cache")
+        return ReleaseFloor(
+            next_release(remembered),
+            remembered,
+            "cache",
+            _rc_still_ahead(cached.get("rc"), remembered),
+        )
 
     if not offline:
         try:
@@ -115,8 +149,11 @@ def resolve_latest_release(
         else:
             latest = _released_version(version, dev_version)
             if latest:
-                write_json(cache_path, {"version": version, "fetched_at": now})
-                return ReleaseFloor(next_release(latest), latest, "pypi")
+                rc = release_in_rc(info.get("releases") or (), latest)
+                write_json(
+                    cache_path, {"version": version, "rc": rc, "fetched_at": now}
+                )
+                return ReleaseFloor(next_release(latest), latest, "pypi", rc)
             LOGGER.warning(
                 "PyPI reports %r, which is not a released calendar version", version
             )

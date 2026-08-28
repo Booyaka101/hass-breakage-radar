@@ -115,7 +115,7 @@ def build_payload(
     generated = now or utc_now_iso()
     today = _as_of(generated)
     current = rules_doc.get("core_version", "2026.9")
-    floor, _floor_source = floor_from_payload(rules_doc)
+    floor, floor_source = floor_from_payload(rules_doc)
     pending_rules = [
         rule
         for rule in rules_doc.get("rules", [])
@@ -241,6 +241,12 @@ def build_payload(
         "index_url": INDEX_URL,
         "core_version": current,
         "latest_release": rules_doc.get("latest_release"),
+        "rc_release": rules_doc.get("rc_release"),
+        # Published so a consumer can tell a floor resolved from PyPI from one
+        # that degraded to a heuristic, rather than that only reaching whoever
+        # reads the crawl log.
+        "pending_floor": floor,
+        "pending_floor_source": floor_source,
         "core_tarball_sha256": rules_doc.get("core_tarball_sha256", ""),
         "catalog_source": catalog_doc.get("source", ""),
         "coverage": {
@@ -555,6 +561,11 @@ def render_html(payload: dict[str, Any]) -> str:
                 "latest Home Assistant"
                 if payload.get("latest_release")
                 else "core version",
+            ),
+            *(
+                [_stat(payload["rc_release"], "in release candidate")]
+                if payload.get("rc_release")
+                else []
             ),
         ]
     )

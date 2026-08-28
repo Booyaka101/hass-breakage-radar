@@ -332,6 +332,13 @@ hide an unshipped one, and both say so in the run's output. Holding the remember
 value also keeps a failed request from moving `rules_hash` and queuing a
 catalogue-wide rescan that would reverse itself the next day.
 
+The same response lists every version PyPI holds, so a `2026.9.0b1` sitting
+alongside a newest release of `2026.8.3` says 2026.9 is in its release
+candidate period. The board shows that as its own tile and `index.json`
+publishes it as `rc_release`, next to the `pending_floor` and
+`pending_floor_source` the filters actually used. That is the window worth
+acting in: the removals in an RC release land within days, not months.
+
 Real output from `tools/extract_rules.py` on this machine:
 
 ```
@@ -629,7 +636,11 @@ the index's verdict on its source repository.
 {
   "schema": 1,
   "generated_utc": "2026-08-08T12:00:00Z",
-  "core_version": "2026.9",
+  "core_version": "2026.10",
+  "latest_release": "2026.8",
+  "rc_release": "2026.9",
+  "pending_floor": "2026.9",
+  "pending_floor_source": "pypi",
   "coverage": { "catalog_total": 3088, "repos_scanned": 900, "repos_affected": 190, ... },
   "releases": { "2027.5": ["some_tracker"], "2027.8": ["another"] },
   "release_dates": { "2027.5": { "release_date": "2027-05-05", "days_until": 256 }, ... },

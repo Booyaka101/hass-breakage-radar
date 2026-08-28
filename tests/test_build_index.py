@@ -161,7 +161,12 @@ def test_a_normal_period_publishes_exactly_what_it_used_to():
     rules_doc["pending_floor"] = "2026.9"
     rules_doc["pending_floor_source"] = "pypi"
     payload = build_payload(rules_doc, FINDINGS_DOC, CATALOG_DOC, now=when)
-    assert {**payload, "latest_release": None} == baseline
+
+    provenance = {"latest_release", "rc_release", "pending_floor", "pending_floor_source"}
+    assert {k: v for k, v in payload.items() if k not in provenance} == {
+        k: v for k, v in baseline.items() if k not in provenance
+    }
+    assert payload["pending_floor"] == "2026.9"
 
 
 def test_coverage_counts(payload):

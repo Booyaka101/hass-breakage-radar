@@ -44,6 +44,25 @@ The board's last tile used to read "2026.10 core version", which is the dev
 branch the rules came from and names a release nobody can install. It now
 reads the latest released version instead.
 
+### The board names the release that is in RC (#46)
+
+Knowing the latest release makes the RC window itself visible, and that is the
+week this issue is about. PyPI's response already lists every version it has,
+so `2026.9.0b1` published alongside a newest release of `2026.8.3` says 2026.9
+is in its candidate period. No extra request: the same payload was being
+fetched and the pre-release list thrown away.
+
+The board carries a "2026.9 in release candidate" tile, the crawl logs it, and
+`index.json` publishes `rc_release` so any consumer can say "this ships in
+days" rather than just naming a release. An RC is only claimed from a live
+lookup or a fresh cache, never from a degraded one, since a remembered
+candidate may have shipped in the meantime.
+
+`index.json` also gained `pending_floor` and `pending_floor_source`. The
+degradation was previously visible only to whoever read the crawl log; now the
+published artifact says which comparison produced it. Both are additive, and
+the shipped 1.9.1 integration was run against the new payload to prove it.
+
 The dev-branch read stays for what it is actually for (which tarball was
 scanned, the rule extraction itself); only the shipped/pending comparison
 moved. Regression tests pin all three states: dev one ahead (nothing

@@ -87,6 +87,25 @@ Three smaller things from the same pass:
   They are all non-matchable, no integration has a 2026.9 finding, and the feed
   carries one item per release *with* affected integrations, so it stays at 6.
 
+### Two features the review earned, and the third that was declined
+
+* **The board names the release in RC.** Knowing the latest release makes the
+  RC window itself visible, which is the week #46 exists for. PyPI's response
+  already carries every version, so `2026.9.0b1` beside a newest release of
+  `2026.8.3` proves 2026.9 is in candidacy. Zero extra network cost: the
+  payload was already downloaded and the pre-release list discarded. Shows as a
+  board tile, a crawl log line, and `rc_release` in the index. Claimed only
+  from a live lookup or a fresh cache, never a degraded one, because a
+  remembered candidate may have shipped since.
+* **The index publishes `pending_floor` and `pending_floor_source`.** The
+  degradation reached only whoever read the crawl log; the published artifact
+  now states which comparison produced it, which is what the brief asked for
+  one layer further out.
+* **Declined: telling a user their own box is behind the latest release.** The
+  data is now on hand, but that is a general update-nag and every Home
+  Assistant install already has one. This tool's lane is which *removals* are
+  coming, not which version you are on.
+
 The integration side needed no change and that was checked rather than
 assumed: `matchable_rules` is defined in the vendored engine but never called
 there. The local scan runs every matchable rule regardless of tense, which is
