@@ -1,14 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-28T05:56:21Z",
+  "generated_utc": "2026-08-28T12:39:41Z",
   "core_ref": "dev",
   "core_version": "2026.10",
-  "core_tarball_sha256": "b38347814978e707c2f290e8964dea950ba699a11bb3ec40d4e89fe10f0b865b",
+  "latest_release": "2026.8",
+  "rc_release": "2026.9",
+  "pending_floor": "2026.9",
+  "pending_floor_source": "pypi",
+  "core_tarball_sha256": "1b48036e92994650c2087dbe216c015e30c2e4b572b50705edbf9d90304d72cc",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 170,
-    "future": 115,
+    "future": 125,
     "matchable_future": 54,
     "core_files_scanned": 10025,
     "core_files_unparsed": 0,
@@ -1157,7 +1161,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/influxdb/issue.py#L21"
     },
@@ -1171,7 +1175,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/splunk/__init__.py#L114"
     },
@@ -1185,7 +1189,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ness_alarm/__init__.py#L107"
     },
@@ -1199,7 +1203,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/libre_hardware_monitor/__init__.py#L87"
     },
@@ -1213,7 +1217,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L78"
     },
@@ -1227,7 +1231,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L90"
     },
@@ -1241,7 +1245,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L141"
     },
@@ -1255,7 +1259,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L913"
     },
@@ -1269,7 +1273,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L603"
     },
@@ -1283,7 +1287,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": true,
+      "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3752"
     },
@@ -2896,5 +2900,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-28T05:56:39Z"
+  "blog_merged_utc": "2026-08-28T12:40:09Z"
 }
