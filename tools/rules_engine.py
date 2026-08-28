@@ -188,12 +188,14 @@ def is_future(breaks_in: str, current: str) -> bool:
 
 
 def is_pending(breaks_in: str, core_version: str) -> bool:
-    """True when the removal has not reached anybody's Home Assistant yet.
+    """True when the removal has not reached the version compared against.
 
-    ``core_version`` comes from core's ``dev`` branch, which carries the release
-    being built rather than one anyone runs, so a removal landing in that same
-    release is still ahead of every user -- and the most urgent thing the tool
-    has. Compare a *running* version with :func:`is_future` instead.
+    The crawler passes the earliest release nobody runs yet (resolved from the
+    newest release on PyPI, or dev minus one without a network -- see
+    ``tools/release.py``), so a removal landing in that release is still ahead
+    of every user and the most urgent thing the tool has. The local scan passes
+    the running version, so a removal landing in it is already biting and must
+    stay matched. Compare a *running* version's future with :func:`is_future`.
     """
     return _release_key(breaks_in) >= _release_key(core_version)
 

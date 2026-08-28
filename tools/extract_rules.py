@@ -53,6 +53,7 @@ from tools.common import (  # noqa: E402
     utc_now_iso,
     write_json,
 )
+from tools.release import resolve_latest_release  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     VERSION_RE,
     Rule,
@@ -507,7 +508,7 @@ def _import_rule(record: dict[str, Any], release: str) -> dict[str, Any]:
     }
 
 
-def build_rules(records: list[dict[str, Any]], current: str) -> list[dict[str, Any]]:
+def build_rules(records: list[dict[str, Any]], pending_floor: str) -> list[dict[str, Any]]:
     """Collapse raw call sites into deduplicated, published rules."""
     by_id: dict[str, dict[str, Any]] = {}
 
@@ -571,7 +572,7 @@ def build_rules(records: list[dict[str, Any]], current: str) -> list[dict[str, A
             replacement=imported["replacement"] if imported else None,
         )
         payload = rule.to_dict()
-        payload["expired"] = not is_pending(release, current)
+        payload["expired"] = not is_pending(release, pending_floor)
         payload["occurrences"] = 1
         payload["source_url"] = (
             f"https://github.com/home-assistant/core/blob/dev/{record['path']}"
@@ -630,6 +631,17 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     LOGGER.info("core version in tarball: %s (sha256 %s)", current, digest[:12])
 
+    # dev runs ahead of what anybody has installed -- by two releases during
+    # an RC window -- so pending-ness is measured against the newest release
+    # that actually shipped, not against dev (#46).
+    latest = resolve_latest_release(current, offline=args.offline)
+    LOGGER.info(
+        "latest released core: %s (%s); rules are pending from %s",
+        latest.latest or "unknown",
+        latest.source,
+        latest.floor,
+    )
+
     records: list[dict[str, Any]] = []
     unparsed: list[str] = []
     files = 0
@@ -658,7 +670,7 @@ def main(argv: list[str] | None = None) -> int:
             sys.version_info.minor,
         )
 
-    rules = build_rules(records, current)
+    rules = build_rules(records, latest.floor)
     future = [r for r in rules if not r["expired"]]
     matchable = [r for r in future if r["matchable"]]
 
@@ -667,6 +679,9 @@ def main(argv: list[str] | None = None) -> int:
         "generated_utc": utc_now_iso(),
         "core_ref": args.ref,
         "core_version": current,
+        "latest_release": latest.latest,
+        "pending_floor": latest.floor,
+        "pending_floor_source": latest.source,
         "core_tarball_sha256": digest,
         "core_source": CORE_TARBALL.format(ref=args.ref),
         "extractor_python": f"{sys.version_info.major}.{sys.version_info.minor}",

@@ -303,6 +303,23 @@ def pytest_collection_modifyitems(config: pytest.Config, items) -> None:
             item.add_marker(skip)
 
 
+@pytest.fixture(autouse=True)
+def _isolated_release_cache(tmp_path, monkeypatch):
+    """Keep the PyPI release lookup deterministic and offline in every test.
+
+    The cache is pointed at a throwaway path so a real ``.cache/`` file on the
+    developer's machine cannot leak in, and the fetch fails so any code path
+    that reaches it takes the documented dev-minus-one fallback.
+    """
+    from tools import release
+
+    def refuse(*args, **kwargs):
+        raise RuntimeError("network disabled in tests")
+
+    monkeypatch.setattr(release, "CACHE_FILE", tmp_path / "latest_release.json")
+    monkeypatch.setattr(release, "http_get_json", refuse)
+
+
 @pytest.fixture(scope="session")
 def fixtures_dir() -> Path:
     return FIXTURES

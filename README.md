@@ -318,6 +318,18 @@ Run them in that order. `extract_rules.py` **rewrites** `data/rules.json` from c
 so `blog_rules.py` must follow it to merge the hand-curated and prose rules back in.
 The GitHub Actions workflow does exactly this.
 
+Whether a rule is still *pending* is decided against the latest **released** core
+version, not the dev branch the rules are read from. Dev bumps to N+1 as soon as
+the N branch is cut, about two weeks before N ships, so during an RC window dev is
+two releases ahead of what anybody runs, and comparing against it would retire
+the RC release's rules in exactly the week a user can still act
+([#46](https://github.com/Booyaka101/hass-breakage-radar/issues/46)). The released
+version comes from PyPI (`info.version` of the `homeassistant` package), cached on
+disk for six hours. When that lookup fails or the run is offline, the tools treat
+dev minus one as unreleased instead, which can only keep a just-shipped release
+listed a little longer, never hide an unshipped one, and they say so in their
+output.
+
 Real output from `tools/extract_rules.py` on this machine:
 
 ```
@@ -689,6 +701,7 @@ Everything below is covered by a test.
 | Situation | What happens |
 |---|---|
 | Repository tag missing | falls back to `v`-tag, then `main`, then `master`; then `status: unreachable`, crawl continues |
+| PyPI release lookup fails, or `--offline` | dev minus one is treated as unreleased, the degradation is printed, the run continues |
 | Repository has no `custom_components/` | recorded as scanned with zero findings |
 | `SyntaxError` in third-party source | that file is skipped and counted; the run never aborts |
 | GitHub returns 429 | exponential backoff (1 s, 2 s, 4 s), then the slice ends cleanly with state committed |
@@ -816,7 +829,7 @@ person who can actually fix a finding:
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: Booyaka101/hass-breakage-radar@v1.9.1
+- uses: Booyaka101/hass-breakage-radar@v1.10.0
 ```
 
 It annotates the exact line and writes a job summary, and by default it does **not**

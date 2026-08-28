@@ -113,6 +113,57 @@ def test_a_removal_landing_in_the_dev_release_is_still_published():
     assert validate_index(payload) == []
 
 
+def _rc_rules_doc():
+    """The #46 window: 2026.8 is the newest release on PyPI, 2026.9 is in RC,
+    and dev already carries 2026.10."""
+    rules_doc = copy.deepcopy(RULES_DOC)
+    rules_doc["core_version"] = "2026.10"
+    rules_doc["latest_release"] = "2026.8"
+    rules_doc["pending_floor"] = "2026.9"
+    rules_doc["pending_floor_source"] = "pypi"
+    rules_doc["rules"][1] = {
+        **rules_doc["rules"][1],
+        "id": "removed-in-the-rc-release",
+        "breaks_in": "2026.9",
+    }
+    return rules_doc
+
+
+def test_rules_for_the_release_in_rc_stay_published():
+    """Compared against dev, a 2026.9 rule reads as shipped a week before
+    2026.9 exists. Against the released floor it stays on the board."""
+    payload = build_payload(_rc_rules_doc(), FINDINGS_DOC, CATALOG_DOC)
+    assert sorted(rule["id"] for rule in payload["rules"]) == [
+        "legacy-device-tracker-platform",
+        "removed-in-the-rc-release",
+    ]
+    assert payload["latest_release"] == "2026.8"
+    assert validate_index(payload) == []
+
+
+def test_the_rc_rules_drop_out_once_the_release_ships():
+    rules_doc = _rc_rules_doc()
+    rules_doc["latest_release"] = "2026.9"
+    rules_doc["pending_floor"] = "2026.10"
+    payload = build_payload(rules_doc, FINDINGS_DOC, CATALOG_DOC)
+    assert [rule["id"] for rule in payload["rules"]] == [
+        "legacy-device-tracker-platform"
+    ]
+
+
+def test_a_normal_period_publishes_exactly_what_it_used_to():
+    """dev one ahead of stable is the ordinary case: the PyPI floor equals
+    dev, so the payload is identical to the pre-floor comparison."""
+    when = "2026-08-28T00:00:00Z"
+    baseline = build_payload(RULES_DOC, FINDINGS_DOC, CATALOG_DOC, now=when)
+    rules_doc = copy.deepcopy(RULES_DOC)
+    rules_doc["latest_release"] = "2026.8"
+    rules_doc["pending_floor"] = "2026.9"
+    rules_doc["pending_floor_source"] = "pypi"
+    payload = build_payload(rules_doc, FINDINGS_DOC, CATALOG_DOC, now=when)
+    assert {**payload, "latest_release": None} == baseline
+
+
 def test_coverage_counts(payload):
     assert payload["coverage"] == {
         "catalog_total": 3,

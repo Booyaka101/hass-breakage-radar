@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
+import dataclasses
+import io
 import json
+import logging
+import tarfile
 
 import pytest
 
@@ -121,10 +125,17 @@ def test_a_corrupt_tarball_is_an_error_not_a_crash(monkeypatch):
     assert findings == []
 
 
-def _write_inputs(tmp_path, catalog=CATALOG):
+def _write_inputs(tmp_path, catalog=CATALOG, rules=(RULE,), core_version="2026.9", **extra):
     rules_path = tmp_path / "rules.json"
     rules_path.write_text(
-        json.dumps({"schema": 1, "core_version": "2026.9", "rules": [RULE.to_dict()]}),
+        json.dumps(
+            {
+                "schema": 1,
+                "core_version": core_version,
+                "rules": [rule.to_dict() for rule in rules],
+                **extra,
+            }
+        ),
         encoding="utf-8",
     )
     catalog_path = tmp_path / "catalog.json"
@@ -230,6 +241,89 @@ def test_findings_for_a_retired_rule_are_dropped(tmp_path):
 
     findings = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
     assert [f["rule_id"] for f in findings["repos"]["a/one"]["findings"]] == [RULE.id]
+
+
+RC_RULE = dataclasses.replace(RULE, id="rc-window-rule", breaks_in="2026.9")
+
+TRACKER_SOURCE = "def setup_scanner(hass, config, see, discovery_info=None):\n    ...\n"
+
+
+def _tarball_bytes(files: dict[str, str]) -> bytes:
+    buffer = io.BytesIO()
+    with tarfile.open(fileobj=buffer, mode="w:gz") as archive:
+        for name, content in files.items():
+            data = content.encode("utf-8")
+            member = tarfile.TarInfo(f"repo-1.0/{name}")
+            member.size = len(data)
+            archive.addfile(member, io.BytesIO(data))
+    return buffer.getvalue()
+
+
+def _write_rc_rules(tmp_path, **extra):
+    """rules.json for the #46 window: stable 2026.8, 2026.9 in RC, dev 2026.10."""
+    return _write_inputs(
+        tmp_path, catalog=CATALOG[:1], rules=(RC_RULE,), core_version="2026.10", **extra
+    )
+
+
+def test_a_rule_for_the_release_in_rc_stays_in_the_scan(tmp_path, monkeypatch):
+    """Issue #46's exact scenario. Compared against dev the 2026.9 rule reads
+    as shipped and vanishes in the one week a user can still act; against the
+    released floor it is pending and its finding lands in the scan."""
+    rules_path, catalog_path = _write_rc_rules(
+        tmp_path,
+        latest_release="2026.8",
+        pending_floor="2026.9",
+        pending_floor_source="pypi",
+    )
+    body = _tarball_bytes(
+        {
+            "custom_components/one/device_tracker.py": TRACKER_SOURCE,
+            "custom_components/one/manifest.json": '{"domain": "one"}',
+        }
+    )
+    monkeypatch.setattr(scan_module, "http_get", lambda url, **kwargs: body)
+
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--no-upstream")) == 0
+    findings = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    assert [
+        (f["rule_id"], f["breaks_in"])
+        for f in findings["repos"]["a/one"]["findings"]
+    ] == [("rc-window-rule", "2026.9")]
+
+
+def test_the_same_rule_retires_once_the_release_ships(tmp_path):
+    # A week later 2026.9 is on PyPI, the floor moves to 2026.10, and the
+    # only rule left is shipped -- nothing remains to scan for.
+    rules_path, catalog_path = _write_rc_rules(
+        tmp_path,
+        latest_release="2026.9",
+        pending_floor="2026.10",
+        pending_floor_source="pypi",
+    )
+    assert main(_argv(tmp_path, rules_path, catalog_path)) == 2
+
+
+def test_an_old_rules_file_falls_back_and_says_so(tmp_path, monkeypatch, caplog):
+    """No pending floor recorded (an offline run, or a rules.json from before
+    it existed): dev minus one keeps the RC rule listed and the degradation is
+    printed rather than silent."""
+    rules_path, catalog_path = _write_rc_rules(tmp_path)
+    body = _tarball_bytes(
+        {
+            "custom_components/one/device_tracker.py": TRACKER_SOURCE,
+            "custom_components/one/manifest.json": '{"domain": "one"}',
+        }
+    )
+    monkeypatch.setattr(scan_module, "http_get", lambda url, **kwargs: body)
+
+    with caplog.at_level(logging.WARNING, logger="breakage_radar.tools"):
+        assert main(_argv(tmp_path, rules_path, catalog_path, "--no-upstream")) == 0
+    assert "dev minus one" in caplog.text
+    findings = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    assert [f["rule_id"] for f in findings["repos"]["a/one"]["findings"]] == [
+        "rc-window-rule"
+    ]
 
 
 def test_missing_inputs_exit_with_a_clear_code(tmp_path):

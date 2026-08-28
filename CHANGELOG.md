@@ -4,6 +4,38 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.10.0 — 2026-08-28
+
+### Rules for the release in RC no longer retire a week early (#46)
+
+The crawler read the current core version off core's dev branch, and dev bumps
+to N+1 as soon as the N branch is cut, about two weeks before N ships. So
+while a release is in RC, dev is two ahead of what anybody runs, and every
+rule breaking in the RC release read as already shipped and dropped out of the
+scan and the board. That is the one week a user still has time to act, which
+made it the worst possible moment for a warning tool to go quiet. This cycle
+that silently removed all ten 2026.9 rules while 2026.9 had not shipped.
+
+Pending-ness is now measured against the newest release that actually shipped,
+read from PyPI (`info.version` of the `homeassistant` package) and cached on
+disk for six hours. A rule breaking in the release currently in RC stays
+listed until that release is really out, then drops as before. `rules.json`
+and the index record `latest_release` and the `pending_floor` the filters
+used, so a consumer can see which comparison produced the file.
+
+When PyPI is unreachable, answers something that is not a released calendar
+version, or the run is offline, the tools fall back to treating dev minus one
+as unreleased, the simpler heuristic from #46. That direction can only
+over-show: a just-shipped release stays on the board for the rest of the
+month rather than an unshipped one vanishing. Every run that degrades this
+way says so in its output instead of doing it silently.
+
+The dev-branch read stays for what it is actually for (which tarball was
+scanned, the rule extraction itself); only the shipped/pending comparison
+moved. Regression tests pin all three states: dev one ahead (nothing
+changes), dev two ahead with the RC rule kept in a real scan, and the offline
+fallback, including the 2026.12 to 2027.1 year boundary.
+
 ## 1.9.1 — 2026-08-24
 
 Marketplace metadata only. No code change, and the action behaves identically.
