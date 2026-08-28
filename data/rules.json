@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-27T05:36:25Z",
+  "generated_utc": "2026-08-28T05:56:21Z",
   "core_ref": "dev",
   "core_version": "2026.10",
-  "core_tarball_sha256": "a39958dc3077a38ee990644fd762ce4e8ec075e332322491244cac5ae01b745b",
+  "core_tarball_sha256": "b38347814978e707c2f290e8964dea950ba699a11bb3ec40d4e89fe10f0b865b",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 170,
     "future": 115,
     "matchable_future": 54,
-    "core_files_scanned": 10024,
+    "core_files_scanned": 10025,
     "core_files_unparsed": 0,
     "from_core_ast": 137,
     "from_manual": 14,
@@ -961,13 +961,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.6",
-      "source": "homeassistant/components/openevse/sensor.py:389",
+      "source": "homeassistant/components/openevse/sensor.py:415",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L389"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L415"
     },
     {
       "id": "core-issue-async-setup-platform-2026.7",
@@ -975,13 +975,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/openevse/sensor.py:405",
+      "source": "homeassistant/components/openevse/sensor.py:431",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 3,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L405"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L431"
     },
     {
       "id": "core-issue-bluesoundplayer-async-bluesound-join-2026.7",
@@ -1432,13 +1432,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:222",
+      "source": "homeassistant/components/http/config.py:220",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 3,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L222"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L220"
     },
     {
       "id": "core-issue-deprecate-2027.2",
@@ -1488,13 +1488,13 @@
       "symbol": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entit...",
       "message": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_platform.py:894",
+      "source": "homeassistant/helpers/entity_platform.py:964",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L894"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L964"
     },
     {
       "id": "blog-labs-async-listen-deprecation-2027.3",
@@ -1634,13 +1634,13 @@
       "symbol": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "message": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "breaks_in": "2027.5",
-      "source": "homeassistant/helpers/entity_platform.py:911",
+      "source": "homeassistant/helpers/entity_platform.py:980",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L911"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L980"
     },
     {
       "id": "legacy-device-tracker-platform",
@@ -2896,5 +2896,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-27T05:36:29Z"
+  "blog_merged_utc": "2026-08-28T05:56:39Z"
 }
