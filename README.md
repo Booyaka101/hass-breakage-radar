@@ -47,14 +47,14 @@ use it, so you can follow along without polling the index. Paste it into a feed 
 or into Home Assistant's own `feedreader` integration; open it in a browser and it
 renders as a page.
 
-**In the published index right now:** all 3 908 HACS repositories crawled
-(3 159 integrations and 749 Lovelace plugins, 21 unreachable), **779 affected**,
-**2 049 findings**, across 6 Home Assistant releases — 11 in 2026.10, 89 in 2026.11,
-12 in 2027.5, 19 in 2027.6, 30 in 2027.7 and 663 in 2027.8 (counted by distinct
-integration domain). 54 of the 111 announced removals have a matcher behind them; the
-board says so on itself, and the other 57 are carried for their deadline only.
+**In the published index right now:** all 3 940 HACS repositories crawled
+(3 184 integrations and 756 Lovelace plugins, 29 unreachable), **855 affected**,
+**2 252 findings**, across 6 Home Assistant releases: 11 in 2026.10, 95 in 2026.11,
+11 in 2027.5, 50 in 2027.6, 29 in 2027.7 and 720 in 2027.8 (counted by distinct
+integration domain). 54 of the 125 announced removals have a matcher behind them; the
+board says so on itself, and the other 71 are carried for their deadline only.
 Every number comes from a real crawl; nothing is seeded or simulated. The daily job
-keeps these moving — `coverage` in `index.json` is always authoritative.
+keeps these moving, and `coverage` in `index.json` is always authoritative.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/board.png"
@@ -325,10 +325,12 @@ two releases ahead of what anybody runs, and comparing against it would retire
 the RC release's rules in exactly the week a user can still act
 ([#46](https://github.com/Booyaka101/hass-breakage-radar/issues/46)). The released
 version comes from PyPI (`info.version` of the `homeassistant` package), cached on
-disk for six hours. When that lookup fails or the run is offline, the tools treat
-dev minus one as unreleased instead, which can only keep a just-shipped release
-listed a little longer, never hide an unshipped one, and they say so in their
-output.
+disk for six hours. When that lookup fails or the run is offline, the last release
+PyPI did report is reused, and with nothing remembered at all the floor becomes dev
+minus one. Both can only keep a just-shipped release listed a little longer, never
+hide an unshipped one, and both say so in the run's output. Holding the remembered
+value also keeps a failed request from moving `rules_hash` and queuing a
+catalogue-wide rescan that would reverse itself the next day.
 
 Real output from `tools/extract_rules.py` on this machine:
 
@@ -701,7 +703,7 @@ Everything below is covered by a test.
 | Situation | What happens |
 |---|---|
 | Repository tag missing | falls back to `v`-tag, then `main`, then `master`; then `status: unreachable`, crawl continues |
-| PyPI release lookup fails, or `--offline` | dev minus one is treated as unreleased, the degradation is printed, the run continues |
+| PyPI release lookup fails, or `--offline` | the last release it reported is reused, or dev minus one if none is remembered; the degradation is printed and the run continues |
 | Repository has no `custom_components/` | recorded as scanned with zero findings |
 | `SyntaxError` in third-party source | that file is skipped and counted; the run never aborts |
 | GitHub returns 429 | exponential backoff (1 s, 2 s, 4 s), then the slice ends cleanly with state committed |

@@ -75,6 +75,63 @@ def test_no_cache_and_no_network_falls_back_to_dev_minus_one(tmp_path, caplog):
     assert "dev minus one" in caplog.text
 
 
+def _stale(tmp_path, version, ttl_multiple=2):
+    cache = tmp_path / "cache.json"
+    cache.write_text(
+        json.dumps({"version": version, "fetched_at": 0.0}), encoding="utf-8"
+    )
+    return cache, release.CACHE_TTL_SECONDS * ttl_multiple
+
+
+def test_a_failed_lookup_reuses_the_last_known_release(tmp_path, caplog):
+    """A PyPI blip must not move the floor. Moving it changes rules_hash and
+    queues the whole catalogue for a rescan that reverses itself tomorrow."""
+    cache, now = _stale(tmp_path, "2026.8.3")
+    with caplog.at_level(logging.WARNING, logger="breakage_radar.tools"):
+        resolved = resolve_latest_release(DEV, cache_path=cache, now=now)
+    assert resolved == release.ReleaseFloor("2026.9", "2026.8", "stale-cache")
+    assert "last known release" in caplog.text
+
+
+def test_the_stale_floor_holds_rules_hash_steady_across_an_outage(tmp_path):
+    """The defect this exists for: in a normal cycle the dev-minus-one floor
+    is one release lower than the true one, so falling all the way back would
+    flip the active rule set on any failed request."""
+    cache, now = _stale(tmp_path, "2026.10.1")
+    live = resolve_latest_release("2026.11", cache_path=cache, now=0.0)
+    outage = resolve_latest_release("2026.11", cache_path=cache, now=now)
+    assert live.floor == outage.floor == "2026.11"
+    assert resolve_latest_release(
+        "2026.11", cache_path=tmp_path / "empty.json"
+    ).floor == "2026.10", "without a memory the floor really does move"
+
+
+def test_a_long_dead_cache_never_beats_dev_minus_one(tmp_path):
+    # Months old: its floor is lower than dev minus one, so it is discarded
+    # rather than over-showing several shipped releases.
+    cache, now = _stale(tmp_path, "2026.5.0")
+    resolved = resolve_latest_release(DEV, cache_path=cache, now=now)
+    assert resolved == release.ReleaseFloor("2026.9", None, "dev-minus-one")
+
+
+def test_offline_reuses_the_last_known_release_too(tmp_path):
+    cache, now = _stale(tmp_path, "2026.8.3")
+    assert resolve_latest_release(
+        DEV, offline=True, cache_path=cache, now=now
+    ) == release.ReleaseFloor("2026.9", "2026.8", "stale-cache")
+
+
+def test_floor_from_payload_announces_a_stale_floor(caplog):
+    payload = {
+        "core_version": DEV,
+        "pending_floor": "2026.9",
+        "pending_floor_source": "stale-cache",
+    }
+    with caplog.at_level(logging.WARNING, logger="breakage_radar.tools"):
+        assert floor_from_payload(payload) == ("2026.9", "stale-cache")
+    assert "last known release" in caplog.text
+
+
 def test_offline_flag_skips_the_network_but_not_a_fresh_cache(tmp_path, monkeypatch):
     def explode(url, **kwargs):
         raise AssertionError("offline must not fetch")

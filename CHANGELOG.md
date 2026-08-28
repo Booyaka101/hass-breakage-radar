@@ -24,11 +24,25 @@ and the index record `latest_release` and the `pending_floor` the filters
 used, so a consumer can see which comparison produced the file.
 
 When PyPI is unreachable, answers something that is not a released calendar
-version, or the run is offline, the tools fall back to treating dev minus one
-as unreleased, the simpler heuristic from #46. That direction can only
-over-show: a just-shipped release stays on the board for the rest of the
-month rather than an unshipped one vanishing. Every run that degrades this
-way says so in its output instead of doing it silently.
+version, or the run is offline, the last release it did answer is reused if
+one is remembered, and otherwise the floor becomes dev minus one, the simpler
+heuristic from #46. Both directions can only over-show: a just-shipped release
+stays on the board for the rest of the month rather than an unshipped one
+vanishing. Every run that degrades this way says so in its output instead of
+doing it silently.
+
+Reusing the remembered release matters more than it first looks. The floor
+feeds `rules_hash`, and in an ordinary cycle the dev-minus-one floor sits one
+release below the real one, so a single failed request would change the active
+rule set, queue all 3 940 repositories for a rescan, and reverse itself the
+next day. The daily crawl caches `.cache/` but the entry is always older than
+its six-hour TTL by the time the next run starts, so this was the common path,
+not a rare one. A remembered release is only used when its floor is no lower
+than dev minus one, so a long-dead cache can never make things worse.
+
+The board's last tile used to read "2026.10 core version", which is the dev
+branch the rules came from and names a release nobody can install. It now
+reads the latest released version instead.
 
 The dev-branch read stays for what it is actually for (which tarball was
 scanned, the rule extraction itself); only the shipped/pending comparison

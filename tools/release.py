@@ -9,11 +9,15 @@ in RC drops out of the scan in exactly the week a user still has time to act
 
 PyPI answers that in one request: ``info.version`` of the ``homeassistant``
 package is the latest stable release. The result is cached on disk with a
-short TTL so repeated runs stay off the network. When the lookup fails, or the
-caller is offline, the fallback is the issue's simpler heuristic: treat dev
-minus one as not yet released. That keeps a just-shipped release on the board
-for the rest of the month rather than hiding one that has not shipped, and
-every consumer says so out loud instead of degrading silently.
+short TTL so repeated runs stay off the network. When the lookup fails the
+expired entry is reused if it still names a later release than the fallback:
+a version that shipped once is a valid lower bound, and holding it steady
+stops a single failed request from moving the floor, which would change
+``rules_hash`` and queue the whole catalogue for a rescan that reverses itself
+the next day. With nothing remembered at all the fallback is the issue's
+simpler heuristic, dev minus one. Both degraded paths only ever over-show a
+release that has already shipped, never hide one that has not, and every
+consumer says which it used instead of degrading silently.
 """
 
 from __future__ import annotations
@@ -30,6 +34,7 @@ PYPI_URL = "https://pypi.org/pypi/homeassistant/json"
 CACHE_FILE = CACHE_DIR / "latest_release.json"
 CACHE_TTL_SECONDS = 6 * 3600
 
+STALE_SOURCE = "stale-cache"
 FALLBACK_SOURCE = "dev-minus-one"
 
 
@@ -40,6 +45,12 @@ class ReleaseFloor:
     floor: str
     latest: str | None  # the released version this was resolved from, if known
     source: str  # "pypi" | "cache" | "dev-minus-one"
+
+
+def _at_least(release: str, other: str) -> bool:
+    return parse_version(normalise_version(release)) >= parse_version(
+        normalise_version(other)
+    )
 
 
 def _year_month(release: str) -> tuple[int, int]:
@@ -90,10 +101,10 @@ def resolve_latest_release(
     now = time.time() if now is None else now
 
     cached = read_json(cache_path, default=None)
-    if isinstance(cached, dict) and now - cached.get("fetched_at", 0) < ttl:
-        latest = _released_version(cached.get("version"), dev_version)
-        if latest:
-            return ReleaseFloor(next_release(latest), latest, "cache")
+    cached = cached if isinstance(cached, dict) else {}
+    remembered = _released_version(cached.get("version"), dev_version)
+    if remembered and now - cached.get("fetched_at", 0) < ttl:
+        return ReleaseFloor(next_release(remembered), remembered, "cache")
 
     if not offline:
         try:
@@ -110,13 +121,27 @@ def resolve_latest_release(
                 "PyPI reports %r, which is not a released calendar version", version
             )
 
-    floor = previous_release(dev_version)
+    # An expired entry still records a version that really shipped, so its floor
+    # is a valid lower bound and usually the exact one. Preferring it keeps a
+    # PyPI blip from moving the floor, which would change rules_hash and queue
+    # the whole catalogue for a rescan that reverses itself the next day.
+    fallback = previous_release(dev_version)
+    if remembered and _at_least(next_release(remembered), fallback):
+        floor = next_release(remembered)
+        LOGGER.warning(
+            "PyPI unavailable; reusing the last known release %s, so rules are "
+            "pending from %s",
+            remembered,
+            floor,
+        )
+        return ReleaseFloor(floor, remembered, STALE_SOURCE)
+
     LOGGER.warning(
         "latest released core version unknown; treating %s (dev minus one) as "
         "not yet shipped",
-        floor,
+        fallback,
     )
-    return ReleaseFloor(floor, None, FALLBACK_SOURCE)
+    return ReleaseFloor(fallback, None, FALLBACK_SOURCE)
 
 
 def floor_from_payload(payload: dict[str, Any]) -> tuple[str, str]:
@@ -130,7 +155,13 @@ def floor_from_payload(payload: dict[str, Any]) -> tuple[str, str]:
     source = payload.get("pending_floor_source", "pypi") if floor else FALLBACK_SOURCE
     if not floor:
         floor = previous_release(payload.get("core_version", "2026.9"))
-    if source == FALLBACK_SOURCE:
+    if source == STALE_SOURCE:
+        LOGGER.warning(
+            "the floor %s comes from the last known release, not a live PyPI "
+            "lookup",
+            floor,
+        )
+    elif source == FALLBACK_SOURCE:
         LOGGER.warning(
             "latest released core version unknown; treating %s (dev minus one) as "
             "not yet shipped -- rules for an already-shipped release may still "

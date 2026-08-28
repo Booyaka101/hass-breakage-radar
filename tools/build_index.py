@@ -547,7 +547,15 @@ def render_html(payload: dict[str, Any]) -> str:
                 coverage["rules_published"] - coverage["rules_matchable"],
                 "removals with no detector",
             ),
-            _stat(payload["core_version"], "core version"),
+            # The board reader runs the released version; core_version is the
+            # dev branch the rules were read from and names a release nobody
+            # can install yet.
+            _stat(
+                payload.get("latest_release") or payload["core_version"],
+                "latest Home Assistant"
+                if payload.get("latest_release")
+                else "core version",
+            ),
         ]
     )
 

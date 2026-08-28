@@ -1,7 +1,98 @@
 # PROGRESS — hass-breakage-radar
 
-Status at the end of the v1.9.0 session (2026-08-24); earlier sections are kept
-as history, newest first.
+Status at the end of the v1.10.0 session (2026-08-28); earlier sections are
+kept as history, newest first.
+
+## v1.10.0 — pending is measured against the released core, not dev (2026-08-28)
+
+Issue #46, the one-release overlap #45 left open. Dev bumps to N+1 at branch
+cut, two weeks before N ships, so during the RC window dev is two ahead of
+stable and `is_pending` against dev retired every rule for the RC release a
+week early. Live proof on the day of the fix: dev 2026.10, stable 2026.8,
+and the published index carried zero of the ten 2026.9 rules.
+
+The design that kept the diff small: nothing about `is_pending` or
+`matchable_rules` changed, only the *value* passed to them. `tools/release.py`
+resolves the newest release PyPI has seen for `homeassistant` (6 h disk cache
+in `.cache/latest_release.json`) and turns it into a **pending floor**, the
+first release nobody runs yet. `extract_rules.py` records `latest_release` /
+`pending_floor` / `pending_floor_source` in `rules.json`; `blog_rules`,
+`scan` and `build_index` read the floor back with `floor_from_payload()`,
+which also handles a rules.json from before the fields existed. The engine is
+untouched apart from the `is_pending` docstring (kept byte-identical in the
+vendored copy), so old installs are unaffected and `ENGINE_VERSION` stayed 7.
+
+Fallback semantics worth remembering: when PyPI fails, answers a pre-release,
+answers something at-or-past dev, or the run is offline, the floor is dev
+minus one, per the issue. That direction only over-shows a shipped release
+for the rest of the month, never hides an unshipped one, and every degraded
+run warns. During an RC window the fallback floor *equals* the PyPI floor, so
+a PyPI outage in exactly the sensitive weeks changes nothing.
+
+VERIFIED (all by hand on this machine, 2026-08-28):
+* pytest 387 passed, 3 skipped (was 370/3). Ruff at the pre-existing
+  baseline; both new files clean. Clone check: highest new-function pair 17%.
+* Real pipeline in a scratch root: extract resolved core dev 2026.10, latest
+  2026.8 via PyPI, floor 2026.9; the ten 2026.9 rules came back non-expired,
+  and the rebuilt index published 125 rules vs the committed 115 with
+  affected (855) and findings (2252) byte-identical.
+* Offline path run for real (`--offline`, no PyPI cache): warning printed,
+  floor 2026.9 via dev-minus-one, same `rules_hash`, and a live scan of
+  404GamerNotFound/vserver-ssh-stats produced the same 7 findings.
+* The RC boundary is pinned through a real scan: a fixture tarball with a
+  2026.9 `setup_scanner` rule produces its finding under the floor, retires
+  once the floor passes 2026.9, and the year boundary 2026.12 -> 2027.1 is
+  asserted both in arithmetic and in `is_pending`.
+
+Trap dodged: the tests must never resolve against the developer's real
+`.cache/latest_release.json` or the network, so `tests/conftest.py` gained an
+autouse fixture pointing the cache at `tmp_path` and making the fetch refuse.
+
+### What the self-review then found, and it was the more interesting half
+
+The first version fell straight from a failed PyPI request to dev minus one,
+and that is a worse failure than it looks. **The floor feeds `rules_hash`.** In
+an ordinary cycle (dev N+1, stable N) the dev-minus-one floor sits one release
+*below* the true floor, so a single failed request changes the active rule
+set, queues all 3 940 repositories for a rescan, and reverses itself the next
+day. Measured on the real rule set for the cycle where it first bites: healthy
+floor 2026.11 gives 49 rules / hash `9d958db`, the fallback floor 2026.10
+gives 54 / `4347abb`.
+
+Not a rare path either. The crawl workflow *does* cache `.cache/`
+(`actions/cache@v6`), but the entry is always older than its six-hour TTL by
+the time the next daily run starts, so every crawl re-fetches and any blip
+takes the fallback.
+
+Fixed with stale-while-error: an expired entry still names a version that
+really shipped, so its floor is a valid lower bound and usually the exact one.
+It is used only when it is no lower than dev minus one, so a months-dead cache
+can never make things worse, and dev minus one remains the last resort. Both
+degraded paths announce themselves. Verified by simulating the outage against
+the real rule set: hash held at `4347abb` this cycle and at `9d958db` next.
+
+Three smaller things from the same pass:
+* **The board's last tile said "2026.10 core version".** That is the dev branch
+  the rules came from, naming a release nobody can install, on the public page
+  whose whole subject is which release breaks you. It now reads the latest
+  released version, and the README headline numbers were refreshed against the
+  live index (3 940 crawled, 855 affected, 2 252 findings) with a new
+  screenshot.
+* **Old installs were proven unaffected, not assumed.** `latest_release` is
+  additive, so the shipped v1.9.1 `report.py` was loaded from the tag and run
+  against the new index: it produces a byte-identical report with and without
+  the key. Same check the `upstream` field got at 1.4.0.
+* **No feed burst.** Ten 2026.9 rules return to the index, and none of them has
+  a `state/feed.json` first-seen date, so the worry was ten items dated today.
+  They are all non-matchable, no integration has a 2026.9 finding, and the feed
+  carries one item per release *with* affected integrations, so it stays at 6.
+
+The integration side needed no change and that was checked rather than
+assumed: `matchable_rules` is defined in the vendored engine but never called
+there. The local scan runs every matchable rule regardless of tense, which is
+the 1.1.1 contract (a deadline that has passed must still fire as
+`broken_now`), and `report.py` compares against the user's *running* version
+with `is_future`, which is the comparison that was always correct.
 
 ## v1.9.0 — the backlog session: five issues, and one found by running it (2026-08-24)
 
