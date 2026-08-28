@@ -49,6 +49,7 @@ from tools.common import (  # noqa: E402
     utc_now_iso,
     write_json,
 )
+from tools.release import floor_from_payload  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     ENGINE_VERSION,
     JS_SUFFIXES,
@@ -376,16 +377,19 @@ def main(argv: list[str] | None = None) -> int:
         LOGGER.error("%s not found -- run tools/extract_rules.py first", args.rules)
         return 2
     current_version = rules_payload.get("core_version", "2026.9")
+    floor, floor_source = floor_from_payload(rules_payload)
     all_rules = load_rules(rules_payload.get("rules", []))
-    active = matchable_rules(all_rules, current_version=current_version)
+    active = matchable_rules(all_rules, current_version=floor)
     if not active:
         LOGGER.error("no matchable pending rules; refusing to scan")
         return 2
     rhash = rules_hash(active)
     LOGGER.info(
-        "%d matchable rules (core %s, rules_hash %s)",
+        "%d matchable rules (core dev %s, pending from %s via %s, rules_hash %s)",
         len(active),
         current_version,
+        floor,
+        floor_source,
         rhash,
     )
 

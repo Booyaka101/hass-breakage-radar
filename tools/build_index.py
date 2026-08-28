@@ -41,6 +41,7 @@ from tools.common import (  # noqa: E402
 )
 from tools.feed import build as build_feed  # noqa: E402
 from tools.feed import update_first_seen
+from tools.release import floor_from_payload  # noqa: E402
 from tools.rules_engine import is_pending, parse_version  # noqa: E402
 from tools.schedule import days_until, long_date, release_estimated_date  # noqa: E402
 
@@ -114,10 +115,11 @@ def build_payload(
     generated = now or utc_now_iso()
     today = _as_of(generated)
     current = rules_doc.get("core_version", "2026.9")
+    floor, floor_source = floor_from_payload(rules_doc)
     pending_rules = [
         rule
         for rule in rules_doc.get("rules", [])
-        if is_pending(rule["breaks_in"], current)
+        if is_pending(rule["breaks_in"], floor)
     ]
 
     catalog_by_name = {
@@ -238,6 +240,13 @@ def build_payload(
         "generated_utc": generated,
         "index_url": INDEX_URL,
         "core_version": current,
+        "latest_release": rules_doc.get("latest_release"),
+        "rc_release": rules_doc.get("rc_release"),
+        # Published so a consumer can tell a floor resolved from PyPI from one
+        # that degraded to a heuristic, rather than that only reaching whoever
+        # reads the crawl log.
+        "pending_floor": floor,
+        "pending_floor_source": floor_source,
         "core_tarball_sha256": rules_doc.get("core_tarball_sha256", ""),
         "catalog_source": catalog_doc.get("source", ""),
         "coverage": {
@@ -544,7 +553,20 @@ def render_html(payload: dict[str, Any]) -> str:
                 coverage["rules_published"] - coverage["rules_matchable"],
                 "removals with no detector",
             ),
-            _stat(payload["core_version"], "core version"),
+            # The board reader runs the released version; core_version is the
+            # dev branch the rules were read from and names a release nobody
+            # can install yet.
+            _stat(
+                payload.get("latest_release") or payload["core_version"],
+                "latest Home Assistant"
+                if payload.get("latest_release")
+                else "core version",
+            ),
+            *(
+                [_stat(payload["rc_release"], "in release candidate")]
+                if payload.get("rc_release")
+                else []
+            ),
         ]
     )
 

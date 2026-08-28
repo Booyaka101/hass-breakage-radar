@@ -46,6 +46,7 @@ from tools.common import (  # noqa: E402
     utc_now_iso,
     write_json,
 )
+from tools.release import floor_from_payload  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     MATCHER_TYPES,
     VERSION_RE,
@@ -212,7 +213,7 @@ def merge(
     manual: list[dict[str, Any]],
     blog: list[dict[str, Any]],
     *,
-    current_version: str,
+    pending_floor: str,
 ) -> list[dict[str, Any]]:
     """Merge the three sources. Manual wins on id collision; blog never does."""
     merged: dict[str, dict[str, Any]] = {rule["id"]: rule for rule in core_rules}
@@ -241,7 +242,7 @@ def merge(
         merged[rule["id"]] = rule
 
     for rule in merged.values():
-        rule["expired"] = not is_pending(rule["breaks_in"], current_version)
+        rule["expired"] = not is_pending(rule["breaks_in"], pending_floor)
 
     return sorted(merged.values(), key=lambda r: (r["breaks_in"], r["id"]))
 
@@ -266,14 +267,14 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 2
 
-    current = payload.get("core_version", "2026.9")
+    floor, _source = floor_from_payload(payload)
     core_rules = [r for r in payload.get("rules", []) if r.get("origin") != "blog"]
     core_rules = [r for r in core_rules if r.get("origin") != "manual"]
 
     manual = load_manual_rules(args.manual)
     blog = [] if args.no_network else fetch_blog_rules()
 
-    merged = merge(core_rules, manual, blog, current_version=current)
+    merged = merge(core_rules, manual, blog, pending_floor=floor)
 
     payload["rules"] = merged
     payload["blog_merged_utc"] = utc_now_iso()

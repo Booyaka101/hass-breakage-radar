@@ -4,6 +4,71 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.10.0 — 2026-08-28
+
+### Rules for the release in RC no longer retire a week early (#46)
+
+The crawler read the current core version off core's dev branch, and dev bumps
+to N+1 as soon as the N branch is cut, about two weeks before N ships. So
+while a release is in RC, dev is two ahead of what anybody runs, and every
+rule breaking in the RC release read as already shipped and dropped out of the
+scan and the board. That is the one week a user still has time to act, which
+made it the worst possible moment for a warning tool to go quiet. This cycle
+that silently removed all ten 2026.9 rules while 2026.9 had not shipped.
+
+Pending-ness is now measured against the newest release that actually shipped,
+read from PyPI (`info.version` of the `homeassistant` package) and cached on
+disk for six hours. A rule breaking in the release currently in RC stays
+listed until that release is really out, then drops as before. `rules.json`
+and the index record `latest_release` and the `pending_floor` the filters
+used, so a consumer can see which comparison produced the file.
+
+When PyPI is unreachable, answers something that is not a released calendar
+version, or the run is offline, the last release it did answer is reused if
+one is remembered, and otherwise the floor becomes dev minus one, the simpler
+heuristic from #46. Both directions can only over-show: a just-shipped release
+stays on the board for the rest of the month rather than an unshipped one
+vanishing. Every run that degrades this way says so in its output instead of
+doing it silently.
+
+Reusing the remembered release matters more than it first looks. The floor
+feeds `rules_hash`, and in an ordinary cycle the dev-minus-one floor sits one
+release below the real one, so a single failed request would change the active
+rule set, queue all 3 940 repositories for a rescan, and reverse itself the
+next day. The daily crawl caches `.cache/` but the entry is always older than
+its six-hour TTL by the time the next run starts, so this was the common path,
+not a rare one. A remembered release is only used when its floor is no lower
+than dev minus one, so a long-dead cache can never make things worse.
+
+The board's last tile used to read "2026.10 core version", which is the dev
+branch the rules came from and names a release nobody can install. It now
+reads the latest released version instead.
+
+### The board names the release that is in RC (#46)
+
+Knowing the latest release makes the RC window itself visible, and that is the
+week this issue is about. PyPI's response already lists every version it has,
+so `2026.9.0b1` published alongside a newest release of `2026.8.3` says 2026.9
+is in its candidate period. No extra request: the same payload was being
+fetched and the pre-release list thrown away.
+
+The board carries a "2026.9 in release candidate" tile, the crawl logs it, and
+`index.json` publishes `rc_release` so any consumer can say "this ships in
+days" rather than just naming a release. An RC is only claimed from a live
+lookup or a fresh cache, never from a degraded one, since a remembered
+candidate may have shipped in the meantime.
+
+`index.json` also gained `pending_floor` and `pending_floor_source`. The
+degradation was previously visible only to whoever read the crawl log; now the
+published artifact says which comparison produced it. Both are additive, and
+the shipped 1.9.1 integration was run against the new payload to prove it.
+
+The dev-branch read stays for what it is actually for (which tarball was
+scanned, the rule extraction itself); only the shipped/pending comparison
+moved. Regression tests pin all three states: dev one ahead (nothing
+changes), dev two ahead with the RC rule kept in a real scan, and the offline
+fallback, including the 2026.12 to 2027.1 year boundary.
+
 ## 1.9.1 — 2026-08-24
 
 Marketplace metadata only. No code change, and the action behaves identically.

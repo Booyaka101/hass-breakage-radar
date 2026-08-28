@@ -47,14 +47,14 @@ use it, so you can follow along without polling the index. Paste it into a feed 
 or into Home Assistant's own `feedreader` integration; open it in a browser and it
 renders as a page.
 
-**In the published index right now:** all 3 908 HACS repositories crawled
-(3 159 integrations and 749 Lovelace plugins, 21 unreachable), **779 affected**,
-**2 049 findings**, across 6 Home Assistant releases — 11 in 2026.10, 89 in 2026.11,
-12 in 2027.5, 19 in 2027.6, 30 in 2027.7 and 663 in 2027.8 (counted by distinct
-integration domain). 54 of the 111 announced removals have a matcher behind them; the
-board says so on itself, and the other 57 are carried for their deadline only.
+**In the published index right now:** all 3 940 HACS repositories crawled
+(3 184 integrations and 756 Lovelace plugins, 29 unreachable), **855 affected**,
+**2 252 findings**, across 6 Home Assistant releases: 11 in 2026.10, 95 in 2026.11,
+11 in 2027.5, 50 in 2027.6, 29 in 2027.7 and 720 in 2027.8 (counted by distinct
+integration domain). 54 of the 125 announced removals have a matcher behind them; the
+board says so on itself, and the other 71 are carried for their deadline only.
 Every number comes from a real crawl; nothing is seeded or simulated. The daily job
-keeps these moving — `coverage` in `index.json` is always authoritative.
+keeps these moving, and `coverage` in `index.json` is always authoritative.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/board.png"
@@ -317,6 +317,27 @@ python tools/build_index.py       # -> docs/index.json + docs/index.html
 Run them in that order. `extract_rules.py` **rewrites** `data/rules.json` from core alone,
 so `blog_rules.py` must follow it to merge the hand-curated and prose rules back in.
 The GitHub Actions workflow does exactly this.
+
+Whether a rule is still *pending* is decided against the latest **released** core
+version, not the dev branch the rules are read from. Dev bumps to N+1 as soon as
+the N branch is cut, about two weeks before N ships, so during an RC window dev is
+two releases ahead of what anybody runs, and comparing against it would retire
+the RC release's rules in exactly the week a user can still act
+([#46](https://github.com/Booyaka101/hass-breakage-radar/issues/46)). The released
+version comes from PyPI (`info.version` of the `homeassistant` package), cached on
+disk for six hours. When that lookup fails or the run is offline, the last release
+PyPI did report is reused, and with nothing remembered at all the floor becomes dev
+minus one. Both can only keep a just-shipped release listed a little longer, never
+hide an unshipped one, and both say so in the run's output. Holding the remembered
+value also keeps a failed request from moving `rules_hash` and queuing a
+catalogue-wide rescan that would reverse itself the next day.
+
+The same response lists every version PyPI holds, so a `2026.9.0b1` sitting
+alongside a newest release of `2026.8.3` says 2026.9 is in its release
+candidate period. The board shows that as its own tile and `index.json`
+publishes it as `rc_release`, next to the `pending_floor` and
+`pending_floor_source` the filters actually used. That is the window worth
+acting in: the removals in an RC release land within days, not months.
 
 Real output from `tools/extract_rules.py` on this machine:
 
@@ -615,7 +636,11 @@ the index's verdict on its source repository.
 {
   "schema": 1,
   "generated_utc": "2026-08-08T12:00:00Z",
-  "core_version": "2026.9",
+  "core_version": "2026.10",
+  "latest_release": "2026.8",
+  "rc_release": "2026.9",
+  "pending_floor": "2026.9",
+  "pending_floor_source": "pypi",
   "coverage": { "catalog_total": 3088, "repos_scanned": 900, "repos_affected": 190, ... },
   "releases": { "2027.5": ["some_tracker"], "2027.8": ["another"] },
   "release_dates": { "2027.5": { "release_date": "2027-05-05", "days_until": 256 }, ... },
@@ -689,6 +714,7 @@ Everything below is covered by a test.
 | Situation | What happens |
 |---|---|
 | Repository tag missing | falls back to `v`-tag, then `main`, then `master`; then `status: unreachable`, crawl continues |
+| PyPI release lookup fails, or `--offline` | the last release it reported is reused, or dev minus one if none is remembered; the degradation is printed and the run continues |
 | Repository has no `custom_components/` | recorded as scanned with zero findings |
 | `SyntaxError` in third-party source | that file is skipped and counted; the run never aborts |
 | GitHub returns 429 | exponential backoff (1 s, 2 s, 4 s), then the slice ends cleanly with state committed |
@@ -816,7 +842,7 @@ person who can actually fix a finding:
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: Booyaka101/hass-breakage-radar@v1.9.1
+- uses: Booyaka101/hass-breakage-radar@v1.10.0
 ```
 
 It annotates the exact line and writes a job summary, and by default it does **not**
