@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-08-31T03:32:43Z",
+  "generated_utc": "2026-09-01T03:32:49Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.8",
   "rc_release": "2026.9",
   "pending_floor": "2026.9",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "2d127f899ef1ea07703f867176c62b8229635aab8fb02c7bfda6a8f69a1810e0",
+  "core_tarball_sha256": "c648f263670a1dacf41102e7f3ccf9bbc102887093a05f74515677555aff4e8d",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 169,
     "future": 125,
     "matchable_future": 54,
-    "core_files_scanned": 10075,
+    "core_files_scanned": 10085,
     "core_files_unparsed": 0,
     "from_core_ast": 136,
     "from_manual": 14,
@@ -913,13 +913,13 @@
       "symbol": "TemperatureConverter.convert_interval",
       "message": "TemperatureDeltaConverter.convert",
       "breaks_in": "2026.12",
-      "source": "homeassistant/util/unit_conversion.py:872",
+      "source": "homeassistant/util/unit_conversion.py:874",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L872"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L874"
     },
     {
       "id": "blog-service-info-2026.2",
@@ -2272,7 +2272,7 @@
       "symbol": "CONCENTRATION_GRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_GRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:809",
+      "source": "homeassistant/const.py:810",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2287,7 +2287,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L809"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L810"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-foot",
@@ -2295,7 +2295,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:818",
+      "source": "homeassistant/const.py:819",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2310,7 +2310,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L818"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L819"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-meter",
@@ -2318,7 +2318,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:815",
+      "source": "homeassistant/const.py:816",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2333,7 +2333,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L815"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L816"
     },
     {
       "id": "core-import-const-concentration-milligrams-per-cubic-meter",
@@ -2341,7 +2341,7 @@
       "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:812",
+      "source": "homeassistant/const.py:813",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2356,7 +2356,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L812"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L813"
     },
     {
       "id": "core-import-const-concentration-parts-per-billion",
@@ -2364,7 +2364,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_BILLION",
       "message": "CONCENTRATION_PARTS_PER_BILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:827",
+      "source": "homeassistant/const.py:828",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2379,7 +2379,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L827"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L828"
     },
     {
       "id": "core-import-const-concentration-parts-per-cubic-meter",
@@ -2387,7 +2387,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_CUBIC_METER",
       "message": "CONCENTRATION_PARTS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from p/m³ instead.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:821",
+      "source": "homeassistant/const.py:822",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2403,7 +2403,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L821"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L822"
     },
     {
       "id": "core-import-const-concentration-parts-per-million",
@@ -2411,7 +2411,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_MILLION",
       "message": "CONCENTRATION_PARTS_PER_MILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:824",
+      "source": "homeassistant/const.py:825",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2426,7 +2426,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L824"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L825"
     },
     {
       "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
@@ -2886,5 +2886,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-08-31T03:33:12Z"
+  "blog_merged_utc": "2026-09-01T03:33:06Z"
 }
