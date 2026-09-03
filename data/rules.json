@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-02T03:31:35Z",
+  "generated_utc": "2026-09-03T04:43:41Z",
   "core_ref": "dev",
   "core_version": "2026.10",
-  "latest_release": "2026.8",
-  "rc_release": "2026.9",
-  "pending_floor": "2026.9",
+  "latest_release": "2026.9",
+  "rc_release": null,
+  "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "5779f09c878a77064d4650ba495155d942d857288e93f0c799cd9540a216884a",
+  "core_tarball_sha256": "a556b8e9c5c608186fc102aadcf75967d3c72e03a10d1fbff668062550f26e4b",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 169,
-    "future": 125,
+    "total": 172,
+    "future": 118,
     "matchable_future": 54,
-    "core_files_scanned": 10089,
+    "core_files_scanned": 10090,
     "core_files_unparsed": 0,
-    "from_core_ast": 136,
+    "from_core_ast": 138,
     "from_manual": 14,
-    "from_blog": 19
+    "from_blog": 20
   },
   "unparsed_core_files": [],
   "rules": [
@@ -925,7 +925,7 @@
       "id": "blog-service-info-2026.2",
       "kind": "prose",
       "symbol": "service info",
-      "message": "Relocate dhcp/ssdp/usb/zeroconf ServiceInfo models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend component updates in 2026.8 Sta...",
+      "message": "Relocate dhcp/ssdp/usb/zeroconf ServiceInfo models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API chang...",
       "breaks_in": "2026.2",
       "source": "https://developers.home-assistant.io/blog/2025/01/15/service-info/",
       "origin": "blog",
@@ -1033,7 +1033,7 @@
       "id": "blog-media-player-standby-state-deprecated-2026.8",
       "kind": "prose",
       "symbol": "media player standby state deprecated",
-      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend component updates in 2026.8 Standard ...",
+      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API changes Fro...",
       "breaks_in": "2026.8",
       "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
       "origin": "blog",
@@ -1147,7 +1147,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/influxdb/issue.py#L21"
     },
@@ -1161,7 +1161,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/splunk/__init__.py#L114"
     },
@@ -1175,7 +1175,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ness_alarm/__init__.py#L107"
     },
@@ -1189,7 +1189,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/libre_hardware_monitor/__init__.py#L87"
     },
@@ -1203,7 +1203,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L78"
     },
@@ -1217,7 +1217,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L90"
     },
@@ -1231,7 +1231,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L141"
     },
@@ -1245,7 +1245,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L913"
     },
@@ -1259,7 +1259,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L603"
     },
@@ -1273,7 +1273,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3753"
     },
@@ -1355,6 +1355,46 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger.py#L332"
+    },
+    {
+      "id": "blog-deprecate-configurator-2027.10",
+      "kind": "prose",
+      "symbol": "deprecate configurator",
+      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API changes Front...",
+      "breaks_in": "2027.10",
+      "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
+      "id": "core-prose-calls-modbus-get-hub-which-is-deprecated-in-favour-of-modbus-async-get-unit",
+      "kind": "prose",
+      "symbol": "calls `modbus.get_hub`, which is deprecated in favour of `modbus.async_get_unit`...",
+      "message": "calls `modbus.get_hub`, which is deprecated in favour of `modbus.async_get_unit`. Collect the connection details in your own config flow and ask for a unit on them",
+      "breaks_in": "2027.10",
+      "source": "homeassistant/components/modbus/__init__.py:36",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/modbus/__init__.py#L36"
+    },
+    {
+      "id": "core-prose-is-closed",
+      "kind": "prose",
+      "symbol": "is_closed",
+      "message": "hass.states.is_state(entity_id, 'closed')",
+      "breaks_in": "2027.10",
+      "source": "homeassistant/components/cover/__init__.py:95",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L95"
     },
     {
       "id": "core-call-async-generate-entity-id",
@@ -1596,7 +1636,7 @@
       "id": "blog-legacy-device-tracker-deprecation-2027.5",
       "kind": "prose",
       "symbol": "legacy device tracker deprecation",
-      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend component updates in 2026.8 Stan...",
+      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API change...",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
       "origin": "blog",
@@ -1874,7 +1914,7 @@
       "id": "blog-device-tracker-changes-2027.7",
       "kind": "prose",
       "symbol": "device tracker changes",
-      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend component updates in 2026.8 Standard event...",
+      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend...",
       "breaks_in": "2027.7",
       "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
       "origin": "blog",
@@ -2004,7 +2044,7 @@
       "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
       "kind": "prose",
       "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend componen...",
+      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device regis...",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
       "origin": "blog",
@@ -2886,5 +2926,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-02T03:32:00Z"
+  "blog_merged_utc": "2026-09-03T04:43:58Z"
 }
