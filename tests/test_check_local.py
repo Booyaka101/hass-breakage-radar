@@ -381,3 +381,73 @@ def test_github_format_survives_no_summary_file(fixtures_dir, local_rules, monke
         )
         == 1
     )
+
+
+@pytest.fixture
+def vacuum_rules(tmp_path):
+    """The scoped rule ``tools/extract_rules.py`` derives from core 2026.8."""
+    path = tmp_path / "vacuum_rules.json"
+    path.write_text(
+        json.dumps(
+            {
+                "rules": [
+                    {
+                        "id": "core-attr-statevacuumentity-battery-level",
+                        "breaks_in": "2026.9",
+                        "symbol": "StateVacuumEntity.battery_level",
+                        "message": (
+                            "defines `battery_level` on a subclass of "
+                            "`StateVacuumEntity`, which is deprecated and removed "
+                            "in Home Assistant 2026.9."
+                        ),
+                        "source": "homeassistant/components/vacuum/__init__.py:269",
+                        "confidence": "medium",
+                        "match": {
+                            "type": "attr",
+                            "names": ["battery_level"],
+                            "in_class_base": ["StateVacuumEntity"],
+                        },
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
+def test_scoped_vacuum_property_is_flagged_and_names_its_base_class(
+    fixtures_dir, vacuum_rules, capsys
+):
+    code = main([str(fixtures_dir / "scoped_attr"), "--rules", str(vacuum_rules)])
+    out = capsys.readouterr().out
+    assert code == 1
+    assert "custom_components/fixture_vacuum/vacuum.py:29" in out
+    assert "battery_level" in out and "StateVacuumEntity" in out
+    assert out.count("custom_components/fixture_vacuum/vacuum.py") == 1
+
+
+def test_the_check_states_what_it_could_not_look_for(fixtures_dir, tmp_path, caplog):
+    rules = tmp_path / "rules.json"
+    rules.write_text(
+        json.dumps(
+            {
+                "counts": {"markers_discarded": 3, "markers_discarded_pending": 2},
+                "rules": [
+                    {
+                        "id": "matchable",
+                        "breaks_in": "2027.5",
+                        "message": "m",
+                        "source": "s",
+                        "match": {"type": "moduledef", "names": ["nothing_here"]},
+                    },
+                    {"id": "prose-only", "breaks_in": "2027.5", "message": "m", "source": "s"},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    with caplog.at_level("INFO"):
+        main([str(fixtures_dir / "false_positive"), "--rules", str(rules)])
+    assert "1 of 2 announced removals have a matcher" in caplog.text
+    assert "2 short name(s) not matched" in caplog.text

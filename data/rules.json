@@ -1,26 +1,36 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-03T04:43:41Z",
+  "generated_utc": "2026-09-03T04:46:27Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
-  "pending_floor_source": "pypi",
+  "pending_floor_source": "cache",
   "core_tarball_sha256": "a556b8e9c5c608186fc102aadcf75967d3c72e03a10d1fbff668062550f26e4b",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 172,
-    "future": 118,
-    "matchable_future": 54,
+    "total": 171,
+    "future": 117,
+    "matchable_future": 58,
     "core_files_scanned": 10090,
     "core_files_unparsed": 0,
-    "from_core_ast": 138,
+    "markers_discarded": 1,
+    "markers_discarded_pending": 1,
+    "from_core_ast": 137,
     "from_manual": 14,
     "from_blog": 20
   },
   "unparsed_core_files": [],
+  "discarded_markers": [
+    {
+      "symbol": "InfraredEntity",
+      "reason": "too_short",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/infrared/entity.py:189"
+    }
+  ],
   "rules": [
     {
       "id": "core-issue-raise-mirrored-entries-2022.10",
@@ -252,6 +262,52 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2518"
     },
     {
+      "id": "core-call-async-add-job",
+      "kind": "call",
+      "symbol": "async_add_job",
+      "message": "calls `async_add_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/core.py:645",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_add_job"
+        ],
+        "modules": [
+          "homeassistant.core"
+        ]
+      },
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L645"
+    },
+    {
+      "id": "core-call-async-run-job",
+      "kind": "call",
+      "symbol": "async_run_job",
+      "message": "calls `async_run_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
+      "breaks_in": "2025.4",
+      "source": "homeassistant/core.py:975",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_run_job"
+        ],
+        "modules": [
+          "homeassistant.core"
+        ]
+      },
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L975"
+    },
+    {
       "id": "core-issue-homeassistant-components-ring-binary-sensor-py-2025.4",
       "kind": "issue",
       "symbol": "",
@@ -308,34 +364,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/tplink/button.py#L37"
     },
     {
-      "id": "core-prose-calls-async-add-job-which-should-be-reviewed-against-https-developers-home",
-      "kind": "prose",
-      "symbol": "calls `async_add_job`, which should be reviewed against https://developers.home-...",
-      "message": "calls `async_add_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
-      "breaks_in": "2025.4",
-      "source": "homeassistant/core.py:645",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L645"
-    },
-    {
-      "id": "core-prose-calls-async-run-job-which-should-be-reviewed-against-https-developers-home",
-      "kind": "prose",
-      "symbol": "calls `async_run_job`, which should be reviewed against https://developers.home-...",
-      "message": "calls `async_run_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
-      "breaks_in": "2025.4",
-      "source": "homeassistant/core.py:975",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L975"
-    },
-    {
       "id": "core-call-async-add-hass-job",
       "kind": "call",
       "symbol": "async_add_hass_job",
@@ -359,29 +387,53 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L701"
     },
     {
-      "id": "core-prose-calls-async-listen-once-with-run-immediately",
-      "kind": "prose",
-      "symbol": "calls `async_listen_once` with run_immediately",
+      "id": "core-call-async-listen-once-run-immediately",
+      "kind": "call",
+      "symbol": "async_listen_once(run_immediately=...)",
       "message": "calls `async_listen_once` with run_immediately",
       "breaks_in": "2025.5",
       "source": "homeassistant/core.py:1799",
       "origin": "core-ast",
       "confidence": "medium",
-      "matchable": false,
+      "matchable": true,
+      "match": {
+        "type": "call_kwarg",
+        "names": [
+          "async_listen_once"
+        ],
+        "modules": [
+          "homeassistant.core"
+        ],
+        "kwargs": [
+          "run_immediately"
+        ]
+      },
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1799"
     },
     {
-      "id": "core-prose-calls-async-listen-with-run-immediately",
-      "kind": "prose",
-      "symbol": "calls `async_listen` with run_immediately",
+      "id": "core-call-async-listen-run-immediately",
+      "kind": "call",
+      "symbol": "async_listen(run_immediately=...)",
       "message": "calls `async_listen` with run_immediately",
       "breaks_in": "2025.5",
       "source": "homeassistant/core.py:1729",
       "origin": "core-ast",
       "confidence": "medium",
-      "matchable": false,
+      "matchable": true,
+      "match": {
+        "type": "call_kwarg",
+        "names": [
+          "async_listen"
+        ],
+        "modules": [
+          "homeassistant.core"
+        ],
+        "kwargs": [
+          "run_immediately"
+        ]
+      },
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1729"
@@ -790,6 +842,29 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L109"
     },
     {
+      "id": "core-call-temperatureconverter-convert-interval",
+      "kind": "call",
+      "symbol": "TemperatureConverter.convert_interval",
+      "message": "TemperatureDeltaConverter.convert",
+      "breaks_in": "2026.12",
+      "source": "homeassistant/util/unit_conversion.py:874",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "convert_interval"
+        ],
+        "modules": [
+          "homeassistant.util.unit_conversion.TemperatureConverter"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L874"
+    },
+    {
       "id": "core-classbase-targetselectordata",
       "kind": "classbase",
       "symbol": "TargetSelectorData",
@@ -906,20 +981,6 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L299"
-    },
-    {
-      "id": "core-prose-temperatureconverter-convert-interval",
-      "kind": "prose",
-      "symbol": "TemperatureConverter.convert_interval",
-      "message": "TemperatureDeltaConverter.convert",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/util/unit_conversion.py:874",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L874"
     },
     {
       "id": "blog-service-info-2026.2",
@@ -1054,6 +1115,52 @@
       "expired": true
     },
     {
+      "id": "core-attr-lightentity-max-color-temp-kelvin",
+      "kind": "attr",
+      "symbol": "LightEntity.max_color_temp_kelvin",
+      "message": "defines `max_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/light/__init__.py:852",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "attr",
+        "names": [
+          "max_color_temp_kelvin"
+        ],
+        "in_class_base": [
+          "LightEntity"
+        ]
+      },
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L852"
+    },
+    {
+      "id": "core-attr-lightentity-min-color-temp-kelvin",
+      "kind": "attr",
+      "symbol": "LightEntity.min_color_temp_kelvin",
+      "message": "defines `min_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
+      "breaks_in": "2026.8",
+      "source": "homeassistant/components/light/__init__.py:832",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "attr",
+        "names": [
+          "min_color_temp_kelvin"
+        ],
+        "in_class_base": [
+          "LightEntity"
+        ]
+      },
+      "expired": true,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L832"
+    },
+    {
       "id": "core-issue-async-create-yaml-mode-repair-2026.8",
       "kind": "issue",
       "symbol": "hass",
@@ -1110,32 +1217,27 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/samsungtv/entity.py#L98"
     },
     {
-      "id": "core-prose-is-explicitly-setting-attr-max-color-temp-kelvin-to-none-when-it-should-be",
-      "kind": "prose",
-      "symbol": "is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be...",
-      "message": "is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:852",
+      "id": "core-call-deviceentry-suggested-area",
+      "kind": "call",
+      "symbol": "DeviceEntry.suggested_area",
+      "message": "code which ignores suggested_area",
+      "breaks_in": "2026.9",
+      "source": "homeassistant/helpers/device_registry.py:603",
       "origin": "core-ast",
       "confidence": "medium",
-      "matchable": false,
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "suggested_area"
+        ],
+        "modules": [
+          "homeassistant.helpers.device_registry.DeviceEntry"
+        ]
+      },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L852"
-    },
-    {
-      "id": "core-prose-is-explicitly-setting-attr-min-color-temp-kelvin-to-none-when-it-should-be",
-      "kind": "prose",
-      "symbol": "is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be...",
-      "message": "is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:832",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L832"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L603"
     },
     {
       "id": "core-issue-async-create-deprecated-yaml-issue-2026.9",
@@ -1250,20 +1352,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L913"
     },
     {
-      "id": "core-prose-deviceentry-suggested-area",
-      "kind": "prose",
-      "symbol": "DeviceEntry.suggested_area",
-      "message": "code which ignores suggested_area",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/helpers/device_registry.py:603",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L603"
-    },
-    {
       "id": "core-prose-passes-a-suggested-area-to-device-registry-async-update-device",
       "kind": "prose",
       "symbol": "passes a suggested_area to device_registry.async_update device",
@@ -1369,29 +1457,47 @@
       "expired": false
     },
     {
-      "id": "core-prose-calls-modbus-get-hub-which-is-deprecated-in-favour-of-modbus-async-get-unit",
-      "kind": "prose",
-      "symbol": "calls `modbus.get_hub`, which is deprecated in favour of `modbus.async_get_unit`...",
+      "id": "core-call-get-hub",
+      "kind": "call",
+      "symbol": "get_hub",
       "message": "calls `modbus.get_hub`, which is deprecated in favour of `modbus.async_get_unit`. Collect the connection details in your own config flow and ask for a unit on them",
       "breaks_in": "2027.10",
       "source": "homeassistant/components/modbus/__init__.py:36",
       "origin": "core-ast",
       "confidence": "medium",
-      "matchable": false,
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "get_hub"
+        ],
+        "modules": [
+          "homeassistant.components.modbus"
+        ]
+      },
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/modbus/__init__.py#L36"
     },
     {
-      "id": "core-prose-is-closed",
-      "kind": "prose",
+      "id": "core-call-is-closed",
+      "kind": "call",
       "symbol": "is_closed",
       "message": "hass.states.is_state(entity_id, 'closed')",
       "breaks_in": "2027.10",
       "source": "homeassistant/components/cover/__init__.py:95",
       "origin": "core-ast",
       "confidence": "medium",
-      "matchable": false,
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "is_closed"
+        ],
+        "modules": [
+          "homeassistant.components.cover"
+        ]
+      },
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L95"
@@ -1536,7 +1642,31 @@
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": false
+    },
+    {
+      "id": "core-call-async-listen",
+      "kind": "call",
+      "symbol": "async_listen",
+      "message": "calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` instead",
+      "breaks_in": "2027.3",
+      "source": "homeassistant/components/labs/helpers.py:92",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_listen"
+        ],
+        "modules": [
+          "homeassistant.components.labs.helpers"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/labs/helpers.py#L92"
     },
     {
       "id": "core-issue-async-import-2027.3",
@@ -1593,20 +1723,6 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netio/switch.py#L88"
-    },
-    {
-      "id": "core-prose-calls-async-listen-which-is-deprecated-use-async-subscribe-preview-feature",
-      "kind": "prose",
-      "symbol": "calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` ...",
-      "message": "calls `async_listen` which is deprecated, use `async_subscribe_preview_feature` instead",
-      "breaks_in": "2027.3",
-      "source": "homeassistant/components/labs/helpers.py:92",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/labs/helpers.py#L92"
     },
     {
       "id": "blog-doorbell-standard-event-type-2027.4",
@@ -1735,7 +1851,7 @@
           "show_advanced_options"
         ],
         "modules": [
-          "homeassistant.data_entry_flow"
+          "homeassistant.data_entry_flow.FlowHandler"
         ]
       },
       "expired": false,
@@ -2497,20 +2613,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L847"
     },
     {
-      "id": "core-prose-calls-device-registry-async-get-device-which-is-deprecated-because-device-ide",
-      "kind": "prose",
-      "symbol": "calls `device_registry.async_get_device`, which is deprecated because device ide...",
-      "message": "calls `device_registry.async_get_device`, which is deprecated because device identifiers and connections are no longer unique across config entries; use `async_get_device_by_identifier`, `async_get_device_by_connection` or `async_get_devices` instead",
-      "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:1967",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L1967"
-    },
-    {
       "id": "core-prose-passes-home-assistant-start-to-async-initialize-triggers-which-is-deprecate",
       "kind": "prose",
       "symbol": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecate...",
@@ -2926,5 +3028,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-03T04:43:58Z"
+  "blog_merged_utc": "2026-09-03T04:46:50Z"
 }

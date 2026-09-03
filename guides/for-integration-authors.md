@@ -34,6 +34,13 @@ than something of yours that shares a method name. Those rules opt into
 firing anyway, because the alternative is missing real cases — but they are the
 findings most worth disputing.
 
+**A short name is only ever flagged inside the class it belongs to.** A rule for
+`battery_level` would be useless on its own, since half the ecosystem has a
+property by that name. What the rule actually says is "`battery_level` defined
+on a class deriving from `StateVacuumEntity`", and the finding names both. If
+your class does not derive from the base class in the message, that is a bug in
+the rule and worth reporting.
+
 ---
 
 ## Check it yourself first

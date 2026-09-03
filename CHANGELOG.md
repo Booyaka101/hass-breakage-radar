@@ -4,6 +4,158 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.11.0 — 2026-09-03
+
+### Short deprecated names are matchable when they are scoped to a base class
+
+Home Assistant 2026.9 removed `battery_level` from the base vacuum entity on
+2 September, and the radar had never warned a single integration author about
+it. Not because the marker was missing from core, but because `battery_level`
+is thirteen characters. `tools/extract_rules.py` refuses to build a matcher
+from a bare symbol under eighteen, for the good reason that a rule on
+`async_listen` or `battery_level` alone fires on every helper in the ecosystem
+that happens to share the word. The gate was right and the consequence was
+that a whole class of removal was invisible.
+
+The engine already had the answer. An `attr` matcher takes `in_class_base`,
+"the enclosing class must derive from one of these", and the hand-written
+device tracker rules have used it since 1.0.0. What was missing was on the
+extraction side: nothing derived that scope from core's own source. It does
+now. When a marker sits on a property of a Home Assistant entity base class,
+the rule records the class alongside the symbol and emits
+
+    {"type": "attr", "names": ["battery_level"],
+     "in_class_base": ["StateVacuumEntity"]}
+
+A symbol pinned to the class it is deprecated on is no longer bare, so the
+eighteen-character gate does not apply to it. Bare symbols still go through
+the gate and the denylist exactly as before, and no existing rule changed:
+regenerating `data/rules.json` against the same core tarball produces byte-
+identical output for every rule that was already there.
+
+Core does not always name the attribute at the marker. The vacuum warning
+lives in a private `_report_deprecated_battery_properties(property)` and the
+names reach it as string literals from a sibling call site in the same class,
+which is why nothing textual ever found them. The extractor reads those call
+sites, so one marker becomes one rule per attribute it names. Run against the
+real core 2026.8 source, it produces `core-attr-statevacuumentity-battery-level`
+and `core-attr-statevacuumentity-battery-icon`, the two rules that would have
+warned vacuum authors in the month before the removal landed. Run over the
+twelve vacuum integrations in the HACS catalogue, those rules find
+`Jezza34000/homeassistant_weback_component` v1.0.11, whose
+`WebackVacuumRobot(StateVacuumEntity)` still declares both properties, and
+report nothing on the other eleven.
+
+Scoping is deliberately narrow. It only applies to classes integrations are
+meant to subclass, which Home Assistant names `<Domain>Entity`. `ConfigFlow`,
+`DeviceRegistry` and `TemperatureConverter` all carry markers of their own and
+nobody overrides them, so a scoped rule there would be a matcher that can never
+match.
+
+### A call pinned to its module does not need the length gate either
+
+The eighteen-character gate predates module pinning. Since the dolphin false
+positive in 1.0.0 every auto-derived `call` matcher carries the core module
+that defines the function, and the engine refuses a bare call that was not
+imported from that exact module, so a rule for `is_closed` pinned to
+`homeassistant.components.cover` cannot fire on anybody's own `is_closed`.
+The import graph already proves what the gate was guessing at. `import_from`
+rules have skipped the gate on that argument since 1.6.0; call matchers now do
+too, and only the denylist still applies to them. The gate is left with the
+one case that has no proof, a deprecated class name, which is `InfraredEntity`
+on today's dev.
+
+That turns four announced removals from prose into matchers:
+`cover.is_closed` (2027.10), `modbus.get_hub` (2027.10),
+`labs.helpers.async_listen` (2027.3) and
+`TemperatureConverter.convert_interval` (2026.12). On the re-crawl one of them
+found something at once: `wills106/homeassistant-solax-modbus` 2026.08.2 does
+`from homeassistant.components.modbus import get_hub` and calls it at
+`modbus_transport.py:31`, which puts 2027.10 on the board for the first time. A deprecated method is
+pinned to its class as well as its module, which is what lets
+`TemperatureConverter.convert_interval(...)` resolve; the same pin now applies
+to `FlowHandler.show_advanced_options`, which had never matched anything.
+
+Merging then had to learn one thing. The extracted `core-call-async-get-device`
+matches the same calls as the hand-written `device-registry-async-get-device`,
+and both firing would report every line twice. A core rule whose matcher
+covers the same calls as a manual one is dropped at merge time, and the crawl
+log says which.
+
+### `in_class_base` resolves an aliased base (engine 8)
+
+`from homeassistant.components.vacuum import StateVacuumEntity as Base` made
+the class invisible to a scoped rule: the base list said `Base` and the matcher
+was looking for `StateVacuumEntity`. Base names are now resolved through the
+file's import map first, which also covers `classbase` rules. A relative import
+is deliberately not resolved, on the same reasoning that already keeps
+`from .my_registry import async_get_device` out of the device registry rule.
+
+That gap was real, and the re-crawl proves it. `al-one/hass-xiaomi-miot` v1.1.4
+declares `class XiaoxunWatchTrackerEntity(MiotTrackerEntity)` and, four lines
+of file above, `class MiotTrackerEntity(MiotEntity, BaseTrackerEntity)`. The
+subclass sets `_attr_location_name` at `device_tracker.py:228`, which no
+version before this one reported: `XiaoxunWatchTrackerEntity` names no base the
+rule knows, and its own base is in the same file. Same tag, same rule, one more
+finding.
+
+A scoped rule now also follows one level of local subclassing, so
+
+    class BaseVacuum(StateVacuumEntity): ...
+    class MyVacuum(BaseVacuum):
+        @property
+        def battery_level(self): ...
+
+is a finding. A chain that leaves the file is not followed: nothing in the file
+proves what `from .base import BaseVacuum` derives from, and undercounting is
+the side to be wrong on.
+
+`ENGINE_VERSION` is 8, which queues every repository for a rescan.
+
+### What the re-crawl measured
+
+`ENGINE_VERSION` 8 and the wider rule set each requeue every catalogue
+repository, and all 4 009 were rescanned locally for this release. The daily
+crawl happened to run the previous rule set over the same 4 009 repositories
+the same morning, which makes the comparison unusually clean: same catalogue,
+same tags, same day, different rules.
+
+| Release | Before | After |
+|---|---|---|
+| 2026.10 | 11 | 11 |
+| 2026.11 | 96 | 96 |
+| 2027.5 | 11 | 11 |
+| 2027.6 | 51 | 51 |
+| 2027.7 | 29 | 29 |
+| 2027.8 | 742 | 742 |
+| 2027.10 | 0 | 1 |
+
+880 affected repositories both times; 2 272 findings from 2 270. The two new
+findings are exactly the two described above, `hass-xiaomi-miot` at
+`device_tracker.py:228` and `solax-modbus` at `modbus_transport.py:31`, and
+nothing that was found before is lost. Matchable rules go from 54 to 58;
+published rules from 118 to 117, because one core rule now yields to the
+hand-written twin that already covered it.
+
+### The board says how much the gate costs
+
+Every marker the length gate or the denylist drops is now counted during
+extraction and published as `counts.markers_discarded` in `rules.json`, with
+the symbol, the reason and the core line in `discarded_markers`. The board and
+the README carry the total, minus any symbol a hand-written rule already covers,
+so "removals with no detector" is no longer the only visible gap.
+`tools/check_local.py` states the same thing about the rule set it ran, so an
+author reading "OK" knows how much was looked for.
+
+### The integration searches for the name someone would paste
+
+A repair's "see whether it is already reported" link searched the repository
+for the rule's whole symbol, and `StateVacuumEntity.battery_level` or
+`async_import_statistics(missing unit_class)` finds nothing anyone wrote in an
+issue title. The crawler already reduced a symbol to its bare name for its own
+lookup; that helper lives in the shared engine now and the integration uses it
+too.
+
 ## 1.10.0 — 2026-08-28
 
 ### Rules for the release in RC no longer retire a week early (#46)

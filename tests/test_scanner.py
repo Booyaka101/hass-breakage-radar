@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from tools.rules_engine import (
+    Rule,
     ScanStats,
     load_rules,
     match_source,
@@ -258,3 +259,245 @@ def test_awaited_async_get_device_is_somebody_elses_method(rules):
         if f.rule_id == "device-registry-async-get-device"
     ]
     assert [f.line for f in hits] == [7]
+
+
+# --------------------------------------------------------------------------- #
+# scoped attr matchers -- the short symbol only a base class makes safe
+# --------------------------------------------------------------------------- #
+
+VACUUM_RULE = Rule(
+    id="core-attr-statevacuumentity-battery-level",
+    kind="attr",
+    symbol="StateVacuumEntity.battery_level",
+    message="defines `battery_level` on a subclass of `StateVacuumEntity`.",
+    breaks_in="2026.9",
+    source="homeassistant/components/vacuum/__init__.py:269",
+    confidence="medium",
+    match={
+        "type": "attr",
+        "names": ["battery_level"],
+        "in_class_base": ["StateVacuumEntity"],
+    },
+)
+
+
+def _vacuum_hits(source: str) -> list[int]:
+    return [
+        f.line for f in match_source("custom_components/x/vacuum.py", source, [VACUUM_RULE])
+    ]
+
+
+def test_scoped_rule_fires_on_the_inheriting_class(fixtures_dir):
+    path = (
+        fixtures_dir
+        / "scoped_attr"
+        / "custom_components"
+        / "fixture_vacuum"
+        / "vacuum.py"
+    )
+    findings = match_source(
+        "custom_components/fixture_vacuum/vacuum.py", path.read_bytes(), [VACUUM_RULE]
+    )
+    assert [(f.line, f.symbol) for f in findings] == [(29, "battery_level")]
+
+
+def test_scoped_rule_ignores_module_level_and_unrelated_classes():
+    source = (
+        "battery_level = 50\n"
+        "\n"
+        "\n"
+        "class Foo:\n"
+        "    battery_level = 50\n"
+        "\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return 50\n"
+    )
+    assert _vacuum_hits(source) == []
+
+
+def test_a_base_imported_under_an_alias_still_resolves():
+    source = (
+        "from homeassistant.components.vacuum import StateVacuumEntity as Base\n"
+        "\n"
+        "\n"
+        "class MyVacuum(Base):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return self._batt\n"
+    )
+    assert _vacuum_hits(source) == [6]
+
+
+def test_a_dotted_base_still_resolves():
+    source = (
+        "from homeassistant.components import vacuum\n"
+        "\n"
+        "\n"
+        "class MyVacuum(vacuum.StateVacuumEntity):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return self._batt\n"
+    )
+    assert _vacuum_hits(source) == [6]
+
+
+def test_multiple_inheritance_matches_on_any_base():
+    source = (
+        "from homeassistant.components.vacuum import StateVacuumEntity\n"
+        "from homeassistant.helpers.update_coordinator import CoordinatorEntity\n"
+        "\n"
+        "\n"
+        "class MyVacuum(CoordinatorEntity, StateVacuumEntity):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return self._batt\n"
+    )
+    assert _vacuum_hits(source) == [7]
+
+
+def test_a_subclass_of_a_subclass_resolves_within_the_file():
+    source = (
+        "from homeassistant.components.vacuum import StateVacuumEntity\n"
+        "\n"
+        "\n"
+        "class BaseVacuum(StateVacuumEntity):\n"
+        "    pass\n"
+        "\n"
+        "\n"
+        "class MyVacuum(BaseVacuum):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return self._batt\n"
+    )
+    assert _vacuum_hits(source) == [10]
+
+
+def test_a_chain_that_leaves_the_file_is_not_guessed_at():
+    """Undercount rather than false-positive: ``.base`` could be anything."""
+    source = (
+        "from .base import BaseVacuum\n"
+        "\n"
+        "\n"
+        "class MyVacuum(BaseVacuum):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return self._batt\n"
+    )
+    assert _vacuum_hits(source) == []
+
+
+def test_an_attribute_assigned_in_init_is_reported():
+    source = (
+        "from homeassistant.components.vacuum import StateVacuumEntity\n"
+        "\n"
+        "\n"
+        "class MyVacuum(StateVacuumEntity):\n"
+        "    def __init__(self, batt):\n"
+        "        self._attr_battery_level = batt\n"
+    )
+    assert _vacuum_hits(source) == [6]
+
+
+def test_the_same_symbol_on_two_base_classes_stays_two_rules():
+    tracker = Rule(
+        id="device-tracker-battery-level",
+        kind="attr",
+        symbol="TrackerEntity.battery_level",
+        message="defines `battery_level` on a subclass of `TrackerEntity`.",
+        breaks_in="2027.7",
+        source="https://developers.home-assistant.io/blog/",
+        confidence="high",
+        match={
+            "type": "attr",
+            "names": ["battery_level"],
+            "in_class_base": ["TrackerEntity"],
+        },
+    )
+    source = (
+        "from homeassistant.components.vacuum import StateVacuumEntity\n"
+        "from homeassistant.components.device_tracker import TrackerEntity\n"
+        "\n"
+        "\n"
+        "class MyVacuum(StateVacuumEntity):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return 1\n"
+        "\n"
+        "\n"
+        "class MyTracker(TrackerEntity):\n"
+        "    @property\n"
+        "    def battery_level(self):\n"
+        "        return 2\n"
+    )
+    findings = match_source(
+        "custom_components/x/vacuum.py", source, [VACUUM_RULE, tracker]
+    )
+    assert sorted((f.rule_id, f.line) for f in findings) == [
+        ("core-attr-statevacuumentity-battery-level", 7),
+        ("device-tracker-battery-level", 13),
+    ]
+
+
+def test_a_call_pinned_to_a_class_resolves_through_the_import():
+    rule = Rule(
+        id="core-call-temperatureconverter-convert-interval",
+        kind="call",
+        symbol="TemperatureConverter.convert_interval",
+        message="deprecated",
+        breaks_in="2026.12",
+        source="homeassistant/util/unit_conversion.py:874",
+        match={
+            "type": "call",
+            "names": ["convert_interval"],
+            "modules": ["homeassistant.util.unit_conversion.TemperatureConverter"],
+        },
+    )
+    source = (
+        "from homeassistant.util.unit_conversion import TemperatureConverter\n"
+        "\n"
+        "\n"
+        "class Mine:\n"
+        "    def convert_interval(self, x):\n"
+        "        return x\n"
+        "\n"
+        "\n"
+        "def f(self, x):\n"
+        "    a = TemperatureConverter.convert_interval(x, 'K', 'C')\n"
+        "    b = self.convert_interval(x)\n"
+        "    return a, b\n"
+    )
+    findings = match_source("custom_components/x/sensor.py", source, [rule])
+    assert [f.line for f in findings] == [10]
+
+
+def test_a_short_pinned_call_never_fires_on_a_local_helper():
+    rule = Rule(
+        id="core-call-is-closed",
+        kind="call",
+        symbol="is_closed",
+        message="deprecated",
+        breaks_in="2027.10",
+        source="homeassistant/components/cover/__init__.py:95",
+        match={
+            "type": "call",
+            "names": ["is_closed"],
+            "modules": ["homeassistant.components.cover"],
+        },
+    )
+    theirs = (
+        "from homeassistant.components.cover import is_closed\n"
+        "\n"
+        "\n"
+        "def check(hass, eid):\n"
+        "    return is_closed(hass, eid)\n"
+    )
+    ours = (
+        "from .helpers import is_closed\n"
+        "\n"
+        "\n"
+        "def check(hass, eid):\n"
+        "    return is_closed(hass, eid) or hass.states.is_closed(eid)\n"
+    )
+    assert [f.line for f in match_source("custom_components/x/a.py", theirs, [rule])] == [5]
+    assert match_source("custom_components/x/b.py", ours, [rule]) == []

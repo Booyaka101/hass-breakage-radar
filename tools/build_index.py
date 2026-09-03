@@ -230,6 +230,8 @@ def build_payload(
         published_rules.append(entry)
     published_rules.sort(key=lambda r: (parse_version(r["breaks_in"]), r["id"]))
 
+    discarded = uncovered_discarded_markers(rules_doc, published_rules, floor)
+
     by_release: dict[str, list[str]] = collections.defaultdict(list)
     for integration in integrations:
         for release in sorted({f["breaks_in"] for f in integration["findings"]}):
@@ -262,6 +264,11 @@ def build_payload(
             "findings_total": sum(len(i["findings"]) for i in integrations),
             "rules_published": len(published_rules),
             "rules_matchable": sum(1 for r in published_rules if r.get("matchable")),
+            # Announced removals the extractor saw a symbol for and refused to
+            # match on, because the bare name is too short or too common. The
+            # size of that blind spot belongs on the board, not in a comment.
+            "markers_discarded": len(discarded),
+            "discarded_symbols": sorted({d["symbol"] for d in discarded}),
             # Bundles the scan refused to guess at, so the plugin coverage
             # number can be read honestly: many card repos publish only a
             # minified dist file.
@@ -482,6 +489,30 @@ def _stat(value: Any, label: str) -> str:
     return f'<div class="stat"><b>{html.escape(str(value))}</b><span>{html.escape(label)}</span></div>'
 
 
+def uncovered_discarded_markers(
+    rules_doc: dict[str, Any],
+    published_rules: list[dict[str, Any]],
+    floor: str,
+) -> list[dict[str, Any]]:
+    """Markers the symbol gate dropped that nothing else ended up covering.
+
+    A hand-written rule often names the same symbol -- ``async_get_device`` is
+    dropped by the gate and matched by ``device-registry-async-get-device`` --
+    and counting those as a blind spot would overstate it.
+    """
+    covered = {
+        name
+        for rule in published_rules
+        if rule.get("matchable")
+        for name in (rule.get("match") or {}).get("names", ())
+    }
+    return [
+        entry
+        for entry in rules_doc.get("discarded_markers", [])
+        if is_pending(entry["breaks_in"], floor) and entry["symbol"] not in covered
+    ]
+
+
 def coverage_gap_note(coverage: dict[str, Any]) -> str:
     """State how many announced removals ship no matcher.
 
@@ -490,20 +521,35 @@ def coverage_gap_note(coverage: dict[str, Any]) -> str:
     """
     published = coverage["rules_published"]
     matchable = coverage["rules_matchable"]
+    discarded = coverage.get("markers_discarded", 0)
+    symbols = coverage.get("discarded_symbols") or []
     gap = published - matchable
     if gap <= 0:
-        return (
+        note = (
             f"All {published} announced removals tracked here have a matcher "
             "behind them."
         )
+    else:
+        note = (
+            f"{matchable} of the {published} announced removals tracked here have a "
+            f"matcher behind them. The other {gap} are listed for their deadline "
+            "only: some are core's own internal migrations that no custom "
+            "integration calls, the rest are announced behaviour changes with no "
+            "reliable static signal to anchor a rule on. No repository is ever "
+            f"listed under those {gap}, so a repository with no findings has not "
+            "been checked against them."
+        )
+    if not discarded:
+        return note
+    shown = symbols[:6]
+    named = ", ".join(f"<code>{html.escape(name)}</code>" for name in shown)
+    if len(symbols) > len(shown):
+        named += ", and others"
     return (
-        f"{matchable} of the {published} announced removals tracked here have a "
-        f"matcher behind them. The other {gap} are listed for their deadline "
-        "only: some are core's own internal migrations that no custom "
-        "integration calls, the rest are announced behaviour changes with no "
-        "reliable static signal to anchor a rule on. No repository is ever "
-        f"listed under those {gap}, so a repository with no findings has not "
-        "been checked against them."
+        f"{note} {discarded} of them name a symbol ({named}) too short or too "
+        "common to match on its own. A symbol deprecated on a Home Assistant "
+        "entity base class is matched anyway, scoped to that class; the rest "
+        "wait for a hand-written rule."
     )
 
 
@@ -553,6 +599,7 @@ def render_html(payload: dict[str, Any]) -> str:
                 coverage["rules_published"] - coverage["rules_matchable"],
                 "removals with no detector",
             ),
+            _stat(coverage.get("markers_discarded", 0), "short names not matched"),
             # The board reader runs the released version; core_version is the
             # dev branch the rules were read from and names a release nobody
             # can install yet.

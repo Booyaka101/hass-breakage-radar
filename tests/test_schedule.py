@@ -510,3 +510,18 @@ def test_without_upstream_facts_it_still_links_the_search(sample_index):
 
     text = describe_links(_links(sample_index, {}))
     assert "issues?q=is%3Aissue+setup_scanner" in text
+
+
+def test_the_link_searches_for_the_bare_name_of_a_dotted_symbol(sample_index):
+    """An issue search for `StateVacuumEntity.battery_level` whole finds
+    nothing anyone wrote; `battery_level` finds the report."""
+    from custom_components.breakage_radar.report import build_report
+
+    index = json.loads(json.dumps(sample_index))
+    for rule in index["rules"]:
+        if rule["id"] == "legacy-device-tracker-platform":
+            rule["symbol"] = "DeviceScanner.setup_scanner"
+    report = build_report(
+        index, {"fixture_tracker": "0.1.0"}, current_version="2027.4", today=date(2027, 4, 11)
+    )
+    assert report["links"]["fixture_tracker"]["symbol"] == "setup_scanner"
