@@ -180,6 +180,8 @@ def test_coverage_counts(payload):
         "findings_total": 1,
         "rules_published": 1,
         "rules_matchable": 1,
+        "markers_discarded": 0,
+        "discarded_symbols": [],
         "skipped_minified_files": 0,
         "skipped_vendor_files": 0,
         "by_category": {
@@ -520,3 +522,36 @@ def test_an_unparseable_release_is_listed_with_a_note_not_dropped():
     assert "Home Assistant unknown - release date unknown" in board
     # And it never leaks into the dated counts.
     assert "<b>1</b> integration breaks within the next 90 days" in board
+
+
+def test_discarded_markers_reach_the_board_minus_what_a_rule_covers():
+    """A symbol the gate dropped but a hand-written rule matches is not a gap."""
+    rules_doc = copy.deepcopy(RULES_DOC)
+    rules_doc["rules"][0]["match"] = {
+        "type": "moduledef",
+        "names": ["setup_scanner"],
+    }
+    rules_doc["discarded_markers"] = [
+        {
+            "symbol": "setup_scanner",
+            "reason": "too_short",
+            "breaks_in": "2027.5",
+            "source": "homeassistant/components/device_tracker/legacy.py:292",
+        },
+        {
+            "symbol": "is_closed",
+            "reason": "too_short",
+            "breaks_in": "2027.10",
+            "source": "homeassistant/components/cover/__init__.py:95",
+        },
+        {
+            "symbol": "gone_already",
+            "reason": "too_short",
+            "breaks_in": "2024.1",
+            "source": "homeassistant/x.py:1",
+        },
+    ]
+    payload = build_payload(rules_doc, FINDINGS_DOC, CATALOG_DOC)
+    assert payload["coverage"]["markers_discarded"] == 1
+    assert payload["coverage"]["discarded_symbols"] == ["is_closed"]
+    assert "is_closed" in render_html(payload)

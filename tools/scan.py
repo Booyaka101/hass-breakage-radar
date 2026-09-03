@@ -488,6 +488,14 @@ def main(argv: list[str] | None = None) -> int:
         counters["skipped_minified"] += record.get("skipped_minified", 0)
         counters["skipped_vendor"] += record.get("skipped_vendor", 0)
 
+        previous = repos.get(full_name)
+        if previous and previous.get("upstream") and previous.get("findings") == record["findings"]:
+            # The upstream report is about the deprecation, not about when we
+            # last looked. An engine bump requeues every repository, and the
+            # search API allows 30 lookups a minute, so discarding a fact that
+            # is still true would empty the board's "already reported" column
+            # for a week.
+            record["upstream"] = previous["upstream"]
         repos[full_name] = record
         state[full_name] = {
             "last_version_scanned": entry.get("last_version") or "",

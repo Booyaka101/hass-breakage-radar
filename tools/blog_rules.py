@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import sys
 from pathlib import Path
@@ -208,6 +209,17 @@ def load_manual_rules(path: Path) -> list[dict[str, Any]]:
     return rules
 
 
+def _what_it_matches(match: dict[str, Any]) -> str:
+    """The part of a matcher that decides which code it fires on.
+
+    ``allow_unresolved_attribute`` and ``not_awaited`` widen or narrow a
+    hand-written rule around the same calls, so they do not make it a
+    different rule.
+    """
+    keys = ("type", "names", "bases", "modules", "kwargs", "kwarg", "files", "in_class_base")
+    return json.dumps({k: match[k] for k in keys if k in match}, sort_keys=True)
+
+
 def merge(
     core_rules: list[dict[str, Any]],
     manual: list[dict[str, Any]],
@@ -215,8 +227,20 @@ def merge(
     *,
     pending_floor: str,
 ) -> list[dict[str, Any]]:
-    """Merge the three sources. Manual wins on id collision; blog never does."""
-    merged: dict[str, dict[str, Any]] = {rule["id"]: rule for rule in core_rules}
+    """Merge the three sources. Manual wins on id collision; blog never does.
+
+    A manual rule also wins over a core rule that matches the same calls: the
+    hand-written ``device-registry-async-get-device`` and the extracted
+    ``core-call-async-get-device`` would otherwise both fire on every line,
+    and one finding reported twice reads as two problems.
+    """
+    hand_written = {_what_it_matches(rule["match"]) for rule in manual if rule.get("match")}
+    merged: dict[str, dict[str, Any]] = {}
+    for rule in core_rules:
+        if rule.get("match") and _what_it_matches(rule["match"]) in hand_written:
+            LOGGER.info("%s is covered by a hand-written rule; dropping it", rule["id"])
+            continue
+        merged[rule["id"]] = rule
 
     for rule in manual:
         merged[rule["id"]] = rule

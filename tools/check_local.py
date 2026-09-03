@@ -268,13 +268,13 @@ def render_github(
         LOGGER.warning("could not write the job summary: %s", err)
 
 
-def _load_rules_payload(args: argparse.Namespace) -> tuple[list[dict], str] | None:
+def _load_rules_payload(args: argparse.Namespace) -> tuple[dict, str] | None:
     if args.rules:
         payload = read_json(args.rules, default=None)
         if payload is None:
             LOGGER.error("%s not found", args.rules)
             return None
-        return payload.get("rules", payload), str(args.rules)
+        return (payload if isinstance(payload, dict) else {"rules": payload}), str(args.rules)
     try:
         index = http_get_json(args.index)
     except Exception as err:  # noqa: BLE001 - any transport problem is fatal here
@@ -284,7 +284,26 @@ def _load_rules_payload(args: argparse.Namespace) -> tuple[list[dict], str] | No
             err,
         )
         return None
-    return index.get("rules", []), args.index
+    return index, args.index
+
+
+def coverage_note(payload: dict, rules: list[Rule]) -> str:
+    """What this check could not look for, so "clean" is read at its true size.
+
+    ``index.json`` counts the gate's discards in ``coverage`` and ``rules.json``
+    in ``counts``, pending ones only; an older file of either kind carries
+    neither and gets no number.
+    """
+    listed = payload.get("rules", [])
+    matchable = sum(1 for rule in rules if rule.matchable)
+    note = f"{matchable} of {len(listed)} announced removals have a matcher"
+    counts = payload.get("counts", {})
+    discarded = payload.get("coverage", {}).get(
+        "markers_discarded", counts.get("markers_discarded_pending")
+    )
+    if discarded:
+        note += f"; {discarded} short name(s) not matched"
+    return note
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -344,15 +363,18 @@ def main(argv: list[str] | None = None) -> int:
     rules_source = _load_rules_payload(args)
     if rules_source is None:
         return 2
-    rules_payload, source_label = rules_source
+    payload, source_label = rules_source
+    rules_payload = payload.get("rules", [])
 
-    rules = [rule for rule in load_rules(rules_payload) if rule.matchable]
+    all_rules = load_rules(rules_payload)
+    rules = [rule for rule in all_rules if rule.matchable]
     if args.ha_version:
         rules = [r for r in rules if is_future(r.breaks_in, args.ha_version)]
     if not rules:
         LOGGER.error("no matchable rules in %s -- nothing could be checked", source_label)
         return 2
     LOGGER.info("%d matchable rule(s) from %s", len(rules), source_label)
+    LOGGER.info("%s", coverage_note(payload, all_rules))
 
     components = find_components_dir(target)
     skipped = {"capped": 0, "too_big": 0, "unreadable": 0, "minified": 0}

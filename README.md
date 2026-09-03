@@ -47,14 +47,16 @@ use it, so you can follow along without polling the index. Paste it into a feed 
 or into Home Assistant's own `feedreader` integration; open it in a browser and it
 renders as a page.
 
-**In the published index right now:** all 3 940 HACS repositories crawled
-(3 184 integrations and 756 Lovelace plugins, 29 unreachable), **855 affected**,
-**2 252 findings**, across 6 Home Assistant releases: 11 in 2026.10, 95 in 2026.11,
-11 in 2027.5, 50 in 2027.6, 29 in 2027.7 and 720 in 2027.8 (counted by distinct
-integration domain). 54 of the 125 announced removals have a matcher behind them; the
-board says so on itself, and the other 71 are carried for their deadline only.
-Every number comes from a real crawl; nothing is seeded or simulated. The daily job
-keeps these moving, and `coverage` in `index.json` is always authoritative.
+**In the published index right now:** all 4 009 HACS repositories crawled
+(3 244 integrations and 765 Lovelace plugins, 30 unreachable), **880 affected**,
+**2 272 findings**, across 7 Home Assistant releases: 11 in 2026.10, 96 in 2026.11,
+11 in 2027.5, 51 in 2027.6, 29 in 2027.7, 742 in 2027.8 and 1 in 2027.10 (counted by
+distinct integration domain). 58 of the 117 announced removals have a matcher behind
+them; the board says so on itself, and the other 59 are carried for their deadline only. One of
+those names a symbol too short to match on its own (`InfraredEntity`), which the board
+also states; a short name pinned to its module or scoped to its entity base class is
+matched anyway. Every number comes from a real crawl; nothing is seeded or simulated.
+The daily job keeps these moving, and `coverage` in `index.json` is always authoritative.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/board.png"
@@ -449,11 +451,31 @@ a matcher only when it names something specific enough:
   matcher, pinned to the module that defines it.
 * `"doesn't specify unit_class when calling async_import_statistics"` → a
   `call_missing_kwarg` matcher.
-* `"calls `async_listen` which is deprecated"` → **no matcher.** `async_listen` is 12
-  characters and everybody has one. It ships as information only.
+* `"calls `async_listen` which is deprecated"` → a `call` matcher pinned to
+  `homeassistant.components.labs.helpers`. `async_listen` is 12 characters and everybody
+  has one, so the pin is what makes it a rule: the engine only fires where the file's
+  imports prove the call reaches that module, and `self.async_listen(...)` or
+  `from .bus import async_listen` never do.
+* a marker on a property of a Home Assistant entity base class → an `attr` matcher
+  **scoped to that class**. The 2026.9 removal of vacuum `battery_level` reads as
+  `{"type": "attr", "names": ["battery_level"], "in_class_base": ["StateVacuumEntity"]}`,
+  so a class deriving from `StateVacuumEntity` is a finding and `class Foo:
+  battery_level = 50` is not.
 
-Auto-derived symbols must be at least 18 characters and survive a denylist. Everything
-else is published for the board but never claims a repository is affected.
+A *bare* auto-derived symbol must still be at least 18 characters and survive a denylist,
+because on its own it would match everybody's own helper of the same name. Bare means
+neither pinned to the core module that defines it nor scoped to the class it is
+deprecated on; in both cases what identifies the deprecation is the pair, not the word,
+and the length gate does not apply. Since every `call` matcher carries its module, the
+gate is left with deprecated class names, which have no such proof. Everything else is
+published for the board but never claims a repository is affected, and the count of
+markers dropped that way is on the board, in `counts.markers_discarded`, and in what
+`tools/check_local.py` prints before its verdict.
+
+Scoping only fires for classes integrations are meant to subclass, which Home Assistant
+names `<Domain>Entity`. A deprecation on `ConfigFlow` or `DeviceRegistry` gets no scoped
+rule: nobody overrides those, so the rule would never match anything. That is a
+deliberate undercount.
 
 The same pass also reads core's *other* removal mechanism, which has nothing to do with
 `report_usage`. A module declares
@@ -763,7 +785,7 @@ real package is used instead.
   method name on an object whose type is only known at runtime.
 * **Index coverage is partial by design.** One slice is capped so the daily job stays
   inside GitHub's rate limits; `coverage.repos_scanned` always states how much of the
-  3 088-repo catalogue has been visited so far. Since 1.1.0 this matters less on your
+  4 009-repo catalogue has been visited so far. Since 1.1.0 this matters less on your
   own box: whatever the crawl has not reached, the integration scans locally with the
   same rules.
 * **The local scan is bounded.** Per integration it reads at most 400 Python files of
@@ -781,6 +803,12 @@ real package is used instead.
   `hass.config_entries` among them. A missed
   call is a rule that stays quiet; a wrong one would waste a maintainer's afternoon,
   so the matcher is built to under-report.
+* **A scoped `attr` rule resolves base classes one level, inside one file.** A class
+  deriving from `StateVacuumEntity` is matched whether it names the base directly, under
+  an import alias, dotted as `vacuum.StateVacuumEntity`, among several bases, or through
+  an intermediate class defined in the same file. A chain that leaves the file
+  (`from .base import BaseVacuum`) is not followed, because nothing in the file proves
+  what `.base` derives from. Undercounting, again on purpose.
 * **`imminent` is computed from the release schedule, `broken_now` is not.** The
   first-Wednesday rule is Home Assistant's published schedule and has been exact all
   year, but it is applied locally, not fetched — a release moved for a one-off reason

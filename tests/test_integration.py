@@ -390,3 +390,21 @@ def test_readme_screenshots_exist(repo_root):
     assert referenced, "the README should show what the integration looks like"
     on_disk = {p.name for p in (repo_root / "images").glob("*.png")}
     assert referenced <= on_disk, f"missing: {sorted(referenced - on_disk)}"
+
+
+def test_the_repository_ships_exactly_one_manifest(repo_root):
+    """hacs/default walks the whole checkout and requires exactly one.
+
+    A fixture manifest committed anywhere fails their Hassfest job 37 ms in,
+    with nothing in the log but exit 1, and it is invisible from our own CI.
+    """
+    found = sorted(
+        path.relative_to(repo_root).as_posix()
+        for path in repo_root.rglob("*manifest.json")
+        if not any(
+            part in (".cache", "build", "node_modules", ".git", ".venv")
+            for part in path.relative_to(repo_root).parts
+        )
+        and "egg-info" not in path.relative_to(repo_root).as_posix()
+    )
+    assert found == ["custom_components/breakage_radar/manifest.json"]

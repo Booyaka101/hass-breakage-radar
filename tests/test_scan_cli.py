@@ -354,3 +354,68 @@ def test_only_filter_rejects_an_unknown_repo(tmp_path):
     assert (
         main(_argv(tmp_path, rules_path, catalog_path, "--only", "nobody/nothing")) == 2
     )
+
+
+def _findings_doc(upstream: dict, findings: list[dict]) -> str:
+    return json.dumps(
+        {
+            "schema": 1,
+            "repos": {
+                "a/one": {
+                    "domain": "one",
+                    "status": "scanned",
+                    "findings": findings,
+                    "upstream": upstream,
+                }
+            },
+        }
+    )
+
+
+UPSTREAM = {
+    "archived": False,
+    "issues_enabled": True,
+    "symbol": "setup_scanner",
+    "report": {"number": 12, "url": "https://example.invalid/12", "state": "open"},
+}
+
+SAME_FINDING = [
+    {
+        "rule_id": RULE.id,
+        "breaks_in": "2027.5",
+        "file": "custom_components/one/device_tracker.py",
+        "line": 1,
+        "confidence": "high",
+    }
+]
+
+
+def _rescan_one(tmp_path, monkeypatch, findings: list[dict]) -> dict:
+    """Force a rescan of a/one that reproduces ``findings``, and return it."""
+    rules_path, catalog_path = _write_inputs(tmp_path, catalog=CATALOG[:1])
+    (tmp_path / "findings.json").write_text(
+        _findings_doc(UPSTREAM, findings), encoding="utf-8"
+    )
+    monkeypatch.setattr(
+        scan_module,
+        "http_get",
+        lambda url, **kwargs: _tarball_bytes(
+            {"custom_components/one/device_tracker.py": TRACKER_SOURCE}
+        ),
+    )
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--no-upstream")) == 0
+    doc = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    return doc["repos"]["a/one"]
+
+
+def test_an_unchanged_rescan_keeps_the_upstream_report(tmp_path, monkeypatch):
+    """An engine bump requeues every repo; the report it already found upstream
+    is about the deprecation, not about when the scan ran."""
+    assert _rescan_one(tmp_path, monkeypatch, SAME_FINDING)["upstream"] == UPSTREAM
+
+
+def test_a_rescan_that_finds_something_else_drops_the_upstream_report(
+    tmp_path, monkeypatch
+):
+    changed = [{**SAME_FINDING[0], "rule_id": "some-other-rule", "line": 99}]
+    assert "upstream" not in _rescan_one(tmp_path, monkeypatch, changed)

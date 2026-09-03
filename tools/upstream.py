@@ -23,6 +23,7 @@ import urllib.request
 from typing import Any
 
 from tools.common import LOGGER
+from tools.rules_engine import search_term
 
 API = "https://api.github.com"
 
@@ -37,16 +38,6 @@ DEPRECATION_WORDS = re.compile(
 
 class SearchExhausted(RuntimeError):
     """The search rate limit is spent; stop looking things up this run."""
-
-
-def search_term(symbol: str) -> str:
-    """The searchable part of a rule symbol.
-
-    ``DeviceRegistry.async_get_device`` and
-    ``async_import_statistics(missing metadata)`` both reduce to the bare
-    function name, which is what someone would paste into an issue.
-    """
-    return symbol.split("(")[0].strip().split(".")[-1].strip()
 
 
 def _token() -> str | None:
