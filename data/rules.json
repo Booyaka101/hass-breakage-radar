@@ -1,18 +1,18 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-05T03:28:44Z",
+  "generated_utc": "2026-09-06T03:29:55Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "6c7ecb6858299a13c4511fed5a036b43f183da407ad5e02547ccacc9fd33eca0",
+  "core_tarball_sha256": "45617781d7f22f42ce831fdf4202de4d0826d8c478e078e71e7535c2f7bb280a",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 171,
-    "future": 117,
+    "future": 118,
     "matchable_future": 58,
     "core_files_scanned": 10095,
     "core_files_unparsed": 0,
@@ -225,18 +225,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2984"
-    },
-    {
-      "id": "blog-area-squared-units-2025.12",
-      "kind": "prose",
-      "symbol": "area squared units",
-      "message": "Backward compatibility ​ The AREA_SQUARE_METERS constant has been deprecated and will be removed in Home Assistant 2025.12 .",
-      "breaks_in": "2025.12",
-      "source": "https://developers.home-assistant.io/blog/2024/12/26/area-squared-units/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
     },
     {
       "id": "core-call-async-get-or-create",
@@ -890,13 +878,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.12",
-      "source": "homeassistant/components/lg_thinq/number.py:191",
+      "source": "homeassistant/components/lg_thinq/number.py:194",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lg_thinq/number.py#L191"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lg_thinq/number.py#L194"
     },
     {
       "id": "core-issue-create-issue-yaml-migration-2026.12",
@@ -986,12 +974,13 @@
       "id": "blog-service-info-2026.2",
       "kind": "prose",
       "symbol": "service info",
-      "message": "Relocate dhcp/ssdp/usb/zeroconf ServiceInfo models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API chang...",
+      "message": "Relocate dhcp/ssdp/usb/zeroconf ServiceInfo models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device registry deprecations, new help...",
       "breaks_in": "2026.2",
       "source": "https://developers.home-assistant.io/blog/2025/01/15/service-info/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": true
     },
     {
@@ -1094,12 +1083,13 @@
       "id": "blog-media-player-standby-state-deprecated-2026.8",
       "kind": "prose",
       "symbol": "media player standby state deprecated",
-      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API changes Fro...",
+      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device registry deprecations, new helpers an...",
       "breaks_in": "2026.8",
       "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": true
     },
     {
@@ -1448,9 +1438,22 @@
       "id": "blog-deprecate-configurator-2027.10",
       "kind": "prose",
       "symbol": "deprecate configurator",
-      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API changes Front...",
+      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device registry deprecations, new helpers and ...",
       "breaks_in": "2027.10",
       "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "duplicate_of_matchable_release": true,
+      "expired": false
+    },
+    {
+      "id": "blog-modbus-get-hub-deprecation-2027.10",
+      "kind": "prose",
+      "symbol": "modbus get hub deprecation",
+      "message": "It will be removed in Home Assistant Core 2027.10.",
+      "breaks_in": "2027.10",
+      "source": "https://developers.home-assistant.io/blog/2026/09/02/modbus-get-hub-deprecation/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
@@ -1752,12 +1755,13 @@
       "id": "blog-legacy-device-tracker-deprecation-2027.5",
       "kind": "prose",
       "symbol": "legacy device tracker deprecation",
-      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API change...",
+      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device registry deprecations, new helpe...",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2030,12 +2034,13 @@
       "id": "blog-device-tracker-changes-2027.7",
       "kind": "prose",
       "symbol": "device tracker changes",
-      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device registry WebSocket API changes Frontend...",
+      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device registry deprecations, new helpers and val...",
       "breaks_in": "2027.7",
       "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2160,7 +2165,7 @@
       "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
       "kind": "prose",
       "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Configurator integration is now deprecated More device registry deprecations, new helpers and validation Device regis...",
+      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device registry...",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
       "origin": "blog",
@@ -3028,5 +3033,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-05T03:29:07Z"
+  "blog_merged_utc": "2026-09-06T03:30:26Z"
 }
