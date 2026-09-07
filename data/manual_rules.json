@@ -278,6 +278,131 @@
           "async_remove_config_entry_device": 3
         }
       }
+    },
+    {
+      "id": "device-registry-devices-mapping",
+      "kind": "attr",
+      "symbol": "DeviceRegistry.devices",
+      "message": "Uses DeviceRegistry.devices as a mapping. 'Using it as a mapping -- subscription, .get(), .values(), .keys(), or membership by device id (device_id in registry.devices) -- is deprecated.' Removed in Home Assistant Core 2027.9. Iterating the same attribute still works and is not reported: for device in registry.devices, len(registry.devices) and value membership (device_entry in registry.devices) are the supported uses. For a lookup by id call registry.async_get(device_id), or use async_entries_for_config_entry and the other helpers. Reported only where the receiver is proven to be a DeviceRegistry, so a coordinator's own .devices dict is never flagged.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "DeviceRegistry.async_get(device_id)",
+      "supersedes": ["core-prose-uses-device-registry-devices-as-a-mapping-or-calls-its-lookup-methods-which-i"],
+      "match": {
+        "type": "container_use",
+        "container": "devices",
+        "uses": ["subscript", "method", "membership"],
+        "methods": [
+          "get",
+          "values",
+          "keys",
+          "items",
+          "get_entry",
+          "get_device"
+        ],
+        "module": "homeassistant.helpers.device_registry",
+        "registry_factory": "async_get",
+        "registry_types": ["DeviceRegistry"]
+      }
+    },
+    {
+      "id": "device-registry-deleted-devices",
+      "kind": "attr",
+      "symbol": "DeviceRegistry.deleted_devices",
+      "message": "Reads DeviceRegistry.deleted_devices. 'deleted_devices is an internal implementation detail of the device registry, and the whole attribute is now deprecated -- there is no supported public use. Accessing it in any way is deprecated.' Removed in Home Assistant Core 2027.9. There is no replacement: a deleted device is registry bookkeeping, so the read has to go. Reported only where the receiver is proven to be a DeviceRegistry.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "supersedes": ["core-prose-accesses-device-registry-deleted-devices-which-is-deprecated-and-an-internal"],
+      "match": {
+        "type": "container_use",
+        "container": "deleted_devices",
+        "uses": ["any"],
+        "module": "homeassistant.helpers.device_registry",
+        "registry_factory": "async_get",
+        "registry_types": ["DeviceRegistry"]
+      }
+    },
+    {
+      "id": "device-info-default-manufacturer",
+      "kind": "call",
+      "symbol": "default_manufacturer",
+      "message": "Passes default_manufacturer to DeviceInfo or DeviceRegistry.async_get_or_create. 'The default_manufacturer, default_model and default_name members of DeviceInfo are deprecated. Pass the plain manufacturer, model and name fields instead.' Removed in Home Assistant Core 2027.9. Only the DeviceInfo(...) and async_get_or_create(...) call forms are matched; a plain dict literal {\"default_manufacturer\": ...} is not, because nothing in the file proves it is device info.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "manufacturer",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["DeviceInfo", "async_get_or_create"],
+        "kwargs": ["default_manufacturer"]
+      }
+    },
+    {
+      "id": "device-info-default-model",
+      "kind": "call",
+      "symbol": "default_model",
+      "message": "Passes default_model to DeviceInfo or DeviceRegistry.async_get_or_create. 'The default_manufacturer, default_model and default_name members of DeviceInfo are deprecated. Pass the plain manufacturer, model and name fields instead.' Removed in Home Assistant Core 2027.9. Only the DeviceInfo(...) and async_get_or_create(...) call forms are matched; a plain dict literal {\"default_model\": ...} is not, because nothing in the file proves it is device info.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "model",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["DeviceInfo", "async_get_or_create"],
+        "kwargs": ["default_model"]
+      }
+    },
+    {
+      "id": "device-info-default-name",
+      "kind": "call",
+      "symbol": "default_name",
+      "message": "Passes default_name to DeviceInfo or DeviceRegistry.async_get_or_create. 'The default_manufacturer, default_model and default_name members of DeviceInfo are deprecated. Pass the plain manufacturer, model and name fields instead.' Removed in Home Assistant Core 2027.9. Device trackers are the common case: pass name instead. Only the DeviceInfo(...) and async_get_or_create(...) call forms are matched; a plain dict literal {\"default_name\": ...} is not, because nothing in the file proves it is device info.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "name",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["DeviceInfo", "async_get_or_create"],
+        "kwargs": ["default_name"]
+      }
+    },
+    {
+      "id": "device-info-created-at",
+      "kind": "call",
+      "symbol": "created_at",
+      "message": "Passes created_at to DeviceInfo or DeviceRegistry.async_get_or_create. 'created_at and modified_at are managed by the device registry itself, and passing them to DeviceRegistry.async_get_or_create never had any effect -- the values were ignored. Simply drop the arguments.' Removed in Home Assistant Core 2027.9, so there is no replacement field: delete the argument. Only the DeviceInfo(...) and async_get_or_create(...) call forms are matched; a plain dict literal {\"created_at\": ...} is not, because nothing in the file proves it is device info.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["DeviceInfo", "async_get_or_create"],
+        "kwargs": ["created_at"]
+      }
+    },
+    {
+      "id": "device-info-modified-at",
+      "kind": "call",
+      "symbol": "modified_at",
+      "message": "Passes modified_at to DeviceInfo or DeviceRegistry.async_get_or_create. 'created_at and modified_at are managed by the device registry itself, and passing them to DeviceRegistry.async_get_or_create never had any effect -- the values were ignored. Simply drop the arguments.' Removed in Home Assistant Core 2027.9, so there is no replacement field: delete the argument. Only the DeviceInfo(...) and async_get_or_create(...) call forms are matched; a plain dict literal {\"modified_at\": ...} is not, because nothing in the file proves it is device info.",
+      "breaks_in": "2027.9",
+      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_kwarg",
+        "names": ["DeviceInfo", "async_get_or_create"],
+        "kwargs": ["modified_at"]
+      }
     }
   ]
 }

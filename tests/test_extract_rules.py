@@ -15,7 +15,9 @@ import re
 import pytest
 
 from tools.extract_rules import (
+    KWARG_STOPWORDS,
     MIN_AUTO_SYMBOL_LEN,
+    _plausible_kwarg,
     build_rules,
     core_version,
     derive_matcher,
@@ -93,6 +95,92 @@ def test_kwarg_matcher_is_derived_from_prose(mini_tarball):
     ]
     assert rule["match"]["type"] == "call_kwarg"
     assert rule["match"]["kwargs"] == ["add_helper_config_entry_to_device"]
+
+
+KWARG_GATE_SOURCE = b"""
+from homeassistant.helpers.frame import report_usage
+
+
+def async_get_or_create(self, hass, config_entry_id, via_device, unit_class):
+    report_usage(
+        "calls `device_registry.async_get_or_create` with a `via_device` "
+        "referencing the device itself; the via device is ignored",
+        breaks_in_ha_version="2027.8",
+    )
+    report_usage(
+        "calls `device_registry.async_get_or_create` with unit_class, which "
+        "no longer has any effect",
+        breaks_in_ha_version="2027.8",
+    )
+    report_usage(
+        "calls `device_registry.async_get_or_create` with hass, which is "
+        "ignored",
+        breaks_in_ha_version="2027.8",
+    )
+"""
+
+
+def test_an_english_word_in_the_keyword_slot_is_not_a_matcher():
+    """`_RE_CALL_WITH` reads "calls X with Y" and used to take Y on trust, so
+    1.11.0 shipped `async_get_or_create(a=...)` as matchable and it could
+    never fire. A keyword has to look like one, or be named in the file."""
+    discarded: list[dict] = []
+    records = list(
+        extract_from_source(
+            "homeassistant/helpers/device_registry.py", KWARG_GATE_SOURCE
+        )
+    )
+    rules = {r["id"]: r for r in build_rules(records, "2026.10", discarded)}
+
+    assert [(d["symbol"], d["reason"]) for d in discarded] == [("a", "not_a_keyword")]
+    assert not any(
+        (rule.get("match") or {}).get("kwargs") == ["a"] for rule in rules.values()
+    )
+    # A rejected marker is still published, as prose without a matcher.
+    prose = [r for r in rules.values() if "via_device" in r["message"]]
+    assert len(prose) == 1 and prose[0]["matchable"] is False
+
+
+def test_a_real_keyword_still_becomes_a_matcher():
+    """The gate must not cost the rules it was written around: `unit_class`
+    is underscored, and `hass` is short but is a parameter in the same file."""
+    records = list(
+        extract_from_source(
+            "homeassistant/helpers/device_registry.py", KWARG_GATE_SOURCE
+        )
+    )
+    rules = {r["id"]: r for r in build_rules(records, "2026.10")}
+    derived = {
+        tuple(rule["match"]["kwargs"])
+        for rule in rules.values()
+        if (rule.get("match") or {}).get("type") == "call_kwarg"
+    }
+    assert derived == {("unit_class",), ("hass",)}
+
+
+@pytest.mark.parametrize(
+    ("kwarg", "params", "plausible"),
+    [
+        ("a", (), False),
+        ("one", (), False),
+        ("the", ("the",), False),  # a stopword is never rescued by a signature
+        ("via_device", (), True),
+        ("unit_class", (), True),
+        ("hass", (), False),
+        ("hass", ("hass",), True),
+        ("entity", ("entity",), True),
+    ],
+)
+def test_keyword_plausibility(kwarg, params, plausible):
+    assert _plausible_kwarg(kwarg, params) is plausible
+
+
+def test_shipped_rules_carry_no_dead_keyword_matcher(shipped_rules):
+    """A matchable rule whose keyword is an English word is a rule that
+    claims coverage it does not have."""
+    for rule in shipped_rules["rules"]:
+        for kwarg in (rule.get("match") or {}).get("kwargs", ()):
+            assert kwarg not in KWARG_STOPWORDS, rule["id"]
 
 
 def test_generic_symbols_only_match_where_the_import_proves_them():

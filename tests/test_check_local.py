@@ -450,4 +450,4 @@ def test_the_check_states_what_it_could_not_look_for(fixtures_dir, tmp_path, cap
     with caplog.at_level("INFO"):
         main([str(fixtures_dir / "false_positive"), "--rules", str(rules)])
     assert "1 of 2 announced removals have a matcher" in caplog.text
-    assert "2 short name(s) not matched" in caplog.text
+    assert "2 marker(s) too vague to match" in caplog.text

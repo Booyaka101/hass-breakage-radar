@@ -65,6 +65,7 @@ jobs:
         run: |
           python tools/scan.py \
             --limit "${{ github.event.inputs.limit || '400' }}" \
+            --no-tarball-cache \
             ${{ github.event.inputs.force == 'true' && '--force' || '' }}
 
       - name: Build the public index

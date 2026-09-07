@@ -98,6 +98,10 @@ def http_get(
                     body = gzip.decompress(body)
                 return body
         except urllib.error.HTTPError as err:
+            # The error *is* the response, and nothing else closes it. Left to
+            # the collector it prints "I/O operation on closed file" from a
+            # finaliser, at whatever moment happens to be least convenient.
+            err.close()
             if err.code == 404:
                 raise NotFound(f"404 for {url}") from err
             retryable = err.code in (403, 408, 429, 500, 502, 503, 504)
