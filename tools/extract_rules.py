@@ -39,7 +39,7 @@ import re
 import sys
 import tarfile
 from pathlib import Path
-from typing import Any, Iterable, Iterator
+from typing import Any, Collection, Iterable, Iterator
 
 if __package__ in (None, ""):  # allow `python tools/extract_rules.py`
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -121,6 +121,16 @@ AUTO_SYMBOL_DENYLIST = frozenset(
     }
 )
 
+#: English the prose regexes lift where a keyword name should be. Core writes
+#: "calls `async_get_or_create` with a `via_device` referencing the device
+#: itself", and the regex reads the article as the keyword.
+KWARG_STOPWORDS = frozenset(
+    {"a", "an", "the", "one", "both", "either", "any", "its", "this", "some", "no"}
+)
+
+#: Below this, a candidate keyword has to be proved by core's own signatures.
+MIN_AUTO_KWARG_LEN = 4
+
 # `calls foo`, ``calls `foo` ``, `calls module.foo,`
 _RE_CALLS = re.compile(r"\bcalls\s+`?([A-Za-z_][\w.]*)`?")
 # `doesn't specify unit_class when calling async_import_statistics`
@@ -169,6 +179,32 @@ def _trusted(
         return True
     if discarded is not None:
         discarded.append((symbol, reason))
+    return False
+
+
+def _plausible_kwarg(
+    kwarg: str,
+    params: Collection[str],
+    discarded: list[tuple[str, str]] | None = None,
+) -> bool:
+    """Whether a keyword lifted out of a sentence is really a keyword.
+
+    ``_RE_CALL_WITH`` reads "calls X with Y" and takes Y on trust, so an
+    English word in that slot became a matcher that could never fire: 1.11.0
+    shipped ``async_get_or_create(a=...)`` and ``async_update_device(one=...)``,
+    both matchable, both dead. A real keyword is either long enough and
+    underscored to be recognisable as one, or named verbatim in the signature
+    of something in the same core file -- which is what settles ``hass`` and
+    ``entity`` without letting ``the`` through.
+    """
+    if kwarg in KWARG_STOPWORDS:
+        reason = "not_a_keyword"
+    elif (len(kwarg) < MIN_AUTO_KWARG_LEN or "_" not in kwarg) and kwarg not in params:
+        reason = "implausible_keyword"
+    else:
+        return True
+    if discarded is not None:
+        discarded.append((kwarg, reason))
     return False
 
 
@@ -327,6 +363,7 @@ def derive_matcher(
     path: str = "",
     scope: dict[str, Any] | None = None,
     discarded: list[tuple[str, str]] | None = None,
+    params: Collection[str] = (),
 ) -> dict[str, Any] | None:
     """Turn a human-readable deprecation message into a machine matcher.
 
@@ -345,6 +382,10 @@ def derive_matcher(
     finding names is core's, not one the author happens to share a word with.
     Scoped symbols skip :data:`MIN_AUTO_SYMBOL_LEN` for that reason; bare ones
     never do.
+
+    ``params`` is every parameter name declared in the core file the marker
+    came from. It is what :func:`_plausible_kwarg` checks a short keyword
+    against.
     """
     if scope:
         return {
@@ -384,7 +425,9 @@ def derive_matcher(
     match = _RE_MISSING_KWARG.search(what)
     if match:
         kwarg, target = match.group(1), _tail(match.group(2))
-        if _trusted(target, discarded, pinned=bool(module)):
+        if _trusted(target, discarded, pinned=bool(module)) and _plausible_kwarg(
+            kwarg, params, discarded
+        ):
             matcher = _call_matcher(target, module)
             matcher["type"] = "call_missing_kwarg"
             matcher["kwarg"] = kwarg
@@ -394,7 +437,9 @@ def derive_matcher(
     match = _RE_CALL_WITH.search(what)
     if match:
         target, kwarg = _tail(match.group(1)), match.group(2)
-        if _trusted(target, discarded, pinned=bool(module)):
+        if _trusted(target, discarded, pinned=bool(module)) and _plausible_kwarg(
+            kwarg, params, discarded
+        ):
             matcher = _call_matcher(target, module)
             matcher["type"] = "call_kwarg"
             matcher["kwargs"] = [kwarg]
@@ -486,6 +531,20 @@ def core_version(tarball: Path) -> str:
     raise RuntimeError("could not determine core version from homeassistant/const.py")
 
 
+def _parameter_names(tree: ast.Module) -> set[str]:
+    """Every parameter name declared anywhere in one core file."""
+    names: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            args = node.args
+            names.update(
+                arg.arg
+                for arg in [*args.posonlyargs, *args.args, *args.kwonlyargs]
+            )
+            names.update(arg.arg for arg in (args.vararg, args.kwarg) if arg)
+    return names
+
+
 def _parent_map(tree: ast.Module) -> dict[ast.AST, ast.AST]:
     parents: dict[ast.AST, ast.AST] = {}
     for node in ast.walk(tree):
@@ -527,6 +586,7 @@ def extract_from_source(
         return
 
     parents = _parent_map(tree)
+    params = _parameter_names(tree)
 
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
@@ -557,6 +617,7 @@ def extract_from_source(
             "enclosing": _enclosing_name([n.name for n in chain]),
             "path": path,
             "line": node.lineno,
+            "params": params,
         }
         scope = marker_scope(chain)
         if scope is None:
@@ -677,8 +738,9 @@ def build_rules(
 ) -> list[dict[str, Any]]:
     """Collapse raw call sites into deduplicated, published rules.
 
-    ``discarded`` collects every marker left unmatchable by the length gate or
-    the denylist, so the size of that gap can be published next to the rules.
+    ``discarded`` collects every marker left unmatchable by the length gate,
+    the denylist or the keyword-plausibility gate, so the size of that gap can
+    be published next to the rules.
     """
     by_id: dict[str, dict[str, Any]] = {}
 
@@ -707,6 +769,7 @@ def build_rules(
                     record["path"],
                     record.get("scope"),
                     rejected,
+                    record.get("params", ()),
                 )
                 if callee in API_DEPRECATION_CALLS
                 else None
@@ -883,9 +946,10 @@ def main(argv: list[str] | None = None) -> int:
             "matchable_future": len(matchable),
             "core_files_scanned": files,
             "core_files_unparsed": len(unparsed),
-            # The gate's cost, stated instead of assumed: markers core does
-            # announce that we refuse to match because the bare name is too
-            # common. Scoping one to its entity base class takes it off here.
+            # The gates' cost, stated instead of assumed: markers core does
+            # announce that we refuse to match, because the bare name is too
+            # common or because the keyword the prose regex lifted is not a
+            # keyword. Scoping one to its entity base class takes it off here.
             "markers_discarded": len(discarded),
             "markers_discarded_pending": len(pending_discarded),
         },

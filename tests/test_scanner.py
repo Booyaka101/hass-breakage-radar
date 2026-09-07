@@ -7,6 +7,7 @@ import tarfile
 from pathlib import Path
 
 import pytest
+from conftest import scan_fixture_tree
 
 from tools.rules_engine import (
     Rule,
@@ -15,7 +16,11 @@ from tools.rules_engine import (
     match_source,
     matchable_rules,
 )
-from tools.scan import candidate_refs, iter_component_python, iter_manifest_domains
+from tools.scan import (
+    candidate_refs,
+    iter_component_python,
+    iter_manifest_domains,
+)
 
 
 @pytest.fixture(scope="module")
@@ -55,8 +60,22 @@ def test_true_positive_produces_exactly_one_finding(fixtures_dir, rules):
     ]
 
 
-def test_lookalikes_produce_zero_findings(fixtures_dir, rules):
-    assert _scan_tree(fixtures_dir / "false_positive", rules) == []
+def _lookalike_trees(fixtures: Path) -> list[Path]:
+    """Every ``false_positive/`` fixture tree, whichever matcher added it."""
+    return sorted(fixtures.rglob("false_positive"))
+
+
+def test_every_lookalike_tree_produces_zero_findings(
+    fixtures_dir, shipped_matchable_rules
+):
+    """One assertion per matcher family: a rule that fires here is a rule that
+    would fire on the ecosystem. Discovering the trees rather than listing them
+    means a new fixture is covered the day it lands."""
+    trees = _lookalike_trees(fixtures_dir)
+    assert len(trees) >= 3, "the lookalike fixtures went missing"
+    assert {
+        tree.name: scan_fixture_tree(tree, shipped_matchable_rules) for tree in trees
+    } == {tree.name: [] for tree in trees}
 
 
 def test_setup_scanner_in_a_class_body_is_not_a_platform(rules):
@@ -501,3 +520,31 @@ def test_a_short_pinned_call_never_fires_on_a_local_helper():
     )
     assert [f.line for f in match_source("custom_components/x/a.py", theirs, [rule])] == [5]
     assert match_source("custom_components/x/b.py", ours, [rule]) == []
+
+
+def test_a_matcher_is_not_run_on_a_file_that_cannot_contain_its_identifier(monkeypatch):
+    """Every matcher fires on one of its own identifiers, and the parser only
+    sees identifiers that are in the text, so the text is checked first and
+    the walk is skipped. A handler that runs here is a handler that wasted
+    the user's CPU."""
+    import tools.rules_engine as engine
+
+    ran: list[str] = []
+
+    def spy(matcher, tree, imports):
+        ran.append(matcher["type"])
+        return iter(())
+
+    monkeypatch.setattr(
+        engine, "_DISPATCH", {k: spy for k in engine._DISPATCH}
+    )
+    rules = [
+        Rule(id="a", kind="call", symbol="x", message="x", breaks_in="2027.9", source="t",
+             match={"type": "call", "names": ["async_get_or_create"]}),
+        Rule(id="b", kind="attr", symbol="x", message="x", breaks_in="2027.9", source="t",
+             match={"type": "container_use", "container": "deleted_devices"}),
+        Rule(id="c", kind="classbase", symbol="x", message="x", breaks_in="2027.9", source="t",
+             match={"type": "classbase", "bases": ["DeviceScanner"]}),
+    ]
+    engine.match_source("x.py", "import os\nclass DeviceScanner:\n    pass\n", rules)
+    assert ran == ["classbase"]

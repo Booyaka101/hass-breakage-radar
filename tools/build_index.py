@@ -599,7 +599,7 @@ def render_html(payload: dict[str, Any]) -> str:
                 coverage["rules_published"] - coverage["rules_matchable"],
                 "removals with no detector",
             ),
-            _stat(coverage.get("markers_discarded", 0), "short names not matched"),
+            _stat(coverage.get("markers_discarded", 0), "markers too vague to match"),
             # The board reader runs the released version; core_version is the
             # dev branch the rules were read from and names a release nobody
             # can install yet.

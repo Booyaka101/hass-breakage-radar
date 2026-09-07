@@ -159,7 +159,7 @@ def test_slice_ends_cleanly_and_commits_state_when_rate_limited(tmp_path, monkey
     rules_path, catalog_path = _write_inputs(tmp_path)
     calls = {"n": 0}
 
-    def fake_scan_repo(entry, rules):
+    def fake_scan_repo(entry, rules, fetched=None):
         calls["n"] += 1
         if calls["n"] > 1:
             raise RateLimited("429")
@@ -419,3 +419,20 @@ def test_a_rescan_that_finds_something_else_drops_the_upstream_report(
 ):
     changed = [{**SAME_FINDING[0], "rule_id": "some-other-rule", "line": 99}]
     assert "upstream" not in _rescan_one(tmp_path, monkeypatch, changed)
+
+
+def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, caplog):
+    """1 519 files failed to parse on the 1.12.0 rescan because it ran on 3.11
+    against rules extracted on 3.14, and the findings in them vanished without
+    a word. The interpreter mismatch is the thing to say."""
+    import logging
+
+    from tools.scan import warn_if_older_python
+
+    caplog.set_level(logging.WARNING, logger="breakage_radar.tools")
+    monkeypatch.setattr(scan_module.sys, "version_info", (3, 11, 9, "final", 0))
+    assert warn_if_older_python("3.14") is True
+    assert "extracted with 3.14" in caplog.text
+    assert warn_if_older_python("3.11") is False
+    assert warn_if_older_python(None) is False
+    assert warn_if_older_python("garbage") is False

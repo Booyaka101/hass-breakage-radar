@@ -302,7 +302,7 @@ def coverage_note(payload: dict, rules: list[Rule]) -> str:
         "markers_discarded", counts.get("markers_discarded_pending")
     )
     if discarded:
-        note += f"; {discarded} short name(s) not matched"
+        note += f"; {discarded} marker(s) too vague to match"
     return note
 
 

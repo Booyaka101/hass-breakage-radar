@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import json
-
 import pytest
+from conftest import scan_fixture_tree
 
 import tools.rules_engine as engine
-from tools.rules_engine import Rule, load_rules, match_source, matchable_rules
+from tools.rules_engine import Rule, match_source
 
 RULE_ID = "device-entry-config-entries"
 
@@ -26,33 +25,22 @@ WORKED_EXAMPLE = (
     "    await hass.config_entries.async_reload(entry.entry_id)\n"
 )
 
+#: The same idea for the 2027.9 container rule, used by the shared
+#: forward-compatibility test below.
+MAPPING_EXAMPLE = (
+    "from homeassistant.helpers import device_registry as dr\n"
+    "\n"
+    "def prune(hass, device_id):\n"
+    "    reg = dr.async_get(hass)\n"
+    "    return reg.devices[device_id]\n"
+)
+
 
 @pytest.fixture(scope="module")
-def rules(request):
-    path = request.config.rootpath / "data" / "rules.json"
-    if not path.exists():
-        pytest.skip("data/rules.json not built yet")
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    return matchable_rules(
-        load_rules(payload["rules"]), current_version=payload["core_version"]
-    )
-
-
-@pytest.fixture(scope="module")
-def rule(rules):
-    ours = [r for r in rules if r.id == RULE_ID]
+def rule(shipped_matchable_rules):
+    ours = [r for r in shipped_matchable_rules if r.id == RULE_ID]
     assert len(ours) == 1, "the rule must ship matchable"
     return ours[0]
-
-
-def _scan_tree(root, rules) -> list[dict]:
-    findings = []
-    for path in sorted(root.rglob("*.py")):
-        relative = path.relative_to(root).as_posix()
-        findings.extend(
-            f.to_dict() for f in match_source(relative, path.read_bytes(), rules)
-        )
-    return findings
 
 
 def test_worked_example_yields_exactly_two_findings(rule):
@@ -76,12 +64,10 @@ def test_worked_example_yields_exactly_two_findings(rule):
 
 
 def test_every_proved_receiver_shape_fires(fixtures_dir, rule):
-    findings = _scan_tree(fixtures_dir / "typed_receiver" / "true_positive", [rule])
-    assert [f["line"] for f in findings] == [13, 20, 27, 33, 36, 43, 51, 64, 72, 75]
-
-
-def test_lookalikes_produce_zero_findings_under_every_rule(fixtures_dir, rules):
-    assert _scan_tree(fixtures_dir / "typed_receiver" / "false_positive", rules) == []
+    findings = scan_fixture_tree(
+        fixtures_dir / "typed_receiver" / "true_positive", [rule]
+    )
+    assert [f.line for f in findings] == [13, 20, 27, 33, 36, 43, 51, 64, 72, 75]
 
 
 def test_a_proof_does_not_escape_the_scope_that_earned_it(rule):
@@ -113,19 +99,33 @@ def test_a_proof_does_not_escape_the_scope_that_earned_it(rule):
     assert match_source("custom_components/x/b.py", shadowing_parameter, [rule]) == []
 
 
-def test_an_old_engine_silently_skips_the_new_type(monkeypatch, rule):
+#: Every receiver-aware matcher type, with source that exercises it. Each was
+#: new once, and each has to be invisible to the engine version before it.
+NEWER_THAN_SOME_INSTALL = [
+    ("attr_access_typed", "device-entry-config-entries", WORKED_EXAMPLE),
+    ("container_use", "device-registry-devices-mapping", MAPPING_EXAMPLE),
+]
+
+
+@pytest.mark.parametrize(
+    ("matcher_type", "rule_id", "source"), NEWER_THAN_SOME_INSTALL
+)
+def test_an_old_engine_silently_skips_a_newer_type(
+    monkeypatch, shipped_matchable_rules, matcher_type, rule_id, source
+):
     """A 1.4.1 install reads the same published index with the old engine
     vendored. An unknown matcher type has to be invisible there, where an
     unknown key on `attr_access` would have fired on every hass.config_entries
     in the world."""
     monkeypatch.setattr(
-        engine, "MATCHER_TYPES", engine.MATCHER_TYPES - {"attr_access_typed"}
+        engine, "MATCHER_TYPES", engine.MATCHER_TYPES - {matcher_type}
     )
     monkeypatch.setattr(
         engine,
         "_DISPATCH",
-        {k: v for k, v in engine._DISPATCH.items() if k != "attr_access_typed"},
+        {k: v for k, v in engine._DISPATCH.items() if k != matcher_type},
     )
-    old_rule = Rule.from_dict(rule.to_dict())
+    shipped = next(r for r in shipped_matchable_rules if r.id == rule_id)
+    old_rule = Rule.from_dict(shipped.to_dict())
     assert old_rule.matchable is False
-    assert engine.match_source("custom_components/x/a.py", WORKED_EXAMPLE, [old_rule]) == []
+    assert engine.match_source("custom_components/x/a.py", source, [old_rule]) == []

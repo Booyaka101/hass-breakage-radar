@@ -8,6 +8,13 @@ For each repository in ``data/catalog.json`` this downloads
 **straight out of the tarball** without extracting anything, and runs the rule
 matchers over it.
 
+A tag tarball never changes, so every one downloaded is kept under
+``.cache/tarballs/`` and read from there next time. A rules or engine change
+requeues the whole catalogue, and with the cache warm that rescan is a local
+job of minutes rather than a day of downloads. Downloads run ``--workers``
+at a time, ahead of the scan, because a slice is almost entirely waiting on
+the network.
+
 Designed to be interrupted. A slice always ends with ``state/crawl.json`` and
 ``data/findings.json`` written, so the next run resumes where this one stopped:
 
@@ -20,6 +27,7 @@ Usage::
 
     python tools/scan.py --limit 25
     python tools/scan.py --limit 400 --only dave-code-ruiz/elkbledom
+    python tools/scan.py --limit 4009 --workers 16      # a full local rescan
 """
 
 from __future__ import annotations
@@ -28,16 +36,20 @@ import argparse
 import hashlib
 import io
 import json
+import re
 import sys
 import tarfile
 import time
+from collections import deque
+from concurrent.futures import Future, ThreadPoolExecutor
 from pathlib import Path, PurePosixPath
-from typing import Any, Iterator
+from typing import Any, Iterable, Iterator
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from tools.common import (  # noqa: E402
+    CACHE_DIR,
     DATA_DIR,
     LOGGER,
     STATE_DIR,
@@ -90,10 +102,42 @@ def candidate_refs(last_version: str) -> list[str]:
     return [r for r in refs if not (r in seen or seen.add(r))]
 
 
-def fetch_tarball(full_name: str, last_version: str) -> tuple[bytes, str]:
-    """Download the first ref that exists. Raises :class:`NotFound` if none do."""
+#: Where tag tarballs are kept between runs. Only tags are cached: a branch
+#: moves, a tag does not, so a cached tag is right for as long as the
+#: catalogue points at it. ``tests/conftest.py`` redirects this per test.
+TARBALL_CACHE_DIR = CACHE_DIR / "tarballs"
+
+#: How many tarballs to download at once. The scan itself is CPU-bound and
+#: stays on the main thread; this only overlaps the waiting.
+DEFAULT_WORKERS = 8
+
+_UNSAFE_IN_FILENAME = re.compile(r"[^A-Za-z0-9._-]+")
+
+
+def cache_path(cache_dir: Path, full_name: str, ref: str) -> Path:
+    """A readable, collision-free file name for one repository at one ref."""
+    key = f"{full_name}@{ref}"
+    digest = hashlib.sha1(key.encode("utf-8")).hexdigest()[:10]
+    return cache_dir / f"{_UNSAFE_IN_FILENAME.sub('_', key)[:120]}-{digest}.tar.gz"
+
+
+def fetch_tarball(
+    full_name: str, last_version: str, cache_dir: Path | None = None
+) -> tuple[bytes, str]:
+    """Download the first ref that exists. Raises :class:`NotFound` if none do.
+
+    With ``cache_dir`` set, a tag tarball is read from disk when it is there
+    and written there when it is not. Branch refs are never cached.
+    """
     last_error: Exception | None = None
     for ref in candidate_refs(last_version):
+        cached = (
+            cache_path(cache_dir, full_name, ref)
+            if cache_dir is not None and ref.startswith("refs/tags/")
+            else None
+        )
+        if cached is not None and cached.is_file():
+            return cached.read_bytes(), ref
         url = CODELOAD.format(full_name=full_name, ref=ref)
         try:
             body = http_get(url, timeout=180)
@@ -104,8 +148,55 @@ def fetch_tarball(full_name: str, last_version: str) -> tuple[bytes, str]:
             raise RuntimeError(
                 f"{full_name}@{ref} is {len(body) // 1024 // 1024} MB; skipping"
             )
+        if cached is not None:
+            cached.parent.mkdir(parents=True, exist_ok=True)
+            partial = cached.with_name(cached.name + ".part")
+            partial.write_bytes(body)
+            partial.replace(cached)
         return body, ref
     raise NotFound(f"no downloadable ref for {full_name}: {last_error}")
+
+
+def prefetch(
+    entries: Iterable[dict[str, Any]],
+    *,
+    workers: int,
+    cache_dir: Path | None,
+) -> Iterator[tuple[dict[str, Any], tuple[bytes, str] | BaseException]]:
+    """Yield ``(entry, fetched)`` in catalogue order, downloading ahead.
+
+    ``fetched`` is the tarball and ref, or the exception the download raised,
+    handed to :func:`scan_repo` to judge exactly as it would have judged its
+    own download. At most ``2 * workers`` tarballs are held at once, so a
+    4 000-repository slice does not buffer the catalogue in memory. Closing
+    the generator cancels whatever is still queued, which is how the caller
+    ends a slice on a rate limit without issuing the rest of the window.
+    """
+    pool = ThreadPoolExecutor(max_workers=max(1, workers))
+    window: deque[tuple[dict[str, Any], Future]] = deque()
+    upcoming = iter(entries)
+
+    def submit_next() -> None:
+        entry = next(upcoming, None)
+        if entry is not None:
+            future = pool.submit(
+                fetch_tarball, entry["full_name"], entry.get("last_version", ""), cache_dir
+            )
+            window.append((entry, future))
+
+    try:
+        for _ in range(2 * max(1, workers)):
+            submit_next()
+        while window:
+            entry, future = window.popleft()
+            try:
+                fetched: tuple[bytes, str] | BaseException = future.result()
+            except BaseException as err:  # noqa: BLE001 - scan_repo classifies it
+                fetched = err
+            submit_next()
+            yield entry, fetched
+    finally:
+        pool.shutdown(wait=False, cancel_futures=True)
 
 
 def iter_component_python(body: bytes) -> Iterator[tuple[str, bytes]]:
@@ -196,6 +287,35 @@ def iter_manifest_domains(body: bytes) -> list[str]:
     return sorted(set(domains))
 
 
+def warn_if_older_python(extractor_python: str | None) -> bool:
+    """Say so when this interpreter cannot parse what the rule set's could.
+
+    Third-party integrations track the newest CPython syntax as fast as core
+    does, and a file this interpreter cannot parse is skipped and counted, not
+    matched. Measured on the 1.12.0 rescan: run on 3.11 instead of the 3.14
+    that extracted the rules, 1 519 files failed to parse and 216 findings
+    on unchanged tags silently vanished. Returns True when it warned.
+    """
+    if not extractor_python:
+        return False
+    try:
+        wanted = tuple(int(part) for part in extractor_python.split("."))
+    except ValueError:
+        return False
+    if sys.version_info[: len(wanted)] >= wanted:
+        return False
+    LOGGER.warning(
+        "running on Python %d.%d but the rules were extracted with %s; files "
+        "using newer syntax will fail to parse and be skipped. Rescan on %s "
+        "before publishing the result.",
+        sys.version_info[0],
+        sys.version_info[1],
+        extractor_python,
+        extractor_python,
+    )
+    return True
+
+
 def findings_hash(findings: list[dict[str, Any]]) -> str:
     blob = json.dumps(findings, sort_keys=True).encode("utf-8")
     return hashlib.sha256(blob).hexdigest()[:16]
@@ -217,12 +337,16 @@ def rules_hash(rules: list[Rule]) -> str:
 
 
 def scan_repo(
-    entry: dict[str, Any], rules: list[Rule]
+    entry: dict[str, Any],
+    rules: list[Rule],
+    fetched: tuple[bytes, str] | BaseException | None = None,
 ) -> tuple[dict[str, Any], list[Finding]]:
     """Scan one repository. Returns ``(record, findings)``.
 
     :class:`RateLimited` propagates -- the caller ends the slice. Every other
-    failure is captured in ``record["status"]``.
+    failure is captured in ``record["status"]``. ``fetched`` is a download
+    :func:`prefetch` already made, or the exception it raised; without it the
+    tarball is fetched here.
     """
     full_name = entry["full_name"]
     category = entry.get("category") or "integration"
@@ -242,7 +366,11 @@ def scan_repo(
     }
 
     try:
-        body, ref = fetch_tarball(full_name, entry.get("last_version", ""))
+        if fetched is None:
+            fetched = fetch_tarball(full_name, entry.get("last_version", ""))
+        if isinstance(fetched, BaseException):
+            raise fetched
+        body, ref = fetched
     except NotFound as err:
         record["status"] = "unreachable"
         record["error"] = str(err)[:200]
@@ -368,6 +496,23 @@ def main(argv: list[str] | None = None) -> int:
         default=0.0,
         help="seconds to pause between repositories",
     )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=DEFAULT_WORKERS,
+        help="tarballs to download at once (default %(default)s)",
+    )
+    parser.add_argument(
+        "--tarball-cache",
+        type=Path,
+        default=None,
+        help="where tag tarballs are kept between runs (default .cache/tarballs)",
+    )
+    parser.add_argument(
+        "--no-tarball-cache",
+        action="store_true",
+        help="always download; for a runner whose cache is not worth filling",
+    )
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
     setup_logging(args.verbose)
@@ -377,6 +522,7 @@ def main(argv: list[str] | None = None) -> int:
         LOGGER.error("%s not found -- run tools/extract_rules.py first", args.rules)
         return 2
     current_version = rules_payload.get("core_version", "2026.9")
+    warn_if_older_python(rules_payload.get("extractor_python"))
     floor, floor_source = floor_from_payload(rules_payload)
     all_rules = load_rules(rules_payload.get("rules", []))
     active = matchable_rules(all_rules, current_version=floor)
@@ -446,10 +592,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     todo = pending[: args.limit]
     LOGGER.info(
-        "%d/%d repositories need a scan; this slice takes %d",
+        "%d/%d repositories need a scan; this slice takes %d, %d download(s) at a time%s",
         len(pending),
         len(catalog),
         len(todo),
+        args.workers,
+        "" if args.no_tarball_cache else f", tag tarballs cached under {args.tarball_cache or TARBALL_CACHE_DIR}",
     )
     if not todo:
         LOGGER.info("nothing to do -- every repository is up to date")
@@ -468,10 +616,15 @@ def main(argv: list[str] | None = None) -> int:
     }
     stopped_early = False
 
-    for index, entry in enumerate(todo, start=1):
+    cache_dir = None if args.no_tarball_cache else (args.tarball_cache or TARBALL_CACHE_DIR)
+    downloads = prefetch(todo, workers=args.workers, cache_dir=cache_dir)
+    # Closing the generator is what cancels the queued downloads. Breaking out
+    # of the loop alone would leave it referenced here and the pool running,
+    # so a rate limit would keep issuing requests on the way out.
+    for index, (entry, fetched) in enumerate(downloads, start=1):
         full_name = entry["full_name"]
         try:
-            record, findings = scan_repo(entry, active)
+            record, findings = scan_repo(entry, active, fetched)
         except RateLimited as err:
             LOGGER.warning("rate limited (%s) -- ending slice cleanly at %d/%d", err, index - 1, len(todo))
             stopped_early = True
@@ -520,6 +673,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.sleep:
             time.sleep(args.sleep)
 
+    downloads.close()
     checkpoint()
 
     if not args.no_upstream:

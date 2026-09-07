@@ -48,14 +48,16 @@ or into Home Assistant's own `feedreader` integration; open it in a browser and 
 renders as a page.
 
 **In the published index right now:** all 4 009 HACS repositories crawled
-(3 244 integrations and 765 Lovelace plugins, 30 unreachable), **880 affected**,
-**2 272 findings**, across 7 Home Assistant releases: 11 in 2026.10, 96 in 2026.11,
-11 in 2027.5, 51 in 2027.6, 29 in 2027.7, 742 in 2027.8 and 1 in 2027.10 (counted by
-distinct integration domain). 58 of the 117 announced removals have a matcher behind
-them; the board says so on itself, and the other 59 are carried for their deadline only. One of
-those names a symbol too short to match on its own (`InfraredEntity`), which the board
-also states; a short name pinned to its module or scoped to its entity base class is
-matched anyway. Every number comes from a real crawl; nothing is seeded or simulated.
+(3 244 integrations and 765 Lovelace plugins, 19 unreachable), **922 affected**,
+**2 504 findings**, across 8 Home Assistant releases: 11 in 2026.10, 96 in 2026.11,
+11 in 2027.5, 51 in 2027.6, 28 in 2027.7, 735 in 2027.8, 142 in 2027.9 and 1 in 2027.10
+(counted by distinct integration domain). 63 of the 123 announced removals have a
+matcher behind them; the board says so on itself, and the other 60 are carried for
+their deadline only. Three markers are refused as too vague to match, which the board
+also states: `InfraredEntity`, a class name too short to match on its own, and the two
+English words the extractor used to mistake for keyword names; a short name pinned to
+its module or scoped to its entity base class is matched anyway. Every number comes
+from a real crawl; nothing is seeded or simulated.
 The daily job keeps these moving, and `coverage` in `index.json` is always authoritative.
 
 <p align="center">
@@ -392,6 +394,15 @@ Real finds from that crawl, each hand-verified against the repository's own sour
 revisits repositories that actually changed. `--limit` caps a run; least-recently-scanned
 repositories go first, so coverage rotates on its own.
 
+A slice is almost entirely waiting on the network: the 1.12.0 rescan measured under ten
+percent CPU. Tarballs are therefore downloaded `--workers` at a time, ahead of the scan,
+and every tag tarball is kept under `.cache/tarballs/` once fetched. A tag never moves,
+so a cached one is right for as long as the catalogue points at it, and a rules or engine
+change that requeues the whole catalogue becomes a local job of minutes rather than a
+day of downloads. The whole catalogue is about 2.4 GB on disk, and branches are never
+cached. CI passes `--no-tarball-cache`, because a
+fresh runner would spend longer uploading the cache than it saved.
+
 ### The crawl conflicts with open pull requests, and that hides checks
 
 The crawl commits `data/rules.json`, `docs/` and `state/` daily. A branch that touches
@@ -477,6 +488,15 @@ names `<Domain>Entity`. A deprecation on `ConfigFlow` or `DeviceRegistry` gets n
 rule: nobody overrides those, so the rule would never match anything. That is a
 deliberate undercount.
 
+A keyword the prose supplies gets the same treatment. Core writes *"calls
+`async_get_or_create` with a `via_device` referencing the device itself"*, and reading
+"calls X with Y" off that sentence yields the keyword `a`. Until 1.12.0 two such rules
+shipped matchable and could never fire. A derived keyword now has to be plausible as a
+Python one: never a stopword, and if it is under four characters or carries no
+underscore it has to appear verbatim as a parameter name somewhere in the same core
+file. Rejected markers are published as prose and counted in
+`counts.markers_discarded`, so the gap is a number rather than a silence.
+
 The same pass also reads core's *other* removal mechanism, which has nothing to do with
 `report_usage`. A module declares
 `_DEPRECATED_TrackerEntity = DeprecatedAlias(_TrackerEntity, "homeassistant.components.device_tracker.TrackerEntity", "2027.6")`
@@ -490,6 +510,11 @@ imported from the replacement path is the fix rather than the problem.
 prose with no `report_usage` call behind them — the legacy device tracker platform API,
 the device registry single-config-entry changes, the device tracker property removals.
 Each one quotes its source post.
+
+Core sometimes carries a marker for the same removal whose message is prose the
+extractor cannot turn into a matcher. A hand-written rule can name those ids in
+`supersedes`, and the merge drops them: two board entries for one deprecation, one of
+them with no matcher and no advice, reads as two problems.
 
 **3. Blog prose (`origin: blog`).** Every removal sentence found on
 <https://developers.home-assistant.io/blog/>, published as `matchable: false` so the
@@ -528,6 +553,7 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `attr` | a property or `_attr_` assignment named in `names` |
 | `attr_access` | reading `something.<name>` |
 | `attr_access_typed` | reading `something.<name>` where the receiver is first proved, by single-file inference, to come from the helper module the matcher names — built for `DeviceEntry.config_entries`, whose name collides with `hass.config_entries` |
+| `container_use` | a *deprecated use* of a container attribute on a proved registry: subscription, a lookup method, or membership by device id on `registry.devices`. Iterating the very same attribute stays supported |
 | `call` | a call to one of `names` |
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
 | `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
@@ -538,9 +564,10 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 Any matcher can be narrowed with `files` (exact basenames); `attr` matchers can also
 require `in_class_base`.
 
-`attr_access_typed` needs to know what counts as proof, so it carries the helper
-module it trusts rather than hard-coding one. Its keys, as used by
-`device-entry-config-entries` in `data/manual_rules.json`:
+`attr_access_typed` and `container_use` need to know what counts as proof, so they
+carry the helper module they trust rather than hard-coding one. Both walk the same
+scope inference. The keys, as used by `device-entry-config-entries` and
+`device-registry-devices-mapping` in `data/manual_rules.json`:
 
 | Key | Meaning |
 |---|---|
@@ -552,10 +579,21 @@ module it trusts rather than hard-coding one. Its keys, as used by
 | `entry_containers` | mappings on a proved registry whose values are entries, e.g. `devices` |
 | `entry_functions` | module-level functions returning entries, resolved through the import map |
 | `entry_params` | `{function name: 1-based parameter}` typed by a platform contract rather than by an annotation |
+| `container` | (`container_use`) the attribute on the registry the rule is about, e.g. `devices` |
+| `uses` | (`container_use`) which uses of it break: `subscript`, `method`, `membership`, or `any` for an attribute deprecated outright |
+| `methods` | (`container_use`) the lookup methods that count, e.g. `get`, `values`, `keys` |
 
 Names are proved per scope, nested scopes inherit their enclosing one, and a registry
 assigned to an attribute (`self._registry = dr.async_get(hass)`) is proved for the
 whole class, since that assignment usually lives in `__init__` and the lookups do not.
+
+`container_use` exists because `registry.devices` is not deprecated. Using it as a
+mapping is. Core's replacement is a view whose `__getitem__`, `__contains__` and
+`__getattr__` report, while `__iter__` and `__len__` do not, so `reg.devices[device_id]`
+and `reg.devices.get(x)` break in 2027.9 while `for device in reg.devices` and
+`len(reg.devices)` do not. Membership fires only where the left operand reads like a
+device id, meaning a string literal or a name ending `_id`, because core reports string
+membership only, and `device_entry in reg.devices` is the supported form.
 
 The engine lives in `tools/rules_engine.py` and is vendored byte-for-byte at
 `custom_components/breakage_radar/rules_engine.py`, so the crawler and the
@@ -717,6 +755,8 @@ For the crawler:
 | Rescan everything | `tools/scan.py --force` | off |
 | One repository | `tools/scan.py --only owner/repo` | — |
 | Politeness pause | `tools/scan.py --sleep 0.25` | `0` |
+| Downloads in flight | `tools/scan.py --workers 16` | `8` |
+| Tag tarball cache | `tools/scan.py --tarball-cache DIR`, `--no-tarball-cache` | `.cache/tarballs` |
 | Core branch | `tools/extract_rules.py --ref dev` | `dev` |
 | Skip the blog crawl | `tools/blog_rules.py --no-network` | off |
 | Force the catalogue fallback | `tools/catalog.py --force-fallback` | off |

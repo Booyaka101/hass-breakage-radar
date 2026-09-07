@@ -320,6 +320,15 @@ def _isolated_release_cache(tmp_path, monkeypatch):
     monkeypatch.setattr(release, "http_get_json", refuse)
 
 
+@pytest.fixture(autouse=True)
+def _isolated_tarball_cache(tmp_path, monkeypatch):
+    """The crawler keeps tag tarballs under ``.cache/tarballs``; a test's fake
+    repositories must not land there."""
+    from tools import scan
+
+    monkeypatch.setattr(scan, "TARBALL_CACHE_DIR", tmp_path / "tarballs")
+
+
 @pytest.fixture(scope="session")
 def fixtures_dir() -> Path:
     return FIXTURES
@@ -391,3 +400,31 @@ def shipped_rules() -> dict:
     if not path.exists():
         pytest.skip("data/rules.json not built yet -- run tools/extract_rules.py")
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+@pytest.fixture(scope="session")
+def shipped_matchable_rules(shipped_rules) -> list:
+    """The shipped rules that can still fire, loaded the way the crawler does."""
+    from tools.rules_engine import load_rules, matchable_rules
+
+    return matchable_rules(
+        load_rules(shipped_rules["rules"]),
+        current_version=shipped_rules["core_version"],
+    )
+
+
+def scan_fixture_tree(root: Path, rules) -> list:
+    """Every finding under a fixture directory, paths relative to it.
+
+    A fixture tree is scanned the way a checkout is: one file at a time, with
+    the path the finding names relative to the root that was handed in.
+    """
+    from tools.rules_engine import match_source
+
+    return [
+        finding
+        for path in sorted(root.rglob("*.py"))
+        for finding in match_source(
+            path.relative_to(root).as_posix(), path.read_bytes(), rules
+        )
+    ]
