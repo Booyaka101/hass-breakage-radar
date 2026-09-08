@@ -140,6 +140,10 @@ Assistant install.
 
 ### Via HACS (custom repository)
 
+[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Booyaka101&repository=hass-breakage-radar&category=integration)
+
+Or by hand:
+
 1. HACS → ⋮ → **Custom repositories**
 2. URL `https://github.com/Booyaka101/hass-breakage-radar`, category **Integration**
 3. Install **Breakage Radar**, restart Home Assistant
