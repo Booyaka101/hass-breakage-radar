@@ -379,6 +379,7 @@ footer {{ max-width:1180px; margin:0 auto; padding:0 20px 50px; color:var(--mute
   text-transform:uppercase; letter-spacing:.05em; }}
 .hero {{ margin:-8px 0 0; font-size:16px; }}
 .hero b {{ color:var(--warn); font-size:18px; }}
+.cta {{ margin:14px 0 0; max-width:70ch; }}
 .bucket-h {{ font-size:22px; letter-spacing:-.01em; margin:38px 0 16px;
   padding-bottom:8px; border-bottom:1px solid var(--line); }}
 details.bucket {{ margin:38px 0 34px; }}
@@ -399,6 +400,11 @@ details.bucket[open] > summary {{ margin-bottom:16px; }}
   or simulated.</p>
   <div class="stats">{stats}</div>
   {hero}
+  <p class="cta">This page is the whole catalogue. To see only what is installed on
+  your own box, with a Repairs notice as each deadline nears,
+  <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Booyaka101&amp;repository=hass-breakage-radar&amp;category=integration">add
+  the companion integration to HACS</a>, or read the
+  <a href="https://github.com/Booyaka101/hass-breakage-radar">source and the rules</a>.</p>
 </header>
 <main>
   <div class="controls">
@@ -421,8 +427,7 @@ details.bucket[open] > summary {{ margin-bottom:16px; }}
   <p>Index generated <strong>{generated}</strong> against Home Assistant core
   <strong>{core}</strong>. Machine-readable:
   <a href="index.json">index.json</a> (schema 1).</p>
-  <p>Install the companion Home Assistant integration to see only <em>your</em>
-  affected integrations:
+  <p>Source, rules and install steps:
   <a href="https://github.com/Booyaka101/hass-breakage-radar">Booyaka101/hass-breakage-radar</a>.</p>
   <p>A finding is a static-analysis result, not a guarantee of breakage. Rules
   marked <span class="conf-medium">medium</span> can match a same-named symbol
