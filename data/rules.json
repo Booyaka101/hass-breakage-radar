@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-08T03:30:20Z",
+  "generated_utc": "2026-09-09T03:30:41Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "604abe113799330d74285f9f6b6196d74bde3254bef4de2ba4d2f0c08dc652df",
+  "core_tarball_sha256": "a082099712d33715d0931d75ce3d1e0217da108e76b8b9df40bf77a782ff39a8",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 175,
     "future": 123,
     "matchable_future": 63,
-    "core_files_scanned": 10098,
+    "core_files_scanned": 10119,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -40,7 +40,7 @@
       "symbol": "one",
       "reason": "not_a_keyword",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3753"
+      "source": "homeassistant/helpers/device_registry.py:3767"
     }
   ],
   "rules": [
@@ -162,13 +162,13 @@
       "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
       "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
       "breaks_in": "2025.1",
-      "source": "homeassistant/config_entries.py:1455",
+      "source": "homeassistant/config_entries.py:1459",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1455"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1459"
     },
     {
       "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
@@ -230,13 +230,13 @@
       "symbol": "self.hass",
       "message": "self.hass",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:2984",
+      "source": "homeassistant/config_entries.py:2988",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2984"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2988"
     },
     {
       "id": "core-call-async-get-or-create",
@@ -960,13 +960,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3175",
+      "source": "homeassistant/config_entries.py:3179",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3175"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3179"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -988,13 +988,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1805",
+      "source": "homeassistant/config_entries.py:1809",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1805"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1809"
     },
     {
       "id": "blog-frontend-component-updates-2026-4-2026.5",
@@ -1082,7 +1082,7 @@
       "id": "blog-media-player-standby-state-deprecated-2026.8",
       "kind": "prose",
       "symbol": "media player standby state deprecated",
-      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device ...",
+      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurato...",
       "breaks_in": "2026.8",
       "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
       "origin": "blog",
@@ -1346,13 +1346,13 @@
       "symbol": "passes a suggested_area to device_registry.async_update device",
       "message": "passes a suggested_area to device_registry.async_update device",
       "breaks_in": "2026.9",
-      "source": "homeassistant/helpers/device_registry.py:3765",
+      "source": "homeassistant/helpers/device_registry.py:3779",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3765"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3779"
     },
     {
       "id": "core-call-async-register-info",
@@ -1437,7 +1437,7 @@
       "id": "blog-deprecate-configurator-2027.10",
       "kind": "prose",
       "symbol": "deprecate configurator",
-      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device re...",
+      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator ...",
       "breaks_in": "2027.10",
       "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
       "origin": "blog",
@@ -1464,7 +1464,7 @@
       "symbol": "get_hub",
       "message": "calls `modbus.get_hub`, which is deprecated in favour of `modbus.async_get_unit`. Collect the connection details in your own config flow and ask for a unit on them",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/modbus/__init__.py:36",
+      "source": "homeassistant/components/modbus/__init__.py:29",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1479,7 +1479,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/modbus/__init__.py#L36"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/modbus/__init__.py#L29"
     },
     {
       "id": "core-call-is-closed",
@@ -1754,7 +1754,7 @@
       "id": "blog-legacy-device-tracker-deprecation-2027.5",
       "kind": "prose",
       "symbol": "legacy device tracker deprecation",
-      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More de...",
+      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Config...",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
       "origin": "blog",
@@ -2033,7 +2033,7 @@
       "id": "blog-device-tracker-changes-2027.7",
       "kind": "prose",
       "symbol": "device tracker changes",
-      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator integration is now deprecated More device regis...",
+      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator int...",
       "breaks_in": "2027.7",
       "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
       "origin": "blog",
@@ -2164,7 +2164,7 @@
       "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
       "kind": "prose",
       "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator integration i...",
+      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor ...",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
       "origin": "blog",
@@ -2584,13 +2584,13 @@
       "symbol": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `...",
       "message": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `add_config_subentry_id`, `remove_config_entry_id` or `remove_config_subentry_id`; a device now belongs to a single config entry and subentry. Move a device with `new_config_entry_id` and/or `new_config_subentry_id`, or remove it with `async_remove_device`",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3753",
+      "source": "homeassistant/helpers/device_registry.py:3767",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3753"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3767"
     },
     {
       "id": "core-prose-passes-home-assistant-start-to-async-initialize-triggers-which-is-deprecate",
@@ -2626,13 +2626,13 @@
       "symbol": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config en...",
       "message": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config entry {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3356",
+      "source": "homeassistant/helpers/device_registry.py:3370",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3356"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3370"
     },
     {
       "id": "core-prose-sets-disabled-by-to-deviceentrydisabler-device-enabled",
@@ -2640,13 +2640,13 @@
       "symbol": "sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled",
       "message": "sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3564",
+      "source": "homeassistant/helpers/device_registry.py:3578",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3564"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3578"
     },
     {
       "id": "core-prose-sets-disabled-by-to-none-disabled",
@@ -2654,13 +2654,13 @@
       "symbol": "sets disabled_by to None {...} disabled",
       "message": "sets disabled_by to None {...} disabled",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3577",
+      "source": "homeassistant/helpers/device_registry.py:3591",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3577"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3591"
     },
     {
       "id": "core-prose-sets-disabled-by-to-none-the-disabled-config-entry",
@@ -2668,13 +2668,13 @@
       "symbol": "sets disabled_by to None {...} the disabled config entry {...}",
       "message": "sets disabled_by to None {...} the disabled config entry {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3345",
+      "source": "homeassistant/helpers/device_registry.py:3359",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3345"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3359"
     },
     {
       "id": "device-entry-config-entries",
@@ -2927,7 +2927,7 @@
       "symbol": "async_update_device(merge_connections=...)",
       "message": "calls `device_registry.async_update_device` with `merge_connections` or `merge_identifiers`; these only add to the device's existing connections or identifiers. Pass the full set as `new_connections` or `new_identifiers` instead",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:3771",
+      "source": "homeassistant/helpers/device_registry.py:3785",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2945,7 +2945,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3771"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3785"
     },
     {
       "id": "core-prose-accesses-childdeviceentry-which-does-not-exist-on-child-devices",
@@ -3158,5 +3158,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-08T03:30:47Z"
+  "blog_merged_utc": "2026-09-09T03:30:59Z"
 }
