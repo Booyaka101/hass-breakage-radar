@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-09T03:30:41Z",
+  "generated_utc": "2026-09-10T03:30:41Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "a082099712d33715d0931d75ce3d1e0217da108e76b8b9df40bf77a782ff39a8",
+  "core_tarball_sha256": "d14180298a6e8990be0455349675e42e9205fd10c70abd20ad8fb8ec2e8ce9b0",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 175,
     "future": 123,
     "matchable_future": 63,
-    "core_files_scanned": 10119,
+    "core_files_scanned": 10120,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -1464,7 +1464,7 @@
       "symbol": "get_hub",
       "message": "calls `modbus.get_hub`, which is deprecated in favour of `modbus.async_get_unit`. Collect the connection details in your own config flow and ask for a unit on them",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/modbus/__init__.py:29",
+      "source": "homeassistant/components/modbus/__init__.py:30",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1479,7 +1479,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/modbus/__init__.py#L29"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/modbus/__init__.py#L30"
     },
     {
       "id": "core-call-is-closed",
@@ -3158,5 +3158,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-09T03:30:59Z"
+  "blog_merged_utc": "2026-09-10T03:30:59Z"
 }
