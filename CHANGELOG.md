@@ -4,6 +4,66 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.13.0 — 2026-09-11
+
+### The statistics metadata rules were reading a key as a keyword
+
+`unit_class` and `mean_type` are keys of the `metadata` mapping that
+`async_import_statistics` and `async_add_external_statistics` take as their
+second argument. Neither function accepts a keyword by those names, so
+`async_import_statistics(hass, metadata, statistics, unit_class="energy")` is
+not code anybody can write. The extractor read core's sentence, "doesn't
+specify unit_class when calling async_import_statistics", as a keyword name
+and built a `call_missing_kwarg` matcher out of it. A keyword that cannot be
+passed is a keyword that is always missing, so the rule fired on every call
+site in the catalogue, the ones that set both keys correctly included.
+
+Two maintainers reported it: ReikanYsora/Helios-Forecast#38 on 12 August, and
+barisdemirdelen/homeassistant-greenchoice#66 on 11 September with the code
+that proves it. Helios-Forecast had already restructured its metadata so that
+a static scanner would see the keys, with a comment saying so, and the board
+flagged it anyway.
+
+Measured against the 206 findings 1.11.0 shipped over 96 integrations, 26
+stand. Of the rest, 103 are call sites where the key or the keyword is
+provably set, and 74 are mappings the scanner cannot read in full, where "not
+visible here" was being reported as "missing". The last 3 are in a file that
+needs core's own Python 3.14 to parse, so the crawler judges them and this
+machine did not.
+
+The new matcher reads the mapping instead of the call. A dict literal, a
+`StatisticMetaData(...)` constructor, or a local or module-level name that
+resolves to one of those is readable, and a key written anywhere in it counts
+as set, value or not, because presence is what core tests for. A mapping
+spread from `**`, built by a helper, mutated through `update()`, subscripted
+with a computed key or handed in as a parameter is not readable, and nothing
+unreadable is ever a finding.
+
+    {"type": "call_missing_arg_key", "names": ["async_import_statistics"],
+     "modules": ["homeassistant.components.recorder.statistics"],
+     "key": "unit_class", "arg": "metadata", "arg_index": 1,
+     "constructors": ["StatisticMetaData"]}
+
+The extractor no longer derives any of this from the prose. It reads the `if`
+the marker sits under: `if "unit_class" not in metadata` is a mapping key, and
+`if new_unit_of_measurement is not UNDEFINED and new_unit_class is UNDEFINED`
+is a real keyword whose check is only armed when a new unit of measurement
+comes with it, which `call_missing_kwarg` now carries as `requires`. Renaming
+a statistic with `async_update_statistics_metadata` and no new unit was never
+a problem and is no longer reported. A guard that fits neither shape produces
+prose with no matcher and shows up in `discarded_markers` as
+`unreadable_guard`.
+
+Taking the target from the enclosing `def` rather than the sentence also fixes
+a rule that was missing entirely. Core's `mean_type` marker inside
+`async_add_external_statistics` says "when calling async_import_statistics",
+its own copy-paste, so both markers folded into one rule and the external
+half was invisible: 16 real findings in the same corpus that 1.11.0 never
+reported. There are now five statistics rules where there were four, and their
+ids changed with their meaning.
+
+`ENGINE_VERSION` is 10, which queues every repository for a rescan.
+
 ## 1.12.0 — 2026-09-07
 
 ### The device registry's containers, where the attribute is fine and the use is not

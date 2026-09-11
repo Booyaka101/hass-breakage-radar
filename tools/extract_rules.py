@@ -221,6 +221,34 @@ def _message_for(callee: str, symbol: str, release: str) -> str:
     return f"uses `{symbol}`, deprecated and removed in Home Assistant {release}."
 
 
+def _logs_it_as(lead: str, what: str) -> str:
+    """Our own sentence, then core's, which is what the log line will say."""
+    return f"{lead} Home Assistant logs it as: {what}" if what else lead
+
+
+def _missing_option_message(matcher: dict[str, Any], release: str, what: str) -> str:
+    """The message for a missing key or keyword, said in the right terms.
+
+    Core's prose calls both of these a keyword and misnames one of the
+    functions, so the sentence is generated from the guard instead. See
+    :func:`marker_guard`.
+    """
+    target = matcher["names"][0]
+    if matcher["type"] == "call_missing_arg_key":
+        lead = (
+            f"doesn't set `{matcher['key']}` in the `{matcher['arg']}` passed to "
+            f"`{target}`, which is required from Home Assistant {release}."
+        )
+    else:
+        needed = "` and `".join(matcher.get("requires", ()))
+        lead = (
+            f"calls `{target}`{f' with `{needed}`' if needed else ''} but no "
+            f"`{matcher['kwarg']}`, which is required from Home Assistant "
+            f"{release}."
+        )
+    return _logs_it_as(lead, what)
+
+
 def _scoped_message(symbol: str, release: str, what: str) -> str:
     """The message for a scoped rule, naming the base class as well.
 
@@ -233,7 +261,101 @@ def _scoped_message(symbol: str, release: str, what: str) -> str:
         f"defines `{name}` on a subclass of `{base}`, which is deprecated and "
         f"removed in Home Assistant {release}."
     )
-    return f"{lead} Home Assistant logs it as: {what}" if what else lead
+    return _logs_it_as(lead, what)
+
+
+def _annotation_name(annotation: ast.expr | None) -> str:
+    """The bare name of a simple annotation: ``StatisticMetaData``."""
+    if isinstance(annotation, ast.Name):
+        return annotation.id
+    if isinstance(annotation, ast.Attribute):
+        return annotation.attr
+    return ""
+
+
+def _undefined_test(condition: ast.expr, op: type[ast.cmpop]) -> str:
+    """The name in ``x is UNDEFINED`` / ``x is not UNDEFINED``, for that ``op``."""
+    if not (isinstance(condition, ast.Compare) and len(condition.ops) == 1):
+        return ""
+    if not isinstance(condition.ops[0], op):
+        return ""
+    left, right = condition.left, condition.comparators[0]
+    if isinstance(left, ast.Name) and _annotation_name(right) == "UNDEFINED":
+        return left.id
+    return ""
+
+
+def marker_guard(
+    guards: list[ast.expr],
+    func: ast.FunctionDef | ast.AsyncFunctionDef | None,
+) -> dict[str, Any] | None:
+    """What the ``if`` around a "doesn't specify X" marker actually tests.
+
+    The prose says "keyword" even where core means a key of a mapping
+    argument. ``async_import_statistics`` takes its options inside
+    ``metadata``, so ``unit_class=`` is not a keyword it accepts at all, and a
+    keyword matcher for it fired on every caller. The guard tells the two
+    apart:
+
+    ``"unit_class" not in metadata``   a key of that parameter
+    ``new_unit_class is UNDEFINED``    a real keyword, and an ``x is not
+                                       UNDEFINED`` term next to it is a
+                                       precondition for the check being armed
+
+    The enclosing function is the one third-party code calls, and it is more
+    reliable than the prose: core's ``mean_type`` marker inside
+    ``async_add_external_statistics`` names ``async_import_statistics``.
+    """
+    if func is None:
+        return None
+    positional = [*func.args.posonlyargs, *func.args.args]
+    params = {arg.arg: arg for arg in [*positional, *func.args.kwonlyargs]}
+
+    for condition in guards:
+        if not (isinstance(condition, ast.Compare) and len(condition.ops) == 1):
+            continue
+        key, right = condition.left, condition.comparators[0]
+        if not (
+            isinstance(condition.ops[0], ast.NotIn)
+            and isinstance(key, ast.Constant)
+            and isinstance(key.value, str)
+            and isinstance(right, ast.Name)
+            and right.id in params
+        ):
+            continue
+        guard = {
+            "kind": "arg_key",
+            "key": key.value,
+            "arg": right.id,
+            "target": func.name,
+            "constructor": _annotation_name(params[right.id].annotation),
+        }
+        index = next(
+            (i for i, arg in enumerate(positional) if arg.arg == right.id), None
+        )
+        if index is not None:
+            guard["arg_index"] = index
+        return guard
+
+    missing = [
+        name
+        for condition in guards
+        if (name := _undefined_test(condition, ast.Is)) in params
+    ]
+    if not missing:
+        return None
+    return {
+        "kind": "kwarg",
+        "kwarg": missing[0],
+        "requires": sorted(
+            {
+                name
+                for condition in guards
+                if (name := _undefined_test(condition, ast.IsNot)) in params
+            }
+        ),
+        "target": func.name,
+    }
 
 
 def _call_matcher(symbol: str, module: str) -> dict[str, Any]:
@@ -364,6 +486,7 @@ def derive_matcher(
     scope: dict[str, Any] | None = None,
     discarded: list[tuple[str, str]] | None = None,
     params: Collection[str] = (),
+    guard: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
     """Turn a human-readable deprecation message into a machine matcher.
 
@@ -386,6 +509,10 @@ def derive_matcher(
     ``params`` is every parameter name declared in the core file the marker
     came from. It is what :func:`_plausible_kwarg` checks a short keyword
     against.
+
+    ``guard`` is :func:`marker_guard` on the ``if`` the marker sits under. A
+    "doesn't specify X" marker is derived from that rather than from its own
+    prose, which does not distinguish a keyword from a mapping key.
     """
     if scope:
         return {
@@ -424,15 +551,32 @@ def derive_matcher(
 
     match = _RE_MISSING_KWARG.search(what)
     if match:
-        kwarg, target = match.group(1), _tail(match.group(2))
-        if _trusted(target, discarded, pinned=bool(module)) and _plausible_kwarg(
-            kwarg, params, discarded
-        ):
-            matcher = _call_matcher(target, module)
-            matcher["type"] = "call_missing_kwarg"
-            matcher["kwarg"] = kwarg
+        if guard is None:
+            # Without the guard there is no telling a keyword from a mapping
+            # key, and guessing keyword was the whole false positive.
+            if discarded is not None:
+                discarded.append((_tail(match.group(2)), "unreadable_guard"))
+            return None
+        target = guard["target"]
+        if not _trusted(target, discarded, pinned=bool(module)):
+            return None
+        matcher = _call_matcher(target, module)
+        if guard["kind"] == "arg_key":
+            matcher["type"] = "call_missing_arg_key"
+            matcher["key"] = guard["key"]
+            matcher["arg"] = guard["arg"]
+            if "arg_index" in guard:
+                matcher["arg_index"] = guard["arg_index"]
+            if guard["constructor"]:
+                matcher["constructors"] = [guard["constructor"]]
             return matcher
-        return None
+        if not _plausible_kwarg(guard["kwarg"], params, discarded):
+            return None
+        matcher["type"] = "call_missing_kwarg"
+        matcher["kwarg"] = guard["kwarg"]
+        if guard["requires"]:
+            matcher["requires"] = guard["requires"]
+        return matcher
 
     match = _RE_CALL_WITH.search(what)
     if match:
@@ -466,6 +610,7 @@ def _kind_for(callee: str, matcher: dict[str, Any] | None) -> str:
         "call": "call",
         "call_kwarg": "call",
         "call_missing_kwarg": "call",
+        "call_missing_arg_key": "call",
         "call_hass_argument": "call",
         "attr": "attr",
         "attr_access": "attr",
@@ -489,6 +634,8 @@ def _symbol_for(callee: str, what: str, enclosing: str, matcher) -> str:
                 return f"{base}({kwargs[0]}=...)"
             if matcher["type"] == "call_missing_kwarg" and kwargs:
                 return f"{base}(missing {kwargs[0]})"
+            if matcher["type"] == "call_missing_arg_key":
+                return f"{base}({matcher['arg']} without {matcher['key']})"
             if matcher["type"] == "call_hass_argument":
                 return f"{base}(hass, ...)"
             return base
@@ -603,12 +750,30 @@ def extract_from_source(
             continue
 
         chain: list[ast.FunctionDef | ast.AsyncFunctionDef | ast.ClassDef] = []
+        guards: list[ast.expr] = []
+        child: ast.AST = node
         current: ast.AST | None = parents.get(node)
         while current is not None:
             if isinstance(current, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
                 chain.append(current)
-            current = parents.get(current)
+            elif isinstance(current, ast.If) and child in current.body:
+                # Only the taken branch: an ``else`` says the opposite.
+                guards.extend(
+                    current.test.values
+                    if isinstance(current.test, ast.BoolOp)
+                    and isinstance(current.test.op, ast.And)
+                    else [current.test]
+                )
+            child, current = current, parents.get(current)
         chain.reverse()
+        enclosing_func = next(
+            (
+                frame
+                for frame in reversed(chain)
+                if isinstance(frame, (ast.FunctionDef, ast.AsyncFunctionDef))
+            ),
+            None,
+        )
 
         record = {
             "callee": callee,
@@ -618,6 +783,7 @@ def extract_from_source(
             "path": path,
             "line": node.lineno,
             "params": params,
+            "guard": marker_guard(guards, enclosing_func),
         }
         scope = marker_scope(chain)
         if scope is None:
@@ -728,6 +894,8 @@ def _rule_message(
         return imported["message"]
     if matcher and matcher.get("in_class_base"):
         return _scoped_message(symbol, release, what)
+    if matcher and matcher["type"] in ("call_missing_arg_key", "call_missing_kwarg"):
+        return _missing_option_message(matcher, release, what)
     return what or _message_for(callee, symbol, release)
 
 
@@ -770,6 +938,7 @@ def build_rules(
                     record.get("scope"),
                     rejected,
                     record.get("params", ()),
+                    record.get("guard"),
                 )
                 if callee in API_DEPRECATION_CALLS
                 else None

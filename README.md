@@ -464,8 +464,18 @@ a matcher only when it names something specific enough:
 
 * `"calls async_device_info_to_link_from_entity, which is deprecated…"` → a `call`
   matcher, pinned to the module that defines it.
-* `"doesn't specify unit_class when calling async_import_statistics"` → a
-  `call_missing_kwarg` matcher.
+* `"doesn't specify unit_class when calling async_import_statistics"` → read off
+  the `if` the marker sits under, not off the sentence. `if "unit_class" not in
+  metadata` is a key of the `metadata` argument, so it becomes a
+  `call_missing_arg_key` matcher; `if new_unit_of_measurement is not UNDEFINED and
+  new_unit_class is UNDEFINED` is a real keyword, and the first half of it becomes
+  `requires`. The prose cannot tell those apart, and reading it as a keyword is what
+  shipped 99 wrong findings in 1.11.0: `unit_class=` is not a keyword
+  `async_import_statistics` accepts at all, so the matcher fired on every caller,
+  correct ones included. The enclosing `def` is also the target, because core's
+  `mean_type` marker inside `async_add_external_statistics` names
+  `async_import_statistics`. A guard neither shape fits is published as prose and
+  recorded in `discarded_markers` as `unreadable_guard`.
 * `"calls `async_listen` which is deprecated"` → a `call` matcher pinned to
   `homeassistant.components.labs.helpers`. `async_listen` is 12 characters and everybody
   has one, so the pin is what makes it a rule: the engine only fires where the file's
@@ -560,7 +570,8 @@ an implausible fraction of the catalogue is visible rather than quietly taxing e
 | `container_use` | a *deprecated use* of a container attribute on a proved registry: subscription, a lookup method, or membership by device id on `registry.devices`. Iterating the very same attribute stays supported |
 | `call` | a call to one of `names` |
 | `call_kwarg` | a call to one of `names` passing any keyword in `kwargs` |
-| `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg` |
+| `call_missing_kwarg` | a call to one of `names` *not* passing `kwarg`, and passing every keyword in `requires` if there is one — core arms some of these checks only when a related keyword is present |
+| `call_missing_arg_key` | a call to one of `names` whose mapping argument (`arg`, `arg_index`) provably does not set `key`. For options core takes inside a `TypedDict` argument rather than as keywords: a dict literal, a `constructors` call, or a local or module-level name that resolves to one. A mapping the file cannot read in full — spread from `**`, built by a helper, mutated through `update()`, handed in as a parameter — is never a finding |
 | `call_hass_argument` | a call to one of `names` that passes `hass` — for `@deprecated_hass_argument`, where the *argument* is deprecated, not the function |
 | `import_from` | `from <module in modules> import <name in names>` — for core's other removal mechanism, `_DEPRECATED_X = DeprecatedAlias(...)` behind a module `__getattr__`, where the import itself is what breaks. The module is the whole rule: the same name imported from the replacement path is the fix |
 | `js` | an anchored `token` in `.js`/`.ts`/`.mjs` source, comments stripped, only in files that reference the WebSocket API. Built for the device registry WebSocket deprecations, which break Lovelace cards rather than Python integrations |
