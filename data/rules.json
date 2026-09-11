@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-11T03:30:10Z",
+  "generated_utc": "2026-09-11T14:19:54Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "20f13e7656b2c186cb4b75abe1745786af9cdb032b5f00105e2c4e335ff2e4ce",
+  "core_tarball_sha256": "dc7cc9279cbeda52229459e6926c5c792e4e65ece75957797efd90a495facfa0",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 175,
-    "future": 123,
-    "matchable_future": 63,
-    "core_files_scanned": 10131,
+    "future": 124,
+    "matchable_future": 64,
+    "core_files_scanned": 10139,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -648,82 +648,126 @@
       "expired": false
     },
     {
-      "id": "core-call-async-add-external-statistics-missing-unit-class",
+      "id": "core-call-async-add-external-statistics-metadata-without-mean-type",
       "kind": "call",
-      "symbol": "async_add_external_statistics(missing unit_class)",
-      "message": "doesn't specify unit_class when calling async_add_external_statistics",
+      "symbol": "async_add_external_statistics(metadata without mean_type)",
+      "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2891",
+      "source": "homeassistant/components/recorder/statistics.py:2885",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
       "match": {
-        "type": "call_missing_kwarg",
+        "type": "call_missing_arg_key",
         "names": [
           "async_add_external_statistics"
         ],
         "modules": [
           "homeassistant.components.recorder.statistics"
         ],
-        "kwarg": "unit_class"
+        "key": "mean_type",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2885"
+    },
+    {
+      "id": "core-call-async-add-external-statistics-metadata-without-unit-class",
+      "kind": "call",
+      "symbol": "async_add_external_statistics(metadata without unit_class)",
+      "message": "doesn't set `unit_class` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_add_external_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2891",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_arg_key",
+        "names": [
+          "async_add_external_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "key": "unit_class",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
       },
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2891"
     },
     {
-      "id": "core-call-async-import-statistics-missing-mean-type",
+      "id": "core-call-async-import-statistics-metadata-without-mean-type",
       "kind": "call",
-      "symbol": "async_import_statistics(missing mean_type)",
-      "message": "doesn't specify mean_type when calling async_import_statistics",
+      "symbol": "async_import_statistics(metadata without mean_type)",
+      "message": "doesn't set `mean_type` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
       "breaks_in": "2026.11",
       "source": "homeassistant/components/recorder/statistics.py:2848",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
       "match": {
-        "type": "call_missing_kwarg",
+        "type": "call_missing_arg_key",
         "names": [
           "async_import_statistics"
         ],
         "modules": [
           "homeassistant.components.recorder.statistics"
         ],
-        "kwarg": "mean_type"
+        "key": "mean_type",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
       },
       "expired": false,
-      "occurrences": 2,
+      "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2848"
     },
     {
-      "id": "core-call-async-import-statistics-missing-unit-class",
+      "id": "core-call-async-import-statistics-metadata-without-unit-class",
       "kind": "call",
-      "symbol": "async_import_statistics(missing unit_class)",
-      "message": "doesn't specify unit_class when calling async_import_statistics",
+      "symbol": "async_import_statistics(metadata without unit_class)",
+      "message": "doesn't set `unit_class` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_import_statistics",
       "breaks_in": "2026.11",
       "source": "homeassistant/components/recorder/statistics.py:2854",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
       "match": {
-        "type": "call_missing_kwarg",
+        "type": "call_missing_arg_key",
         "names": [
           "async_import_statistics"
         ],
         "modules": [
           "homeassistant.components.recorder.statistics"
         ],
-        "kwarg": "unit_class"
+        "key": "unit_class",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
       },
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2854"
     },
     {
-      "id": "core-call-async-update-statistics-metadata-missing-unit-class",
+      "id": "core-call-async-update-statistics-metadata-missing-new-unit-class",
       "kind": "call",
-      "symbol": "async_update_statistics_metadata(missing unit_class)",
-      "message": "doesn't specify unit_class when calling async_update_statistics_metadata",
+      "symbol": "async_update_statistics_metadata(missing new_unit_class)",
+      "message": "calls `async_update_statistics_metadata` with `new_unit_of_measurement` but no `new_unit_class`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_update_statistics_metadata",
       "breaks_in": "2026.11",
       "source": "homeassistant/components/recorder/statistics.py:987",
       "origin": "core-ast",
@@ -737,7 +781,10 @@
         "modules": [
           "homeassistant.components.recorder.statistics"
         ],
-        "kwarg": "unit_class"
+        "kwarg": "new_unit_class",
+        "requires": [
+          "new_unit_of_measurement"
+        ]
       },
       "expired": false,
       "occurrences": 1,
@@ -1070,25 +1117,24 @@
       "symbol": "service.hass",
       "message": "service.hass",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/telegram_bot/__init__.py:666",
+      "source": "homeassistant/components/telegram_bot/services.py:587",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L666"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L587"
     },
     {
       "id": "blog-media-player-standby-state-deprecated-2026.8",
       "kind": "prose",
       "symbol": "media player standby state deprecated",
-      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurato...",
+      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecating mod...",
       "breaks_in": "2026.8",
       "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": true
     },
     {
@@ -1271,20 +1317,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ness_alarm/__init__.py#L107"
     },
     {
-      "id": "core-issue-async-setup-entry-2026.9",
-      "kind": "issue",
-      "symbol": "hass",
-      "message": "hass",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/libre_hardware_monitor/__init__.py:87",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/libre_hardware_monitor/__init__.py#L87"
-    },
-    {
       "id": "core-issue-async-setup-platform-2026.9",
       "kind": "issue",
       "symbol": "hass",
@@ -1332,13 +1364,13 @@
       "symbol": "service.hass",
       "message": "service.hass",
       "breaks_in": "2026.9",
-      "source": "homeassistant/components/telegram_bot/__init__.py:913",
+      "source": "homeassistant/components/telegram_bot/services.py:764",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/__init__.py#L913"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L764"
     },
     {
       "id": "core-prose-passes-a-suggested-area-to-device-registry-async-update-device",
@@ -1437,13 +1469,12 @@
       "id": "blog-deprecate-configurator-2027.10",
       "kind": "prose",
       "symbol": "deprecate configurator",
-      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator ...",
+      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbu...",
       "breaks_in": "2027.10",
       "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -1754,13 +1785,12 @@
       "id": "blog-legacy-device-tracker-deprecation-2027.5",
       "kind": "prose",
       "symbol": "legacy device tracker deprecation",
-      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Config...",
+      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecatin...",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2033,13 +2063,12 @@
       "id": "blog-device-tracker-changes-2027.7",
       "kind": "prose",
       "symbol": "device tracker changes",
-      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor of async_get_unit Configurator int...",
+      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.g...",
       "breaks_in": "2027.7",
       "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2164,7 +2193,7 @@
       "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
       "kind": "prose",
       "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.get_hub in favor ...",
+      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state cl...",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
       "origin": "blog",
@@ -3158,5 +3187,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-11T03:30:36Z"
+  "blog_merged_utc": "2026-09-11T14:20:30Z"
 }
