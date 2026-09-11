@@ -4,7 +4,7 @@ A *rule* says "this piece of Python stops working in Home Assistant release X".
 A *matcher* is the machine-checkable half of a rule.  :func:`match_source` runs
 every matcher over one parsed file and yields findings.
 
-Eleven matcher types cover every deprecation Breakage Radar currently ships:
+Twelve matcher types cover every deprecation Breakage Radar currently ships:
 
 ``moduledef``          a module-level ``def``/``async def`` with one of ``names``
 ``classbase``          a ``class`` whose base list mentions one of ``bases``
@@ -19,7 +19,14 @@ Eleven matcher types cover every deprecation Breakage Radar currently ships:
                        iterating the very same container is still supported
 ``call``               a call to one of ``names`` (bare or attribute access)
 ``call_kwarg``         a call to one of ``names`` passing any keyword in ``kwargs``
-``call_missing_kwarg`` a call to one of ``names`` *not* passing keyword ``kwarg``
+``call_missing_kwarg`` a call to one of ``names`` *not* passing keyword ``kwarg``,
+                       optionally only where every keyword in ``requires`` *is*
+                       passed -- core arms some of these checks conditionally
+``call_missing_arg_key``
+                       a call to one of ``names`` whose mapping argument (``arg``,
+                       ``arg_index``) provably does not set ``key``. For options
+                       core takes inside a ``TypedDict`` argument rather than as
+                       keywords, where a missing key is not visible on the call
 ``call_hass_argument`` a call to one of ``names`` that passes ``hass`` (first
                        positional or keyword) -- for ``@deprecated_hass_argument``,
                        where the *argument* is deprecated, not the function
@@ -65,6 +72,7 @@ MATCHER_TYPES = frozenset(
         "call",
         "call_kwarg",
         "call_missing_kwarg",
+        "call_missing_arg_key",
         "call_hass_argument",
         "import_from",
         "js",
@@ -74,7 +82,7 @@ MATCHER_TYPES = frozenset(
 #: Bumped whenever matching semantics change. It is folded into the crawl's
 #: rules hash, so an engine change forces a rescan instead of leaving stale
 #: findings that the current engine would no longer produce.
-ENGINE_VERSION = 9
+ENGINE_VERSION = 10
 
 VERSION_RE = re.compile(r"^\d{4}\.\d+(?:\.\d+)?$")
 
@@ -996,8 +1004,16 @@ def _match_call_kwarg(
 def _match_call_missing_kwarg(
     matcher: dict[str, Any], tree: ast.Module, imports: dict[str, str]
 ) -> Iterator[tuple[int, str]]:
+    """A call that omits a keyword core now requires.
+
+    ``requires`` is the rest of core's own guard.
+    ``async_update_statistics_metadata`` only warns about a missing
+    ``new_unit_class`` when ``new_unit_of_measurement`` is passed too, so a
+    call that passes neither is healthy and has to stay silent.
+    """
     names = set(matcher.get("names", ()))
     kwarg = matcher.get("kwarg")
+    requires = set(matcher.get("requires", ()))
     for node in ast.walk(tree):
         if isinstance(node, ast.Call) and _called_name(node) in names:
             if not _module_allowed(matcher, node, _called_name(node), imports):
@@ -1005,8 +1021,202 @@ def _match_call_missing_kwarg(
             # ``**kwargs`` (arg is None) could supply it -- do not guess.
             if any(keyword.arg is None for keyword in node.keywords):
                 continue
-            if not any(keyword.arg == kwarg for keyword in node.keywords):
+            passed = {keyword.arg for keyword in node.keywords}
+            if not requires <= passed:
+                continue
+            if kwarg not in passed:
                 yield node.lineno, f"{_called_name(node)}(no {kwarg})"
+
+
+#: Methods that add keys out of sight of the assignment that built the mapping.
+#: One of these on the name and the file can no longer say what it holds.
+MAPPING_MUTATORS = frozenset({"update", "setdefault", "pop", "popitem", "clear"})
+
+
+def _parents(tree: ast.Module) -> dict[ast.AST, ast.AST]:
+    return {
+        child: parent
+        for parent in ast.walk(tree)
+        for child in ast.iter_child_nodes(parent)
+    }
+
+
+def _enclosing_scope(node: ast.AST, parents: dict[ast.AST, ast.AST]) -> ast.AST | None:
+    """The function or module whose body ``node`` sits in."""
+    current = parents.get(node)
+    while current is not None:
+        if isinstance(current, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Module)):
+            return current
+        current = parents.get(current)
+    return None
+
+
+def _binds(target: ast.expr, name: str) -> bool:
+    return any(
+        isinstance(node, ast.Name) and node.id == name for node in ast.walk(target)
+    )
+
+
+def _mapping_keys(node: ast.expr, constructors: Collection[str]) -> set[str] | None:
+    """The keys a mapping expression sets, or ``None`` when it cannot be read.
+
+    A key counts as set wherever it is written, whatever the value: core tests
+    for the key itself, so ``{"unit_class": None}`` satisfies it.
+    """
+    if isinstance(node, ast.Dict):
+        keys = set()
+        for key in node.keys:
+            # ``{**base, "unit_class": x}``: ``base`` is not readable here.
+            if not (isinstance(key, ast.Constant) and isinstance(key.value, str)):
+                return None
+            keys.add(key.value)
+        return keys
+    if isinstance(node, ast.Call):
+        # The TypedDict's own constructor, ``StatisticMetaData(unit_class=...)``.
+        if _called_name(node) not in constructors or node.args:
+            return None
+        if any(keyword.arg is None for keyword in node.keywords):
+            return None
+        return {keyword.arg for keyword in node.keywords}
+    return None
+
+
+def _keys_bound_in(
+    name: str, scope: ast.AST, constructors: Collection[str]
+) -> tuple[bool, set[str] | None]:
+    """``(bound, keys)`` for ``name`` in ``scope``; ``keys`` is None if unreadable.
+
+    Deliberately flow-insensitive and inclusive: every assignment anywhere in
+    the scope counts, nested scopes included. Over-collecting keys only ever
+    silences a finding, which is the side to be wrong on here. Anything that
+    could set a key out of sight -- a computed subscript, unpacking, a mutator
+    method, the name being a parameter -- reads as unreadable rather than as
+    empty.
+    """
+    if isinstance(scope, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        arguments = scope.args
+        if name in {
+            arg.arg
+            for arg in (*_all_args(scope), arguments.vararg, arguments.kwarg)
+            if arg is not None
+        }:
+            return True, None
+
+    keys: set[str] = set()
+    bound = False
+    for node in ast.walk(scope):
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.NamedExpr)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            for target in targets:
+                if isinstance(target, ast.Name) and target.id == name:
+                    if node.value is None:  # a bare ``x: SomeType`` annotation
+                        return True, None
+                    from_value = _mapping_keys(node.value, constructors)
+                    if from_value is None:
+                        return True, None
+                    keys |= from_value
+                    bound = True
+                elif (
+                    isinstance(target, ast.Subscript)
+                    and isinstance(target.value, ast.Name)
+                    and target.value.id == name
+                ):
+                    if not (
+                        isinstance(target.slice, ast.Constant)
+                        and isinstance(target.slice.value, str)
+                    ):
+                        return True, None
+                    keys.add(target.slice.value)
+                    bound = True
+                elif isinstance(target, (ast.Tuple, ast.List)) and _binds(target, name):
+                    return True, None
+        elif isinstance(node, ast.AugAssign) and _binds(node.target, name):
+            return True, None
+        elif isinstance(node, (ast.For, ast.AsyncFor, ast.comprehension)) and _binds(
+            node.target, name
+        ):
+            return True, None
+        elif isinstance(node, ast.withitem) and node.optional_vars is not None:
+            if _binds(node.optional_vars, name):
+                return True, None
+        elif isinstance(node, (ast.Global, ast.Nonlocal)) and name in node.names:
+            return True, None
+        elif isinstance(node, ast.Call):
+            func = node.func
+            if (
+                isinstance(func, ast.Attribute)
+                and isinstance(func.value, ast.Name)
+                and func.value.id == name
+                and func.attr in MAPPING_MUTATORS
+            ):
+                return True, None
+    return bound, keys
+
+
+def _mapping_argument(node: ast.Call, matcher: dict[str, Any]) -> ast.expr | None:
+    """The mapping this call passes, positionally or by keyword."""
+    index = matcher.get("arg_index")
+    if index is not None and len(node.args) > index:
+        # A ``*args`` ahead of the slot moves whatever lands in it.
+        if any(isinstance(arg, ast.Starred) for arg in node.args[: index + 1]):
+            return None
+        return node.args[index]
+    return next(
+        (k.value for k in node.keywords if k.arg and k.arg == matcher.get("arg")),
+        None,
+    )
+
+
+def _resolve_mapping_name(
+    name: str,
+    node: ast.Call,
+    parents: dict[ast.AST, ast.AST],
+    constructors: Collection[str],
+) -> set[str] | None:
+    """Follow a name to the keys it holds, innermost scope outwards."""
+    scope = _enclosing_scope(node, parents)
+    while scope is not None:
+        bound, keys = _keys_bound_in(name, scope, constructors)
+        if bound:
+            return keys
+        scope = _enclosing_scope(scope, parents)
+    return None
+
+
+def _match_call_missing_arg_key(
+    matcher: dict[str, Any], tree: ast.Module, imports: dict[str, str]
+) -> Iterator[tuple[int, str]]:
+    """A call whose mapping argument provably does not set a required key.
+
+    Core's statistics helpers take their options inside ``metadata``, not as
+    keywords, so ``async_add_external_statistics(hass, metadata, stats)`` can
+    never pass ``unit_class=`` at all. Reading that guard as a keyword shipped
+    99 wrong findings over 96 integrations in 1.11.0 and was reported twice
+    (ReikanYsora/Helios-Forecast#38,
+    barisdemirdelen/homeassistant-greenchoice#66), both on code that sets the
+    key correctly. This one reads the mapping instead, and a mapping it cannot
+    read in full is never a finding.
+    """
+    names = set(matcher.get("names", ()))
+    key = matcher.get("key")
+    constructors = matcher.get("constructors", ())
+    parents: dict[ast.AST, ast.AST] | None = None
+
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call) and _called_name(node) in names):
+            continue
+        if not _module_allowed(matcher, node, _called_name(node), imports):
+            continue
+        argument = _mapping_argument(node, matcher)
+        if argument is None:
+            continue
+        keys = _mapping_keys(argument, constructors)
+        if keys is None and isinstance(argument, ast.Name):
+            if parents is None:
+                parents = _parents(tree)
+            keys = _resolve_mapping_name(argument.id, node, parents, constructors)
+        if keys is not None and key not in keys:
+            yield node.lineno, f"{_called_name(node)}(no {key})"
 
 
 def _looks_like_hass(node: ast.expr) -> bool:
@@ -1262,6 +1472,7 @@ _DISPATCH = {
     "call": _match_call,
     "call_kwarg": _match_call_kwarg,
     "call_missing_kwarg": _match_call_missing_kwarg,
+    "call_missing_arg_key": _match_call_missing_arg_key,
     "call_hass_argument": _match_call_hass_argument,
     "import_from": _match_import_from,
 }
