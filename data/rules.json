@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-13T03:30:33Z",
+  "generated_utc": "2026-09-14T03:33:48Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "2213e57a1f52cedb33d7e60f19e75c17b0305502b97a51681c3bea8fe82a6fd1",
+  "core_tarball_sha256": "2fc7fc577817e4de317df2e1fd893f37565bfbe30f03550eb8c54babe7db59d5",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 175,
-    "future": 124,
+    "total": 174,
+    "future": 125,
     "matchable_future": 64,
-    "core_files_scanned": 10141,
+    "core_files_scanned": 10142,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
-    "from_core_ast": 135,
+    "from_core_ast": 134,
     "from_manual": 21,
     "from_blog": 19
   },
@@ -34,13 +34,13 @@
       "symbol": "a",
       "reason": "not_a_keyword",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:2561"
+      "source": "homeassistant/helpers/device_registry.py:2607"
     },
     {
       "symbol": "one",
       "reason": "not_a_keyword",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3787"
+      "source": "homeassistant/helpers/device_registry.py:3833"
     }
   ],
   "rules": [
@@ -106,13 +106,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2024.10",
-      "source": "homeassistant/components/cloud/tts.py:590",
+      "source": "homeassistant/components/cloud/tts.py:592",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L590"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L592"
     },
     {
       "id": "core-issue-handle-deprecated-voice-2024.8",
@@ -120,13 +120,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2024.8",
-      "source": "homeassistant/components/cloud/tts.py:621",
+      "source": "homeassistant/components/cloud/tts.py:623",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L621"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L623"
     },
     {
       "id": "core-issue-deprecated-platform-2024.9",
@@ -244,7 +244,7 @@
       "symbol": "async_get_or_create",
       "message": "calls `device_registry.async_get_or_create` referencing a non existing `via_device` {...}, with device info: {...}",
       "breaks_in": "2025.12",
-      "source": "homeassistant/helpers/device_registry.py:2550",
+      "source": "homeassistant/helpers/device_registry.py:2596",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -259,7 +259,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2550"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2596"
     },
     {
       "id": "core-call-async-add-job",
@@ -444,13 +444,13 @@
       "symbol": "self._hass",
       "message": "self._hass",
       "breaks_in": "2025.6",
-      "source": "homeassistant/components/camera/__init__.py:1047",
+      "source": "homeassistant/components/camera/__init__.py:1050",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/camera/__init__.py#L1047"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/camera/__init__.py#L1050"
     },
     {
       "id": "core-issue-get-controller-2025.8",
@@ -458,13 +458,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2025.8",
-      "source": "homeassistant/components/heos/services.py:139",
+      "source": "homeassistant/components/heos/services.py:142",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/heos/services.py#L139"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/heos/services.py#L142"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -613,13 +613,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.10",
-      "source": "homeassistant/components/decora_wifi/light.py:57",
+      "source": "homeassistant/components/decora_wifi/light.py:60",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 4,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L57"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L60"
     },
     {
       "id": "core-issue-deprecate-yaml-issue-2026.10",
@@ -651,7 +651,7 @@
       "id": "core-call-async-add-external-statistics-metadata-without-mean-type",
       "kind": "call",
       "symbol": "async_add_external_statistics(metadata without mean_type)",
-      "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
+      "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_add_external_statistics",
       "breaks_in": "2026.11",
       "source": "homeassistant/components/recorder/statistics.py:2885",
       "origin": "core-ast",
@@ -810,13 +810,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/homeassistant/__init__.py:466",
+      "source": "homeassistant/components/homeassistant/__init__.py:470",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L466"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L470"
     },
     {
       "id": "core-issue-async-setup-platform-2026.11",
@@ -1117,13 +1117,13 @@
       "symbol": "service.hass",
       "message": "service.hass",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/telegram_bot/services.py:587",
+      "source": "homeassistant/components/telegram_bot/services.py:617",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L587"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L617"
     },
     {
       "id": "blog-media-player-standby-state-deprecated-2026.8",
@@ -1155,7 +1155,7 @@
       "symbol": "LightEntity.max_color_temp_kelvin",
       "message": "defines `max_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:852",
+      "source": "homeassistant/components/light/__init__.py:866",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1170,7 +1170,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L852"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L866"
     },
     {
       "id": "core-attr-lightentity-min-color-temp-kelvin",
@@ -1178,7 +1178,7 @@
       "symbol": "LightEntity.min_color_temp_kelvin",
       "message": "defines `min_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:832",
+      "source": "homeassistant/components/light/__init__.py:846",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1193,7 +1193,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L832"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L846"
     },
     {
       "id": "core-issue-async-create-yaml-mode-repair-2026.8",
@@ -1257,7 +1257,7 @@
       "symbol": "DeviceEntry.suggested_area",
       "message": "code which ignores suggested_area",
       "breaks_in": "2026.9",
-      "source": "homeassistant/helpers/device_registry.py:625",
+      "source": "homeassistant/helpers/device_registry.py:663",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1272,7 +1272,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L625"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L663"
     },
     {
       "id": "core-issue-async-create-deprecated-yaml-issue-2026.9",
@@ -1331,46 +1331,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L78"
     },
     {
-      "id": "core-issue-async-setup-render-image-2026.9",
-      "kind": "issue",
-      "symbol": "hass",
-      "message": "hass",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/openai_conversation/__init__.py:91",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L91"
-    },
-    {
-      "id": "core-issue-async-setup-send-prompt-2026.9",
-      "kind": "issue",
-      "symbol": "hass",
-      "message": "hass",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/openai_conversation/__init__.py:142",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openai_conversation/__init__.py#L142"
-    },
-    {
       "id": "core-issue-warn-chat-id-migration-2026.9",
       "kind": "issue",
       "symbol": "service.hass",
       "message": "service.hass",
       "breaks_in": "2026.9",
-      "source": "homeassistant/components/telegram_bot/services.py:764",
+      "source": "homeassistant/components/telegram_bot/services.py:794",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L764"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L794"
     },
     {
       "id": "core-prose-passes-a-suggested-area-to-device-registry-async-update-device",
@@ -1378,13 +1350,13 @@
       "symbol": "passes a suggested_area to device_registry.async_update device",
       "message": "passes a suggested_area to device_registry.async_update device",
       "breaks_in": "2026.9",
-      "source": "homeassistant/helpers/device_registry.py:3799",
+      "source": "homeassistant/helpers/device_registry.py:3845",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3799"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3845"
     },
     {
       "id": "core-call-async-register-info",
@@ -1536,6 +1508,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L95"
     },
     {
+      "id": "core-prose-accesses-which-is-deprecated-because-a-device-belongs-to-a-single",
+      "kind": "prose",
+      "symbol": "accesses `{...}.{...}`, which is deprecated because a device belongs to a single...",
+      "message": "accesses `{...}.{...}`, which is deprecated because a device belongs to a single config entry; use {...} instead",
+      "breaks_in": "2027.10",
+      "source": "homeassistant/helpers/device_registry.py:390",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L390"
+    },
+    {
       "id": "core-call-async-generate-entity-id",
       "kind": "call",
       "symbol": "async_generate_entity_id",
@@ -1564,7 +1550,7 @@
       "symbol": "async_render_no_api_prompt",
       "message": "an empty string",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/llm.py:56",
+      "source": "homeassistant/helpers/llm.py:55",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1579,7 +1565,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L56"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L55"
     },
     {
       "id": "core-issue-async-import-2027.2",
@@ -1587,13 +1573,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/aqualogic/__init__.py:61",
+      "source": "homeassistant/components/aqualogic/__init__.py:64",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/aqualogic/__init__.py#L61"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/aqualogic/__init__.py#L64"
     },
     {
       "id": "core-issue-async-load-config-2027.2",
@@ -1601,13 +1587,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:220",
+      "source": "homeassistant/components/http/config.py:222",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 3,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L220"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L222"
     },
     {
       "id": "core-issue-deprecate-2027.2",
@@ -1799,13 +1785,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/device_tracker/legacy.py:236",
+      "source": "homeassistant/components/device_tracker/legacy.py:240",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L236"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L240"
     },
     {
       "id": "core-prose-sets-an-entity-id-with-wrong-domain-expected-domain-is",
@@ -2571,13 +2557,13 @@
       "symbol": "assigns an existing device to a different config subentry, by calling `async_get...",
       "message": "assigns an existing device to a different config subentry, by calling `async_get_or_create` or by adding entities from several subentries that share a device; this silently moves the device. A device belongs to one subentry - keep a shared device in a single subentry, or move it with `async_update_device`",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:2511",
+      "source": "homeassistant/helpers/device_registry.py:2557",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2511"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2557"
     },
     {
       "id": "core-prose-attempts-to-attach-a-device-to-an-entity",
@@ -2599,13 +2585,13 @@
       "symbol": "calls `device_registry.async_get_or_create` with a `via_device` referencing the ...",
       "message": "calls `device_registry.async_get_or_create` with a `via_device` referencing the device itself; the via device is ignored",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:2561",
+      "source": "homeassistant/helpers/device_registry.py:2607",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2561"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2607"
     },
     {
       "id": "core-prose-calls-device-registry-async-update-device-with-one-of-add-config-entry-id",
@@ -2613,13 +2599,13 @@
       "symbol": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `...",
       "message": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `add_config_subentry_id`, `remove_config_entry_id` or `remove_config_subentry_id`; a device now belongs to a single config entry and subentry. Move a device with `new_config_entry_id` and/or `new_config_subentry_id`, or remove it with `async_remove_device`",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3787",
+      "source": "homeassistant/helpers/device_registry.py:3833",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3787"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3833"
     },
     {
       "id": "core-prose-passes-home-assistant-start-to-async-initialize-triggers-which-is-deprecate",
@@ -2641,13 +2627,13 @@
       "symbol": "passes the id of a pre-migration composite device {...} as `via_device_id`; pass...",
       "message": "passes the id of a pre-migration composite device {...} as `via_device_id`; pass the id of a single device instead, e.g. one returned by async_get_device_by_identifier",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:2190",
+      "source": "homeassistant/helpers/device_registry.py:2236",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2190"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2236"
     },
     {
       "id": "core-prose-sets-disabled-by-to-deviceentrydisabler-config-entry-the-enabled-config-en",
@@ -2655,13 +2641,13 @@
       "symbol": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config en...",
       "message": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config entry {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3390",
+      "source": "homeassistant/helpers/device_registry.py:3436",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3390"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3436"
     },
     {
       "id": "core-prose-sets-disabled-by-to-deviceentrydisabler-device-enabled",
@@ -2669,13 +2655,13 @@
       "symbol": "sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled",
       "message": "sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3598",
+      "source": "homeassistant/helpers/device_registry.py:3644",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3598"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3644"
     },
     {
       "id": "core-prose-sets-disabled-by-to-none-disabled",
@@ -2683,13 +2669,13 @@
       "symbol": "sets disabled_by to None {...} disabled",
       "message": "sets disabled_by to None {...} disabled",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3611",
+      "source": "homeassistant/helpers/device_registry.py:3657",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3611"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3657"
     },
     {
       "id": "core-prose-sets-disabled-by-to-none-the-disabled-config-entry",
@@ -2697,13 +2683,13 @@
       "symbol": "sets disabled_by to None {...} the disabled config entry {...}",
       "message": "sets disabled_by to None {...} the disabled config entry {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3379",
+      "source": "homeassistant/helpers/device_registry.py:3425",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3379"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3425"
     },
     {
       "id": "device-entry-config-entries",
@@ -2933,7 +2919,7 @@
       "symbol": "async_is_composite_device_id",
       "message": "calls `device_registry.async_is_composite_device_id`, which is deprecated; use `async_get` with `include_composite_devices=False` instead - a composite device id resolves with `async_get(device_id)` but not with `async_get(device_id, include_composite_devices=False)`",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:2161",
+      "source": "homeassistant/helpers/device_registry.py:2207",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2948,7 +2934,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2161"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2207"
     },
     {
       "id": "core-call-async-update-device-merge-connections",
@@ -2956,7 +2942,7 @@
       "symbol": "async_update_device(merge_connections=...)",
       "message": "calls `device_registry.async_update_device` with `merge_connections` or `merge_identifiers`; these only add to the device's existing connections or identifiers. Pass the full set as `new_connections` or `new_identifiers` instead",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:3805",
+      "source": "homeassistant/helpers/device_registry.py:3851",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2974,7 +2960,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3805"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3851"
     },
     {
       "id": "core-prose-accesses-childdeviceentry-which-does-not-exist-on-child-devices",
@@ -2982,13 +2968,13 @@
       "symbol": "accesses ChildDeviceEntry.{...}, which does not exist on child devices",
       "message": "accesses ChildDeviceEntry.{...}, which does not exist on child devices",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:678",
+      "source": "homeassistant/helpers/device_registry.py:716",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L678"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L716"
     },
     {
       "id": "device-info-created-at",
@@ -3187,5 +3173,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-13T03:30:59Z"
+  "blog_merged_utc": "2026-09-14T03:34:04Z"
 }
