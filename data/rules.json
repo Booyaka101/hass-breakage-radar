@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-14T03:33:48Z",
+  "generated_utc": "2026-09-15T03:31:47Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "2fc7fc577817e4de317df2e1fd893f37565bfbe30f03550eb8c54babe7db59d5",
+  "core_tarball_sha256": "079695cf1bf72c4525ef6d712881769787eff2cb436bb9132453168b22b294b9",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 174,
-    "future": 125,
+    "total": 175,
+    "future": 126,
     "matchable_future": 64,
-    "core_files_scanned": 10142,
+    "core_files_scanned": 10160,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
-    "from_core_ast": 134,
+    "from_core_ast": 135,
     "from_manual": 21,
     "from_blog": 19
   },
@@ -162,13 +162,13 @@
       "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
       "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
       "breaks_in": "2025.1",
-      "source": "homeassistant/config_entries.py:1459",
+      "source": "homeassistant/config_entries.py:1539",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1459"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1539"
     },
     {
       "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
@@ -230,13 +230,13 @@
       "symbol": "self.hass",
       "message": "self.hass",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:2988",
+      "source": "homeassistant/config_entries.py:3068",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L2988"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3068"
     },
     {
       "id": "core-call-async-get-or-create",
@@ -1007,13 +1007,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3179",
+      "source": "homeassistant/config_entries.py:3259",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3179"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3259"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -1035,13 +1035,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1809",
+      "source": "homeassistant/config_entries.py:1889",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1809"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1889"
     },
     {
       "id": "blog-frontend-component-updates-2026-4-2026.5",
@@ -1401,13 +1401,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.1",
-      "source": "homeassistant/components/mqtt/__init__.py:527",
+      "source": "homeassistant/components/mqtt/__init__.py:528",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L527"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L528"
     },
     {
       "id": "core-issue-async-setup-scanner-2027.1",
@@ -1594,6 +1594,20 @@
       "expired": false,
       "occurrences": 3,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L222"
+    },
+    {
+      "id": "core-issue-async-setup-platform-2027.2",
+      "kind": "issue",
+      "symbol": "hass",
+      "message": "hass",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/components/discogs/sensor.py:94",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 2,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/discogs/sensor.py#L94"
     },
     {
       "id": "core-issue-deprecate-2027.2",
@@ -3173,5 +3187,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-14T03:34:04Z"
+  "blog_merged_utc": "2026-09-15T03:32:16Z"
 }
