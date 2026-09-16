@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-15T03:31:47Z",
+  "generated_utc": "2026-09-16T03:31:30Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "079695cf1bf72c4525ef6d712881769787eff2cb436bb9132453168b22b294b9",
+  "core_tarball_sha256": "ca5e77e6de494db082547dba2811aff9e4e81946da5a47c546612cfe537d5462",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 175,
     "future": 126,
     "matchable_future": 64,
-    "core_files_scanned": 10160,
+    "core_files_scanned": 10178,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -824,13 +824,13 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/pjlink/media_player.py:56",
+      "source": "homeassistant/components/pjlink/media_player.py:58",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L56"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L58"
     },
     {
       "id": "core-issue-deprecated-dismiss-action-call-2026.11",
@@ -1129,12 +1129,13 @@
       "id": "blog-media-player-standby-state-deprecated-2026.8",
       "kind": "prose",
       "symbol": "media player standby state deprecated",
-      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecating mod...",
+      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into the he...",
       "breaks_in": "2026.8",
       "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": true
     },
     {
@@ -1429,24 +1430,25 @@
       "symbol": "hass",
       "message": "hass",
       "breaks_in": "2027.1",
-      "source": "homeassistant/helpers/trigger.py:332",
+      "source": "homeassistant/helpers/trigger/entity_trigger.py:73",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger.py#L332"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger/entity_trigger.py#L73"
     },
     {
       "id": "blog-deprecate-configurator-2027.10",
       "kind": "prose",
       "symbol": "deprecate configurator",
-      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbu...",
+      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into the help...",
       "breaks_in": "2027.10",
       "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -1785,12 +1787,13 @@
       "id": "blog-legacy-device-tracker-deprecation-2027.5",
       "kind": "prose",
       "symbol": "legacy device tracker deprecation",
-      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecatin...",
+      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into t...",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2063,12 +2066,13 @@
       "id": "blog-device-tracker-changes-2027.7",
       "kind": "prose",
       "symbol": "device tracker changes",
-      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state class selectors Deprecating modbus.g...",
+      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper ...",
       "breaks_in": "2027.7",
       "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
+      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2193,7 +2197,7 @@
       "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
       "kind": "prose",
       "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper New device and state cl...",
+      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 err...",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
       "origin": "blog",
@@ -2627,13 +2631,13 @@
       "symbol": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecate...",
       "message": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecated and will be removed in Home Assistant 2027.8; the parameter no longer has any effect",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/trigger.py:1837",
+      "source": "homeassistant/helpers/trigger/__init__.py:664",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger.py#L1837"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger/__init__.py#L664"
     },
     {
       "id": "core-prose-passes-the-id-of-a-pre-migration-composite-device-as-via-device-id-pass",
@@ -3187,5 +3191,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-15T03:32:16Z"
+  "blog_merged_utc": "2026-09-16T03:32:02Z"
 }
