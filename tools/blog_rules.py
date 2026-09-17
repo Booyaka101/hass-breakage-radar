@@ -47,7 +47,7 @@ from tools.common import (  # noqa: E402
     utc_now_iso,
     write_json,
 )
-from tools.release import floor_from_payload  # noqa: E402
+from tools.release import floor_from_payload, next_release  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     MATCHER_TYPES,
     VERSION_RE,
@@ -169,6 +169,16 @@ def _releases(sentence: str, patterns: list[re.Pattern[str]]) -> list[str]:
     return found
 
 
+def _warns_a_release_early(version: str, removals: set[str]) -> bool:
+    """Whether a support window ending here is the post's removal, a release early.
+
+    A window that ends at the removal's own release is the same deadline in
+    the post's own words, and where a post opens with its policy and lists
+    the removals below, that opening sentence is the one worth quoting.
+    """
+    return version not in removals and next_release(version) in removals
+
+
 def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
     """Find every 'removed in <release>' sentence in one post's prose.
 
@@ -176,11 +186,10 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
     removals as hard-wrapped lines of one paragraph reads as a single
     sentence, and the second one is a rule nobody would ever see missing.
 
-    Where a support window ends is a deadline only where the post also
-    announces the removal at that release. "Supported until 2027.4" and
-    "removed in 2027.5" are one deadline said twice, and the earlier half
-    warns a release too soon, whether the post says it in one sentence or as
-    two bullets.
+    Where a support window ends is a deadline of its own unless the post
+    announces the removal a release later, which makes the window that
+    removal said a release too soon, whether the post says both in one
+    sentence or gives each its own bullet.
     """
     title_slug = url.rstrip("/").rsplit("/", 1)[-1]
     found: dict[str, dict[str, Any]] = {}
@@ -192,7 +201,7 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
         versions = _releases(sentence, REMOVAL_PATTERNS) or [
             version
             for version in _releases(sentence, SUPPORT_END_PATTERNS)
-            if version in removals
+            if not _warns_a_release_early(version, removals)
         ]
         for version in versions:
             if version in found:

@@ -188,6 +188,19 @@ def test_a_support_window_the_post_backs_up_keeps_its_wording():
     assert rules[0]["message"].startswith("Unless noted otherwise")
 
 
+def test_a_post_that_only_gives_a_support_window_still_makes_a_rule():
+    """Plenty of posts never use the word removed. The window is the only
+    deadline they give, and dropping it leaves the reader nothing."""
+    rules = extract_removals(
+        URL,
+        _text(
+            "<article><p>The old helper is deprecated.</p>"
+            "<p>It remains supported until Home Assistant Core 2027.6.</p></article>"
+        ),
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.6"]
+
+
 def test_two_removal_phrasings_in_one_sentence_both_count():
     """Only the support window is read as the same deadline said twice. Two
     removals in one sentence, phrased differently, are two deadlines."""
