@@ -169,14 +169,23 @@ def _releases(sentence: str, patterns: list[re.Pattern[str]]) -> list[str]:
     return found
 
 
-def _warns_a_release_early(version: str, removals: set[str]) -> bool:
-    """Whether a support window ending here is the post's removal, a release early.
+def _warns_a_release_early(version: str, sentences: list[str], index: int) -> bool:
+    """Whether a support window ending here is the removal beside it, early.
 
-    A window that ends at the removal's own release is the same deadline in
-    the post's own words, and where a post opens with its policy and lists
-    the removals below, that opening sentence is the one worth quoting.
+    Only what a post says around the window counts. Bullets split a schedule
+    one paragraph used to say in a sentence, so the removal is next door, and
+    a post covering two deprecations can end one window the release before
+    the other is removed with no connection between them. A window that ends
+    at the removal's own release is the same deadline in the post's own
+    words, and often the better half: a policy sentence says more than "it is
+    removed in 2027.8" does.
     """
-    return version not in removals and next_release(version) in removals
+    nearby = {
+        release
+        for neighbour in sentences[max(index - 1, 0) : index + 2]
+        for release in _releases(neighbour, REMOVAL_PATTERNS)
+    }
+    return version not in nearby and next_release(version) in nearby
 
 
 def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
@@ -186,22 +195,21 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
     removals as hard-wrapped lines of one paragraph reads as a single
     sentence, and the second one is a rule nobody would ever see missing.
 
-    Where a support window ends is a deadline of its own unless the post
-    announces the removal a release later, which makes the window that
-    removal said a release too soon, whether the post says both in one
-    sentence or gives each its own bullet.
+    Where a support window ends is a deadline of its own unless the removal
+    beside it lands a release later, which makes the window that removal said
+    a release too soon, whether the post says both in one sentence or gives
+    each its own bullet.
     """
     title_slug = url.rstrip("/").rsplit("/", 1)[-1]
     found: dict[str, dict[str, Any]] = {}
 
     sentences = list(_sentences(text))
-    removals = {v for s in sentences for v in _releases(s, REMOVAL_PATTERNS)}
 
-    for sentence in sentences:
+    for index, sentence in enumerate(sentences):
         versions = _releases(sentence, REMOVAL_PATTERNS) or [
             version
             for version in _releases(sentence, SUPPORT_END_PATTERNS)
-            if not _warns_a_release_early(version, removals)
+            if not _warns_a_release_early(version, sentences, index)
         ]
         for version in versions:
             if version in found:

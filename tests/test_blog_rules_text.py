@@ -201,6 +201,23 @@ def test_a_post_that_only_gives_a_support_window_still_makes_a_rule():
     assert [rule["breaks_in"] for rule in rules] == ["2027.6"]
 
 
+def test_two_deprecations_in_one_post_keep_their_own_deadlines():
+    """A window read against everything the post says anywhere loses one
+    deprecation's deadline to another's removal for landing a release later,
+    which is a coincidence, not the same date said twice."""
+    rules = extract_removals(
+        URL,
+        _text(
+            "<article><p>Feature X is deprecated and remains supported until "
+            "Home Assistant Core 2027.4.</p>"
+            "<p>That is the first of the two changes in this post.</p>"
+            "<p>Feature Y has its own schedule.</p>"
+            "<p>Feature Y is removed in Home Assistant Core 2027.5.</p></article>"
+        ),
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.4", "2027.5"]
+
+
 def test_two_removal_phrasings_in_one_sentence_both_count():
     """Only the support window is read as the same deadline said twice. Two
     removals in one sentence, phrased differently, are two deadlines."""

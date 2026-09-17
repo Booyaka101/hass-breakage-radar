@@ -149,10 +149,11 @@ A removal schedule written as bullets is one deadline again. The support window 
 the removal are the same date said twice, and the check for that was per sentence while
 every list item is now its own sentence, so a post with "Supported until Core 2027.4"
 above "Removed in Core 2027.5" made two rules and the earlier one warns a release too
-soon. A window that ends the release before a removal the post announces is that
-removal, said early. One that ends at the removal's own release still stands, and so
-does a post whose only deadline is the window it gives. Over all 83 cached posts the
-rules come out byte for byte the same, ids and messages both.
+soon. A window that ends the release before the removal beside it is that removal, said
+early. One that ends at the removal's own release still stands, so does a post whose
+only deadline is the window it gives, and so does a post covering two deprecations whose
+dates happen to land a release apart. Over all 83 cached posts the rules come out byte
+for byte the same, ids and messages both.
 
 A crawl no longer publishes a board beside a rule set it does not match. Main gaining
 rules mid-run is usually main retiring one, and taking that copy left the run's findings
