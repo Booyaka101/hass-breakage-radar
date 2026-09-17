@@ -52,12 +52,13 @@ renders as a page.
 **2 158 findings**, across 8 Home Assistant releases: 10 in 2026.10, 16 in 2026.11,
 11 in 2027.5, 45 in 2027.6, 26 in 2027.7, 588 in 2027.8, 134 in 2027.9 and 216 in 2027.10
 (counted by distinct integration domain). 64 of the 124 announced removals have a
-matcher behind them; the board says so on itself, and the other 60 are carried for
-their deadline only. Three markers are refused as too vague to match, which the board
-also states: `InfraredEntity`, a class name too short to match on its own, and the two
-English words the extractor used to mistake for keyword names; a short name pinned to
-its module or scoped to its entity base class is matched anyway. Every number comes
-from a real crawl; nothing is seeded or simulated.
+matcher behind them; the board says so on itself, and lists the other 60 by release
+under "Announced removals with no detector", for the deadline alone. Three markers
+are refused as too vague to match, which the board also states: `InfraredEntity`, a
+class name too short to match on its own, and the two English words the extractor
+used to mistake for keyword names; a short name pinned to its module or scoped to
+its entity base class is matched anyway. Every number comes from a real crawl;
+nothing is seeded or simulated.
 The daily job keeps these moving, and `coverage` in `index.json` is always authoritative.
 
 <p align="center">

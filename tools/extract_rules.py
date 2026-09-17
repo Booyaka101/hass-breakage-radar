@@ -372,27 +372,58 @@ def _literal(node: ast.expr | None) -> str | None:
     return None
 
 
-def _what_text(node: ast.Call) -> str:
-    """Best-effort text of the first positional argument, f-strings included."""
-    if not node.args:
-        return ""
-    first = node.args[0]
-    literal = _literal(first)
+def _text_of(expr: ast.expr) -> str:
+    """Best-effort text of one argument, f-strings included."""
+    literal = _literal(expr)
     if literal is not None:
         return literal
-    if isinstance(first, ast.JoinedStr):
+    if isinstance(expr, ast.JoinedStr):
         # Render `{expr}` placeholders as a readable marker.
         parts: list[str] = []
-        for value in first.values:
+        for value in expr.values:
             if isinstance(value, ast.Constant) and isinstance(value.value, str):
                 parts.append(value.value)
             else:
                 parts.append("{...}")
         return "".join(parts)
     try:
-        return ast.unparse(first)
+        return ast.unparse(expr)
     except Exception:  # pragma: no cover - unparse is total in 3.12
         return ""
+
+
+def _what_text(node: ast.Call) -> str:
+    """Best-effort text of the first positional argument."""
+    return _text_of(node.args[0]) if node.args else ""
+
+
+def _issue_key(callee: str, node: ast.Call) -> str:
+    """The label a repair issue is known by, or what it moves entities to.
+
+    ``async_create_issue`` takes ``hass`` first, so the first argument says
+    nothing about the issue; the translation key is what the frontend shows
+    and what core's strings file calls it.
+    """
+    by_name = {keyword.arg: keyword.value for keyword in node.keywords if keyword.arg}
+    if callee == "DeprecatedInfo":
+        moved = by_name.get("new_platform")
+        return _text_of(moved) if moved is not None else ""
+    if callee == "EntityDomainReplacementStrategy":
+        return _text_of(node.args[0]) if node.args else ""
+    # async_create_issue(hass, domain, issue_id, ...) last. A keyword passed a
+    # variable unparses to that variable's name, which names nothing.
+    written = [by_name.get("translation_key"), by_name.get("issue_id")]
+    written.append(node.args[2] if len(node.args) >= 3 else None)
+    for expr in written:
+        if isinstance(expr, ast.JoinedStr) or _literal(expr) is not None:
+            return _text_of(expr)
+    return ""
+
+
+def _component_of(path: str) -> str:
+    """The integration a core file belongs to, empty for helpers and core."""
+    _, marker, rest = path.partition("homeassistant/components/")
+    return rest.split("/", 1)[0] if marker else ""
 
 
 def _enclosing_name(chain: list[str]) -> str:
@@ -780,6 +811,7 @@ def extract_from_source(
             "callee": callee,
             "version": version,
             "what": _what_text(node),
+            "issue_key": _issue_key(callee, node) if callee in ISSUE_CALLS else "",
             "enclosing": _enclosing_name([n.name for n in chain]),
             "path": path,
             "line": node.lineno,
@@ -883,16 +915,47 @@ def _import_rule(record: dict[str, Any], release: str) -> dict[str, Any]:
     }
 
 
+def _issue_message(callee: str, record: dict[str, Any], release: str) -> str:
+    """What the deadline on a repair issue is about.
+
+    The call takes ``hass`` first, so without this the rule's whole message is
+    the word "hass".
+    """
+    key = record.get("issue_key") or ""
+    component = _component_of(record["path"])
+    raiser = f"`{component}`" if component else "Home Assistant"
+    if callee == "DeprecatedInfo":
+        moved = f" to `{key}`" if key else ""
+        return (
+            f"{raiser} moves these entities{moved}, and the ones on the old "
+            f"platform stop working in Home Assistant {release}."
+        )
+    if callee == "EntityDomainReplacementStrategy":
+        replaced = f" `{key}`" if key else ""
+        return (
+            f"{raiser} replaces its{replaced} entities, and the old ones stop "
+            f"working in Home Assistant {release}."
+        )
+    named = f"the `{key}` repair issue" if key else "a repair issue"
+    return (
+        f"{raiser} raises {named}, and the configuration it reports stops "
+        f"working in Home Assistant {release}."
+    )
+
+
 def _rule_message(
     imported: dict[str, Any] | None,
     matcher: dict[str, Any] | None,
     callee: str,
     symbol: str,
-    what: str,
+    record: dict[str, Any],
     release: str,
 ) -> str:
     if imported:
         return imported["message"]
+    if callee in ISSUE_CALLS:
+        return _issue_message(callee, record, release)
+    what = record["what"]
     if matcher and matcher.get("in_class_base"):
         return _scoped_message(symbol, release, what)
     if matcher and matcher["type"] in ("call_missing_arg_key", "call_missing_kwarg"):
@@ -957,6 +1020,9 @@ def build_rules(
             symbol = _symbol_for(callee, record["what"], record["enclosing"], matcher)
             kind = _kind_for(callee, matcher)
             if callee in ISSUE_CALLS:
+                # The first argument of these calls is `hass`, which is what
+                # the generic symbol would otherwise be for every one of them.
+                symbol = record["issue_key"] or record["enclosing"] or symbol
                 rule_id = (
                     f"core-issue-{_slug(record['enclosing'] or record['path'])}-{release}"
                 )
@@ -976,7 +1042,7 @@ def build_rules(
             id=rule_id,
             kind=kind,
             symbol=symbol,
-            message=_rule_message(imported, matcher, callee, symbol, record["what"], release),
+            message=_rule_message(imported, matcher, callee, symbol, record, release),
             breaks_in=release,
             source=f"homeassistant/{record['path'].split('homeassistant/', 1)[-1]}:{record['line']}"
             if record["path"].startswith("homeassistant/")

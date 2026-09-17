@@ -252,6 +252,52 @@ def test_html_board_says_so_when_every_removal_has_a_matcher(payload):
     assert "All 1 announced removals tracked here have a matcher" in board
 
 
+def test_a_core_rule_links_the_blob_rather_than_its_own_path(payload):
+    rule = payload["rules"][0]
+    rule["source"] = "homeassistant/helpers/service.py:418"
+    rule["source_url"] = "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418"
+    board = render_html(payload)
+    assert 'href="https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418"' in board
+    assert 'href="homeassistant/' not in board
+
+
+def test_a_rule_whose_source_is_a_path_is_not_a_link(payload):
+    rule = payload["rules"][0]
+    rule["source"] = "homeassistant/helpers/service.py:418"
+    rule.pop("source_url", None)
+    board = render_html(payload)
+    assert "<code>homeassistant/helpers/service.py:418</code>" in board
+    assert 'href="homeassistant/' not in board
+
+
+def test_the_board_lists_the_removals_no_matcher_covers(payload):
+    payload["rules"].append(
+        {
+            "id": "blog-configurator-removal-2027.6",
+            "kind": "prose",
+            "symbol": "configurator",
+            "message": "The configurator integration is removed.",
+            "breaks_in": "2027.6",
+            "source": "https://developers.home-assistant.io/blog/post/",
+            "origin": "blog",
+            "confidence": "medium",
+            "matchable": False,
+        }
+    )
+    board = render_html(payload)
+    assert "Announced removals with no detector (1)" in board
+    assert "blog-configurator-removal-2027.6" in board
+    assert "The configurator integration is removed." in board
+    assert "Home Assistant 2027.6 - 2 June 2027" in board
+    # Nothing to filter by repository, so the repository filter has to skip it.
+    assert '<section class="release deadline">' in board
+    assert "section.release:not(.deadline)" in board
+
+
+def test_the_board_leaves_out_an_empty_no_detector_list(payload):
+    assert "no-detector" not in render_html(payload)
+
+
 def test_html_board_handles_an_empty_crawl():
     empty = build_payload(RULES_DOC, {"schema": 1, "repos": {}}, CATALOG_DOC)
     html = render_html(empty)

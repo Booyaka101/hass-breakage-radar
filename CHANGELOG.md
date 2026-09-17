@@ -28,6 +28,37 @@ releases, same symbols, no navigation left in any message and nothing truncated.
 `rules_hash` covers matchers and releases, not messages, so nothing is re-crawled for
 this.
 
+### The board lists the removals it has no detector for
+
+The coverage note counted 60 announced removals with no matcher and said they were
+"listed for their deadline only", and nothing on the page listed them. They were in
+`docs/index.json` and nowhere a person reading the board would find them. The board now
+ends with a collapsed "Announced removals with no detector", grouped by release with
+each rule's own source link beside it. The repository filter skips that list instead of
+hiding it as a section whose table has no rows, and the search box narrows it to the
+rules whose text matches.
+
+Five "source" links on the board pointed at `homeassistant/components/...`, a path
+relative to the board itself, so they resolved to a 404 on the GitHub Pages domain. A
+rule extracted from core source carries the blob URL as well, which is what the feed has
+always linked; the board links it too now, and a rule with nothing but a file and a line
+gets that in code rather than a link that goes nowhere.
+
+### A repair issue now says which issue it is
+
+Twenty-eight of the 124 published rules carried the message "hass". Core raises these as
+`async_create_issue(hass, DOMAIN, issue_id, breaks_in_ha_version=...)`, and the
+extractor reads the first argument as the rule's prose, which for every one of them is
+the argument named `hass`. A repair issue is named by its translation key, so that is
+what the rule takes now, falling back to the issue id and then to the platform a
+`DeprecatedInfo` moves entities to: "`netio` raises the `deprecated_yaml` repair issue,
+and the configuration it reports stops working in Home Assistant 2027.3." A key handed
+in as a variable names nothing, so those rules stay unnamed rather than publish the
+variable's own name, and the symbol follows the same order. Measured over the cached
+core tarball: 21 pending rules change message, none change id or release, and
+`rules_hash` covers matchers and releases rather than messages, so nothing is
+re-crawled for it.
+
 ### A rule can say what to search its own repositories for
 
 `search_term` reduces a symbol to its last dotted part, which turns

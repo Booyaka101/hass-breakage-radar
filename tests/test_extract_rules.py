@@ -489,3 +489,48 @@ class _TemplateCameraEntity:
     assert not any(
         (rule.get("match") or {}).get("in_class_base") for rule in rules.values()
     )
+ISSUE_SOURCE = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+def _warn_about_yaml(hass, platform):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        f"deprecated_yaml_{platform}",
+        breaks_in_ha_version="2027.3",
+        is_fixable=False,
+        translation_key="deprecated_yaml",
+    )
+
+
+def _warn_by_variable(hass, translation_key):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        issue_id=translation_key,
+        breaks_in_ha_version="2027.4",
+        translation_key=translation_key,
+    )
+"""
+
+
+def test_a_repair_issue_is_named_by_its_translation_key():
+    rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
+    rule = rules["core-issue-warn-about-yaml-2027.3"]
+    assert rule["symbol"] == "deprecated_yaml"
+    assert rule["message"] == (
+        "`netio` raises the `deprecated_yaml` repair issue, and the "
+        "configuration it reports stops working in Home Assistant 2027.3."
+    )
+    assert rule["matchable"] is False
+
+
+def test_a_repair_issue_keyed_by_a_variable_is_left_unnamed():
+    rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
+    rule = rules["core-issue-warn-by-variable-2027.4"]
+    assert "translation_key" not in rule["message"]
+    assert rule["message"].startswith("`netio` raises a repair issue")
+    assert rule["symbol"] == "_warn_by_variable"
