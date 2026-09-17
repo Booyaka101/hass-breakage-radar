@@ -690,6 +690,41 @@ def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch)
     assert records["b/two"]["upstream"]["symbol"] == "devices"
 
 
+def test_a_search_that_times_out_keeps_the_term_its_report_was_found_under(
+    monkeypatch,
+):
+    """The same rule as the test below, one layer down. A search that fails
+    inside ``look_up`` still returns the repository's own facts, so the caller
+    sees a lookup that worked and files it under the term the search never ran
+    under. That parks the re-aimed search for a week and drops the report on
+    file with it."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        "tools.upstream.repo_facts",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    monkeypatch.setattr(
+        "tools.upstream.find_report", _raises_in_lookup(urllib.error.URLError("x"))
+    )
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {
+                "symbol": "devices",
+                "report": ON_FILE,
+                "archived": False,
+                "issues_enabled": True,
+                "checked_utc": "2026-09-10T00:00:00Z",
+            },
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+    fact = records["a/one"]["upstream"]
+    assert fact["symbol"] == "devices"
+    assert fact["report"] == ON_FILE
+
+
 def test_a_timeout_does_not_pass_for_an_answer_under_the_new_term(monkeypatch):
     """A re-aimed rule wants a search under its new term. Recording the term a
     failed search never ran under would hold that search back for a week."""

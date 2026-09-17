@@ -38,15 +38,17 @@ each rule's own source link beside it. The repository filter skips that list ins
 hiding it as a section whose table has no rows, and the search box narrows it to the
 rules whose text matches.
 
-Five "source" links on the board pointed at `homeassistant/components/...`, a path
-relative to the board itself, so they resolved to a 404 on the GitHub Pages domain. A
-rule extracted from core source carries the blob URL as well, which is what the feed has
-always linked; the board links it too now, and a rule with nothing but a file and a line
-gets that in code rather than a link that goes nowhere.
+Twenty-six "source" links on the board pointed at a path relative to the board itself,
+`homeassistant/helpers/service.py:351` and the like, so they resolved to a 404 on the
+GitHub Pages domain. A rule extracted from core source carries the blob URL as well,
+which is what the feed has always linked; the board links it too now, and a rule with
+nothing but a file and a line gets that in code rather than a link that goes nowhere.
+The rebuilt board has none left.
 
 ### A repair issue now says which issue it is
 
-Twenty-eight of the 124 published rules carried the message "hass". Core raises these as
+Twenty-five of the 124 published rules carried the message "hass", and two more
+"self.hass", which is the same thing said from inside a config flow. Core raises these as
 `async_create_issue(hass, DOMAIN, issue_id, breaks_in_ha_version=...)`, and the
 extractor reads the first argument as the rule's prose, which for every one of them is
 the argument named `hass`. A repair issue is named by its translation key, so that is

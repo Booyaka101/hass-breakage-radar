@@ -290,6 +290,9 @@ def look_up(
             # every run for good.
             LOGGER.debug("search failed for %s: %s", full_name, err)
             report = known
+            # Not part of the fact that gets stored; :func:`annotate` takes it
+            # out again, the same way the canonical name is taken out above.
+            facts["searched"] = False
         finally:
             # Spacing the searches, not their answers. A search that 502s costs
             # the same against the secondary rate limit as one that works, and
@@ -481,7 +484,17 @@ def annotate(
             }
         else:
             if facts:
-                facts["symbol"] = term
+                # The repository answered even when its search did not, so its
+                # own facts are fresh either way. A search that never ran found
+                # nothing under this term, though, so the report stays filed
+                # under the term that did find it and gets asked again next run.
+                searched = facts.pop("searched", True)
+                if not searched and fact.get("symbol") and fact["symbol"] != term:
+                    if fact.get("report"):
+                        facts["report"] = fact["report"]
+                    facts["symbol"] = fact["symbol"]
+                else:
+                    facts["symbol"] = term
                 facts["checked_utc"] = utc_now_iso()
                 record["upstream"] = facts
         if checkpoint and asked % 25 == 0:
