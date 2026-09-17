@@ -667,15 +667,22 @@ def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch)
     assert records["b/two"]["upstream"]["symbol"] == "setup_scanner"
 
 
-@pytest.mark.parametrize("archived", [False, True])
-def test_a_repository_that_is_gone_keeps_only_that_it_was_archived(
-    monkeypatch, archived
+@pytest.mark.parametrize(
+    ("known", "kept"),
+    [
+        ({"archived": False, "issues_enabled": True}, {}),
+        ({"archived": True, "issues_enabled": True}, {"archived": True}),
+        ({"archived": False, "issues_enabled": False}, {"issues_enabled": False}),
+    ],
+)
+def test_a_repository_that_is_gone_keeps_what_says_not_to_report_it(
+    monkeypatch, known, kept
 ):
     """404 is the repository saying it is deleted or private, not a blip. Read
     as one, its "already reported" link stays on the board for good, restamped
-    as freshly checked every week by the failure itself. Being archived is the
-    one thing a deletion leaves true, and a card that keeps it says no fix is
-    coming rather than sending the reader to a releases page that 404s too."""
+    as freshly checked every week by the failure itself. Being archived and
+    taking no issues outlive the repository, and a card holding either says so
+    rather than sending the reader to a search that 404s too."""
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     monkeypatch.setattr(
         "tools.upstream.look_up", _raises_in_lookup(_http_error(404, {}))
@@ -686,8 +693,7 @@ def test_a_repository_that_is_gone_keeps_only_that_it_was_archived(
             "findings": FINDING,
             "upstream": {
                 "symbol": "setup_scanner",
-                "archived": archived,
-                "issues_enabled": True,
+                **known,
                 "report": ON_FILE,
                 "checked_utc": "2026-01-01T00:00:00Z",
             },
@@ -697,7 +703,7 @@ def test_a_repository_that_is_gone_keeps_only_that_it_was_archived(
     assert records["a/one"]["upstream"] == {
         "symbol": "setup_scanner",
         "checked_utc": "2026-09-17T12:00:00Z",
-        **({"archived": True} if archived else {}),
+        **kept,
     }
 
 

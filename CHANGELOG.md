@@ -164,10 +164,11 @@ Progress a crawl could not push is pushed by the step that rescues it. That step
 nothing, because the step before it had already committed and only the push failed, and
 stopping there left a scan and up to 400 lookups to die with the runner.
 
-A repository that was archived before it disappeared is still described as archived.
-Its issue tracker facts go when it 404s, because none of them can be checked any more,
-but "no fix is coming, plan to replace this integration" is truer of a repository that
-is gone than "check its releases page" is, and that page 404s too.
+A repository that disappears keeps whichever of its facts says there is nowhere to
+report the breakage. The rest of its issue tracker facts go when it 404s, because none
+of them can be checked any more, but a repository being archived or taking no issues is
+not undone by it going away, and a card holding either says so instead of offering a
+search on a URL that 404s as well.
 
 A repository keeps the report it already has. The scan holds a fact through its rule
 being overtaken by one that breaks sooner, and the lookup then aimed the next search at
