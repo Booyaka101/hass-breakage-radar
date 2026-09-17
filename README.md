@@ -770,7 +770,8 @@ report is not evidence, and neither is "Not working on 2021.12" filed against a 
 removal.
 
 The fact records `checked_utc`, and a crawl re-asks every affected repository whose
-fact is more than a week old, oldest first, up to a few hundred a run. A repository
+fact is more than a week old, up to a few hundred a run. Facts found under a term
+their rule no longer asks for go first, then the oldest. A repository
 that never cuts another release is never rescanned, so without that its issue link
 would stay published for good, however wrong it had gone. When the search does not
 come back with the report already on file, that issue is fetched by number: an issue

@@ -105,15 +105,16 @@ jobs:
           git commit -m "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
 
           # A slice takes about ten minutes, so main can move while it runs.
-          # These files are generated, not authored, so rebasing and keeping
-          # ours is always the right answer for them.
+          # These files are generated, not authored, so the run's own side is
+          # always the right answer for them, and rebase calls that side
+          # theirs: ours is the branch being replayed onto, origin/main.
           for attempt in 1 2 3; do
             if git push; then
               exit 0
             fi
             echo "push rejected (attempt ${attempt}); rebasing onto the updated main"
             git fetch origin main
-            git rebase -X ours origin/main || {
+            git rebase -X theirs origin/main || {
               git rebase --abort
               echo "could not rebase cleanly; leaving main alone"
               exit 1
@@ -122,15 +123,17 @@ jobs:
           echo "still could not push after three attempts"
           exit 1
 
-      - name: Save the crawl progress if the run is cancelled
+      - name: Save the crawl progress if the run did not finish
         # The scan writes its progress to disk every 25 repositories, and the
         # lookups are the slow part of it: up to 400 of them, 2.1 seconds
-        # apart. Without this the timeout or the cancel button throws all of
-        # that away with the workspace, and the next run spends the rate limit
-        # on the same repositories again. Progress files only: the index is
-        # rebuilt after the scan, so publishing stays the business of a run
-        # that finished.
-        if: cancelled()
+        # apart. Without this a crash, the cancel button or the job timeout
+        # throws all of that away with the workspace and the next run spends
+        # the rate limit on the same repositories again. always() rather than
+        # cancelled() because a timeout is not documented as either. After a
+        # run that finished there is nothing left uncommitted and this does
+        # nothing. Progress files only: the index is rebuilt after the scan,
+        # so publishing stays the business of a run that got that far.
+        if: always()
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -147,5 +150,5 @@ jobs:
             echo "No progress to save."
             exit 0
           fi
-          git rebase -X ours origin/main
+          git rebase -X theirs origin/main
           git push

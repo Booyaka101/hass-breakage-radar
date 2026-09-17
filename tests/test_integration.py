@@ -89,6 +89,37 @@ def test_the_crawl_commits_every_published_artifact(repo_root):
     assert "state/feed.json" in staged
 
 
+def test_the_crawl_rebases_onto_main_keeping_its_own_side(repo_root):
+    """Rebase swaps the names: ours is origin/main, the branch being replayed
+    onto, and theirs is the crawl's own commit. `-X ours` on a generated file
+    therefore throws away the refresh the run just spent ten minutes on."""
+    workflow = (repo_root / ".github" / "workflows" / "crawl.yml").read_text(
+        encoding="utf-8"
+    )
+    onto = re.findall(r"^\s*git rebase.*origin/main.*$", workflow, re.M)
+    assert onto, "the crawl no longer rebases onto main"
+    for line in onto:
+        assert "-X theirs" in line, line
+
+
+def test_a_crawl_that_does_not_finish_still_commits_its_progress(repo_root):
+    """The scan saves its state every 25 repositories, which buys nothing if
+    every step that commits is skipped when the job is cancelled or times out.
+    The index is not committed there: it is rebuilt after the scan."""
+    workflow = (repo_root / ".github" / "workflows" / "crawl.yml").read_text(
+        encoding="utf-8"
+    )
+    step = workflow[workflow.index("Save the crawl progress") :]
+    assert "if: always()" in step
+    staged = re.search(r"^\s*git add (.*)$", step, re.M)
+    assert staged
+    assert set(staged.group(1).split()) == {
+        "data/catalog.json",
+        "data/findings.json",
+        "state/crawl.json",
+    }
+
+
 def test_the_author_guide_is_reachable_from_the_readme(repo_root):
     guide = repo_root / "guides" / "for-integration-authors.md"
     assert guide.exists()

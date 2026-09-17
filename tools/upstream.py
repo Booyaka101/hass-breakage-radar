@@ -269,14 +269,26 @@ def _confirmed(
         return known
 
 
-def _staleness(item: tuple[str, Any]) -> str:
-    """Sort key: oldest fact first, never-looked-up repositories before those.
+def _wanted(record: dict[str, Any], rules_by_id: dict[str, Any]) -> str:
+    """What to search this repository for: the term its soonest break asks."""
+    findings = record.get("findings") or []
+    if not findings:
+        return ""
+    earliest = min(findings, key=lambda f: parse_version(f.get("breaks_in", "")))
+    return rule_search_term(rules_by_id.get(earliest.get("rule_id"), {}))
+
+
+def _staleness(item: tuple[str, Any, str]) -> tuple[bool, str]:
+    """Sort key: wrong facts first, then oldest, then never looked up at all.
 
     A run stops at ``limit`` lookups and there are more affected repositories
     than that, so without this the budget goes to whichever ones sort first by
-    name, every single day.
+    name, every single day. A fact filed under a term its rule no longer asks
+    for is a link found for the wrong search, which is worse than an old one
+    and would otherwise wait behind every fact older than it.
     """
-    return (item[1].get("upstream") or {}).get("checked_utc") or ""
+    fact = item[1].get("upstream") or {}
+    return (fact.get("symbol") == item[2], fact.get("checked_utc") or "")
 
 
 def annotate(
@@ -294,8 +306,8 @@ def annotate(
     repository that cuts no release is otherwise never looked up again and its
     fact stays published however wrong it has gone. A fact younger than
     ``max_age_days`` that is still filed under the term its rule asks for is
-    left alone, so a run spends its lookups on the oldest ones and on the rules
-    that have been re-aimed since.
+    left alone, so a run spends its lookups on the rules that have been re-aimed
+    since and then on the oldest facts.
 
     Returns how many repositories were asked, failures included: the budget is
     asking, not answering. Anything that fails is skipped rather than allowed
@@ -314,16 +326,16 @@ def annotate(
         datetime.now(UTC) - timedelta(days=max_age_days)
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
     asked = 0
-    for full_name, record in sorted(records.items(), key=_staleness):
+    queue = sorted(
+        ((name, record, _wanted(record, rules_by_id)) for name, record in records.items()),
+        key=_staleness,
+    )
+    for full_name, record, term in queue:
         if asked >= limit:
             break
-        findings = record.get("findings") or []
-        if not findings:
+        if not record.get("findings"):
             record.pop("upstream", None)
             continue
-        earliest = min(findings, key=lambda f: parse_version(f.get("breaks_in", "")))
-        rule = rules_by_id.get(earliest.get("rule_id"), {})
-        term = rule_search_term(rule)
         fact = record.get("upstream") or {}
         if fact.get("symbol") == term and fact.get("checked_utc", "") > stale_before:
             continue

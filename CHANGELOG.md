@@ -101,7 +101,9 @@ their own fix.
 Every affected repository is offered on every run now, including the ones delisted from
 HACS that keep their findings, and including on a day with nothing to scan, which is
 most days. A fact is asked about again when it is more than a week old, or when the rule
-behind it has been re-aimed since, oldest first, and a run asks about 400 repositories at most. That
+behind it has been re-aimed since. A re-aimed one goes first, because the link it holds
+was found for a search this rule no longer makes, and then the oldest. A run asks about
+400 repositories at most. That
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
 
@@ -132,11 +134,18 @@ it is" into "there is nowhere to report it" on a repository where the report is 
 sitting there.
 
 Lookups are saved every 25, failures included, and the crawl workflow commits what was
-saved if the run is cancelled or hits its timeout. A full budget of them takes about a
-quarter of an hour, and a job cancelled in the middle of that had spent the rate limit
-for nothing and left nothing behind but a discarded workspace. A run with no lookup to
-make saves too: a repository whose findings are all gone drops its upstream fact either
-way, and on most days there is no lookup to save it alongside.
+saved when a run does not finish. A full budget of them takes about a quarter of an
+hour, and a run that crashed, was cancelled or hit the 90-minute timeout in the middle
+of that had spent the rate limit for nothing and left nothing behind but a discarded
+workspace. Progress files only: the index is rebuilt after the scan, so publishing
+stays the business of a run that got that far. A run with no lookup to make saves too:
+a repository whose findings are all gone drops its upstream fact either way, and on most
+days there is no lookup to save it alongside.
+
+The crawl's rebase onto a moved `main` kept the wrong side of a conflict. Rebase swaps
+the names, so `ours` there is `origin/main` and `theirs` is the commit being replayed,
+which for a generated file is the only side worth keeping: the run would have discarded
+its own refresh and published `main`'s older index instead.
 
 `--only owner/repo` asks about that repository whatever its fact's age. A forced rescan
 carries the fact forward with its old timestamp, so the freshness gate had the one

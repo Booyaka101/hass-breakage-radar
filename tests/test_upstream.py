@@ -158,6 +158,35 @@ def test_the_lookup_budget_goes_to_the_oldest_facts(monkeypatch):
     assert asked == ["c/never", "b/stale"]
 
 
+def test_a_fact_found_for_the_old_term_is_asked_about_before_older_ones(monkeypatch):
+    """It is a link found for a search this rule no longer makes, so it is
+    wrong rather than merely old, and a budget that stops at 400 against 826
+    affected repositories would leave it published for another two days."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    asked: list[str] = []
+
+    def fake_look_up(full_name, term, **kwargs):
+        asked.append(full_name)
+        return {"archived": False, "issues_enabled": True}
+
+    monkeypatch.setattr("tools.upstream.look_up", fake_look_up)
+    records = {
+        "a/older": {
+            "findings": FINDING,
+            "upstream": {
+                "symbol": "setup_scanner",
+                "checked_utc": "2020-01-01T00:00:00Z",
+            },
+        },
+        "b/re-aimed": {
+            "findings": FINDING,
+            "upstream": {"symbol": "devices", "checked_utc": "2026-09-16T00:00:00Z"},
+        },
+    }
+    assert annotate(records, SOON, current_version=NOW, limit=1) == 1
+    assert asked == ["b/re-aimed"]
+
+
 def test_a_fact_records_when_it_was_checked(monkeypatch):
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     monkeypatch.setattr(
@@ -395,7 +424,7 @@ def test_the_report_on_file_is_the_one_offered_for_confirmation(monkeypatch):
     seen = []
 
     def look(full_name, term, *, known=None, **kwargs):
-        seen.append(known)
+        seen.append((full_name, known))
         return {"archived": False, "issues_enabled": True}
 
     monkeypatch.setattr("tools.upstream.look_up", look)
@@ -412,7 +441,7 @@ def test_the_report_on_file_is_the_one_offered_for_confirmation(monkeypatch):
         },
     }
     assert annotate(records, SOON, current_version=NOW) == 2
-    assert seen == [ON_FILE, None]
+    assert dict(seen) == {"a/one": ON_FILE, "b/two": None}
 
 
 def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch):
