@@ -469,9 +469,13 @@ def annotate(
                 # Whatever was on file was found for a term this rule no longer
                 # asks for. The rest of it is still true about the repository.
                 carried.pop("report", None)
+            # A 404 is an answer about the repository, so it is recorded
+            # under the term that got it. Anything else answered nothing, and
+            # saying the fact was found for this term would hold the right
+            # search back for a week over one timeout.
             record["upstream"] = {
                 **carried,
-                "symbol": term,
+                "symbol": term if gone else fact.get("symbol") or term,
                 "checked_utc": utc_now_iso(),
             }
         else:

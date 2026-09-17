@@ -469,10 +469,14 @@ function apply() {{
     const counter = section.querySelector('.pill');
     if (counter) counter.textContent = shown + ' repositor' + (shown === 1 ? 'y' : 'ies');
   }});
+  // Nothing under these matched a repository, and both dropdowns are about
+  // matches, so either one narrows the board past what this bucket can answer.
+  const deadlines = !cat.value && !conf.value;
   document.querySelectorAll('section.deadline').forEach(section => {{
     let shown = 0;
     section.querySelectorAll('li').forEach(item => {{
-      const visible = !needle || item.textContent.toLowerCase().includes(needle);
+      const visible = deadlines &&
+        (!needle || item.textContent.toLowerCase().includes(needle));
       item.hidden = !visible;
       if (visible) shown++;
     }});

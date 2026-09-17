@@ -294,6 +294,14 @@ def test_the_board_lists_the_removals_no_matcher_covers(payload):
     assert "section.release:not(.deadline)" in board
 
 
+def test_the_no_detector_bucket_answers_the_dropdowns_too(payload):
+    """Skipping the repository filter is not skipping the other two. A bucket
+    that sat still under them would read as the only thing left matching."""
+    board = render_html(payload)
+    assert "const deadlines = !cat.value && !conf.value;" in board
+    assert "const visible = deadlines &&" in board
+
+
 def test_the_board_leaves_out_an_empty_no_detector_list(payload):
     assert "no-detector" not in render_html(payload)
 

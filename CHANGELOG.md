@@ -74,6 +74,11 @@ next crawl looks those repositories up again rather than carrying the wrong link
 forward. The companion integration builds the same term the same way, so the search link
 in a Repairs notice agrees with the board.
 
+A lookup that fails on a timeout keeps the term the fact was already found under rather
+than the one the search never completed under, so one bad minute does not park a
+re-aimed rule for a week. A 404 still records the new term, because that is an answer
+about the repository.
+
 PROGRESS said this term "has not produced a wrong link yet". That was wrong. The 14
 above are in the index as shipped.
 

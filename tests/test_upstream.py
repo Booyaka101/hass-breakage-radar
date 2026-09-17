@@ -654,8 +654,10 @@ def test_the_report_on_file_is_the_one_offered_for_confirmation(monkeypatch):
 
 
 def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch):
-    """One timeout should not blank a good fact for a week. The report is the
-    exception when the rule has been re-aimed: it was found for the old term."""
+    """One timeout should not blank a good fact for a week, and should not say
+    the fact was found for the term the failed search used either. The report
+    is the exception when the rule has been re-aimed: it was found for the old
+    term."""
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     monkeypatch.setattr(
         "tools.upstream.look_up", _raises_in_lookup(RuntimeError("timeout"))
@@ -685,7 +687,31 @@ def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch)
     assert records["a/one"]["upstream"]["issues_enabled"] is True
     assert "report" not in records["b/two"]["upstream"]
     assert records["b/two"]["upstream"]["archived"] is True
-    assert records["b/two"]["upstream"]["symbol"] == "setup_scanner"
+    assert records["b/two"]["upstream"]["symbol"] == "devices"
+
+
+def test_a_timeout_does_not_pass_for_an_answer_under_the_new_term(monkeypatch):
+    """A re-aimed rule wants a search under its new term. Recording the term a
+    failed search never ran under would hold that search back for a week."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up", _raises_in_lookup(RuntimeError("timeout"))
+    )
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {"symbol": "devices", "checked_utc": "2026-09-01T00:00:00Z"},
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+
+    def fake_look_up(full_name, term, **kwargs):
+        return {"report": ON_FILE}
+
+    monkeypatch.setattr("tools.upstream.look_up", fake_look_up)
+    assert annotate(records, SOON, current_version=NOW) == 1
+    assert records["a/one"]["upstream"]["symbol"] == "setup_scanner"
+    assert records["a/one"]["upstream"]["report"] == ON_FILE
 
 
 @pytest.mark.parametrize(
