@@ -100,6 +100,16 @@ an issue renamed into something unrelated stops being linked. An archived reposi
 not searched at all, so there is nothing to have missed and its fact is replaced as
 before.
 
+The report on file is also asked about when the search comes back with something
+weaker. The search ranks its own way and answers with ten hits, so a run where the real
+report drops out and an unrelated "Deprecated YAML config" does not would otherwise
+swap the link, and swap it back the run after. A hit that scores higher than the one on
+file is taken as it stands, at no extra request.
+
+`--only owner/repo` asks about that repository whatever its fact's age. A forced rescan
+carries the fact forward with its old timestamp, so the freshness gate had the one
+command whose whole point is that repository doing no lookups at all for a week.
+
 A lookup that fails outright keeps what the repository last answered, rather than
 blanking the fact for a week over one timeout. The report is the exception when the
 rule behind it has been re-aimed since: it was found for a term this rule no longer

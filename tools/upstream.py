@@ -124,6 +124,18 @@ def _report(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _rank(
+    report: dict[str, Any] | None, term: str, *, current_version: str
+) -> tuple[int, bool]:
+    """Where :func:`find_report` would have put this one, or nothing at all."""
+    if not report:
+        return (0, False)
+    return (
+        relevance(report.get("title", ""), term, current_version=current_version),
+        report.get("state") == "open",
+    )
+
+
 def find_report(
     full_name: str, term: str, *, current_version: str, token: str
 ) -> dict[str, Any] | None:
@@ -201,9 +213,10 @@ def look_up(
     """Repository facts plus any existing report. Never raises except when the
     rate limit is spent, which the caller uses to stop early.
 
-    ``known`` is the report this repository was already on file for, checked by
-    number when the search does not come back with it: an empty "already
-    reported" column sends everybody off to file a duplicate.
+    ``known`` is the report this repository was already on file for. It is
+    asked about by number whenever the search comes back with nothing better,
+    which is both how a dropped issue is told from a deleted one and how a good
+    link survives a run where only a weaker hit came back.
     """
     token = token or _token()
     if not token:
@@ -214,10 +227,13 @@ def look_up(
             full_name, term, current_version=current_version, token=token
         )
         time.sleep(SEARCH_INTERVAL)
-        if not report and known:
-            report = confirm_report(
+        found = _rank(report, term, current_version=current_version)
+        if known and _rank(known, term, current_version=current_version) > found:
+            current = confirm_report(
                 full_name, known, term, current_version=current_version, token=token
             )
+            if current and _rank(current, term, current_version=current_version) >= found:
+                report = current
         if report:
             facts["report"] = report
     return facts

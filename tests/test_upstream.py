@@ -236,15 +236,15 @@ ON_FILE = {
 }
 
 
-def _search_found_nothing(monkeypatch, issue):
-    """A repository that takes issues, a search with no hits, and ``issue`` as
-    the answer to asking for the known report by number."""
+def _searched(monkeypatch, issue, found=None):
+    """A repository that takes issues, ``found`` as the search's best hit, and
+    ``issue`` as the answer to asking for the known report by number."""
     monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
     monkeypatch.setattr(
         "tools.upstream.repo_facts",
         lambda *a, **k: {"archived": False, "issues_enabled": True},
     )
-    monkeypatch.setattr("tools.upstream.find_report", lambda *a, **k: None)
+    monkeypatch.setattr("tools.upstream.find_report", lambda *a, **k: found)
 
     def api(path, **kwargs):
         assert path == "/repos/a/one/issues/41", path
@@ -253,6 +253,10 @@ def _search_found_nothing(monkeypatch, issue):
         return issue
 
     monkeypatch.setattr("tools.upstream._api", api)
+
+
+def _search_found_nothing(monkeypatch, issue):
+    _searched(monkeypatch, issue)
 
 
 def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
@@ -298,6 +302,49 @@ def test_a_report_the_gate_now_rejects_is_not_carried_over(monkeypatch):
         "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
     )
     assert "report" not in facts
+
+
+def test_a_weaker_hit_does_not_displace_the_report_on_file(monkeypatch):
+    """The search ranks its own way. When the known report drops out of the ten
+    and something scoring lower is in them, taking the answer at face value
+    swaps a real report for an unrelated one, and swaps it back next run."""
+    _searched(
+        monkeypatch,
+        {
+            "number": 41,
+            "html_url": "https://github.com/a/one/issues/41",
+            "state": "open",
+            "title": "setup_scanner is deprecated",
+            "reactions": {"total_count": 3},
+        },
+        found={"number": 77, "title": "Deprecated YAML config", "state": "open"},
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"]["number"] == 41
+
+
+def test_a_better_hit_is_taken_without_a_second_request(monkeypatch):
+    better = {
+        "number": 88,
+        "title": "setup_scanner removed in 2027.9",
+        "state": "open",
+    }
+    _searched(monkeypatch, AssertionError("asked for nothing"), found=better)
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"] == better
+
+
+def test_a_weak_hit_is_still_better_than_a_report_that_is_gone(monkeypatch):
+    weak = {"number": 77, "title": "Deprecated YAML config", "state": "open"}
+    _searched(monkeypatch, _http_error(404, {}), found=weak)
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"] == weak
 
 
 def test_a_repository_with_no_report_on_file_costs_no_second_request(monkeypatch):

@@ -75,7 +75,7 @@ from tools.rules_engine import (  # noqa: E402
     rule_search_term,
     scan_sources,
 )
-from tools.upstream import annotate  # noqa: E402
+from tools.upstream import FACT_MAX_AGE_DAYS, annotate  # noqa: E402
 
 CODELOAD = "https://codeload.github.com/{full_name}/tar.gz/{ref}"
 
@@ -714,7 +714,13 @@ def main(argv: list[str] | None = None) -> int:
         wanted = set(args.only or ())
         known = {n: r for n, r in repos.items() if not wanted or n in wanted}
         looked_up = annotate(
-            known, rules_by_id, current_version=current_version, limit=args.limit
+            known,
+            rules_by_id,
+            current_version=current_version,
+            limit=args.limit,
+            # Naming a repository is asking about that repository. A fact that
+            # is merely young is not a reason to answer nothing.
+            max_age_days=0 if wanted else FACT_MAX_AGE_DAYS,
         )
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)

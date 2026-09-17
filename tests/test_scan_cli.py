@@ -20,6 +20,7 @@ from tools.scan import (
     select_slice,
     upstream_still_applies,
 )
+from tools.upstream import FACT_MAX_AGE_DAYS
 
 RULE = Rule(
     id="legacy-device-tracker-platform",
@@ -532,6 +533,25 @@ def test_one_limit_covers_the_scan_and_the_lookups(tmp_path, monkeypatch):
     )
     assert main(_argv(tmp_path, rules_path, catalog_path, "--limit", "1")) == 0
     assert budget == [1]
+
+
+def test_naming_a_repository_asks_about_it_however_young_its_fact_is(
+    tmp_path, monkeypatch
+):
+    """A forced rescan carries the fact forward with its old timestamp, so the
+    freshness gate answered nothing at all to `--only owner/repo`, which is the
+    one command whose whole point is that repository."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+    ages: list[int] = []
+    monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
+    monkeypatch.setattr(
+        scan_module,
+        "annotate",
+        lambda records, rules, **kwargs: ages.append(kwargs["max_age_days"]),
+    )
+    assert main(_argv(tmp_path, rules_path, catalog_path)) == 0
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--only", "a/one")) == 0
+    assert ages == [FACT_MAX_AGE_DAYS, 0]
 
 
 def test_a_day_with_nothing_to_scan_still_refreshes_the_facts(tmp_path, monkeypatch):
