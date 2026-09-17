@@ -79,15 +79,30 @@ REMOVAL_PATTERNS = [
 
 _TAG_RE = re.compile(r"<[^>]+>")
 _WS_RE = re.compile(r"\s+")
+_HSPACE_RE = re.compile(r"[^\S\n]+")
+_ZERO_WIDTH_RE = re.compile("[\u200b\u200c\u200d\ufeff]")
+_LOOSE_PUNCT_RE = re.compile(r" +([.,;:!?])")
+#: Both ends of every element that starts a new line of prose. Closing tags on
+#: their own leave a nested list or a table cell running into the text beside it.
+_BLOCK_RE = re.compile(
+    r"(?i)</?(?:p|div|li|ul|ol|h[1-6]|table|tr|td|th|blockquote|pre|section"
+    r"|article|header|footer|nav|main|aside|br)\b[^>]*>"
+)
 _POST_HREF_RE = re.compile(r'href="(/blog/\d{4}/\d{2}/\d{2}/[a-z0-9\-._]+)"', re.I)
 
 
 def _text(markup: str) -> str:
-    """Strip HTML down to readable prose."""
+    """Strip HTML down to readable prose, one block element per line."""
     markup = re.sub(r"(?is)<(script|style).*?</\1>", " ", markup)
-    markup = re.sub(r"(?i)<br\s*/?>", "\n", markup)
-    markup = re.sub(r"(?i)</(p|div|li|h[1-6])>", "\n", markup)
-    return _WS_RE.sub(" ", html.unescape(_TAG_RE.sub(" ", markup))).strip()
+    # Source newlines are soft wraps, so they go before the block boundaries do.
+    # The other order splits a wrapped sentence down the middle.
+    markup = _BLOCK_RE.sub("\n", _WS_RE.sub(" ", markup))
+    text = _ZERO_WIDTH_RE.sub("", html.unescape(_TAG_RE.sub(" ", markup)))
+    lines = (
+        _LOOSE_PUNCT_RE.sub(r"\1", _HSPACE_RE.sub(" ", line)).strip()
+        for line in text.split("\n")
+    )
+    return "\n".join(line for line in lines if line)
 
 
 def _slug(text: str) -> str:
@@ -105,7 +120,12 @@ def discover_posts(index_html: str) -> list[str]:
 
 
 def _sentences(text: str) -> Iterable[str]:
-    for sentence in re.split(r"(?<=[.!?])\s+", text):
+    """Sentence ends, plus the block boundaries :func:`_text` marked.
+
+    A page's navigation carries no full stop, so without the second kind the
+    whole sidebar reads as one sentence and lands in a rule message.
+    """
+    for sentence in re.split(r"(?<=[.!?])[^\S\n]+|\n+", text):
         sentence = sentence.strip()
         if sentence:
             yield sentence

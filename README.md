@@ -533,6 +533,12 @@ It is a second date on the same rule, never a second deadline: ordering, bucketi
 retirement all key off `breaks_in`. A rule whose two releases are the same carries no
 `reports_in` at all, and renders exactly as every other rule does.
 
+A rule can also carry `search`, which replaces the term its repositories are searched
+for upstream. The term is otherwise the last dotted part of the symbol, so
+`DeviceRegistry.devices` becomes `devices`, and 14 of the 18 issues that found gave back
+were unrelated device bugs. `device-registry-devices-mapping` asks for
+`device_registry.devices` instead, which is what all four of the real reports name.
+
 Core, and the blog itself, sometimes carry a marker for the same removal whose message
 is prose the extractor cannot turn into a matcher. A hand-written rule can name those
 ids in `supersedes`, and the merge drops them: two board entries for one deprecation,
@@ -756,6 +762,13 @@ repository says: whether it is archived, whether it accepts issues, and the most
 relevant existing report if there is one. That is what lets a notification say
 "already reported, add a reaction there" instead of sending everybody to open
 the same issue. It is optional, so an older index simply lacks it.
+
+A search hit only becomes that report if its **title** says so, by naming the
+deprecated symbol, by using a word like "deprecated" or "removed", or by naming a
+release the current one has not passed yet. A symbol pasted into the body of an
+unrelated bug report is not evidence, and neither is "Not working on 2021.12" filed
+against a 2027 removal. The fact records `checked_utc` as well, because a run looks up
+a few hundred repositories and takes the ones checked longest ago first.
 
 Every `matchable: true` rule ships its matcher as the nested `match` object — that is
 what lets the integration run the same rules over locally installed code without the

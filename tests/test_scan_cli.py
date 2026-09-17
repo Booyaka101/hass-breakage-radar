@@ -431,6 +431,30 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     )
 
 
+def test_the_current_release_reaches_the_upstream_lookup(tmp_path, monkeypatch):
+    """Without it every issue title naming a release counts, including the
+    2021.12 and 2022.11 ones that were published as reports."""
+    rules_path, catalog_path = _write_inputs(tmp_path, catalog=CATALOG[:1])
+    monkeypatch.setattr(
+        scan_module,
+        "http_get",
+        lambda url, **kwargs: _tarball_bytes(
+            {"custom_components/one/device_tracker.py": TRACKER_SOURCE}
+        ),
+    )
+    seen: dict[str, object] = {}
+
+    def fake_annotate(records, rules_by_id, **kwargs):
+        seen.update(kwargs)
+        seen["rules"] = rules_by_id
+        return 0
+
+    monkeypatch.setattr(scan_module, "annotate", fake_annotate)
+    assert main(_argv(tmp_path, rules_path, catalog_path)) == 0
+    assert seen["current_version"] == "2026.9"
+    assert seen["rules"][RULE.id] == {"symbol": "setup_scanner", "search": None}
+
+
 def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, caplog):
     """1 519 files failed to parse on the 1.12.0 rescan because it ran on 3.11
     against rules extracted on 3.14, and the findings in them vanished without
@@ -476,3 +500,19 @@ def test_a_repository_that_fixed_the_symbol_loses_the_fact():
 
 def test_no_findings_leaves_nothing_for_an_upstream_fact_to_be_about():
     assert upstream_still_applies(UPSTREAM, [], {}) is False
+
+
+def test_a_fact_is_kept_against_the_term_the_rule_asked_for():
+    """The fact is filed under what the repository was searched for. When a
+    rule overrides that term, a fact filed under the old one is stale and gets
+    looked up again."""
+    rules = {
+        "mapping": {
+            "symbol": "DeviceRegistry.devices",
+            "search": "device_registry.devices",
+        }
+    }
+    findings = [{"rule_id": "mapping", "breaks_in": "2027.9"}]
+    overridden = {**UPSTREAM, "symbol": "device_registry.devices"}
+    assert upstream_still_applies(overridden, findings, rules) is True
+    assert upstream_still_applies({**UPSTREAM, "symbol": "devices"}, findings, rules) is False

@@ -1,0 +1,75 @@
+"""Turning a rendered blog post into the sentence a rule can quote.
+
+The board shows these messages verbatim, so anything the page wraps around
+the prose -- the navigation sidebar, a heading anchor, a nested list -- is
+what a user reads unless it is stripped here.
+"""
+
+from __future__ import annotations
+
+from tools.blog_rules import _text, extract_removals
+
+URL = "https://developers.home-assistant.io/blog/2026/08/31/deprecate-widget-helper/"
+
+# Trimmed from a real Docusaurus page: the chrome, a heading anchor, a
+# sentence the source wraps mid-line, and a nested list.
+POST = """<!doctype html>
+<html><head><title>Deprecating the widget helper | Home Assistant Developer Docs</title>
+<style>.navbar { color: red }</style>
+<script>window.docusaurus = 1</script></head>
+<body>
+<nav class="navbar"><a class="skipToContent" href="#main">Skip to main content</a>
+<div class="navbar__items">Developers Home Assistant Overview Core Frontend</div></nav>
+<main><article class="">
+<header><h2><a href="/blog/2026/08/31/deprecate-widget-helper">Deprecating the widget
+helper</a><a class="hash-link" href="#deprecating">\u200b</a></h2></header>
+<div class="markdown">
+<p>The widget helper has been deprecated and will be
+removed in Home Assistant 2027.10.</p>
+<ul>
+<li>ha-widget is the successor of ha-thing
+<ul><li>ha-thing API stays but will stop working in 2027.4 .</li></ul>
+</li>
+</ul>
+</div></article></main>
+<footer>Copyright Home Assistant</footer>
+</body></html>
+"""
+
+
+def test_a_sentence_the_page_wrapped_survives_as_one_sentence():
+    assert (
+        "The widget helper has been deprecated and will be removed in "
+        "Home Assistant 2027.10." in _text(POST).split("\n")
+    )
+
+
+def test_a_nested_list_item_does_not_run_into_the_one_above_it():
+    lines = _text(POST).split("\n")
+    assert "ha-widget is the successor of ha-thing" in lines
+    assert "ha-thing API stays but will stop working in 2027.4." in lines
+
+
+def test_the_navigation_is_not_part_of_the_prose():
+    first = _text(POST).split("\n")[0]
+    assert first == "Deprecating the widget helper | Home Assistant Developer Docs"
+
+
+def test_every_release_in_the_post_becomes_a_rule_quoting_its_own_sentence():
+    rules = {rule["breaks_in"]: rule for rule in extract_removals(URL, _text(POST))}
+    assert sorted(rules) == ["2027.10", "2027.4"]
+    assert rules["2027.10"]["message"] == (
+        "The widget helper has been deprecated and will be removed in "
+        "Home Assistant 2027.10."
+    )
+    # The source writes "2027.4 ." because the version is a link.
+    assert rules["2027.4"]["message"] == (
+        "ha-thing API stays but will stop working in 2027.4."
+    )
+
+
+def test_no_message_carries_the_page_furniture():
+    for rule in extract_removals(URL, _text(POST)):
+        assert "Skip to main content" not in rule["message"]
+        assert "\u200b" not in rule["message"]
+        assert not rule["message"].endswith("...")

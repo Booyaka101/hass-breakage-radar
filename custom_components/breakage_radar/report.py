@@ -22,7 +22,7 @@ from .rules_engine import (
     is_future,
     parse_version,
     reports_before_removal,
-    search_term,
+    rule_search_term,
 )
 
 # describe_when and release_estimated_date are re-exported: the repairs card
@@ -213,10 +213,11 @@ def build_report(
                     {
                         "repository": (entry or {}).get("full_name", ""),
                         "repo_url": (entry or {}).get("repo_url", ""),
-                        # The deprecated symbol is the search term that finds an
-                        # existing report; a vague word like "deprecated" does not,
-                        # and neither does `StateVacuumEntity.battery_level` whole.
-                        "symbol": search_term(rule.get("symbol", "")),
+                        # What finds an existing report: the rule's own search
+                        # term if it names one, else the deprecated symbol. A
+                        # vague word like "deprecated" does not, and neither
+                        # does `StateVacuumEntity.battery_level` whole.
+                        "symbol": rule_search_term(rule),
                         # source_url is a real link; source can be a bare
                         # "file.py:418" reference for core-derived rules.
                         "learn_more": (

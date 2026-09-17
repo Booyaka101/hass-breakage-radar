@@ -22,8 +22,8 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
-from tools.common import LOGGER
-from tools.rules_engine import parse_version, search_term
+from tools.common import LOGGER, utc_now_iso
+from tools.rules_engine import parse_version, rule_search_term
 
 API = "https://api.github.com"
 
@@ -31,9 +31,13 @@ API = "https://api.github.com"
 SEARCH_INTERVAL = 2.1
 
 #: Words that suggest an issue is about a scheduled removal.
-DEPRECATION_WORDS = re.compile(
-    r"deprecat|removal|removed|breaking change|\b20\d\d\.\d+\b", re.I
-)
+DEPRECATION_WORDS = re.compile(r"deprecat|removal|removed|breaking change", re.I)
+
+#: A core release named in a title, which is how a lot of these reports are
+#: worded. Only a release the current one has not passed counts: a title naming
+#: an older one is a bug in that release, not an answer to a removal still in
+#: the future.
+RELEASE_MENTION = re.compile(r"\b20\d\d\.\d+\b")
 
 
 class SearchExhausted(RuntimeError):
@@ -66,23 +70,29 @@ def _api(path: str, *, token: str, params: dict[str, str] | None = None) -> Any:
         raise
 
 
-def relevance(title: str, symbol: str) -> int:
+def relevance(title: str, term: str, *, current_version: str = "") -> int:
     """How much an issue title looks like it is about this deprecation."""
     score = 0
-    if symbol and symbol.lower() in title.lower():
+    if term and term.lower() in title.lower():
         score += 2
     if DEPRECATION_WORDS.search(title):
+        score += 1
+    elif any(
+        parse_version(release) >= parse_version(current_version)
+        for release in RELEASE_MENTION.findall(title)
+    ):
         score += 1
     return score
 
 
-def find_report(full_name: str, symbol: str, *, token: str) -> dict[str, Any] | None:
-    """The most relevant existing issue about ``symbol``, or None.
+def find_report(
+    full_name: str, term: str, *, current_version: str = "", token: str
+) -> dict[str, Any] | None:
+    """The most relevant existing issue matching ``term``, or None.
 
     Open issues win over closed ones at equal relevance, because an open
     report is the one worth adding a reaction to.
     """
-    term = search_term(symbol)
     if not term:
         return None
     payload = _api(
@@ -92,7 +102,9 @@ def find_report(full_name: str, symbol: str, *, token: str) -> dict[str, Any] | 
     )
     best = None
     for item in payload.get("items", []):
-        score = relevance(item.get("title", ""), term)
+        score = relevance(
+            item.get("title", ""), term, current_version=current_version
+        )
         if score <= 0:
             continue                       # matched the body only; not evidence
         rank = (score, item.get("state") == "open")
@@ -119,7 +131,9 @@ def repo_facts(full_name: str, *, token: str) -> dict[str, Any]:
     }
 
 
-def look_up(full_name: str, symbol: str, *, token: str | None = None) -> dict[str, Any]:
+def look_up(
+    full_name: str, term: str, *, current_version: str = "", token: str | None = None
+) -> dict[str, Any]:
     """Repository facts plus any existing report. Never raises except when the
     rate limit is spent, which the caller uses to stop early."""
     token = token or _token()
@@ -127,15 +141,30 @@ def look_up(full_name: str, symbol: str, *, token: str | None = None) -> dict[st
         return {}
     facts = repo_facts(full_name, token=token)
     if facts["issues_enabled"] and not facts["archived"]:
-        report = find_report(full_name, symbol, token=token)
+        report = find_report(
+            full_name, term, current_version=current_version, token=token
+        )
         time.sleep(SEARCH_INTERVAL)
         if report:
             facts["report"] = report
     return facts
 
 
+def _staleness(item: tuple[str, Any]) -> str:
+    """Sort key: oldest fact first, never-looked-up repositories before those.
+
+    A run stops at ``limit`` lookups, so without this the budget goes to
+    whichever repositories sort first by name, every single day.
+    """
+    return (item[1].get("upstream") or {}).get("checked_utc") or ""
+
+
 def annotate(
-    records: dict[str, Any], rules_by_id: dict[str, Any], *, limit: int = 400
+    records: dict[str, Any],
+    rules_by_id: dict[str, Any],
+    *,
+    limit: int = 400,
+    current_version: str = "",
 ) -> int:
     """Add upstream facts to scan records that have findings.
 
@@ -148,7 +177,7 @@ def annotate(
         return 0
 
     done = 0
-    for full_name, record in records.items():
+    for full_name, record in sorted(records.items(), key=_staleness):
         if done >= limit:
             break
         findings = record.get("findings") or []
@@ -157,8 +186,11 @@ def annotate(
             continue
         earliest = min(findings, key=lambda f: parse_version(f.get("breaks_in", "")))
         rule = rules_by_id.get(earliest.get("rule_id"), {})
+        term = rule_search_term(rule)
         try:
-            facts = look_up(full_name, rule.get("symbol", ""), token=token)
+            facts = look_up(
+                full_name, term, current_version=current_version, token=token
+            )
         except SearchExhausted as err:
             LOGGER.warning("upstream lookup stopped early: %s", err)
             break
@@ -166,7 +198,8 @@ def annotate(
             LOGGER.debug("upstream lookup failed for %s: %s", full_name, err)
             continue
         if facts:
-            facts["symbol"] = search_term(rule.get("symbol", ""))
+            facts["symbol"] = term
+            facts["checked_utc"] = utc_now_iso()
             record["upstream"] = facts
             done += 1
     return done

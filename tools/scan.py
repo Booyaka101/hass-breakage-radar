@@ -72,8 +72,8 @@ from tools.rules_engine import (  # noqa: E402
     load_rules,
     looks_minified_js,
     matchable_rules,
+    rule_search_term,
     scan_sources,
-    search_term,
 )
 from tools.upstream import annotate  # noqa: E402
 
@@ -335,8 +335,7 @@ def upstream_still_applies(
     """
     symbol = upstream.get("symbol")
     return bool(symbol) and any(
-        search_term((rules_by_id.get(f.get("rule_id")) or {}).get("symbol") or "")
-        == symbol
+        rule_search_term(rules_by_id.get(f.get("rule_id")) or {}) == symbol
         for f in findings
     )
 
@@ -550,7 +549,9 @@ def main(argv: list[str] | None = None) -> int:
         LOGGER.error("no matchable pending rules; refusing to scan")
         return 2
     rhash = rules_hash(active)
-    rules_by_id = {rule.id: {"symbol": rule.symbol} for rule in active}
+    rules_by_id = {
+        rule.id: {"symbol": rule.symbol, "search": rule.search} for rule in active
+    }
     LOGGER.info(
         "%d matchable rules (core dev %s, pending from %s via %s, rules_hash %s)",
         len(active),
@@ -705,7 +706,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.no_upstream:
         scanned_now = {n: repos[n] for n in (e["full_name"] for e in todo) if n in repos}
-        looked_up = annotate(scanned_now, rules_by_id)
+        looked_up = annotate(scanned_now, rules_by_id, current_version=current_version)
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
             checkpoint()

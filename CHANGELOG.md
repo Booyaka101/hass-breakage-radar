@@ -4,6 +4,67 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.16.0 — 2026-09-17
+
+### Blog rule messages are the post, not the page furniture
+
+Four rules in the published index opened with "| Home Assistant Developer Docs Skip to
+main content Developers Home Assistant Overview Core Frontend...". `_text()` flattened
+the whole rendered page, and `_sentences()` split on full stops only, so a navigation
+sidebar that carries no full stop ran into the first real sentence of the post and the
+pair was truncated at 400 characters. `_text()` now starts a new line at both ends of
+every block element, drops the zero-width characters Docusaurus injects into heading
+anchors, and collapses the source's soft wraps before it does either, because the other
+order cuts a wrapped sentence in half. `_sentences()` treats those line breaks as
+sentence ends.
+
+Ten messages change. The configurator rule now reads "The Configurator integration has
+been deprecated and will be removed in Home Assistant 2027.10.", and the legacy device
+tracker one "The legacy (non-config-entry) device tracker platform API is deprecated and
+will be removed in the Home Assistant 2027.5 release."
+
+Measured over all 83 posts on the developer blog: the same 19 rules, same ids, same
+releases, same symbols, no navigation left in any message and nothing truncated.
+`rules_hash` covers matchers and releases, not messages, so nothing is re-crawled for
+this.
+
+### A rule can say what to search its own repositories for
+
+`search_term` reduces a symbol to its last dotted part, which turns
+`DeviceRegistry.devices` into `devices`. Of the 18 reports the published index links
+under that term, 4 are about the deprecation and 14 are unrelated device bugs: "Devices
+do not return to available status after connection loss", "Link with list to compatible
+devices", "Sorting and filtering devices and entity's". All four real ones name
+`device_registry.devices` in the title, which is what `device-registry-devices-mapping`
+now carries in a new optional `search` field on the rule.
+
+A fact recorded under the old term no longer matches the rule that asked for it, so the
+next crawl looks those repositories up again rather than carrying the wrong link
+forward. The companion integration builds the same term the same way, so the search link
+in a Repairs notice agrees with the board.
+
+PROGRESS said this term "has not produced a wrong link yet". That was wrong. The 14
+above are in the index as shipped.
+
+### A release named in an issue title only counts if it is still ahead
+
+`DEPRECATION_WORDS` included a bare `20\d\d.\d+`, so "Not working on 2021.12" and
+"Errors with 2022.11.x" scored as deprecation notices and were published as the
+repository's own issue about a 2027 removal. A release in a title now scores only while
+the current release has not passed it. Eight of the 98 reports in the published index
+stop being linked: seven are bugs in releases from 2021.12 to 2026.7, and one is a real
+report lost to the rule, dyson_local's "depracation warnings on 2026.8.0b0", which names
+a release two behind and misspells the only word that would have carried it. Titles
+naming a release still to come are unaffected, including eltako's "Home Assistant 2027.8
+API changes" and luxtronik2's "adapt to the HA device registry changes before 2027.8".
+
+### The lookup budget goes to the oldest facts
+
+`annotate` stops after 400 lookups and walked the records in catalogue order, so the
+same few hundred repositories were refreshed every day and the rest never were. Facts
+carry `checked_utc` now, and a run takes the oldest first with the never-looked-up ones
+before those.
+
 ## 1.15.0 — 2026-09-17
 
 ### Deleted and child device entries read the same deprecated properties
