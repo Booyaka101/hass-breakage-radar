@@ -36,7 +36,8 @@ The coverage note counted 60 announced removals with no matcher and said they we
 ends with a collapsed "Announced removals with no detector", grouped by release with
 each rule's own source link beside it. The repository filter skips that list instead of
 hiding it as a section whose table has no rows, and the search box narrows it to the
-rules whose text matches.
+rules whose id, symbol or message matches, on the same kind of field the repository
+tables have always carried.
 
 Twenty-six "source" links on the board pointed at a path relative to the board itself,
 `homeassistant/helpers/service.py:351` and the like, so they resolved to a 404 on the
