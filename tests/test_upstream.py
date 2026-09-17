@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import pytest
 
-from tools.upstream import relevance, search_term
+from tools.upstream import annotate, relevance, search_term
 
 
 @pytest.mark.parametrize(
@@ -51,3 +51,35 @@ def test_a_symbol_in_the_title_outranks_a_generic_deprecation_notice():
     named = relevance("async_get_device is deprecated", "async_get_device")
     generic = relevance("Upcoming breaking changes", "async_get_device")
     assert named > generic > 0
+
+
+def test_the_finding_looked_up_is_the_one_that_breaks_soonest(monkeypatch):
+    """2027.10 is after 2027.9, not before it. Compared as text it wins the
+    `min` and the whole repository gets searched for the wrong symbol."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    asked: list[str] = []
+
+    def fake_look_up(full_name, symbol, **kwargs):
+        asked.append(symbol)
+        return {"archived": False, "issues_enabled": True}
+
+    monkeypatch.setattr("tools.upstream.look_up", fake_look_up)
+    records = {
+        "a/one": {
+            "findings": [
+                {"rule_id": "later", "breaks_in": "2027.10"},
+                {"rule_id": "soon", "breaks_in": "2027.9"},
+            ]
+        }
+    }
+    rules = {"soon": {"symbol": "setup_scanner"}, "later": {"symbol": "async_get_device"}}
+    assert annotate(records, rules) == 1
+    assert asked == ["setup_scanner"]
+    assert records["a/one"]["upstream"]["symbol"] == "setup_scanner"
+
+
+def test_a_repository_with_nothing_left_loses_its_upstream_fact(monkeypatch):
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    records = {"a/one": {"findings": [], "upstream": {"symbol": "setup_scanner"}}}
+    assert annotate(records, {}) == 0
+    assert "upstream" not in records["a/one"]

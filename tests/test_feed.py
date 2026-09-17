@@ -287,7 +287,7 @@ def test_a_prose_rule_gets_a_readable_label_not_a_slug():
     assert label.startswith("sets an invalid entity ID")
     assert "core-prose" not in label
     assert len(label) <= MAX_LABEL
-    assert not label.rstrip("…").endswith(" ")
+    assert not label.rstrip(".").endswith(" ")
 
 
 def test_a_label_short_enough_is_left_alone():

@@ -101,6 +101,11 @@ class Rule:
     confidence: str = "medium"
     match: dict[str, Any] | None = None
     replacement: str | None = None
+    #: Release from which the deprecated API reports at runtime -- a logged
+    #: warning for a custom integration. Only set when it is earlier than
+    #: ``breaks_in``; ``breaks_in`` stays the one release that orders, buckets
+    #: and retires a rule.
+    reports_in: str | None = None
 
     @property
     def matchable(self) -> bool:
@@ -120,6 +125,8 @@ class Rule:
         }
         if self.replacement:
             payload["replacement"] = self.replacement
+        if self.reports_in:
+            payload["reports_in"] = self.reports_in
         if self.match:
             payload["match"] = self.match
         return payload
@@ -137,6 +144,7 @@ class Rule:
             confidence=payload.get("confidence", "medium"),
             match=payload.get("match"),
             replacement=payload.get("replacement"),
+            reports_in=payload.get("reports_in"),
         )
 
 
@@ -157,6 +165,17 @@ class Finding:
             "line": self.line,
             "confidence": self.confidence,
         }
+
+
+def clip(text: str, limit: int) -> str:
+    """``text`` shortened to a whole word, with an ellipsis when it was cut.
+
+    Rule messages quote the post they came from, so a hard cut lands inside a
+    quotation often enough to be what a reader sees.
+    """
+    if len(text) <= limit:
+        return text
+    return text[:limit].rsplit(" ", 1)[0].rstrip(",;:.") + "..."
 
 
 def search_term(symbol: str) -> str:
@@ -222,6 +241,16 @@ def is_pending(breaks_in: str, core_version: str) -> bool:
     stay matched. Compare a *running* version's future with :func:`is_future`.
     """
     return _release_key(breaks_in) >= _release_key(core_version)
+
+
+def reports_before_removal(reports_in: str | None, breaks_in: str) -> bool:
+    """True when a rule names a runtime-report release ahead of its removal.
+
+    An API that starts logging a warning in one release and disappears in a
+    later one has two dates worth showing. One that only reports in the
+    release it is removed in has one, and renders as every other rule does.
+    """
+    return bool(reports_in) and _release_key(reports_in) < _release_key(breaks_in)
 
 
 # --------------------------------------------------------------------------- #

@@ -62,6 +62,7 @@ from tools.rules_engine import (  # noqa: E402
     is_future,
     is_pending,
     normalise_version,
+    parse_version,
 )
 
 CORE_TARBALL = "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/{ref}"
@@ -994,7 +995,9 @@ def build_rules(
         )
         by_id[rule_id] = payload
 
-    return sorted(by_id.values(), key=lambda r: (r["breaks_in"], r["id"]))
+    return sorted(
+        by_id.values(), key=lambda r: (parse_version(r["breaks_in"]), r["id"])
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1092,7 +1095,9 @@ def main(argv: list[str] | None = None) -> int:
 
     discarded: list[dict[str, Any]] = []
     rules = build_rules(records, latest.floor, discarded)
-    discarded.sort(key=lambda d: (d["breaks_in"], d["symbol"], d["source"]))
+    discarded.sort(
+        key=lambda d: (parse_version(d["breaks_in"]), d["symbol"], d["source"])
+    )
     pending_discarded = [d for d in discarded if is_pending(d["breaks_in"], latest.floor)]
     future = [r for r in rules if not r["expired"]]
     matchable = [r for r in future if r["matchable"]]

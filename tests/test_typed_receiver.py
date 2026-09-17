@@ -48,14 +48,14 @@ def test_worked_example_yields_exactly_two_findings(rule):
     assert [f.to_dict() for f in hits] == [
         {
             "rule_id": RULE_ID,
-            "breaks_in": "2027.8",
+            "breaks_in": "2027.10",
             "file": "custom_components/x/__init__.py",
             "line": 4,
             "confidence": "high",
         },
         {
             "rule_id": RULE_ID,
-            "breaks_in": "2027.8",
+            "breaks_in": "2027.10",
             "file": "custom_components/x/__init__.py",
             "line": 9,
             "confidence": "high",
@@ -67,7 +67,66 @@ def test_every_proved_receiver_shape_fires(fixtures_dir, rule):
     findings = scan_fixture_tree(
         fixtures_dir / "typed_receiver" / "true_positive", [rule]
     )
-    assert [f.line for f in findings] == [13, 20, 27, 33, 36, 43, 51, 64, 72, 75]
+    assert [f.line for f in findings] == [
+        13, 20, 27, 33, 36, 43, 51, 64, 72, 75, 80, 87, 90, 91
+    ]
+
+
+def test_a_deleted_or_child_device_is_a_proved_receiver_too(rule):
+    """The 15 September post: the properties on `DeletedDeviceEntry` "are
+    deprecated and report on the same terms", and `ChildDeviceEntry` inherits
+    them. Neither is ever a composite, so neither read has the exemption a
+    `DeviceEntry` read can have."""
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "from homeassistant.helpers.device_registry import ChildDeviceEntry\n"
+        "\n"
+        "def orphaned(deleted: dr.DeletedDeviceEntry):\n"
+        "    return deleted.config_entries\n"
+        "\n"
+        "def inherited(child: ChildDeviceEntry):\n"
+        "    return child.config_entries\n"
+        "\n"
+        "def looked_up(hass, config_entry):\n"
+        "    reg = dr.async_get(hass)\n"
+        "    for child in dr.async_child_entries_for_config_entry(reg, config_entry.entry_id):\n"
+        "        return child.config_entries\n"
+        "    return None\n"
+    )
+    hits = match_source("custom_components/x/__init__.py", source, [rule])
+    assert [f.line for f in hits] == [5, 8, 13]
+
+
+def test_every_child_device_lookup_proves_its_result(rule):
+    """The four remaining ways core 2026.9 hands back a `ChildDeviceEntry`.
+
+    A type list only covers annotations, so each lookup has to be named
+    separately or the classes are matched where nobody writes them.
+    """
+    source = (
+        "from homeassistant.helpers import device_registry as dr\n"
+        "\n"
+        "def updated(hass, device_id):\n"
+        "    return dr.async_get(hass).async_update_child_device(device_id).config_entries\n"
+        "\n"
+        "def by_identifier(hass, config_entry):\n"
+        "    reg = dr.async_get(hass)\n"
+        "    child = reg.async_get_child_device_by_identifier(ident, config_entry.entry_id)\n"
+        "    return child.config_entries\n"
+        "\n"
+        "def created(hass, config_entry, device_id):\n"
+        "    reg = dr.async_get(hass)\n"
+        "    child = reg.async_get_or_create_child(\n"
+        "        config_entry_id=config_entry.entry_id, parent_device_id=device_id\n"
+        "    )\n"
+        "    return child.config_entries\n"
+        "\n"
+        "def of_a_parent(hass, device_id):\n"
+        "    reg = dr.async_get(hass)\n"
+        "    return [c.config_entries for c in dr.async_entries_for_parent_device(reg, device_id)]\n"
+    )
+    hits = match_source("custom_components/x/__init__.py", source, [rule])
+    assert [f.line for f in hits] == [4, 9, 16, 20]
 
 
 def test_a_proof_does_not_escape_the_scope_that_earned_it(rule):

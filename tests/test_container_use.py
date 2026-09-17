@@ -150,7 +150,7 @@ def test_an_unproved_receiver_is_never_flagged(container_rules):
 def test_a_mapping_read_of_a_deprecated_field_is_two_breakages(
     shipped_matchable_rules,
 ):
-    """`reg.devices[x].config_entries` breaks twice, in 2027.9 and in 2027.8.
+    """`reg.devices[x].config_entries` breaks twice, in 2027.9 and in 2027.10.
     They are two separate migrations, so both are reported."""
     source = (
         "from homeassistant.helpers import device_registry as dr\n"
@@ -161,7 +161,7 @@ def test_a_mapping_read_of_a_deprecated_field_is_two_breakages(
     assert sorted(
         (f.rule_id, f.breaks_in) for f in match_source("x.py", source, shipped_matchable_rules)
     ) == [
-        ("device-entry-config-entries", "2027.8"),
+        ("device-entry-config-entries", "2027.10"),
         (MAPPING, "2027.9"),
     ]
 

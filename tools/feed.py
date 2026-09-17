@@ -26,8 +26,8 @@ from datetime import UTC, datetime
 from typing import Any
 from xml.sax.saxutils import escape
 
-from tools.rules_engine import parse_version
-from tools.schedule import long_date, release_estimated_date
+from tools.rules_engine import clip, parse_version, reports_before_removal
+from tools.schedule import describe_report, long_date, release_estimated_date
 
 BOARD = "https://booyaka101.github.io/hass-breakage-radar/"
 FEED_URL = f"{BOARD}feed.xml"
@@ -46,7 +46,8 @@ MAX_ITEMS = 12
 MAX_TABLE_ROWS = 20
 
 #: Long enough for a symbol, short enough to read in a list. Prose rules carry
-#: a sentence where the others carry a name.
+#: a sentence where the others carry a name. Counts the ellipsis, so a label
+#: never exceeds it.
 MAX_LABEL = 72
 
 
@@ -98,10 +99,7 @@ def rule_label(rule: dict[str, Any]) -> str:
     ``'{...}'`` placeholder or the rule's slug.
     """
     symbol = " ".join((rule.get("symbol") or "").split())
-    name = symbol or rule["id"]
-    if len(name) > MAX_LABEL:
-        name = name[: MAX_LABEL - 1].rsplit(" ", 1)[0].rstrip(" ,.;:") + "…"
-    return name
+    return clip(symbol or rule["id"], MAX_LABEL - 3)
 
 
 def title_for(release: str) -> str:
@@ -152,6 +150,18 @@ def _message_html(message: str) -> str:
     return text
 
 
+def warns(rule: dict[str, Any]) -> str:
+    """The release a rule starts logging a warning in, when that is earlier.
+
+    No countdown, unlike the board: an item is written once and sits in a
+    reader for months, so "about 20 days away" would be wrong by the time most
+    subscribers read it.
+    """
+    if not reports_before_removal(rule.get("reports_in"), rule.get("breaks_in", "")):
+        return ""
+    return " " + html.escape(describe_report(rule["reports_in"], None)) + "."
+
+
 def _rule_list(rules: list[dict[str, Any]]) -> str:
     items = []
     for rule in rules:
@@ -167,7 +177,9 @@ def _rule_list(rules: list[dict[str, Any]]) -> str:
             where = ""
         hit = rule.get("repos_hit") or 0
         used = f" Used by {hit} {plural(hit, 'integration')}." if hit else ""
-        items.append(f"<li><strong>{label}</strong>: {message}{used}{where}</li>")
+        items.append(
+            f"<li><strong>{label}</strong>: {message}{used}{warns(rule)}{where}</li>"
+        )
     return "<ul>" + "".join(items) + "</ul>"
 
 

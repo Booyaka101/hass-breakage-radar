@@ -104,12 +104,13 @@
       "id": "device-entry-primary-config-entry",
       "kind": "attr",
       "symbol": "DeviceEntry.primary_config_entry",
-      "message": "DeviceEntry.primary_config_entry is deprecated and removed in Home Assistant Core 2027.8 -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Devices are now restricted to a single config entry.",
-      "breaks_in": "2027.8",
-      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "message": "DeviceEntry.primary_config_entry and DeviceEntry.config_entries_subentries are deprecated; use DeviceEntry.config_entry_id and DeviceEntry.config_subentry_id instead. A custom integration reading either logs a warning from Home Assistant Core 2026.10, and 'the properties remain available to custom integrations until Home Assistant Core 2027.10, two releases later than the 2027.8 given in the earlier post.' Devices are restricted to a single config entry. Reading them on a synthesized composite device is exempt and does not report.",
+      "breaks_in": "2027.10",
+      "reports_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2026/09/15/device-entry-config-entries-deprecation",
       "origin": "manual",
       "confidence": "high",
-      "replacement": "DeviceEntry.config_entry_id",
+      "replacement": "DeviceEntry.config_entry_id / DeviceEntry.config_subentry_id",
       "match": {
         "type": "attr_access",
         "names": ["primary_config_entry", "config_entries_subentries"]
@@ -176,7 +177,7 @@
       "id": "device-registry-config-entries-field",
       "kind": "js",
       "symbol": "config_entries (device registry WebSocket field)",
-      "message": "Reads the config_entries field of a device registry WebSocket result. 'Old fields: config_entries, config_entries_subentries, and primary_config_entry. Replacements: config_entry_id and config_subentry_id. Removal: Home Assistant Core 2027.8.' Until then the old field is derived from the new one, so nothing is broken today.",
+      "message": "Reads the config_entries field of a device registry WebSocket result. The replacements are config_entry_id and config_subentry_id; the old fields 'are kept for backwards compatibility and are deprecated; they are scheduled for removal in Home Assistant Core 2027.8.' Until then the old field is derived from the new one, so nothing is broken today. The WebSocket fields keep this date: the move to 2027.10 announced on 2026-09-15 covers the Python DeviceEntry properties only, and that post states the WebSocket API is unaffected.",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
       "origin": "manual",
@@ -192,7 +193,7 @@
       "id": "device-registry-config-entries-subentries-field",
       "kind": "js",
       "symbol": "config_entries_subentries (device registry WebSocket field)",
-      "message": "Reads the config_entries_subentries field of a device registry WebSocket result, removed in Home Assistant Core 2027.8. Use config_subentry_id (and config_entry_id) instead; the old field is derived from them during the deprecation period.",
+      "message": "Reads the config_entries_subentries field of a device registry WebSocket result, removed in Home Assistant Core 2027.8. Use config_subentry_id (and config_entry_id) instead; the old field is derived from them during the deprecation period. The WebSocket fields keep this date: the move to 2027.10 announced on 2026-09-15 covers the Python DeviceEntry properties only, and that post states the WebSocket API is unaffected.",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
       "origin": "manual",
@@ -208,7 +209,7 @@
       "id": "device-registry-primary-config-entry-field",
       "kind": "js",
       "symbol": "primary_config_entry (device registry WebSocket field)",
-      "message": "Reads the primary_config_entry field of a device registry WebSocket result, removed in Home Assistant Core 2027.8. Use config_entry_id instead; a device now belongs to exactly one config entry, so they are the same value.",
+      "message": "Reads the primary_config_entry field of a device registry WebSocket result, removed in Home Assistant Core 2027.8. Use config_entry_id instead; a device now belongs to exactly one config entry, so they are the same value. The WebSocket fields keep this date: the move to 2027.10 announced on 2026-09-15 covers the Python DeviceEntry properties only, and that post states the WebSocket API is unaffected.",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
       "origin": "manual",
@@ -240,12 +241,14 @@
       "id": "device-entry-config-entries",
       "kind": "attr",
       "symbol": "DeviceEntry.config_entries",
-      "message": "DeviceEntry.config_entries is deprecated -- 'Deprecated, use DeviceEntry.config_entry_id instead.' Removed in Home Assistant Core 2027.8. Detected only where the receiver is proven to be a DeviceEntry (a registry lookup, a DeviceEntry annotation, or the async_remove_config_entry_device contract); hass.config_entries is never flagged.",
-      "breaks_in": "2027.8",
-      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry",
+      "message": "DeviceEntry.config_entries is deprecated; use DeviceEntry.config_entry_id instead. A custom integration reading it logs a warning from Home Assistant Core 2026.10, and 'the properties remain available to custom integrations until Home Assistant Core 2027.10, two releases later than the 2027.8 given in the earlier post.' Detected only where the receiver is proven to be a device entry, including a deleted or child device (a registry lookup, an annotation, or the async_remove_config_entry_device contract); hass.config_entries is never flagged. Reading the property on a synthesized composite device is exempt and does not report, but a deleted device and a child device are never composites, so every read on one of those reports.",
+      "breaks_in": "2027.10",
+      "reports_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2026/09/15/device-entry-config-entries-deprecation",
       "origin": "manual",
       "confidence": "high",
       "replacement": "DeviceEntry.config_entry_id",
+      "supersedes": ["core-prose-accesses-which-is-deprecated-because-a-device-belongs-to-a-single"],
       "match": {
         "type": "attr_access_typed",
         "names": [
@@ -257,22 +260,28 @@
           "DeviceRegistry"
         ],
         "entry_types": [
-          "DeviceEntry"
+          "DeviceEntry",
+          "DeletedDeviceEntry",
+          "ChildDeviceEntry"
         ],
         "entry_methods": [
           "async_get",
+          "async_get_child_device_by_identifier",
           "async_get_device",
           "async_get_device_by_connection",
           "async_get_device_by_identifier",
           "async_get_or_create",
+          "async_get_or_create_child",
+          "async_update_child_device",
           "async_update_device"
         ],
         "entry_containers": ["devices", "deleted_devices"],
         "entry_functions": [
+          "async_child_entries_for_config_entry",
           "async_entries_for_area",
           "async_entries_for_config_entry",
-          "async_entries_for_config_subentry",
-          "async_entries_for_label"
+          "async_entries_for_label",
+          "async_entries_for_parent_device"
         ],
         "entry_params": {
           "async_remove_config_entry_device": 3
@@ -402,6 +411,24 @@
         "type": "call_kwarg",
         "names": ["DeviceInfo", "async_get_or_create"],
         "kwargs": ["modified_at"]
+      }
+    },
+    {
+      "id": "modbus-get-hub",
+      "kind": "call",
+      "symbol": "modbus.get_hub",
+      "message": "Calls modbus.get_hub. 'As of Home Assistant Core 2026.10, modbus.get_hub is deprecated. It will be removed in Home Assistant Core 2027.10. Custom integrations that call it get a warning in the log until then, and stop working after that.' The replacement is async_get_unit, and 'This is not a one-to-one swap.' Your config flow has to collect the host, port and unit id the user used to write in the YAML hub.",
+      "breaks_in": "2027.10",
+      "reports_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2026/09/02/modbus-get-hub-deprecation",
+      "origin": "manual",
+      "confidence": "high",
+      "replacement": "async_get_unit",
+      "supersedes": ["blog-modbus-get-hub-deprecation-2027.10"],
+      "match": {
+        "type": "call",
+        "names": ["get_hub"],
+        "modules": ["homeassistant.components.modbus"]
       }
     }
   ]
