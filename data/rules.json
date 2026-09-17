@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-16T03:31:30Z",
+  "generated_utc": "2026-09-17T03:31:15Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "ca5e77e6de494db082547dba2811aff9e4e81946da5a47c546612cfe537d5462",
+  "core_tarball_sha256": "a4aaa3cab904ebd7ac05bebe99f873d8716fe3d2d5b842ba7a3947105fb6296d",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 173,
     "future": 124,
     "matchable_future": 64,
-    "core_files_scanned": 10178,
+    "core_files_scanned": 10184,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -367,13 +367,13 @@
       "symbol": "self._hass",
       "message": "self._hass",
       "breaks_in": "2025.6",
-      "source": "homeassistant/components/camera/__init__.py:1050",
+      "source": "homeassistant/components/camera/__init__.py:1043",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/camera/__init__.py#L1050"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/camera/__init__.py#L1043"
     },
     {
       "id": "core-issue-get-controller-2025.8",
@@ -435,13 +435,13 @@
       "symbol": "self.hass",
       "message": "self.hass",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3068",
+      "source": "homeassistant/config_entries.py:3092",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3068"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3092"
     },
     {
       "id": "core-call-async-get-or-create",
@@ -948,7 +948,7 @@
       "confidence": "medium",
       "matchable": false,
       "expired": false,
-      "occurrences": 4,
+      "occurrences": 2,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L60"
     },
     {
@@ -1224,7 +1224,7 @@
       "symbol": "TemperatureConverter.convert_interval",
       "message": "TemperatureDeltaConverter.convert",
       "breaks_in": "2026.12",
-      "source": "homeassistant/util/unit_conversion.py:874",
+      "source": "homeassistant/util/unit_conversion.py:876",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1239,7 +1239,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L874"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L876"
     },
     {
       "id": "core-classbase-targetselectordata",
@@ -1337,13 +1337,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3259",
+      "source": "homeassistant/config_entries.py:3283",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3259"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3283"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -1643,7 +1643,7 @@
       "confidence": "medium",
       "matchable": false,
       "expired": false,
-      "occurrences": 1,
+      "occurrences": 3,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/flexit/climate.py#L90"
     },
     {
@@ -2328,7 +2328,7 @@
       "symbol": "CONCENTRATION_GRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_GRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:810",
+      "source": "homeassistant/const.py:811",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2343,7 +2343,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L810"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L811"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-foot",
@@ -2351,7 +2351,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:819",
+      "source": "homeassistant/const.py:820",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2366,7 +2366,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L819"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L820"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-meter",
@@ -2374,7 +2374,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:816",
+      "source": "homeassistant/const.py:817",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2389,7 +2389,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L816"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L817"
     },
     {
       "id": "core-import-const-concentration-milligrams-per-cubic-meter",
@@ -2397,7 +2397,7 @@
       "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:813",
+      "source": "homeassistant/const.py:814",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2412,7 +2412,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L813"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L814"
     },
     {
       "id": "core-import-const-concentration-parts-per-billion",
@@ -2420,7 +2420,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_BILLION",
       "message": "CONCENTRATION_PARTS_PER_BILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:828",
+      "source": "homeassistant/const.py:829",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2435,7 +2435,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L828"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L829"
     },
     {
       "id": "core-import-const-concentration-parts-per-cubic-meter",
@@ -2443,7 +2443,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_CUBIC_METER",
       "message": "CONCENTRATION_PARTS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from p/m³ instead.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:822",
+      "source": "homeassistant/const.py:823",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2459,7 +2459,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L822"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L823"
     },
     {
       "id": "core-import-const-concentration-parts-per-million",
@@ -2467,7 +2467,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_MILLION",
       "message": "CONCENTRATION_PARTS_PER_MILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:825",
+      "source": "homeassistant/const.py:826",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2482,7 +2482,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L825"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L826"
     },
     {
       "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
@@ -3056,7 +3056,7 @@
       "symbol": "is_closed",
       "message": "hass.states.is_state(entity_id, 'closed')",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/cover/__init__.py:95",
+      "source": "homeassistant/components/cover/__init__.py:96",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -3071,7 +3071,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L95"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L96"
     },
     {
       "id": "device-entry-config-entries",
@@ -3179,5 +3179,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-17T02:20:38Z"
+  "blog_merged_utc": "2026-09-17T03:31:32Z"
 }
