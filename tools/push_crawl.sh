@@ -21,6 +21,18 @@ for attempt in 1 2 3; do
   fi
   echo "push rejected (attempt ${attempt}); rebasing onto the updated main"
   git fetch origin main
+  # data/rules.json is generated too, but from manual_rules.json and the blog,
+  # and this run generated it before whatever just landed. Keeping our side of
+  # it would drop a rule somebody merged mid-run until tomorrow's crawl derives
+  # it again, so main wins that one file and the crawl's own output wins the
+  # rest.
+  base=$(git merge-base HEAD origin/main)
+  if ! git diff --quiet "${base}" HEAD -- data/rules.json &&
+     ! git diff --quiet "${base}" origin/main -- data/rules.json; then
+    echo "main moved data/rules.json during the run; keeping its copy"
+    git checkout origin/main -- data/rules.json
+    git commit --quiet --amend --no-edit --allow-empty
+  fi
   git rebase -X theirs origin/main || {
     git rebase --abort
     echo "could not rebase cleanly; leaving main alone"

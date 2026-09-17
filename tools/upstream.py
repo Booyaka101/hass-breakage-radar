@@ -41,6 +41,11 @@ DEPRECATION_WORDS = re.compile(r"deprecat|removal|removed|breaking change", re.I
 #: removal still in the future.
 RELEASE_MENTION = re.compile(r"\b20\d\d\.\d+\b")
 
+#: GitHub's own cap on an issue title, so a fact stores the whole of one. A
+#: shorter cut here is a cut in what the relevance score reads, and an issue
+#: that names the symbol late in a long title is a report, not a near miss.
+TITLE_LIMIT = 256
+
 #: How long a recorded fact is trusted before the repository is asked again.
 #: An issue gets closed, renamed, or opened after the crawl last looked.
 FACT_MAX_AGE_DAYS = 7
@@ -125,7 +130,7 @@ def _report(item: dict[str, Any]) -> dict[str, Any]:
         "number": item.get("number"),
         "url": item.get("html_url", ""),
         "state": item.get("state", ""),
-        "title": (item.get("title") or "")[:140],
+        "title": (item.get("title") or "")[:TITLE_LIMIT],
         "reactions": (item.get("reactions") or {}).get("total_count", 0),
     }
 
@@ -135,9 +140,9 @@ def _rank(
 ) -> tuple[int, bool]:
     """How much this one looks like the report, or nothing at all.
 
-    Over the title as :func:`_report` stores it, cut to 140 characters, which
-    is also the title anyone reading the board is shown. An open issue wins a
-    tie: it is the one worth adding a reaction to.
+    Over the title as :func:`_report` stores it, which is the whole one, so a
+    hit and the fact made from it are never scored differently. An open issue
+    wins a tie: it is the one worth adding a reaction to.
     """
     if not report:
         return (0, False)

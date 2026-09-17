@@ -126,6 +126,12 @@ findings stay in the index on purpose, but an "already reported" link nobody can
 was being republished every week and restamped as freshly checked by the failure that
 found it missing.
 
+A rule merged while a crawl is running is no longer rebased away. The crawl takes its
+own side of every generated file it pushes, which is right for an index built from the
+catalogue and wrong for `data/rules.json`: that one is generated from `manual_rules.json`
+and the blog, and the run generated it before the merge landed. Main keeps that one file
+now, so a rule ships the day its pull request lands rather than the day after.
+
 A crawl that does not finish commits only its progress files. The git index survives a
 step, so a publishing step that died after staging `docs/` left the half-built index
 staged for the step that saves progress, which would have pushed the lot under a message
@@ -158,8 +164,10 @@ report drops out and an unrelated "Deprecated YAML config" does not would otherw
 swap the link, and swap it back the run after. A hit that scores higher than the one on
 file is taken as it stands, at no extra request, and a tie goes to the one on file so
 the link does not flip between two issues that score the same. Relevance is scored on
-the title as stored and published, cut to 140 characters, so the search and the fact
-are ranked the same way. A confirmation that errors keeps the report it was checking:
+the title as stored, which is the whole one, so the search and the fact are ranked the
+same way and an issue that names the symbol late in a long title is still the report.
+Repairs cuts the title to 140 characters when it shows it, which is where that number
+belonged. A confirmation that errors keeps the report it was checking:
 one 502 is not news about an issue.
 
 An issue transferred to another repository stops being linked. GitHub answers for it

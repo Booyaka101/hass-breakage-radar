@@ -30,6 +30,10 @@ from .rules_engine import (
 from .schedule import days_until as _schedule_days_until
 from .schedule import describe_when, release_estimated_date  # noqa: F401
 
+#: An upstream issue title as a Repairs card shows it. The crawler stores the
+#: whole one, because that is what it scores relevance on.
+REPORT_TITLE_CHARS = 140
+
 
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
     mapping: dict[str, dict[str, Any]] = {}
@@ -43,6 +47,13 @@ def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
             if domain and domain not in mapping:
                 mapping[domain] = integration
     return mapping
+
+
+def _shown(report: dict[str, Any]) -> dict[str, Any]:
+    """An upstream report with its title cut to what a card can carry."""
+    if not report:
+        return {}
+    return {**report, "title": clip(report.get("title") or "", REPORT_TITLE_CHARS)}
 
 
 def _index_by_card(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -224,10 +235,12 @@ def build_report(
                             rule.get("source_url") or rule.get("source") or ""
                         ),
                         # What the crawler already found upstream, so nobody
-                        # files a report that exists.
+                        # files a report that exists. The title is stored whole
+                        # because that is what the crawler scores it on, and
+                        # shown short because it goes in a Repairs card.
                         "archived": bool(upstream.get("archived")),
                         "issues_enabled": upstream.get("issues_enabled"),
-                        "report": upstream.get("report") or {},
+                        "report": _shown(upstream.get("report") or {}),
                     },
                 )
             rule = rules.get(finding.get("rule_id"), {})

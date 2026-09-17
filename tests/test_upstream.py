@@ -467,9 +467,10 @@ def test_a_weak_hit_is_still_better_than_a_report_that_is_gone(monkeypatch):
 
 
 def test_the_search_and_the_confirmation_read_the_same_title(monkeypatch):
-    """Both score the title as it is stored and published, cut to 140
-    characters. Scoring the full one in either place has them disagreeing
-    about the same issue, and the link flips depending on which found it."""
+    """Both score the title as it is stored, which is the whole of it. Scoring
+    a cut one has them disagreeing about the same issue and the link flipping
+    depending on which found it; cutting it in both throws away a report whose
+    title names the symbol late."""
     item = {
         "number": 41,
         "html_url": "https://github.com/a/one/issues/41",
@@ -482,12 +483,11 @@ def test_the_search_and_the_confirmation_read_the_same_title(monkeypatch):
 
     monkeypatch.setattr("tools.upstream._api", api)
     found = find_report("a/one", "setup_scanner", current_version=NOW, token="x")
-    on_file = {"number": 41, "state": "open", "title": item["title"][:140]}
     confirmed = confirm_report(
-        "a/one", on_file, "setup_scanner", current_version=NOW, token="x"
+        "a/one", found, "setup_scanner", current_version=NOW, token="x"
     )
-    assert found is None
-    assert confirmed is None
+    assert found == confirmed
+    assert found["title"] == item["title"]
 
 
 def test_a_repository_with_no_report_on_file_costs_no_second_request(monkeypatch):

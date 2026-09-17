@@ -119,6 +119,18 @@ def test_every_crawl_commit_goes_through_the_same_push(repo_root):
     assert "for attempt in 1 2 3" in script, "the shared push stopped retrying"
 
 
+def test_a_rule_that_landed_mid_crawl_survives_the_rebase(repo_root):
+    """Taking the crawl's side is right for the files it generates from the
+    catalogue. data/rules.json is generated from manual_rules.json and the
+    blog, so a rule merged while the run was going is only in main's copy."""
+    script = (repo_root / "tools" / "push_crawl.sh").read_text(encoding="utf-8")
+    assert "git checkout origin/main -- data/rules.json" in script
+    assert script.index("git checkout origin/main -- data/rules.json") < script.index(
+        "git rebase -X theirs origin/main"
+    )
+    assert "--amend" in script
+
+
 def test_a_crawl_that_does_not_finish_still_commits_its_progress(repo_root):
     """The scan saves its state every 25 repositories, which buys nothing if
     every step that commits is skipped when the job is cancelled or times out.
