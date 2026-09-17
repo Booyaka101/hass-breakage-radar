@@ -135,6 +135,16 @@ catalogue and wrong for `data/rules.json`: that one is generated from `manual_ru
 and the blog, and the run generated it before the merge landed. Main keeps that one file
 now, so a rule ships the day its pull request lands rather than the day after.
 
+A board change merged while a crawl is running survives the same rebase. `data/`
+is the only thing in `docs/index.html` the crawl generates; the rest is markup from
+`PAGE_TEMPLATE` in `tools/build_index.py`, and the run rendered the page from the
+template it checked out ten minutes earlier. Taking its side of the file therefore
+reverted the merged wording until the next day's run. Measured in a scratch clone: a
+pull request that edits the standfirst, which sits one line above the counters the
+crawl rewrites, disappeared from the pushed page. The page is rendered again after the
+rebase now, so the merged template and this run's data land together, and a run that
+publishes no board does not render one.
+
 A crawl that does not finish commits only its progress files. The git index survives a
 step, so a publishing step that died after staging `docs/` left the half-built index
 staged for the step that saves progress, which would have pushed the lot under a message

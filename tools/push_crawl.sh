@@ -38,6 +38,18 @@ for attempt in 1 2 3; do
     echo "could not rebase cleanly; leaving main alone"
     exit 1
   }
+  # The board is markup rendered from a template in tools/, so a run that
+  # publishes it rendered it from the copy it started with, and taking the
+  # crawl's side of the page drops a template change that landed mid-run.
+  # Rendering again on top of what is now checked out puts both in the file.
+  if ! git diff --quiet origin/main HEAD -- docs/index.html; then
+    # A render that fails leaves the page this run built, which is what the
+    # push was about to carry anyway.
+    if python tools/build_index.py >/dev/null; then
+      git add docs/index.json docs/index.html docs/feed.xml docs/feed.xsl state/feed.json
+      git diff --cached --quiet || git commit --quiet --amend --no-edit
+    fi
+  fi
 done
 echo "still could not push after three attempts"
 exit 1
