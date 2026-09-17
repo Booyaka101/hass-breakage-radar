@@ -100,3 +100,17 @@ def test_a_page_without_the_element_is_read_whole():
     assert _post_body("<html><body><p>removed in 2027.10</p></body></html>").startswith(
         "<html>"
     )
+
+
+def test_a_sentence_broken_over_a_line_break_is_quoted_whole():
+    """Markdown renders a hard-wrapped line as <br>, mid-sentence. Read as a
+    block boundary, the rule quotes the page from the break onwards."""
+    post = POST.replace(
+        "<p>The widget helper has been deprecated and will be\nremoved in Home Assistant 2027.10.</p>",
+        "<p>The widget helper has been deprecated<br />and will be removed in "
+        "Home Assistant 2027.10.</p>",
+    )
+    assert post != POST
+    rules = extract_removals(URL, _text(_post_body(post)))
+    message = next(r["message"] for r in rules if r["breaks_in"] == "2027.10")
+    assert message.startswith("The widget helper has been deprecated and will be")

@@ -347,6 +347,23 @@ def test_a_weak_hit_is_still_better_than_a_report_that_is_gone(monkeypatch):
     assert facts["report"] == weak
 
 
+def test_a_long_titled_report_is_still_asked_about(monkeypatch):
+    """Titles are stored cut to 140 characters, so one that names the symbol
+    after that ranks at nothing however relevant the issue is."""
+    live = {
+        "number": 41,
+        "html_url": "https://github.com/a/one/issues/41",
+        "state": "closed",
+        "title": "Bug report about the integration " + "x" * 120 + " setup_scanner",
+    }
+    _searched(monkeypatch, live)
+    known = {"number": 41, "state": "closed", "title": live["title"][:140]}
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=known, token="x"
+    )
+    assert facts["report"]["number"] == 41
+
+
 def test_a_repository_with_no_report_on_file_costs_no_second_request(monkeypatch):
     _search_found_nothing(monkeypatch, AssertionError("asked for nothing"))
     assert look_up("a/one", "setup_scanner", current_version=NOW, token="x") == {

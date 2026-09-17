@@ -228,7 +228,11 @@ def look_up(
         )
         time.sleep(SEARCH_INTERVAL)
         found = _rank(report, term, current_version=current_version)
-        if known and _rank(known, term, current_version=current_version) > found:
+        # Ranked on the title as stored, which is cut to 140 characters, so a
+        # long one can rank at nothing. A search that came back with nothing is
+        # reason enough to ask on its own.
+        outranked = _rank(known, term, current_version=current_version) > found
+        if known and (report is None or outranked):
             current = confirm_report(
                 full_name, known, term, current_version=current_version, token=token
             )

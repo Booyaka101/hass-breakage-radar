@@ -83,10 +83,12 @@ _HSPACE_RE = re.compile(r"[^\S\n]+")
 _ZERO_WIDTH_RE = re.compile("[\u200b\u200c\u200d\ufeff]")
 _LOOSE_PUNCT_RE = re.compile(r" +([.,;:!?])")
 #: Both ends of every element that starts a new line of prose. Closing tags on
-#: their own leave a nested list or a table cell running into the text beside it.
+#: their own leave a nested list or a table cell running into the text beside
+#: it. Not ``br``: a line break inside a paragraph is a soft wrap like any
+#: other, and a sentence broken over one would be quoted from the break on.
 _BLOCK_RE = re.compile(
     r"(?i)</?(?:p|div|li|ul|ol|h[1-6]|table|tr|td|th|blockquote|pre|section"
-    r"|article|header|footer|nav|main|aside|br)\b[^>]*>"
+    r"|article|header|footer|nav|main|aside)\b[^>]*>"
 )
 _POST_HREF_RE = re.compile(r'href="(/blog/\d{4}/\d{2}/\d{2}/[a-z0-9\-._]+)"', re.I)
 _ARTICLE_RE = re.compile(r"(?is)<article\b.*</article>")

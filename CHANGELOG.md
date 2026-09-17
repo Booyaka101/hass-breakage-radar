@@ -69,6 +69,11 @@ scoped to the `<article>` now, falling back to the whole page if a redesign ever
 it. Over all 83 posts that is 3 856 lines of chrome gone and the same 19 rules, ids and
 messages byte for byte.
 
+A `<br>` is not a block boundary either. Markdown renders a hard-wrapped line as one,
+mid-sentence, and reading it as the start of a new line of prose quotes the post from
+the break onwards. None of the 55 cached posts that contain one produced a different
+rule either way, so this is a trap rather than a bug on today's blog.
+
 ### One `--limit` for the whole run
 
 `--limit` bounds the repositories a run scans, and upstream lookups kept their own
@@ -86,7 +91,7 @@ their own fix.
 Every affected repository is offered on every run now, including the ones delisted from
 HACS that keep their findings, and including on a day with nothing to scan, which is
 most days. A fact is asked about again when it is more than a week old, or when the rule
-behind it has been re-aimed since, oldest first, and a run stops after 400 requests. That
+behind it has been re-aimed since, oldest first, and a run asks about 400 repositories at most. That
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
 
