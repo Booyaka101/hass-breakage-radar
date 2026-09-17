@@ -174,6 +174,11 @@ def find_report(
     return best[1] if best else None
 
 
+def _owner_repo(api_url: str) -> str:
+    """The ``owner/name`` an API url points at."""
+    return "/".join(api_url.rstrip("/").split("/")[-2:])
+
+
 def confirm_report(
     full_name: str,
     report: dict[str, Any],
@@ -181,6 +186,7 @@ def confirm_report(
     *,
     current_version: str,
     token: str,
+    canonical: str = "",
 ) -> dict[str, Any] | None:
     """The report already on file, as the repository has it now, or None.
 
@@ -198,12 +204,13 @@ def confirm_report(
         if err.code in (404, 410):
             return None
         raise
-    if item.get("number") != number:
-        # A transferred issue answers from wherever it went, under that
-        # repository's numbering, and recording that number here would have
-        # the next run asking for an unrelated issue of ours by the same one.
-        # A plain rename answers with the number asked for, which is the same
-        # issue and worth keeping.
+    where = _owner_repo(item.get("repository_url") or "")
+    if item.get("number") != number or (where and where != (canonical or full_name)):
+        # A transferred issue answers from the repository it went to, so it is
+        # that repository's report now and linking it here sends people
+        # somewhere the integration is not. A rename answers from the new name,
+        # which is where ``canonical`` comes from: the repository lookup this
+        # run already made followed the same redirect.
         return None
     current = _report(item)
     if _rank(current, term, current_version=current_version)[0] <= 0:
@@ -217,6 +224,10 @@ def repo_facts(full_name: str, *, token: str) -> dict[str, Any]:
     return {
         "archived": bool(data.get("archived")),
         "issues_enabled": bool(data.get("has_issues")),
+        # The name it answers under, which is the new one when the repository
+        # has been renamed since the catalogue listed it. Not part of the fact
+        # that gets stored; :func:`look_up` takes it out again.
+        "canonical": data.get("full_name") or full_name,
     }
 
 
@@ -241,12 +252,18 @@ def look_up(
     if not token:
         return {}
     facts = repo_facts(full_name, token=token)
+    canonical = facts.pop("canonical", full_name)
     if known and not facts["issues_enabled"] and not facts["archived"]:
         # Turning issues off hides the existing ones, and the API answers 404
         # or 410 for them, which is what drops the link. Saying "nowhere to
         # report it" while the report is still there to read would be worse.
         current = _confirmed(
-            full_name, known, term, current_version=current_version, token=token
+            full_name,
+            known,
+            term,
+            current_version=current_version,
+            token=token,
+            canonical=canonical,
         )
         if current:
             facts["report"] = current
@@ -275,7 +292,12 @@ def look_up(
             and _rank(known, term, current_version=current_version) >= found
         ):
             current = _confirmed(
-                full_name, known, term, current_version=current_version, token=token
+                full_name,
+                known,
+                term,
+                current_version=current_version,
+                token=token,
+                canonical=canonical,
             )
             if current and _rank(current, term, current_version=current_version) >= found:
                 report = current

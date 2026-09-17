@@ -378,8 +378,9 @@ def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
 
 
 def test_a_report_on_a_renamed_repository_is_kept(monkeypatch):
-    """A rename answers from the new name, redirected, with the number asked
-    for. It is the same issue, and the catalogue catches up on its own."""
+    """A rename redirects the repository and its issues alike, so both answer
+    from the new name. It is the same issue, and the catalogue catches up on
+    its own."""
     _search_found_nothing(
         monkeypatch,
         {
@@ -391,10 +392,40 @@ def test_a_report_on_a_renamed_repository_is_kept(monkeypatch):
             "reactions": {"total_count": 3},
         },
     )
+    monkeypatch.setattr(
+        "tools.upstream.repo_facts",
+        lambda *a, **k: {
+            "archived": False,
+            "issues_enabled": True,
+            "canonical": "a/one-renamed",
+        },
+    )
     facts = look_up(
         "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
     )
     assert facts["report"]["number"] == 41
+    assert "canonical" not in facts, "the fact is about the repository, not its name"
+
+
+def test_a_report_transferred_onto_the_same_number_is_not_kept(monkeypatch):
+    """A transfer takes the destination's next free number, which is the one
+    asked for often enough that the number cannot tell a transfer from a
+    rename. Where the answer came from can."""
+    _search_found_nothing(
+        monkeypatch,
+        {
+            "number": 41,
+            "repository_url": "https://api.github.com/repos/c/elsewhere",
+            "html_url": "https://github.com/c/elsewhere/issues/41",
+            "state": "open",
+            "title": "setup_scanner is deprecated",
+            "reactions": {"total_count": 3},
+        },
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert "report" not in facts
 
 
 def test_a_report_that_is_gone_is_not_carried_forward(monkeypatch):

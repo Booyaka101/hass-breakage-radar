@@ -143,3 +143,14 @@ def test_a_sentence_broken_over_a_line_break_is_quoted_whole():
     rules = extract_removals(URL, _text(_post_body(post)))
     message = next(r["message"] for r in rules if r["breaks_in"] == "2027.10")
     assert message.startswith("The widget helper has been deprecated and will be")
+
+
+def test_a_sentence_that_names_one_deadline_twice_makes_one_rule():
+    """"Supported until 2027.4 and removed in 2027.5" is one removal said two
+    ways. Taking both hands the board a deadline a release too early."""
+    rules = extract_removals(
+        "https://www.home-assistant.io/blog/2027/01/01/thing",
+        "The old API is supported until 2027.4 and will be removed in "
+        "Home Assistant Core 2027.5.",
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.5"]

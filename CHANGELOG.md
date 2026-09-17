@@ -89,11 +89,13 @@ mid-sentence, and reading it as the start of a new line of prose quotes the post
 the break onwards. None of the 55 cached posts that contain one produced a different
 rule either way, so this is a trap rather than a bug on today's blog.
 
-Because of that, a rule is made for every release a sentence names rather than the
-first one in it. A post that lists two removals as hard-wrapped lines of one paragraph
-is a single sentence once the wraps are soft again, and the second removal would have
-been a rule nobody could see missing. Measured over all 83 posts: the same rules, the
-same messages.
+Because of that, a rule is made for every release a sentence names in the same words,
+rather than the first one it names. A post that lists two removals as hard-wrapped
+lines of one paragraph is a single sentence once the wraps are soft again, and the
+second removal would have been a rule nobody could see missing. One sentence still
+makes one deadline per phrasing, because "supported until 2027.4 and removed in 2027.5"
+is one removal said two ways and the earlier half of it warns a release too soon.
+Measured over all 83 posts: the same rules, the same messages.
 
 ### One `--limit` for the whole run
 
@@ -171,10 +173,12 @@ belonged. A confirmation that errors keeps the report it was checking:
 one 502 is not news about an issue.
 
 An issue transferred to another repository stops being linked. GitHub answers for it
-from wherever it went, under that repository's numbering, so recording the number it
-comes back with had the next run asking for an unrelated issue of ours by the same one.
-A repository that was merely renamed answers with the number asked for, which is the
-same issue, and keeps its link.
+from wherever it went, so the link pointed at a repository the integration is not in,
+and the number it comes back with is that repository's, which had the next run asking
+for an unrelated issue of ours by the same one. The answer has to come from the
+repository being asked about, whatever it is called now: a rename redirects the
+repository lookup and the issue alike, so the name that lookup answered under is the
+one the check reads.
 
 A repository that has turned issues off is still asked about the report it is on file
 for. Turning them off hides the existing ones, and the API answers 404 or 410 for them,

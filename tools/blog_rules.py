@@ -162,9 +162,15 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
 
     for sentence in _sentences(text):
         for pattern in REMOVAL_PATTERNS:
-            for match in pattern.finditer(sentence):
-                version = normalise_version(match.group(1))
-                if not VERSION_RE.match(version) or version in found:
+            versions = [
+                version
+                for match in pattern.finditer(sentence)
+                if VERSION_RE.match(version := normalise_version(match.group(1)))
+            ]
+            if not versions:
+                continue
+            for version in versions:
+                if version in found:
                     continue
                 trimmed = sentence if len(sentence) <= 400 else sentence[:397] + "..."
                 found[version] = {
@@ -178,6 +184,10 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
                     "confidence": "info",
                     "matchable": False,
                 }
+            # One phrasing per sentence. "Supported until 2027.4 and removed in
+            # 2027.5" is one deadline said twice, and the earlier half of it
+            # would warn a release too soon.
+            break
     return list(found.values())
 
 
