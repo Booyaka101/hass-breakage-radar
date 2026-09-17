@@ -10,8 +10,15 @@ from __future__ import annotations
 
 import pytest
 
+from tools.common import utc_now_iso
 from tools.rules_engine import rule_search_term, search_term
 from tools.upstream import annotate, relevance
+
+#: The release core is building, which is what the crawler passes.
+NOW = "2026.10"
+
+SOON = {"soon": {"symbol": "setup_scanner"}}
+FINDING = [{"rule_id": "soon", "breaks_in": "2027.9"}]
 
 
 @pytest.mark.parametrize(
@@ -62,8 +69,8 @@ def test_a_release_still_to_come_counts_on_its_own():
 
 
 def test_a_symbol_in_the_title_outranks_a_generic_deprecation_notice():
-    named = relevance("async_get_device is deprecated", "async_get_device")
-    generic = relevance("Upcoming breaking changes", "async_get_device")
+    named = relevance("async_get_device is deprecated", "async_get_device", current_version="2026.10")
+    generic = relevance("Upcoming breaking changes", "async_get_device", current_version="2026.10")
     assert named > generic > 0
 
 
@@ -87,7 +94,7 @@ def test_the_finding_looked_up_is_the_one_that_breaks_soonest(monkeypatch):
         }
     }
     rules = {"soon": {"symbol": "setup_scanner"}, "later": {"symbol": "async_get_device"}}
-    assert annotate(records, rules) == 1
+    assert annotate(records, rules, current_version=NOW) == 1
     assert asked == ["setup_scanner"]
     assert records["a/one"]["upstream"]["symbol"] == "setup_scanner"
 
@@ -95,7 +102,7 @@ def test_the_finding_looked_up_is_the_one_that_breaks_soonest(monkeypatch):
 def test_a_repository_with_nothing_left_loses_its_upstream_fact(monkeypatch):
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     records = {"a/one": {"findings": [], "upstream": {"symbol": "setup_scanner"}}}
-    assert annotate(records, {}) == 0
+    assert annotate(records, {}, current_version=NOW) == 0
     assert "upstream" not in records["a/one"]
 
 
@@ -116,7 +123,7 @@ def test_a_rule_can_name_the_term_its_repositories_are_searched_for(monkeypatch)
             "search": "device_registry.devices",
         }
     }
-    assert annotate(records, rules) == 1
+    assert annotate(records, rules, current_version=NOW) == 1
     assert asked == ["device_registry.devices"]
     assert records["a/one"]["upstream"]["symbol"] == "device_registry.devices"
 
@@ -132,13 +139,12 @@ def test_the_lookup_budget_goes_to_the_oldest_facts(monkeypatch):
         return {"archived": False, "issues_enabled": True}
 
     monkeypatch.setattr("tools.upstream.look_up", fake_look_up)
-    finding = [{"rule_id": "soon", "breaks_in": "2027.9"}]
     records = {
-        "a/fresh": {"findings": finding, "upstream": {"checked_utc": "2026-09-16T00:00:00Z"}},
-        "b/stale": {"findings": finding, "upstream": {"checked_utc": "2026-01-01T00:00:00Z"}},
-        "c/never": {"findings": finding},
+        "a/fresh": {"findings": FINDING, "upstream": {"checked_utc": "2026-09-16T00:00:00Z"}},
+        "b/stale": {"findings": FINDING, "upstream": {"checked_utc": "2026-01-01T00:00:00Z"}},
+        "c/never": {"findings": FINDING},
     }
-    assert annotate(records, {"soon": {"symbol": "setup_scanner"}}, limit=2) == 2
+    assert annotate(records, SOON, current_version=NOW, limit=2) == 2
     assert asked == ["c/never", "b/stale"]
 
 
@@ -149,10 +155,57 @@ def test_a_fact_records_when_it_was_checked(monkeypatch):
         lambda *a, **k: {"archived": False, "issues_enabled": True},
     )
     monkeypatch.setattr("tools.upstream.utc_now_iso", lambda: "2026-09-17T12:00:00Z")
-    records = {"a/one": {"findings": [{"rule_id": "soon", "breaks_in": "2027.9"}]}}
-    annotate(records, {"soon": {"symbol": "setup_scanner"}})
+    records = {"a/one": {"findings": FINDING}}
+    annotate(records, SOON, current_version=NOW)
     assert records["a/one"]["upstream"]["checked_utc"] == "2026-09-17T12:00:00Z"
 
+
+def _never_called(*args, **kwargs):
+    raise AssertionError("looked a repository up when its fact was still good")
+
+
+def test_a_fact_that_is_still_good_costs_no_lookup(monkeypatch):
+    """Every affected repository is offered on every run, not just the ones
+    the slice rescanned, so freshness is what keeps a run finite."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr("tools.upstream.look_up", _never_called)
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {"symbol": "setup_scanner", "checked_utc": utc_now_iso()},
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 0
+
+
+def test_a_fact_the_rule_no_longer_aims_at_is_refreshed_however_fresh(monkeypatch):
+    """The 14 wrong `devices` links were all recorded yesterday. Age alone
+    would have kept every one of them published."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    records = {
+        "a/one": {
+            "findings": [{"rule_id": "mapping", "breaks_in": "2027.9"}],
+            "upstream": {"symbol": "devices", "checked_utc": utc_now_iso()},
+        }
+    }
+    rules = {"mapping": {"symbol": "DeviceRegistry.devices", "search": "device_registry.devices"}}
+    assert annotate(records, rules, current_version=NOW) == 1
+    assert records["a/one"]["upstream"]["symbol"] == "device_registry.devices"
+
+
+def test_a_fact_older_than_the_max_age_is_asked_again(monkeypatch):
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    fresh = {"symbol": "setup_scanner", "checked_utc": utc_now_iso()}
+    records = {"a/one": {"findings": FINDING, "upstream": fresh}}
+    assert annotate(records, SOON, current_version=NOW, max_age_days=0) == 1
 
 @pytest.mark.parametrize(
     "rule,expected",

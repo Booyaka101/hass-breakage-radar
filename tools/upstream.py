@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from tools.common import LOGGER, utc_now_iso
@@ -34,10 +35,14 @@ SEARCH_INTERVAL = 2.1
 DEPRECATION_WORDS = re.compile(r"deprecat|removal|removed|breaking change", re.I)
 
 #: A core release named in a title, which is how a lot of these reports are
-#: worded. Only a release the current one has not passed counts: a title naming
-#: an older one is a bug in that release, not an answer to a removal still in
-#: the future.
+#: worded. Only a release core has not shipped yet counts: a title naming one
+#: users are already running is a bug in that release, not an answer to a
+#: removal still in the future.
 RELEASE_MENTION = re.compile(r"\b20\d\d\.\d+\b")
+
+#: How long a recorded fact is trusted before the repository is asked again.
+#: An issue gets closed, renamed, or opened after the crawl last looked.
+FACT_MAX_AGE_DAYS = 7
 
 
 class SearchExhausted(RuntimeError):
@@ -70,8 +75,12 @@ def _api(path: str, *, token: str, params: dict[str, str] | None = None) -> Any:
         raise
 
 
-def relevance(title: str, term: str, *, current_version: str = "") -> int:
-    """How much an issue title looks like it is about this deprecation."""
+def relevance(title: str, term: str, *, current_version: str) -> int:
+    """How much an issue title looks like it is about this deprecation.
+
+    ``current_version`` is the release core is building, so a title naming it
+    is about something nobody is running yet.
+    """
     score = 0
     if term and term.lower() in title.lower():
         score += 2
@@ -86,7 +95,7 @@ def relevance(title: str, term: str, *, current_version: str = "") -> int:
 
 
 def find_report(
-    full_name: str, term: str, *, current_version: str = "", token: str
+    full_name: str, term: str, *, current_version: str, token: str
 ) -> dict[str, Any] | None:
     """The most relevant existing issue matching ``term``, or None.
 
@@ -132,7 +141,7 @@ def repo_facts(full_name: str, *, token: str) -> dict[str, Any]:
 
 
 def look_up(
-    full_name: str, term: str, *, current_version: str = "", token: str | None = None
+    full_name: str, term: str, *, current_version: str, token: str | None = None
 ) -> dict[str, Any]:
     """Repository facts plus any existing report. Never raises except when the
     rate limit is spent, which the caller uses to stop early."""
@@ -153,8 +162,9 @@ def look_up(
 def _staleness(item: tuple[str, Any]) -> str:
     """Sort key: oldest fact first, never-looked-up repositories before those.
 
-    A run stops at ``limit`` lookups, so without this the budget goes to
-    whichever repositories sort first by name, every single day.
+    A run stops at ``limit`` lookups and there are more affected repositories
+    than that, so without this the budget goes to whichever ones sort first by
+    name, every single day.
     """
     return (item[1].get("upstream") or {}).get("checked_utc") or ""
 
@@ -163,10 +173,18 @@ def annotate(
     records: dict[str, Any],
     rules_by_id: dict[str, Any],
     *,
+    current_version: str,
     limit: int = 400,
-    current_version: str = "",
+    max_age_days: int = FACT_MAX_AGE_DAYS,
 ) -> int:
     """Add upstream facts to scan records that have findings.
+
+    Offer every affected repository, not just the ones a slice rescanned: a
+    repository that cuts no release is otherwise never looked up again and its
+    fact stays published however wrong it has gone. A fact younger than
+    ``max_age_days`` that is still filed under the term its rule asks for is
+    left alone, so a run spends its lookups on the oldest ones and on the rules
+    that have been re-aimed since.
 
     Returns how many were looked up. Anything that fails is skipped rather
     than allowed to fail the crawl: this is extra context, not the product.
@@ -176,6 +194,9 @@ def annotate(
         LOGGER.info("no GITHUB_TOKEN; skipping upstream issue lookup")
         return 0
 
+    stale_before = (
+        datetime.now(UTC) - timedelta(days=max_age_days)
+    ).strftime("%Y-%m-%dT%H:%M:%SZ")
     done = 0
     for full_name, record in sorted(records.items(), key=_staleness):
         if done >= limit:
@@ -187,6 +208,9 @@ def annotate(
         earliest = min(findings, key=lambda f: parse_version(f.get("breaks_in", "")))
         rule = rules_by_id.get(earliest.get("rule_id"), {})
         term = rule_search_term(rule)
+        fact = record.get("upstream") or {}
+        if fact.get("symbol") == term and fact.get("checked_utc", "") > stale_before:
+            continue
         try:
             facts = look_up(
                 full_name, term, current_version=current_version, token=token

@@ -455,6 +455,64 @@ def test_the_current_release_reaches_the_upstream_lookup(tmp_path, monkeypatch):
     assert seen["rules"][RULE.id] == {"symbol": "setup_scanner", "search": None}
 
 
+def test_a_repository_outside_the_slice_is_still_offered_for_a_lookup(
+    tmp_path, monkeypatch
+):
+    """A repository that cuts no release is never in a slice again, so a
+    lookup over the slice alone left its recorded issue published for good,
+    however wrong the fact had gone."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+    (tmp_path / "findings.json").write_text(
+        json.dumps(
+            {
+                "schema": 1,
+                "repos": {
+                    "b/two": {
+                        "domain": "two",
+                        "status": "scanned",
+                        "findings": [
+                            {
+                                "rule_id": RULE.id,
+                                "breaks_in": "2027.5",
+                                "file": "custom_components/two/device_tracker.py",
+                                "line": 7,
+                                "confidence": "high",
+                            }
+                        ],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    def fake_scan_repo(entry, rules, fetched=None):
+        return (
+            {
+                "domain": entry["domain"],
+                "version": entry["last_version"],
+                "ref": "refs/tags/1.0.0",
+                "status": "scanned",
+                "scanned_utc": "2026-08-08T00:00:00Z",
+                "files_scanned": 1,
+                "syntax_errors": 0,
+                "findings": [],
+            },
+            [],
+        )
+
+    offered: list[str] = []
+
+    def fake_annotate(records, rules_by_id, **kwargs):
+        offered.extend(sorted(records))
+        return 0
+
+    monkeypatch.setattr(scan_module, "scan_repo", fake_scan_repo)
+    monkeypatch.setattr(scan_module, "annotate", fake_annotate)
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--limit", "1")) == 0
+    assert offered == ["a/one", "b/two"]
+
+
 def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, caplog):
     """1 519 files failed to parse on the 1.12.0 rescan because it ran on 3.11
     against rules extracted on 3.14, and the findings in them vanished without

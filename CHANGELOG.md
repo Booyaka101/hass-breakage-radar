@@ -58,12 +58,18 @@ a release two behind and misspells the only word that would have carried it. Tit
 naming a release still to come are unaffected, including eltako's "Home Assistant 2027.8
 API changes" and luxtronik2's "adapt to the HA device registry changes before 2027.8".
 
-### The lookup budget goes to the oldest facts
+### Every affected repository gets its facts checked again
 
-`annotate` stops after 400 lookups and walked the records in catalogue order, so the
-same few hundred repositories were refreshed every day and the rest never were. Facts
-carry `checked_utc` now, and a run takes the oldest first with the never-looked-up ones
-before those.
+`annotate` was only shown the repositories the slice had just rescanned, and a slice
+skips anything whose version and matchers are both unchanged. A repository that cuts no
+release was therefore never asked about again, and its recorded issue stayed in the
+index for good: the 14 wrong `devices` links and the 8 titles above would have outlived
+their own fix.
+
+Every affected repository is offered on every run now. A fact is asked about again when
+it is more than a week old, or when the rule behind it has been re-aimed since, oldest
+first, and a run still stops after 400 lookups. That is about two days' worth for the
+826 affected repositories, and it is why facts carry `checked_utc`.
 
 ## 1.15.0 — 2026-09-17
 

@@ -705,8 +705,9 @@ def main(argv: list[str] | None = None) -> int:
     checkpoint()
 
     if not args.no_upstream:
-        scanned_now = {n: repos[n] for n in (e["full_name"] for e in todo) if n in repos}
-        looked_up = annotate(scanned_now, rules_by_id, current_version=current_version)
+        catalogued = {entry["full_name"] for entry in catalog}
+        known = {n: r for n, r in repos.items() if n in catalogued}
+        looked_up = annotate(known, rules_by_id, current_version=current_version)
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
             checkpoint()
