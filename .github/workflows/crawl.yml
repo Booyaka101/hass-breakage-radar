@@ -97,32 +97,9 @@ jobs:
           else
             git checkout -- data/rules.json
           fi
-          if git diff --cached --quiet; then
-            echo "No index changes to commit."
-            exit 0
-          fi
           SCANNED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_scanned'])")
           AFFECTED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_affected'])")
-          git commit -m "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
-
-          # A slice takes about ten minutes, so main can move while it runs.
-          # These files are generated, not authored, so the run's own side is
-          # always the right answer for them, and rebase calls that side
-          # theirs: ours is the branch being replayed onto, origin/main.
-          for attempt in 1 2 3; do
-            if git push; then
-              exit 0
-            fi
-            echo "push rejected (attempt ${attempt}); rebasing onto the updated main"
-            git fetch origin main
-            git rebase -X theirs origin/main || {
-              git rebase --abort
-              echo "could not rebase cleanly; leaving main alone"
-              exit 1
-            }
-          done
-          echo "still could not push after three attempts"
-          exit 1
+          bash tools/push_crawl.sh "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
 
       - name: Save the crawl progress if the run did not finish
         # The scan writes its progress to disk every 25 repositories, and the
@@ -142,15 +119,8 @@ jobs:
           # publishing stays the business of a run that got that far, and a
           # commit the step above made and could not push stays unpushed.
           git add data/catalog.json data/findings.json state/crawl.json
-          if git diff --cached --quiet; then
-            echo "No progress to save."
-            exit 0
-          fi
           # Whatever else the run had rewritten by then, the rule stamps or a
           # half-built index, is not being committed, and rebasing needs the
           # working tree clean.
           git checkout -- .
-          git commit -m "chore(crawl): save progress from a run that did not finish"
-          git fetch origin main
-          git rebase -X theirs origin/main
-          git push
+          bash tools/push_crawl.sh "chore(crawl): save progress from a run that did not finish"

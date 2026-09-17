@@ -91,7 +91,7 @@ _BLOCK_RE = re.compile(
     r"|article|header|footer|nav|main|aside)\b[^>]*>"
 )
 _POST_HREF_RE = re.compile(r'href="(/blog/\d{4}/\d{2}/\d{2}/[a-z0-9\-._]+)"', re.I)
-_ARTICLE_RE = re.compile(r"(?is)<article\b.*</article>")
+_ARTICLE_RE = re.compile(r"(?is)<article\b.*?</article>")
 
 
 def _text(markup: str) -> str:
@@ -115,9 +115,13 @@ def _post_body(markup: str) -> str:
     they render before the post, so a release named in one of them would be
     quoted instead of the post's own sentence. Falling back to the whole page
     keeps a redesign from quietly producing no rules at all.
+
+    A post page carries one ``article`` today. If a redesign ever wraps the
+    listed posts in one each, the longest is still the post being read, where
+    spanning from the first to the last would put the chrome back.
     """
-    match = _ARTICLE_RE.search(markup)
-    return match.group(0) if match else markup
+    articles = _ARTICLE_RE.findall(markup)
+    return max(articles, key=len) if articles else markup
 
 
 def _slug(text: str) -> str:

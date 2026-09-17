@@ -95,6 +95,21 @@ def test_a_post_listed_in_the_sidebar_is_not_quoted_as_this_post():
     assert not any("legacy API" in rule["message"] for rule in rules)
 
 
+def test_the_post_is_the_longest_article_on_the_page():
+    """Today's pages carry one. A redesign that wraps each listed post in an
+    article of its own would put the chrome back in, reading from the first
+    one to the last."""
+    listed = POST.replace(
+        '<main><article class="">',
+        '<article class="teaser"><h2>The legacy API will be removed in '
+        "2027.2</h2></article>"
+        '<main><article class="">',
+    )
+    assert listed != POST
+    rules = extract_removals(URL, _text(_post_body(listed)))
+    assert [rule["breaks_in"] for rule in rules] == ["2027.10", "2027.4"]
+
+
 def test_a_page_without_the_element_is_read_whole():
     """A Docusaurus redesign should cost the chrome fix, not every rule."""
     assert _post_body("<html><body><p>removed in 2027.10</p></body></html>").startswith(

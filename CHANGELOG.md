@@ -79,6 +79,11 @@ scoped to the `<article>` now, falling back to the whole page if a redesign ever
 it. Over all 83 posts that is 3 856 lines of chrome gone and the same 19 rules, ids and
 messages byte for byte.
 
+The post is the longest `<article>` on the page, not everything from the first one to
+the last. All 83 posts carry exactly one today and the extracted text is identical
+either way, but a redesign that wrapped each listed post in an article of its own would
+otherwise have put the chrome straight back.
+
 A `<br>` is not a block boundary either. Markdown renders a hard-wrapped line as one,
 mid-sentence, and reading it as the start of a new line of prose quotes the post from
 the break onwards. None of the 55 cached posts that contain one produced a different
@@ -132,6 +137,10 @@ the title as stored and published, cut to 140 characters, so the search and the 
 are ranked the same way. A confirmation that errors keeps the report it was checking:
 one 502 is not news about an issue.
 
+An issue transferred to another repository stops being linked. GitHub answers for it
+from wherever it went, with that repository's numbering, so recording the number it
+comes back with had the next run asking for an unrelated issue of ours by the same one.
+
 A repository that has turned issues off is still asked about the report it is on file
 for. Turning them off hides the existing ones, and the API answers 404 or 410 for them,
 which is what drops the link. Assuming it from the flag turns "already reported, here
@@ -147,6 +156,10 @@ stays the business of a run that got that far, and a run whose suite rejected th
 data saves nothing at all. A run with no lookup to make saves too:
 a repository whose findings are all gone drops its upstream fact either way, and on most
 days there is no lookup to save it alongside.
+
+Both crawl commits go through one `tools/push_crawl.sh`, which retries onto a main that
+moved while the run was going. The progress commit pushed once and gave up, which is the
+one commit nothing else would have kept.
 
 The crawl's rebase onto a moved `main` kept the wrong side of a conflict. Rebase swaps
 the names, so `ours` there is `origin/main` and `theirs` is the commit being replayed,

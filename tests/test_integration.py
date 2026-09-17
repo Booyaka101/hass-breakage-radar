@@ -93,13 +93,30 @@ def test_the_crawl_rebases_onto_main_keeping_its_own_side(repo_root):
     """Rebase swaps the names: ours is origin/main, the branch being replayed
     onto, and theirs is the crawl's own commit. `-X ours` on a generated file
     therefore throws away the refresh the run just spent ten minutes on."""
-    workflow = (repo_root / ".github" / "workflows" / "crawl.yml").read_text(
-        encoding="utf-8"
-    )
-    onto = re.findall(r"^\s*git rebase.*origin/main.*$", workflow, re.M)
+    sources = [
+        (repo_root / ".github" / "workflows" / "crawl.yml").read_text(encoding="utf-8"),
+        (repo_root / "tools" / "push_crawl.sh").read_text(encoding="utf-8"),
+    ]
+    onto = [
+        line
+        for source in sources
+        for line in re.findall(r"^\s*git rebase.*origin/main.*$", source, re.M)
+    ]
     assert onto, "the crawl no longer rebases onto main"
     for line in onto:
         assert "-X theirs" in line, line
+
+
+def test_every_crawl_commit_goes_through_the_same_push(repo_root):
+    """Both steps race the same moving main, and the one that gave up after a
+    single rejected push was the one saving work nothing else had kept."""
+    workflow = (repo_root / ".github" / "workflows" / "crawl.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "git commit" not in workflow, "a step commits without the shared push"
+    assert "bash tools/push_crawl.sh" in workflow
+    script = (repo_root / "tools" / "push_crawl.sh").read_text(encoding="utf-8")
+    assert "for attempt in 1 2 3" in script, "the shared push stopped retrying"
 
 
 def test_a_crawl_that_does_not_finish_still_commits_its_progress(repo_root):

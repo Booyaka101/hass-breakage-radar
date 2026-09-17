@@ -188,6 +188,13 @@ def confirm_report(
         if err.code in (404, 410):
             return None
         raise
+    if not (item.get("repository_url") or "").lower().endswith(
+        f"/repos/{full_name.lower()}"
+    ):
+        # A transferred issue answers from wherever it went, with that
+        # repository's numbering, and recording that number here would have
+        # the next run asking for an unrelated issue of ours by the same one.
+        return None
     current = _report(item)
     if _rank(current, term, current_version=current_version)[0] <= 0:
         return None

@@ -288,7 +288,7 @@ def _searched(monkeypatch, issue, found=None):
         assert path == "/repos/a/one/issues/41", path
         if isinstance(issue, Exception):
             raise issue
-        return issue
+        return {"repository_url": "https://api.github.com/repos/a/one", **issue}
 
     monkeypatch.setattr("tools.upstream._api", api)
 
@@ -336,6 +336,27 @@ def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
     )
     assert facts["report"]["state"] == "closed"
     assert facts["report"]["reactions"] == 9
+
+
+def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
+    """GitHub answers for a transferred issue from wherever it went, with that
+    repository's numbering. Recording that number here has the next run asking
+    for an unrelated issue of ours by the same one."""
+    _search_found_nothing(
+        monkeypatch,
+        {
+            "number": 7,
+            "repository_url": "https://api.github.com/repos/c/elsewhere",
+            "html_url": "https://github.com/c/elsewhere/issues/7",
+            "state": "open",
+            "title": "setup_scanner is deprecated",
+            "reactions": {"total_count": 3},
+        },
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert "report" not in facts
 
 
 def test_a_report_that_is_gone_is_not_carried_forward(monkeypatch):
@@ -601,7 +622,7 @@ def _issues_turned_off(monkeypatch, issue):
         assert path == "/repos/a/one/issues/41", path
         if isinstance(issue, Exception):
             raise issue
-        return issue
+        return {"repository_url": "https://api.github.com/repos/a/one", **issue}
 
     monkeypatch.setattr("tools.upstream._api", api)
 
