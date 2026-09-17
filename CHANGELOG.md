@@ -81,11 +81,12 @@ repository is not searched at all, so there is nothing to have missed and its fa
 replaced as before.
 
 GitHub answers 403 both for "you have asked too often" and for "this repository is
-blocked". Only the first ends a run now, told apart by the rate limit headers. Read as
-the second, one blocked repository would have ended the refresh on every run from then
-on, and it would have been first in the queue each time, because a lookup that fails
-records nothing. A failed lookup stamps the fact it could not refresh, so it takes its
-turn at the back like everything else.
+blocked". Only the first ends a run now, told apart by the rate limit headers or, for a
+secondary limit that sends neither, by the message. Read as the second, one blocked
+repository would have ended the refresh on every run from then on, and it would have led
+the queue every time, because a lookup that fails records nothing. A failed lookup now
+records the attempt, and the repository comes round again with the rest. A fact with no
+answer in it reads exactly as no fact at all, in a Repairs notice and on the board.
 
 ## 1.15.0 — 2026-09-17
 

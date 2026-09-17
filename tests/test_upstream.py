@@ -295,6 +295,18 @@ def test_a_403_from_a_blocked_repository_is_just_that_repository(monkeypatch):
         repo_facts("a/one", token="x")
 
 
+def test_a_secondary_limit_ends_the_run_even_without_the_headers(monkeypatch):
+    """A secondary limit can arrive with no retry-after and a budget that still
+    has thousands left on it. It says so in the body."""
+    error = _http_error(403, {"x-ratelimit-remaining": "4999"})
+    error.read = lambda size=None: (
+        b'{"message": "You have exceeded a secondary rate limit."}'
+    )
+    monkeypatch.setattr("urllib.request.urlopen", _raises(error))
+    with pytest.raises(SearchExhausted):
+        repo_facts("a/one", token="x")
+
+
 def test_a_failure_stops_blocking_the_front_of_the_queue(monkeypatch):
     """403 is both "you asked too often" and "this repository is blocked". Read
     as the first, one blocked repository ends the refresh on every run, and it
@@ -315,6 +327,14 @@ def test_a_failure_stops_blocking_the_front_of_the_queue(monkeypatch):
     assert annotate(records, SOON, current_version=NOW) == 2
     assert calls == ["b/two", "a/one"]
     assert records["a/one"]["upstream"]["checked_utc"] > "2026-01-01T00:00:00Z"
+    # The one that never had a fact is the one that would block: it sorts
+    # first, so a failure that recorded nothing would put it there forever.
+    assert records["b/two"]["upstream"] == {
+        "symbol": "setup_scanner",
+        "checked_utc": records["b/two"]["upstream"]["checked_utc"],
+    }
+    assert annotate(records, SOON, current_version=NOW) == 0
+    assert calls[2:] == [], "the attempt counted, so both wait their turn"
 
 
 def test_a_spent_rate_limit_still_ends_the_run(monkeypatch):

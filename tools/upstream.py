@@ -53,6 +53,23 @@ def _token() -> str | None:
     return os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
 
 
+def _throttled(err: urllib.error.HTTPError) -> bool:
+    """Whether a 403 is the API saying "later" rather than "not this one".
+
+    GitHub answers 403 both for a spent budget and for a repository it has
+    blocked. The headers say which on a primary limit; a secondary one can
+    arrive with neither header, and says so in the body instead.
+    """
+    if err.headers.get("retry-after") is not None:
+        return True
+    if err.headers.get("x-ratelimit-remaining") == "0":
+        return True
+    try:
+        return "rate limit" in err.read(2000).decode("utf-8", "replace").lower()
+    except OSError:
+        return False
+
+
 def _api(path: str, *, token: str, params: dict[str, str] | None = None) -> Any:
     url = f"{API}{path}"
     if params:
@@ -70,15 +87,9 @@ def _api(path: str, *, token: str, params: dict[str, str] | None = None) -> Any:
         with urllib.request.urlopen(request, timeout=30) as response:
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as err:
-        # 403 is both "you have asked too often" and "this repository is
-        # blocked". Only the first means stop: the headers are what tell them
-        # apart, and treating a blocked repository as a spent budget ends the
-        # refresh on every run from then on.
-        spent = (
-            err.headers.get("retry-after") is not None
-            or err.headers.get("x-ratelimit-remaining") == "0"
-        )
-        if err.code == 429 or (err.code == 403 and spent):
+        # Treating a blocked repository as a spent budget ends the refresh on
+        # every run from then on, so the two 403s are told apart.
+        if err.code == 429 or (err.code == 403 and _throttled(err)):
             raise SearchExhausted(f"{path}: HTTP {err.code}") from err
         raise
 
@@ -230,10 +241,12 @@ def annotate(
             break
         except Exception as err:  # noqa: BLE001 - context is optional
             LOGGER.debug("upstream lookup failed for %s: %s", full_name, err)
-            if fact:
-                # A repository that answers 404 every day sorts to the front of
-                # every run's budget otherwise, ahead of the ones with an answer.
-                fact["checked_utc"] = utc_now_iso()
+            # Record the attempt and nothing else, so the repository comes
+            # round again with the rest of them rather than sorting to the
+            # front of every run's budget for good. A fact with no answer in it
+            # reads exactly as no fact at all.
+            asked_about = fact if fact.get("symbol") == term else {"symbol": term}
+            record["upstream"] = {**asked_about, "checked_utc": utc_now_iso()}
             continue
         if not facts:
             continue
