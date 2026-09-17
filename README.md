@@ -772,7 +772,9 @@ removal.
 The fact records `checked_utc`, and a crawl re-asks every affected repository whose
 fact is more than a week old, oldest first, up to a few hundred a run. A repository
 that never cuts another release is never rescanned, so without that its issue link
-would stay published for good, however wrong it had gone.
+would stay published for good, however wrong it had gone. When the search does not
+come back with the report already on file, that issue is fetched by number: an issue
+drops out of a ten-hit search on its own, but a 404 means it is really gone.
 
 Every `matchable: true` rule ships its matcher as the nested `match` object — that is
 what lets the integration run the same rules over locally installed code without the

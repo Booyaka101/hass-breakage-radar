@@ -73,12 +73,20 @@ behind it has been re-aimed since, oldest first, and a run stops after 400 reque
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
 
-A refresh whose search finds nothing keeps the report it already had, as long as that
-report's own title still passes the gate above. The search answers with its own top ten,
-so an issue can fall out of the answer without anything having happened to it, and an
-empty "already reported" column sends everybody off to file a duplicate. An archived
-repository is not searched at all, so there is nothing to have missed and its fact is
-replaced as before.
+A refresh whose search finds nothing asks for the report it already had by number. The
+search answers with its own top ten, so an issue can fall out of the answer without
+anything having happened to it, and an empty "already reported" column sends everybody
+off to file a duplicate. Asking for it directly is also what notices the ones that are
+really gone, deleted or transferred or moved behind a login, and it picks up a close, a
+retitle or new reactions while it is there. The title is put through the same gate, so
+an issue renamed into something unrelated stops being linked. An archived repository is
+not searched at all, so there is nothing to have missed and its fact is replaced as
+before.
+
+A lookup that fails outright keeps what the repository last answered, rather than
+blanking the fact for a week over one timeout. The report is the exception when the
+rule behind it has been re-aimed since: it was found for a term this rule no longer
+asks about, so it goes.
 
 GitHub answers 403 both for "you have asked too often" and for "this repository is
 blocked". Only the first ends a run now, told apart by the rate limit headers or, for a

@@ -14,7 +14,7 @@ import pytest
 
 from tools.common import utc_now_iso
 from tools.rules_engine import rule_search_term, search_term
-from tools.upstream import SearchExhausted, annotate, relevance, repo_facts
+from tools.upstream import SearchExhausted, annotate, look_up, relevance, repo_facts
 
 #: The release core is building, which is what the crawler passes.
 NOW = "2026.10"
@@ -162,6 +162,24 @@ def test_a_fact_records_when_it_was_checked(monkeypatch):
     assert records["a/one"]["upstream"]["checked_utc"] == "2026-09-17T12:00:00Z"
 
 
+def _http_error(code, headers):
+    return urllib.error.HTTPError("https://api.github.com/x", code, "no", headers, None)
+
+
+def _raises(error):
+    def urlopen(request, timeout=0):
+        raise error
+
+    return urlopen
+
+
+def _raises_in_lookup(error):
+    def look_up(full_name, term, **kwargs):
+        raise error
+
+    return look_up
+
+
 def _never_called(*args, **kwargs):
     raise AssertionError("looked a repository up when its fact was still good")
 
@@ -209,45 +227,145 @@ def test_a_fact_older_than_the_max_age_is_asked_again(monkeypatch):
     records = {"a/one": {"findings": FINDING, "upstream": fresh}}
     assert annotate(records, SOON, current_version=NOW, max_age_days=0) == 1
 
-def test_a_report_survives_a_search_that_comes_back_empty(monkeypatch):
-    """The search answers with its own top ten. An issue falling out of that
-    is not the issue being gone, and emptying the "already reported" column
-    sends everybody off to file a duplicate."""
-    monkeypatch.setenv("GITHUB_TOKEN", "x")
+ON_FILE = {
+    "number": 41,
+    "url": "https://github.com/a/one/issues/41",
+    "state": "open",
+    "title": "setup_scanner is deprecated",
+    "reactions": 3,
+}
+
+
+def _search_found_nothing(monkeypatch, issue):
+    """A repository that takes issues, a search with no hits, and ``issue`` as
+    the answer to asking for the known report by number."""
+    monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
     monkeypatch.setattr(
-        "tools.upstream.look_up",
+        "tools.upstream.repo_facts",
         lambda *a, **k: {"archived": False, "issues_enabled": True},
     )
-    report = {"number": 41, "url": "u", "state": "open", "title": "setup_scanner is deprecated"}
-    records = {
-        "a/one": {
-            "findings": FINDING,
-            "upstream": {"symbol": "setup_scanner", "report": report},
-        }
-    }
-    assert annotate(records, SOON, current_version=NOW) == 1
-    assert records["a/one"]["upstream"]["report"] == report
+    monkeypatch.setattr("tools.upstream.find_report", lambda *a, **k: None)
+
+    def api(path, **kwargs):
+        assert path == "/repos/a/one/issues/41", path
+        if isinstance(issue, Exception):
+            raise issue
+        return issue
+
+    monkeypatch.setattr("tools.upstream._api", api)
+
+
+def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
+    """The search answers with its own top ten. An issue falling out of that
+    is not the issue being gone, and emptying the "already reported" column
+    sends everybody off to file a duplicate. The answer is the issue as it
+    stands now, so a close or a retitle lands with it."""
+    _search_found_nothing(
+        monkeypatch,
+        {
+            "number": 41,
+            "html_url": "https://github.com/a/one/issues/41",
+            "state": "closed",
+            "title": "setup_scanner deprecated, use async_setup_scanner",
+            "reactions": {"total_count": 9},
+        },
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"]["state"] == "closed"
+    assert facts["report"]["reactions"] == 9
+
+
+def test_a_report_that_is_gone_is_not_carried_forward(monkeypatch):
+    """Deleted, transferred, or moved behind a login. Checking the title we
+    stored would keep publishing the link for as long as the repository has
+    findings."""
+    _search_found_nothing(monkeypatch, _http_error(404, {}))
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert "report" not in facts
 
 
 def test_a_report_the_gate_now_rejects_is_not_carried_over(monkeypatch):
     """This is the point of the release gate: "Not working on 2021.12" was
     published as a repository's answer to a 2027 removal."""
+    _search_found_nothing(
+        monkeypatch, {"number": 41, "title": "Not working on 2021.12", "state": "open"}
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert "report" not in facts
+
+
+def test_a_repository_with_no_report_on_file_costs_no_second_request(monkeypatch):
+    _search_found_nothing(monkeypatch, AssertionError("asked for nothing"))
+    assert look_up("a/one", "setup_scanner", current_version=NOW, token="x") == {
+        "archived": False,
+        "issues_enabled": True,
+    }
+
+
+def test_the_report_on_file_is_the_one_offered_for_confirmation(monkeypatch):
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    seen = []
+
+    def look(full_name, term, *, known=None, **kwargs):
+        seen.append(known)
+        return {"archived": False, "issues_enabled": True}
+
+    monkeypatch.setattr("tools.upstream.look_up", look)
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {"symbol": "setup_scanner", "report": ON_FILE},
+        },
+        # Found under a term the rule no longer asks for, so it is not a
+        # report about this finding and there is nothing to confirm.
+        "b/two": {
+            "findings": FINDING,
+            "upstream": {"symbol": "devices", "report": ON_FILE},
+        },
+    }
+    assert annotate(records, SOON, current_version=NOW) == 2
+    assert seen == [ON_FILE, None]
+
+
+def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch):
+    """One timeout should not blank a good fact for a week. The report is the
+    exception when the rule has been re-aimed: it was found for the old term."""
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     monkeypatch.setattr(
-        "tools.upstream.look_up",
-        lambda *a, **k: {"archived": False, "issues_enabled": True},
+        "tools.upstream.look_up", _raises_in_lookup(RuntimeError("timeout"))
     )
     records = {
         "a/one": {
             "findings": FINDING,
             "upstream": {
                 "symbol": "setup_scanner",
-                "report": {"number": 7, "title": "Not working on 2021.12"},
+                "archived": False,
+                "issues_enabled": True,
+                "report": ON_FILE,
             },
-        }
+        },
+        "b/two": {
+            "findings": FINDING,
+            "upstream": {
+                "symbol": "devices",
+                "archived": True,
+                "issues_enabled": False,
+                "report": ON_FILE,
+            },
+        },
     }
-    assert annotate(records, SOON, current_version=NOW) == 1
-    assert "report" not in records["a/one"]["upstream"]
+    assert annotate(records, SOON, current_version=NOW) == 2
+    assert records["a/one"]["upstream"]["report"] == ON_FILE
+    assert records["a/one"]["upstream"]["issues_enabled"] is True
+    assert "report" not in records["b/two"]["upstream"]
+    assert records["b/two"]["upstream"]["archived"] is True
+    assert records["b/two"]["upstream"]["symbol"] == "setup_scanner"
 
 
 def test_a_failed_lookup_still_costs_the_budget(monkeypatch):
@@ -265,17 +383,6 @@ def test_a_failed_lookup_still_costs_the_budget(monkeypatch):
     records = {n: {"findings": FINDING} for n in ("a/one", "b/two", "c/three")}
     assert annotate(records, SOON, current_version=NOW, limit=2) == 2
     assert asked == ["a/one", "b/two"]
-
-
-def _http_error(code, headers):
-    return urllib.error.HTTPError("https://api.github.com/x", code, "no", headers, None)
-
-
-def _raises(error):
-    def urlopen(request, timeout=0):
-        raise error
-
-    return urlopen
 
 
 def test_a_403_with_the_budget_spent_ends_the_run(monkeypatch):

@@ -113,6 +113,17 @@ def relevance(title: str, term: str, *, current_version: str) -> int:
     return score
 
 
+def _report(item: dict[str, Any]) -> dict[str, Any]:
+    """The part of an issue the board and a Repairs notice show."""
+    return {
+        "number": item.get("number"),
+        "url": item.get("html_url", ""),
+        "state": item.get("state", ""),
+        "title": (item.get("title") or "")[:140],
+        "reactions": (item.get("reactions") or {}).get("total_count", 0),
+    }
+
+
 def find_report(
     full_name: str, term: str, *, current_version: str, token: str
 ) -> dict[str, Any] | None:
@@ -137,17 +148,37 @@ def find_report(
             continue                       # matched the body only; not evidence
         rank = (score, item.get("state") == "open")
         if best is None or rank > best[0]:
-            best = (
-                rank,
-                {
-                    "number": item.get("number"),
-                    "url": item.get("html_url", ""),
-                    "state": item.get("state", ""),
-                    "title": (item.get("title") or "")[:140],
-                    "reactions": (item.get("reactions") or {}).get("total_count", 0),
-                },
-            )
+            best = (rank, _report(item))
     return best[1] if best else None
+
+
+def confirm_report(
+    full_name: str,
+    report: dict[str, Any],
+    term: str,
+    *,
+    current_version: str,
+    token: str,
+) -> dict[str, Any] | None:
+    """The report already on file, as the repository has it now, or None.
+
+    A search answers with its own top ten ranked its own way, so a known issue
+    falls out of the answer without anything having happened to it. Asking for
+    it by number is what tells that apart from an issue that is gone, and it
+    picks up a retitle or a close on the way.
+    """
+    number = report.get("number")
+    if not number:
+        return None
+    try:
+        item = _api(f"/repos/{full_name}/issues/{number}", token=token)
+    except urllib.error.HTTPError as err:
+        if err.code in (404, 410):
+            return None
+        raise
+    if relevance(item.get("title", ""), term, current_version=current_version) <= 0:
+        return None
+    return _report(item)
 
 
 def repo_facts(full_name: str, *, token: str) -> dict[str, Any]:
@@ -160,10 +191,20 @@ def repo_facts(full_name: str, *, token: str) -> dict[str, Any]:
 
 
 def look_up(
-    full_name: str, term: str, *, current_version: str, token: str | None = None
+    full_name: str,
+    term: str,
+    *,
+    current_version: str,
+    known: dict[str, Any] | None = None,
+    token: str | None = None,
 ) -> dict[str, Any]:
     """Repository facts plus any existing report. Never raises except when the
-    rate limit is spent, which the caller uses to stop early."""
+    rate limit is spent, which the caller uses to stop early.
+
+    ``known`` is the report this repository was already on file for, checked by
+    number when the search does not come back with it: an empty "already
+    reported" column sends everybody off to file a duplicate.
+    """
     token = token or _token()
     if not token:
         return {}
@@ -173,6 +214,10 @@ def look_up(
             full_name, term, current_version=current_version, token=token
         )
         time.sleep(SEARCH_INTERVAL)
+        if not report and known:
+            report = confirm_report(
+                full_name, known, term, current_version=current_version, token=token
+            )
         if report:
             facts["report"] = report
     return facts
@@ -232,9 +277,14 @@ def annotate(
         if fact.get("symbol") == term and fact.get("checked_utc", "") > stale_before:
             continue
         asked += 1
+        on_file = fact.get("report") if fact.get("symbol") == term else None
         try:
             facts = look_up(
-                full_name, term, current_version=current_version, token=token
+                full_name,
+                term,
+                current_version=current_version,
+                known=on_file,
+                token=token,
             )
         except SearchExhausted as err:
             LOGGER.warning("upstream lookup stopped early: %s", err)
@@ -245,27 +295,19 @@ def annotate(
             # round again with the rest of them rather than sorting to the
             # front of every run's budget for good. A fact with no answer in it
             # reads exactly as no fact at all.
-            asked_about = fact if fact.get("symbol") == term else {"symbol": term}
-            record["upstream"] = {**asked_about, "checked_utc": utc_now_iso()}
+            carried = dict(fact)
+            if not on_file:
+                # Whatever was on file was found for a term this rule no longer
+                # asks for. The rest of it is still true about the repository.
+                carried.pop("report", None)
+            record["upstream"] = {
+                **carried,
+                "symbol": term,
+                "checked_utc": utc_now_iso(),
+            }
             continue
         if not facts:
             continue
-        reported = fact.get("report")
-        searched = facts.get("issues_enabled") and not facts.get("archived")
-        if (
-            searched
-            and reported
-            and "report" not in facts
-            and fact.get("symbol") == term
-            and relevance(
-                reported.get("title", ""), term, current_version=current_version
-            )
-            > 0
-        ):
-            # A search answers with ten hits ranked by its own relevance, so an
-            # issue drops out of the answer without anything having happened to
-            # it. Only a link this run's own gate would still accept is kept.
-            facts["report"] = reported
         facts["symbol"] = term
         facts["checked_utc"] = utc_now_iso()
         record["upstream"] = facts
