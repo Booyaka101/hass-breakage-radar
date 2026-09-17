@@ -117,6 +117,27 @@ def test_a_repository_with_nothing_left_loses_its_upstream_fact(monkeypatch):
     assert "upstream" not in records["a/one"]
 
 
+def test_a_spent_budget_still_drops_a_fact_with_nothing_left(monkeypatch):
+    """A repository can lose its last finding to a rule that retired, and
+    what is left is a link about nothing. No lookup decides that, so a run
+    that spent its budget before reaching the record clears it all the same.
+    """
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    records = {
+        "a/one": {"findings": FINDING, "upstream": {"symbol": "devices"}},
+        "b/two": {
+            "findings": [],
+            "upstream": {"symbol": "devices", "checked_utc": "2026-09-16T00:00:00Z"},
+        },
+    }
+    assert annotate(records, SOON, current_version=NOW, limit=1) == 1
+    assert "upstream" not in records["b/two"]
+
+
 def test_a_rule_can_name_the_term_its_repositories_are_searched_for(monkeypatch):
     """`devices` on its own found 14 unrelated device bugs and 4 real reports."""
     monkeypatch.setenv("GITHUB_TOKEN", "x")

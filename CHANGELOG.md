@@ -165,6 +165,10 @@ Progress a crawl could not push is pushed by the step that rescues it. That step
 nothing, because the step before it had already committed and only the push failed, and
 stopping there left a scan and up to 400 lookups to die with the runner.
 
+A repository the scan pruned back to no findings loses its upstream fact even on a run
+that spent its lookup budget first. The fact is the repository's issue about a finding,
+and no lookup decides that, so it no longer waits behind one.
+
 A repository that disappears keeps whichever of its facts says there is nowhere to
 report the breakage. The rest of its issue tracker facts go when it 404s, because none
 of them can be checked any more, but a repository being archived or taking no issues is

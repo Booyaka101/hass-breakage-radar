@@ -406,6 +406,14 @@ def annotate(
         LOGGER.info("no GITHUB_TOKEN; skipping upstream issue lookup")
         return 0
 
+    # A fact is the repository's own issue about a finding, so a record the
+    # scan pruned back to none has nothing left for it to be about. That is
+    # free to decide and a run that spends its budget first would otherwise
+    # never reach the ones at the back of the queue.
+    for record in records.values():
+        if not record.get("findings"):
+            record.pop("upstream", None)
+
     stale_before = (
         datetime.now(UTC) - timedelta(days=max_age_days)
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -418,7 +426,6 @@ def annotate(
         if asked >= limit:
             break
         if not record.get("findings"):
-            record.pop("upstream", None)
             continue
         fact = record.get("upstream") or {}
         if fact.get("symbol") == term and (fact.get("checked_utc") or "") > stale_before:
