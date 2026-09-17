@@ -11,10 +11,12 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+import tempfile
+from pathlib import Path
 
 import pytest
 
-REPO_ROOT = __import__("pathlib").Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 TEMPLATE = "<h1>Breakage Radar</h1>\n<p>the standfirst</p>\n<div>{stats}</div>\n"
 
@@ -26,10 +28,45 @@ pathlib.Path("docs/index.html").write_text(
 )
 """
 
-BASH = shutil.which("bash")
+def _runs_the_script(shell: Path) -> bool:
+    """Whether this shell can run the script at all, asked by running it.
+
+    On Windows a bare `bash` is the WSL launcher, which is a different machine
+    with a different git, and on a box with a distro installed it answers
+    every cheaper question convincingly.
+    """
+    if not shell.exists():
+        return False
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        (root / "tools").mkdir()
+        shutil.copy(REPO_ROOT / "tools" / "push_crawl.sh", root / "tools")
+        subprocess.run(
+            ["git", "init", "-q", "-b", "main"], cwd=root, check=True, capture_output=True
+        )
+        done = subprocess.run(
+            [str(shell), "tools/push_crawl.sh", "probe"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+        )
+    return done.returncode == 0 and "Nothing staged" in done.stdout
+
+
+def _shell() -> str | None:
+    git_exe = shutil.which("git")
+    if not git_exe:
+        return None
+    on_path = shutil.which("bash")
+    candidates = [Path(git_exe).parents[1] / "bin" / "bash.exe"]
+    candidates += [Path(on_path)] if on_path else []
+    return next((str(c) for c in candidates if _runs_the_script(c)), None)
+
+
+BASH = _shell()
 
 pytestmark = pytest.mark.skipif(
-    not (shutil.which("git") and BASH), reason="needs git and bash to run the script"
+    not (shutil.which("git") and BASH), reason="needs git and a shell that runs it"
 )
 
 
