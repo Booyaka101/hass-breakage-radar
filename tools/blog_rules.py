@@ -159,14 +159,19 @@ def _sentences(text: str) -> Iterable[str]:
 
 
 def _releases(sentence: str, patterns: list[re.Pattern[str]]) -> list[str]:
-    """Every release one sentence names in these words, in the order named."""
-    found: list[str] = []
+    """Every release one sentence names in these words, in the order named.
+
+    Left to right rather than pattern by pattern: a sentence that says two
+    deadlines rarely words both the same way, and grouping by wording would
+    hand back the later one first.
+    """
+    found: dict[str, int] = {}
     for pattern in patterns:
         for match in pattern.finditer(sentence):
             version = normalise_version(match.group(1))
-            if VERSION_RE.match(version) and version not in found:
-                found.append(version)
-    return found
+            if VERSION_RE.match(version):
+                found.setdefault(version, match.start(1))
+    return sorted(found, key=found.__getitem__)
 
 
 def _warns_a_release_early(version: str, sentences: list[str], index: int) -> bool:

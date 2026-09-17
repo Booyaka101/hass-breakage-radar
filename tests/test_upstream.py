@@ -349,15 +349,15 @@ ON_FILE = {
 }
 
 
-def _searched(monkeypatch, issue, found=None):
-    """A repository that takes issues, ``found`` as the search's best hit, and
-    ``issue`` as the answer to asking for the known report by number."""
+def _repository(monkeypatch, issue, *, issues_enabled, search):
+    """A repository whose search answers ``search`` and whose issue 41 answers
+    ``issue``, either the payload the API returns or the error it raises."""
     monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
     monkeypatch.setattr(
         "tools.upstream.repo_facts",
-        lambda *a, **k: {"archived": False, "issues_enabled": True},
+        lambda *a, **k: {"archived": False, "issues_enabled": issues_enabled},
     )
-    monkeypatch.setattr("tools.upstream.find_report", lambda *a, **k: found)
+    monkeypatch.setattr("tools.upstream.find_report", search)
 
     def api(path, **kwargs):
         assert path == "/repos/a/one/issues/41", path
@@ -366,6 +366,12 @@ def _searched(monkeypatch, issue, found=None):
         return {"repository_url": "https://api.github.com/repos/a/one", **issue}
 
     monkeypatch.setattr("tools.upstream._api", api)
+
+
+def _searched(monkeypatch, issue, found=None):
+    """A repository that takes issues, ``found`` as the search's best hit, and
+    ``issue`` as the answer to asking for the known report by number."""
+    _repository(monkeypatch, issue, issues_enabled=True, search=lambda *a, **k: found)
 
 
 def _search_found_nothing(monkeypatch, issue):
@@ -880,20 +886,8 @@ def test_a_spent_rate_limit_still_ends_the_run(monkeypatch):
 
 
 def _issues_turned_off(monkeypatch, issue):
-    monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
-    monkeypatch.setattr(
-        "tools.upstream.repo_facts",
-        lambda *a, **k: {"archived": False, "issues_enabled": False},
-    )
-    monkeypatch.setattr("tools.upstream.find_report", _never_called)
-
-    def api(path, **kwargs):
-        assert path == "/repos/a/one/issues/41", path
-        if isinstance(issue, Exception):
-            raise issue
-        return {"repository_url": "https://api.github.com/repos/a/one", **issue}
-
-    monkeypatch.setattr("tools.upstream._api", api)
+    """The same repository with its issue tracker off, so nothing searches."""
+    _repository(monkeypatch, issue, issues_enabled=False, search=_never_called)
 
 
 def test_a_report_still_served_survives_issues_being_turned_off(monkeypatch):
