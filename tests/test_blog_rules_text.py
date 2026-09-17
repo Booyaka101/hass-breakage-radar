@@ -257,6 +257,8 @@ def test_two_removal_phrasings_in_one_sentence_both_count():
         "removed in 2027.5, will stop working in 2027.9 for existing installs.",
     )
     assert sorted(rule["breaks_in"] for rule in rules) == ["2027.5", "2027.9"]
+
+
 def test_two_removals_in_one_sentence_come_back_in_the_order_it_says_them():
     """A sentence naming two is read left to right. Grouping by the wording
     that matched instead puts the second deadline first whenever the two are
