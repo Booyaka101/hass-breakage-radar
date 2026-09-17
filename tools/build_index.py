@@ -481,6 +481,8 @@ function apply() {{
       if (visible) shown++;
     }});
     section.hidden = shown === 0;
+    const counter = section.querySelector('.pill');
+    if (counter) counter.textContent = shown + ' removal' + (shown === 1 ? '' : 's');
   }});
   document.querySelectorAll('.bucket').forEach(bucket => {{
     const sections = bucket.querySelectorAll('section.release');

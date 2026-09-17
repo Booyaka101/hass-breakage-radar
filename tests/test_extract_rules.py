@@ -580,6 +580,43 @@ def test_an_issue_built_at_runtime_does_not_double_up_the_named_one():
     assert "{...}" not in rules[issues[0]]["message"]
 
 
+LONG_TWIN = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+class TheVeryLongCoordinatorClassName:
+    async def async_migrate_the_old_yaml_configuration(self, hass, reason):
+        ir.async_create_issue(
+            hass,
+            DOMAIN,
+            f"deprecated_yaml_import_issue_{reason}",
+            breaks_in_ha_version="2027.3",
+            translation_key=f"deprecated_yaml_import_issue_{reason}",
+        )
+        ir.async_create_issue(
+            hass,
+            DOMAIN,
+            "deprecated_yaml",
+            breaks_in_ha_version="2027.3",
+            translation_key="deprecated_yaml",
+        )
+"""
+
+
+def test_a_nameless_twin_with_a_long_id_is_dropped_too():
+    """Ids are cut to 90 characters, and a rule is filed under the cut one, so
+    a name kept from before the cut matches nothing."""
+    rules = _rules_from(
+        "homeassistant/components/a_very_long_integration_domain_name/coordinator.py",
+        LONG_TWIN,
+    )
+    assert list(rules) == [
+        "core-issue-a-very-long-integration-domain-name-deprecated-yaml-2027.3"
+    ]
+
+
 MOVED_SOURCE = b"""
 from homeassistant.const import Platform
 from homeassistant.helpers.deprecation import DeprecatedInfo

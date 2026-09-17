@@ -302,6 +302,13 @@ def test_the_no_detector_bucket_answers_the_dropdowns_too(payload):
     assert "const visible = deadlines &&" in board
 
 
+def test_a_filtered_no_detector_release_recounts_its_heading(payload):
+    """The heading carries the count, and a release section one loop up keeps
+    its own in step. One that says 12 above a single item is the stale one."""
+    board = render_html(payload)
+    assert "shown + ' removal' + (shown === 1 ? '' : 's')" in board
+
+
 def test_the_board_leaves_out_an_empty_no_detector_list(payload):
     assert "no-detector" not in render_html(payload)
 

@@ -1035,14 +1035,17 @@ def build_rules(
                 # raise an issue from a same-named function, and one rule for
                 # all of those would say the name of whichever came first.
                 where = _component_of(record["path"]) or record["path"]
+                issue_scope = (where, release)
                 rule_id = f"core-issue-{_slug(where)}-{_slug(symbol)}-{release}"
-                if record["issue_key"]:
-                    named_issues.add((where, release))
-                else:
-                    unnamed_issues.setdefault((where, release), []).append(rule_id)
             else:
+                issue_scope = None
                 rule_id = f"core-{kind}-{_slug(symbol)}"
             rule_id = rule_id[:90]
+            # After the truncation, because that is the id by_id is keyed on.
+            if issue_scope and record["issue_key"]:
+                named_issues.add(issue_scope)
+            elif issue_scope:
+                unnamed_issues.setdefault(issue_scope, []).append(rule_id)
 
         existing = by_id.get(rule_id)
         if existing:
