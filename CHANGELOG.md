@@ -58,6 +58,16 @@ a release two behind and misspells the only word that would have carried it. Tit
 naming a release still to come are unaffected, including eltako's "Home Assistant 2027.8
 API changes" and luxtronik2's "adapt to the HA device registry changes before 2027.8".
 
+### A flag nothing read
+
+`duplicate_of_matchable_release` was computed in `merge`, written into every published
+rule that tripped it, and read nowhere: not by the board, not by the integration, not by
+the action. The comment above it said it suppressed a duplicate prose rule, and it did
+not suppress anything. Its test was whether a matchable rule's symbol appears anywhere
+in the prose message, which is loose enough that rewording a blog post changes the
+answer, so it was not a sound basis for hiding a rule either. Gone, along with the three
+flags in `data/rules.json`. `rules_hash` is unchanged, so nothing is re-crawled for it.
+
 ### The post, not the page it is served on
 
 `_text` fixed the run-on sentence, but the whole rendered page still went into

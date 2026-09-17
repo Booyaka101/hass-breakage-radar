@@ -318,24 +318,9 @@ def merge(
     for rule in manual:
         merged[rule["id"]] = rule
 
-    matchable_symbols = {
-        name
-        for rule in merged.values()
-        if rule.get("match")
-        for name in (
-            rule["match"].get("names", [])
-            + rule["match"].get("bases", [])
-            + rule["match"].get("files", [])
-        )
-    }
-
     for rule in blog:
         if rule["id"] in merged or rule["id"] in superseded:
             continue
-        # Suppress a prose rule that only restates a release we already match on
-        # with a real matcher, to keep the board free of duplicates.
-        if any(symbol in rule["message"] for symbol in matchable_symbols):
-            rule = {**rule, "duplicate_of_matchable_release": True}
         merged[rule["id"]] = rule
 
     for rule in merged.values():
