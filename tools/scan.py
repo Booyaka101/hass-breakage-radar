@@ -702,7 +702,9 @@ def main(argv: list[str] | None = None) -> int:
         looked_up = annotate(
             known,
             rules_by_id,
-            current_version=current_version,
+            # The floor, not dev: a title naming the release in RC is about a
+            # removal nobody has run into yet, same as the rules are.
+            current_version=floor,
             # One flag for the whole run, but a lookup costs a two second wait
             # and a scan of 4000 repositories fits in the job while 4000
             # lookups would sleep out its timeout on their own.

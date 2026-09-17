@@ -108,8 +108,9 @@ def _api(path: str, *, token: str, params: dict[str, str] | None = None) -> Any:
 def relevance(title: str, term: str, *, current_version: str) -> int:
     """How much an issue title looks like it is about this deprecation.
 
-    ``current_version`` is the release core is building, so a title naming it
-    is about something nobody is running yet.
+    ``current_version`` is the oldest release that has not shipped, so a title
+    naming it is about something nobody is running yet. Ranking against dev
+    instead reads a release still in RC as already out.
     """
     score = 0
     if term and term.lower() in title.lower():

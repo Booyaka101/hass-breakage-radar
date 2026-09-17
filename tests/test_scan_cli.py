@@ -432,10 +432,19 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     )
 
 
-def test_the_current_release_reaches_the_upstream_lookup(tmp_path, monkeypatch):
-    """Without it every issue title naming a release counts, including the
-    2021.12 and 2022.11 ones that were published as reports."""
-    rules_path, catalog_path = _write_inputs(tmp_path, catalog=CATALOG[:1])
+def test_the_pending_floor_reaches_the_upstream_lookup(tmp_path, monkeypatch):
+    """Without a release to compare against, every issue title naming one
+    counts, including the 2021.12 and 2022.11 ones that were published as
+    reports. It is the floor and not dev: during the RC window a title about
+    the release being cut is about something nobody is running yet."""
+    rules_path, catalog_path = _write_inputs(
+        tmp_path,
+        catalog=CATALOG[:1],
+        core_version="2026.10",
+        latest_release="2026.8",
+        pending_floor="2026.9",
+        pending_floor_source="pypi",
+    )
     monkeypatch.setattr(
         scan_module,
         "http_get",

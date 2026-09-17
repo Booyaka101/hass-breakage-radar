@@ -178,8 +178,8 @@ def _warns_a_release_early(version: str, sentences: list[str], index: int) -> bo
     two either way. Further than that a post covering two deprecations can end
     one window the release before the other is removed with no connection
     between them. A window that ends at the removal's own release is the same
-    deadline in the post's own words, and often the better half: a policy
-    sentence says more than "it is removed in 2027.8" does.
+    deadline said twice, so it is kept and the half the post says first is the
+    one quoted.
     """
     nearby = {
         release

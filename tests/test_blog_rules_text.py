@@ -189,8 +189,8 @@ def test_a_schedule_with_a_note_between_the_bullets_is_one_deadline():
 def test_a_support_window_the_post_backs_up_keeps_its_wording():
     """The developer blog opens with the policy, "deprecated functionality
     remains supported until 2027.8", and names the removals below it. The
-    release is real, and that sentence says more in a Repairs card than "It
-    is removed in Home Assistant Core 2027.8." does."""
+    release is real, and the first sentence naming it is the one quoted, which
+    on that layout is the policy."""
     rules = extract_removals(
         URL,
         _text(
@@ -201,6 +201,21 @@ def test_a_support_window_the_post_backs_up_keeps_its_wording():
     )
     assert [rule["breaks_in"] for rule in rules] == ["2027.8"]
     assert rules[0]["message"].startswith("Unless noted otherwise")
+
+
+def test_a_removal_above_the_policy_keeps_the_removal_wording():
+    """The other order: the quoted half is whichever the post says first, not
+    whichever kind of sentence it is."""
+    rules = extract_removals(
+        URL,
+        _text(
+            "<article><p>It is removed in Home Assistant Core 2027.8.</p>"
+            "<p>Unless noted otherwise, deprecated functionality remains "
+            "supported until Home Assistant Core 2027.8.</p></article>"
+        ),
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.8"]
+    assert rules[0]["message"].startswith("It is removed")
 
 
 def test_a_post_that_only_gives_a_support_window_still_makes_a_rule():

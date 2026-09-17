@@ -621,24 +621,71 @@ MOVED_SOURCE = b"""
 from homeassistant.const import Platform
 from homeassistant.helpers.deprecation import DeprecatedInfo
 
+from homeassistant.components.number import DOMAIN as NUMBER_DOMAIN
+
 
 class SirenSwitch:
     info = DeprecatedInfo(new_platform=Platform.SIREN, breaks_in_ha_version="2027.5.0")
 
 
+class NumberSwitch:
+    info = DeprecatedInfo(new_platform=NUMBER_DOMAIN, breaks_in_ha_version="2027.6.0")
+
+
 class ValveSwitch:
-    info = DeprecatedInfo(new_platform="valve", breaks_in_ha_version="2027.6.0")
+    info = DeprecatedInfo(new_platform="valve", breaks_in_ha_version="2027.7.0")
 """
 
 
-def test_a_platform_named_by_a_constant_is_not_the_platform_name():
-    """`Platform.SIREN` unparses to itself, and a board that says entities move
-    to `Platform.SIREN` is naming a Python symbol, not a platform."""
+def test_a_platform_named_by_a_constant_is_read_off_the_name():
+    """Core never writes these as strings: every one of the 14 call sites in
+    the cached tarball says the platform in a `Platform.X` or `X_DOMAIN`
+    identifier, and dropping those leaves one nameless rule for a whole
+    integration's move."""
     rules = _rules_from("homeassistant/components/ring/switch.py", MOVED_SOURCE)
-    constant = rules["core-issue-ring-sirenswitch-2027.5"]
-    assert constant["message"] == (
-        "`ring` moves these entities, and the ones on the old platform stop "
-        "working in Home Assistant 2027.5."
+    assert "moves these entities to `siren`" in (
+        rules["core-issue-ring-siren-2027.5"]["message"]
     )
-    written = rules["core-issue-ring-valve-2027.6"]
-    assert "moves these entities to `valve`" in written["message"]
+    assert "moves these entities to `number`" in (
+        rules["core-issue-ring-number-2027.6"]["message"]
+    )
+    assert "moves these entities to `valve`" in (
+        rules["core-issue-ring-valve-2027.7"]["message"]
+    )
+
+
+UNRELATED_PAIR = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+def _warn_about_yaml(hass):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        "deprecated_yaml",
+        breaks_in_ha_version="2027.3",
+        translation_key="deprecated_yaml",
+    )
+
+
+def _warn_about_the_other_thing(hass, key):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        issue_id=key,
+        breaks_in_ha_version="2027.3",
+        translation_key=key,
+    )
+"""
+
+
+def test_two_deprecations_in_one_release_keep_a_rule_each():
+    """The nameless one is dropped as a twin of the named one, and these are
+    not twins: one function's issue says nothing about another's."""
+    rules = _rules_from("homeassistant/components/netio/switch.py", UNRELATED_PAIR)
+    assert sorted(rules) == [
+        "core-issue-netio-deprecated-yaml-2027.3",
+        "core-issue-netio-warn-about-the-other-thing-2027.3",
+    ]

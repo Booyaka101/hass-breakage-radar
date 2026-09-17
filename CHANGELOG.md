@@ -52,21 +52,27 @@ extractor reads the first argument as the rule's prose, which for every one of t
 the argument named `hass`. A repair issue is named by its translation key, so that is
 what the rule takes now, falling back to the issue id and then to the platform a
 `DeprecatedInfo` moves entities to: "`netio` raises the `deprecated_yaml` repair issue,
-and the configuration it reports stops working in Home Assistant 2027.3." A key the call
-does not write down names nothing, whether it arrives as a variable, an f-string or a
-constant like `Platform.SIREN`, so those rules stay unnamed rather than publish the
-expression's own text, and the symbol follows the same order.
+and the configuration it reports stops working in Home Assistant 2027.3." A key built at
+runtime, as a variable or an f-string, names nothing, so those rules stay unnamed rather
+than publish the expression's own text, and the symbol follows the same order. Every
+platform move in core writes its platform as an identifier rather than a string, either
+`Platform.SIREN` or `SIREN_DOMAIN`, and both say the domain in the name itself, so the
+platform is read off the identifier for those two calls.
 
 The integration is part of the rule id now as well. decora_wifi and touchline both raise
 theirs from a function called `async_setup_platform`, and one rule for both named
-whichever file sorted first while the other read as unaffected. Where an integration
-raises one deadline twice, from a call that writes the issue name down and from a
-neighbour that builds it at runtime, only the named one is published.
+whichever file sorted first while the other read as unaffected. Where one function raises
+one deadline twice, from a call that writes the issue name down and from a neighbour that
+builds it at runtime, only the named one is published. It has to be the same function and
+not merely the same integration: several of them deprecate two unrelated things in one
+release, and those keep a rule each.
 
-Measured over the cached core tarball: 25 pending rules, each naming its own integration
-and its own issue, and two left as "raises a repair issue" because nothing in the call
+Measured over the cached core tarball: 33 pending rules, each naming its own integration
+and its own issue, and three left as "raises a repair issue" because nothing in the call
 says which. `rules_hash` is built from the matchable rules, and none of these are
-matchable, so nothing is re-crawled for any of it.
+matchable, so nothing is re-crawled for any of it. `data/rules.json` in the repository is
+still the last crawl's copy; the first crawl after this rebuilds it against a fresh core
+snapshot, which is also where the new ids reach the board.
 
 ### A bullet between the two halves of a schedule no longer splits it
 
@@ -114,7 +120,9 @@ above are in the index as shipped.
 `DEPRECATION_WORDS` included a bare `20\d\d.\d+`, so "Not working on 2021.12" and
 "Errors with 2022.11.x" scored as deprecation notices and were published as the
 repository's own issue about a 2027 removal. A release in a title now scores only while
-the current release has not passed it. Eight of the 98 reports in the published index
+it is at or ahead of the oldest release that has not shipped, which is the same line the
+rules themselves are pending from, so a title about the release currently in RC still
+counts while one about a release people are running does not. Eight of the 98 reports in the published index
 stop being linked: seven are bugs in releases from 2021.12 to 2026.7, and one is a real
 report lost to the rule, dyson_local's "depracation warnings on 2026.8.0b0", which names
 a release two behind and misspells the only word that would have carried it. Titles

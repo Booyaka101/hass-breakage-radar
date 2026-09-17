@@ -406,6 +406,27 @@ def _written_name(expr: ast.expr | None) -> str:
     return literal if isinstance(literal, str) else ""
 
 
+def _platform_name(expr: ast.expr | None) -> str:
+    """The platform an argument names, written down or as core spells it.
+
+    Every one of these calls in core names the platform in an identifier
+    rather than a string, as ``Platform.SIREN`` or as ``SIREN_DOMAIN``, and
+    both say the domain in the name itself.
+    """
+    written = _written_name(expr)
+    if written:
+        return written
+    if (
+        isinstance(expr, ast.Attribute)
+        and isinstance(expr.value, ast.Name)
+        and expr.value.id == "Platform"
+    ):
+        return expr.attr.lower()
+    if isinstance(expr, ast.Name) and expr.id.endswith("_DOMAIN"):
+        return expr.id[: -len("_DOMAIN")].lower()
+    return ""
+
+
 def _issue_key(callee: str, node: ast.Call) -> str:
     """The label a repair issue is known by, or what it moves entities to.
 
@@ -415,9 +436,9 @@ def _issue_key(callee: str, node: ast.Call) -> str:
     """
     by_name = {keyword.arg: keyword.value for keyword in node.keywords if keyword.arg}
     if callee == "DeprecatedInfo":
-        return _written_name(by_name.get("new_platform"))
+        return _platform_name(by_name.get("new_platform"))
     if callee == "EntityDomainReplacementStrategy":
-        return _written_name(node.args[0] if node.args else None)
+        return _platform_name(node.args[0] if node.args else None)
     # async_create_issue(hass, domain, issue_id, ...) last.
     written = [by_name.get("translation_key"), by_name.get("issue_id")]
     written.append(node.args[2] if len(node.args) >= 3 else None)
@@ -979,10 +1000,11 @@ def build_rules(
     be published next to the rules.
     """
     by_id: dict[str, dict[str, Any]] = {}
-    # (integration, release) of every repair issue that writes its name down,
-    # and the rules built from the calls in the same place that do not.
-    named_issues: set[tuple[str, str]] = set()
-    unnamed_issues: dict[tuple[str, str], list[str]] = {}
+    # Where every repair issue that writes its name down was raised, and the
+    # rules built from the calls beside those that do not.
+    named_issues: set[tuple[str, str, str]] = set()
+    named_issue_ids: set[str] = set()
+    unnamed_issues: dict[tuple[str, str, str], list[str]] = {}
 
     for record in sorted(records, key=lambda r: (r["path"], r["line"])):
         callee = record["callee"]
@@ -1035,7 +1057,9 @@ def build_rules(
                 # raise an issue from a same-named function, and one rule for
                 # all of those would say the name of whichever came first.
                 where = _component_of(record["path"]) or record["path"]
-                issue_scope = (where, release)
+                # The same function, not just the same integration: two of
+                # them can deprecate unrelated things in one release.
+                issue_scope = (record["path"], record["enclosing"], release)
                 rule_id = f"core-issue-{_slug(where)}-{_slug(symbol)}-{release}"
             else:
                 issue_scope = None
@@ -1044,6 +1068,7 @@ def build_rules(
             # After the truncation, because that is the id by_id is keyed on.
             if issue_scope and record["issue_key"]:
                 named_issues.add(issue_scope)
+                named_issue_ids.add(rule_id)
             elif issue_scope:
                 unnamed_issues.setdefault(issue_scope, []).append(rule_id)
 
@@ -1078,13 +1103,14 @@ def build_rules(
         )
         by_id[rule_id] = payload
 
-    # An integration can raise one deadline twice, from a call that writes the
-    # issue name down and from a neighbouring one that builds it at runtime.
-    # The nameless rule is only worth a line of its own when it is the only one.
+    # One function can raise one deadline twice, from a call that writes the
+    # issue name down and from a neighbour that builds it at runtime. The
+    # nameless rule is only worth a line of its own when it is the only one.
     for scope, rule_ids in unnamed_issues.items():
         if scope in named_issues:
             for rule_id in rule_ids:
-                by_id.pop(rule_id, None)
+                if rule_id not in named_issue_ids:
+                    by_id.pop(rule_id, None)
 
     return sorted(
         by_id.values(), key=lambda r: (parse_version(r["breaks_in"]), r["id"])
