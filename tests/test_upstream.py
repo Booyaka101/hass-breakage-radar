@@ -407,6 +407,30 @@ def test_a_report_on_a_renamed_repository_is_kept(monkeypatch):
     assert "canonical" not in facts, "the fact is about the repository, not its name"
 
 
+def test_a_renamed_repository_is_searched_under_its_new_name(monkeypatch):
+    """A `repo:` qualifier naming a repository GitHub has retired answers 422,
+    not nothing, so a renamed one could never pick up a report. Measured on
+    facebook/jest, which is jestjs/jest now."""
+    asked: list[str] = []
+    monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        "tools.upstream.repo_facts",
+        lambda *a, **k: {
+            "archived": False,
+            "issues_enabled": True,
+            "canonical": "a/one-renamed",
+        },
+    )
+
+    def search(full_name, *args, **kwargs):
+        asked.append(full_name)
+        return None
+
+    monkeypatch.setattr("tools.upstream.find_report", search)
+    look_up("a/one", "setup_scanner", current_version=NOW, token="x")
+    assert asked == ["a/one-renamed"]
+
+
 def test_a_report_transferred_onto_the_same_number_is_not_kept(monkeypatch):
     """A transfer takes the destination's next free number, which is the one
     asked for often enough that the number cannot tell a transfer from a

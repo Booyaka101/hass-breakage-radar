@@ -269,14 +269,20 @@ def look_up(
             facts["report"] = current
     if facts["issues_enabled"] and not facts["archived"]:
         try:
+            # Under the name GitHub answers to now: a `repo:` qualifier naming
+            # a repository that has been renamed is a 422, not an empty
+            # answer, so a renamed one could never pick up a report.
             report = find_report(
-                full_name, term, current_version=current_version, token=token
+                canonical, term, current_version=current_version, token=token
             )
         except (urllib.error.HTTPError, OSError) as err:
             # The repository itself answered, and that answer is worth
             # recording whatever the search did: a run that drops it here puts
             # last week's "archived, nothing is coming" back in front of
-            # everybody for another week on evidence it already had.
+            # everybody for another week on evidence it already had. The
+            # lookup still counts, so a repository whose search keeps failing
+            # waits its turn like the rest rather than sorting to the front of
+            # every run for good.
             LOGGER.debug("search failed for %s: %s", full_name, err)
             report = known
         finally:

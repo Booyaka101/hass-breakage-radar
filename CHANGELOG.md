@@ -172,6 +172,13 @@ Repairs cuts the title to 140 characters when it shows it, which is where that n
 belonged. A confirmation that errors keeps the report it was checking:
 one 502 is not news about an issue.
 
+A renamed repository is searched under the name it answers to now. GitHub's search
+rejects a `repo:` qualifier naming a repository that has been renamed, with a 422 rather
+than an empty answer, so one that moved could never pick up a report: measured on
+`facebook/jest`, which answers as `jestjs/jest` and only matches under that name. The
+repository lookup each run already makes resolves it, because that one does follow the
+redirect.
+
 An issue transferred to another repository stops being linked. GitHub answers for it
 from wherever it went, so the link pointed at a repository the integration is not in,
 and the number it comes back with is that repository's, which had the next run asking
