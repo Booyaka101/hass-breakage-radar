@@ -145,6 +145,19 @@ crawl rewrites, disappeared from the pushed page. The page is rendered again aft
 rebase now, so the merged template and this run's data land together, and a run that
 publishes no board does not render one.
 
+A removal schedule written as bullets is one deadline again. The support window and
+the removal are the same date said twice, and the check for that was per sentence while
+every list item is now its own sentence, so a post with "Supported until Core 2027.4"
+above "Removed in Core 2027.5" made two rules and the earlier one warns a release too
+soon. A support window counts as a deadline only where the post also announces the
+removal at that release. Over all 83 cached posts the rules come out byte for byte the
+same, ids and messages both.
+
+A repository that was archived before it disappeared is still described as archived.
+Its issue tracker facts go when it 404s, because none of them can be checked any more,
+but "no fix is coming, plan to replace this integration" is truer of a repository that
+is gone than "check its releases page" is, and that page 404s too.
+
 A repository keeps the report it already has. The scan holds a fact through its rule
 being overtaken by one that breaks sooner, and the lookup then aimed the next search at
 the sooner rule and overwrote the link with whatever that found, which is usually
