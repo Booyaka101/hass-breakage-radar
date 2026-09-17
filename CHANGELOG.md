@@ -98,12 +98,13 @@ unrelated root happily, gets to decide.
 ### A rule can say what to search its own repositories for
 
 `search_term` reduces a symbol to its last dotted part, which turns
-`DeviceRegistry.devices` into `devices`. Of the 18 reports the published index links
-under that term, 4 are about the deprecation and 14 are unrelated device bugs: "Devices
+`DeviceRegistry.devices` into `devices`. Asked across all 125 repositories the rule
+affects, that term finds a report in 53 of them and `device_registry.devices` in 16,
+and only 13 of those are the same issue. The other 40 are about something else: "Devices
 do not return to available status after connection loss", "Link with list to compatible
-devices", "Sorting and filtering devices and entity's". All four real ones name
-`device_registry.devices` in the title, which is what `device-registry-devices-mapping`
-now carries in a new optional `search` field on the rule.
+devices", "Sorting and filtering devices and entity's". The dotted term is what
+`device-registry-devices-mapping` now carries in a new optional `search` field on the
+rule.
 
 A fact recorded under the old term no longer matches the rule that asked for it, so the
 next crawl looks those repositories up again rather than carrying the wrong link

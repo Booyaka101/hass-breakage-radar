@@ -139,7 +139,7 @@ def test_a_spent_budget_still_drops_a_fact_with_nothing_left(monkeypatch):
 
 
 def test_a_rule_can_name_the_term_its_repositories_are_searched_for(monkeypatch):
-    """`devices` on its own found 14 unrelated device bugs and 4 real reports."""
+    """`devices` on its own found 53 reports, 40 of them about something else."""
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     asked: list[str] = []
 

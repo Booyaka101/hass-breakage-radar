@@ -536,9 +536,11 @@ retirement all key off `breaks_in`. A rule whose two releases are the same carri
 
 A rule can also carry `search`, which replaces the term its repositories are searched
 for upstream. The term is otherwise the last dotted part of the symbol, so
-`DeviceRegistry.devices` becomes `devices`, and 14 of the 18 issues that term found
-were unrelated device bugs. `device-registry-devices-mapping` asks for
-`device_registry.devices` instead, which is what all four of the real reports name.
+`DeviceRegistry.devices` becomes `devices`. Asking GitHub for both terms across all 125
+repositories the rule affects, the bare term finds a report in 53 of them and
+`device_registry.devices` in 16, and only 13 of those are the same issue. The other 40
+are about something else: "no devices in home tab", "Devices duplicated after upgrade".
+`device-registry-devices-mapping` asks for the dotted term instead.
 
 Core, and the blog itself, sometimes carry a marker for the same removal whose message
 is prose the extractor cannot turn into a matcher. A hand-written rule can name those
