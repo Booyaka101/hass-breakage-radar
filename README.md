@@ -546,7 +546,10 @@ one of them with no matcher and no advice, reads as two problems.
 
 **3. Blog prose (`origin: blog`).** Every removal sentence found on
 <https://developers.home-assistant.io/blog/>, published as `matchable: false` so the
-board shows the deadline even when no static check exists.
+board shows the deadline even when no static check exists. A post that only dates the
+end of a support window counts as one too, unless the removal written beside it lands
+a release later, which makes the window an early warning about that removal rather
+than a deadline of its own.
 
 ### Why matching resolves imports
 
@@ -775,7 +778,9 @@ their rule no longer asks for go first, then the oldest. A repository
 that never cuts another release is never rescanned, so without that its issue link
 would stay published for good, however wrong it had gone. When the search does not
 come back with the report already on file, that issue is fetched by number: an issue
-drops out of a ten-hit search on its own, but a 404 means it is really gone.
+drops out of a ten-hit search on its own, but a 404 means it is really gone. What
+survives a 404 is only what says not to file there, that the repository was archived
+or had issues turned off. The report link goes with the tracker it pointed into.
 
 Every `matchable: true` rule ships its matcher as the nested `match` object — that is
 what lets the integration run the same rules over locally installed code without the
