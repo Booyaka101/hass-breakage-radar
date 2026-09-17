@@ -15,6 +15,7 @@ import pytest
 from tools.common import utc_now_iso
 from tools.rules_engine import rule_search_term, search_term
 from tools.upstream import (
+    SEARCH_INTERVAL,
     SearchExhausted,
     annotate,
     confirm_report,
@@ -294,6 +295,25 @@ def _searched(monkeypatch, issue, found=None):
 
 def _search_found_nothing(monkeypatch, issue):
     _searched(monkeypatch, issue)
+
+
+def test_a_search_that_fails_is_still_spaced_from_the_next_one(monkeypatch):
+    """A 502 costs the same against the secondary rate limit as an answer.
+    The caller logs a failed lookup and goes straight to the next repository,
+    so without this a bad patch fires the whole budget back to back."""
+    slept: list[float] = []
+    monkeypatch.setattr("tools.upstream.time.sleep", slept.append)
+    monkeypatch.setattr(
+        "tools.upstream.repo_facts",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    def failing_search(*args, **kwargs):
+        raise _http_error(502, {})
+
+    monkeypatch.setattr("tools.upstream.find_report", failing_search)
+    with pytest.raises(urllib.error.HTTPError):
+        look_up("a/one", "setup_scanner", current_version=NOW, token="x")
+    assert slept == [SEARCH_INTERVAL]
 
 
 def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):

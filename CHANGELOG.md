@@ -107,6 +107,11 @@ was found for a search this rule no longer makes, and then the oldest. A run ask
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
 
+The searches are spaced whether or not they answer. A failed one costs the same against
+the secondary rate limit as a good one, and the caller logs it and moves straight on to
+the next repository, so a bad afternoon at GitHub would have fired the whole budget back
+to back.
+
 A refresh whose search finds nothing asks for the report it already had by number. The
 search answers with its own top ten, so an issue can fall out of the answer without
 anything having happened to it, and an empty "already reported" column sends everybody
@@ -138,7 +143,8 @@ saved when a run does not finish. A full budget of them takes about a quarter of
 hour, and a run that crashed, was cancelled or hit the 90-minute timeout in the middle
 of that had spent the rate limit for nothing and left nothing behind but a discarded
 workspace. Progress files only: the index is rebuilt after the scan, so publishing
-stays the business of a run that got that far. A run with no lookup to make saves too:
+stays the business of a run that got that far, and a run whose suite rejected the fresh
+data saves nothing at all. A run with no lookup to make saves too:
 a repository whose findings are all gone drops its upstream fact either way, and on most
 days there is no lookup to save it alongside.
 

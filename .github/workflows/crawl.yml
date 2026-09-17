@@ -72,6 +72,7 @@ jobs:
         run: python tools/build_index.py
 
       - name: Run the test suite against the fresh data
+        id: verify
         run: |
           python -m pip install --disable-pip-version-check --quiet pytest
           python -m pytest
@@ -129,26 +130,27 @@ jobs:
         # apart. Without this a crash, the cancel button or the job timeout
         # throws all of that away with the workspace and the next run spends
         # the rate limit on the same repositories again. always() rather than
-        # cancelled() because a timeout is not documented as either. After a
-        # run that finished there is nothing left uncommitted and this does
-        # nothing. Progress files only: the index is rebuilt after the scan,
-        # so publishing stays the business of a run that got that far.
-        if: always()
+        # cancelled() because a timeout is documented as neither that nor a
+        # failure, and not at all when the suite ran and failed: fresh data
+        # the tests reject is not progress. After a run that finished there is
+        # nothing uncommitted left and this does nothing.
+        if: ${{ always() && steps.verify.outcome != 'failure' }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Progress files only. The index is rebuilt after the scan, so
+          # publishing stays the business of a run that got that far, and a
+          # commit the step above made and could not push stays unpushed.
           git add data/catalog.json data/findings.json state/crawl.json
-          # Whatever else the run had rewritten by then -- the rule stamps, a
-          # half-built index -- is not being committed, and rebasing needs the
-          # working tree clean.
-          git checkout -- .
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(crawl): save progress from a cancelled run"
-          fi
-          git fetch origin main
-          if [ "$(git rev-list --count origin/main..HEAD)" = "0" ]; then
+          if git diff --cached --quiet; then
             echo "No progress to save."
             exit 0
           fi
+          # Whatever else the run had rewritten by then, the rule stamps or a
+          # half-built index, is not being committed, and rebasing needs the
+          # working tree clean.
+          git checkout -- .
+          git commit -m "chore(crawl): save progress from a run that did not finish"
+          git fetch origin main
           git rebase -X theirs origin/main
           git push

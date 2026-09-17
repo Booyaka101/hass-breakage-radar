@@ -105,12 +105,15 @@ def test_the_crawl_rebases_onto_main_keeping_its_own_side(repo_root):
 def test_a_crawl_that_does_not_finish_still_commits_its_progress(repo_root):
     """The scan saves its state every 25 repositories, which buys nothing if
     every step that commits is skipped when the job is cancelled or times out.
-    The index is not committed there: it is rebuilt after the scan."""
+    Not when the suite rejected the fresh data, though, and not the index:
+    that is rebuilt after the scan and published by a run that got that far."""
     workflow = (repo_root / ".github" / "workflows" / "crawl.yml").read_text(
         encoding="utf-8"
     )
     step = workflow[workflow.index("Save the crawl progress") :]
-    assert "if: always()" in step
+    assert "always()" in step
+    assert "steps.verify.outcome != 'failure'" in step
+    assert re.search(r"^\s*id: verify$", workflow, re.M), "no step to check against"
     staged = re.search(r"^\s*git add (.*)$", step, re.M)
     assert staged
     assert set(staged.group(1).split()) == {

@@ -234,10 +234,16 @@ def look_up(
         if current:
             facts["report"] = current
     if facts["issues_enabled"] and not facts["archived"]:
-        report = find_report(
-            full_name, term, current_version=current_version, token=token
-        )
-        time.sleep(SEARCH_INTERVAL)
+        try:
+            report = find_report(
+                full_name, term, current_version=current_version, token=token
+            )
+        finally:
+            # Spacing the searches, not their answers. A search that 502s costs
+            # the same against the secondary rate limit as one that works, and
+            # a caller that logs the failure and moves on would otherwise fire
+            # the whole budget of them back to back.
+            time.sleep(SEARCH_INTERVAL)
         found = _rank(report, term, current_version=current_version)
         if (
             known
@@ -279,13 +285,14 @@ def _wanted(record: dict[str, Any], rules_by_id: dict[str, Any]) -> str:
 
 
 def _staleness(item: tuple[str, Any, str]) -> tuple[bool, str]:
-    """Sort key: wrong facts first, then oldest, then never looked up at all.
+    """Sort key: never looked up first, then wrong facts, then the oldest.
 
     A run stops at ``limit`` lookups and there are more affected repositories
     than that, so without this the budget goes to whichever ones sort first by
     name, every single day. A fact filed under a term its rule no longer asks
-    for is a link found for the wrong search, which is worse than an old one
-    and would otherwise wait behind every fact older than it.
+    for shares the front of the queue: it is a link found for a search this
+    rule no longer makes, which is worse than an old one and would otherwise
+    wait behind every fact older than it.
     """
     fact = item[1].get("upstream") or {}
     return (fact.get("symbol") == item[2], fact.get("checked_utc") or "")
