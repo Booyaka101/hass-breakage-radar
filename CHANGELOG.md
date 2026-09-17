@@ -92,9 +92,10 @@ rule either way, so this is a trap rather than a bug on today's blog.
 Because of that, a rule is made for every release a sentence names in the same words,
 rather than the first one it names. A post that lists two removals as hard-wrapped
 lines of one paragraph is a single sentence once the wraps are soft again, and the
-second removal would have been a rule nobody could see missing. One sentence still
-makes one deadline per phrasing, because "supported until 2027.4 and removed in 2027.5"
-is one removal said two ways and the earlier half of it warns a release too soon.
+second removal would have been a rule nobody could see missing. A sentence that
+announces a removal is not also read for where its support window ends, because
+"supported until 2027.4 and removed in 2027.5" is one deadline said two ways and the
+earlier half of it warns a release too soon. Two removals in one sentence are still two.
 Measured over all 83 posts: the same rules, the same messages.
 
 ### One `--limit` for the whole run

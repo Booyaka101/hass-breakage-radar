@@ -253,18 +253,22 @@ def look_up(
         return {}
     facts = repo_facts(full_name, token=token)
     canonical = facts.pop("canonical", full_name)
-    if known and not facts["issues_enabled"] and not facts["archived"]:
-        # Turning issues off hides the existing ones, and the API answers 404
-        # or 410 for them, which is what drops the link. Saying "nowhere to
-        # report it" while the report is still there to read would be worse.
-        current = _confirmed(
+
+    def still_open(report: dict[str, Any]) -> dict[str, Any] | None:
+        return _confirmed(
             full_name,
-            known,
+            report,
             term,
             current_version=current_version,
             token=token,
             canonical=canonical,
         )
+
+    if known and not facts["issues_enabled"] and not facts["archived"]:
+        # Turning issues off hides the existing ones, and the API answers 404
+        # or 410 for them, which is what drops the link. Saying "nowhere to
+        # report it" while the report is still there to read would be worse.
+        current = still_open(known)
         if current:
             facts["report"] = current
     if facts["issues_enabled"] and not facts["archived"]:
@@ -297,14 +301,7 @@ def look_up(
             and (report or {}).get("number") != known.get("number")
             and _rank(known, term, current_version=current_version) >= found
         ):
-            current = _confirmed(
-                full_name,
-                known,
-                term,
-                current_version=current_version,
-                token=token,
-                canonical=canonical,
-            )
+            current = still_open(known)
             if current and _rank(current, term, current_version=current_version) >= found:
                 report = current
         if report:

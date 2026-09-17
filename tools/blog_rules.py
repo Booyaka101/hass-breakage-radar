@@ -60,7 +60,8 @@ from tools.rules_engine import (  # noqa: E402
 BLOG_INDEX = "https://developers.home-assistant.io/blog/"
 BLOG_BASE = "https://developers.home-assistant.io"
 
-#: Sentences that announce a removal, all seen live on the real blog.
+#: Sentences that name the release something stops working in, all seen live
+#: on the real blog.
 REMOVAL_PATTERNS = [
     re.compile(
         r"(?:will be |is )?removed in (?:the )?(?:Home Assistant )?(?:Core )?(\d{4}\.\d+(?:\.\d+)?)",
@@ -70,11 +71,18 @@ REMOVAL_PATTERNS = [
         r"will stop working in (?:the )?(?:Home Assistant )?(?:Core )?(\d{4}\.\d+(?:\.\d+)?)",
         re.I,
     ),
+    re.compile(r"Removal in (?:Home Assistant )?Core (\d{4}\.\d+(?:\.\d+)?)", re.I),
+]
+
+#: The same deadline said the other way round, naming the last release it still
+#: works in. Only read when the sentence does not announce a removal outright:
+#: "supported until 2027.4 and removed in 2027.5" is one deadline twice, and
+#: this half of it is a release early.
+SUPPORT_END_PATTERNS = [
     re.compile(
         r"(?:supported|kept|keeps working) until (?:Home Assistant )?(?:Core )?(\d{4}\.\d+(?:\.\d+)?)",
         re.I,
     ),
-    re.compile(r"Removal in (?:Home Assistant )?Core (\d{4}\.\d+(?:\.\d+)?)", re.I),
 ]
 
 _TAG_RE = re.compile(r"<[^>]+>")
@@ -150,44 +158,48 @@ def _sentences(text: str) -> Iterable[str]:
             yield sentence
 
 
+def _releases(sentence: str, patterns: list[re.Pattern[str]]) -> list[str]:
+    """Every release one sentence names in these words, in the order named."""
+    found: list[str] = []
+    for pattern in patterns:
+        for match in pattern.finditer(sentence):
+            version = normalise_version(match.group(1))
+            if VERSION_RE.match(version) and version not in found:
+                found.append(version)
+    return found
+
+
 def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
     """Find every 'removed in <release>' sentence in one post's prose.
 
     Every release a sentence names, not the first: a post that lists two
     removals as hard-wrapped lines of one paragraph reads as a single
-    sentence, and the second one is a rule nobody would ever see missing.
+    sentence, and the second one is a rule nobody would ever see missing. A
+    sentence that announces a removal is not also read for where its support
+    window ends, because that is the same deadline a release early.
     """
     title_slug = url.rstrip("/").rsplit("/", 1)[-1]
     found: dict[str, dict[str, Any]] = {}
 
     for sentence in _sentences(text):
-        for pattern in REMOVAL_PATTERNS:
-            versions = [
-                version
-                for match in pattern.finditer(sentence)
-                if VERSION_RE.match(version := normalise_version(match.group(1)))
-            ]
-            if not versions:
+        versions = _releases(sentence, REMOVAL_PATTERNS) or _releases(
+            sentence, SUPPORT_END_PATTERNS
+        )
+        for version in versions:
+            if version in found:
                 continue
-            for version in versions:
-                if version in found:
-                    continue
-                trimmed = sentence if len(sentence) <= 400 else sentence[:397] + "..."
-                found[version] = {
-                    "id": f"blog-{_slug(title_slug)}-{version}",
-                    "kind": "prose",
-                    "symbol": title_slug.replace("-", " "),
-                    "message": trimmed,
-                    "breaks_in": version,
-                    "source": url,
-                    "origin": "blog",
-                    "confidence": "info",
-                    "matchable": False,
-                }
-            # One phrasing per sentence. "Supported until 2027.4 and removed in
-            # 2027.5" is one deadline said twice, and the earlier half of it
-            # would warn a release too soon.
-            break
+            trimmed = sentence if len(sentence) <= 400 else sentence[:397] + "..."
+            found[version] = {
+                "id": f"blog-{_slug(title_slug)}-{version}",
+                "kind": "prose",
+                "symbol": title_slug.replace("-", " "),
+                "message": trimmed,
+                "breaks_in": version,
+                "source": url,
+                "origin": "blog",
+                "confidence": "info",
+                "matchable": False,
+            }
     return list(found.values())
 
 

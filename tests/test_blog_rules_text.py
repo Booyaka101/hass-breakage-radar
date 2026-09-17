@@ -154,3 +154,14 @@ def test_a_sentence_that_names_one_deadline_twice_makes_one_rule():
         "Home Assistant Core 2027.5.",
     )
     assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
+
+
+def test_two_removal_phrasings_in_one_sentence_both_count():
+    """Only the support window is read as the same deadline said twice. Two
+    removals in one sentence, phrased differently, are two deadlines."""
+    rules = extract_removals(
+        "https://www.home-assistant.io/blog/2027/01/01/thing",
+        "The widget helper will be removed in 2027.5. The gadget helper, "
+        "removed in 2027.5, will stop working in 2027.9 for existing installs.",
+    )
+    assert sorted(rule["breaks_in"] for rule in rules) == ["2027.5", "2027.9"]
