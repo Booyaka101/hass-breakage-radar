@@ -9,11 +9,19 @@ set -euo pipefail
 
 message="$1"
 
+# The step that saves a run's progress stages nothing when the step above it
+# already committed and only the push failed, and that commit is the progress
+# this script is here to land. Being ahead of the branch is work too.
+ahead=$(git rev-list --count '@{u}..HEAD' 2>/dev/null || echo 0)
 if git diff --cached --quiet; then
-  echo "Nothing staged to commit."
-  exit 0
+  if [ "${ahead}" -eq 0 ]; then
+    echo "Nothing staged to commit."
+    exit 0
+  fi
+  echo "Nothing staged; pushing ${ahead} commit(s) an earlier attempt left behind"
+else
+  git commit -m "${message}"
 fi
-git commit -m "${message}"
 
 for attempt in 1 2 3; do
   if git push; then

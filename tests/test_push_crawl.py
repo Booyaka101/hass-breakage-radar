@@ -184,6 +184,21 @@ def test_a_render_that_fails_leaves_the_tree_the_rebase_needs(crawl):
     assert "<div>200</div>" in pushed(crawl, "docs/index.html")
 
 
+def test_a_commit_the_last_attempt_could_not_push_still_goes(crawl):
+    """The step that saves a run's progress stages nothing when the step
+    before it committed and only the push failed. Stopping on an empty index
+    there leaves the scan's progress to die with the runner."""
+    (crawl / "data" / "findings.json").write_text("200\n", encoding="utf-8")
+    git(crawl, "add", "data/findings.json")
+    (crawl / "data" / "rules.json").write_text('{"dirty": 1}\n', encoding="utf-8")
+    assert push(crawl).returncode == 1
+
+    git(crawl, "checkout", "--", ".")
+    result = push(crawl)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert pushed(crawl, "data/findings.json") == "200\n"
+
+
 def test_a_rebase_that_cannot_start_says_so(crawl):
     """A rebase refuses on a dirty tree, and aborting one that never started
     fails too. Under set -e that second failure ends the script with git's
