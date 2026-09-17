@@ -269,8 +269,11 @@ def build_payload(
             "repos_scanned": len(set(repos) & set(catalog_by_name)),
             "repos_delisted": len(set(repos) - set(catalog_by_name)),
             "repos_affected": len(integrations),
-            "repos_clean": len(clean_domains),
-            "repos_unreachable": len(unreachable),
+            # Counted off by_category, not off clean_domains and unreachable:
+            # those two are keyed by domain and a Lovelace card has none, so
+            # taking their length silently dropped every card.
+            "repos_clean": sum(c["clean"] for c in by_category.values()),
+            "repos_unreachable": sum(c["unreachable"] for c in by_category.values()),
             "findings_total": sum(len(i["findings"]) for i in integrations),
             "rules_published": len(published_rules),
             "rules_matchable": sum(1 for r in published_rules if r.get("matchable")),

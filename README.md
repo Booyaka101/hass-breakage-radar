@@ -48,7 +48,7 @@ or into Home Assistant's own `feedreader` integration; open it in a browser and 
 renders as a page.
 
 **In the published index right now:** all 4 009 HACS repositories crawled
-(3 243 integrations and 766 Lovelace plugins, 19 unreachable), **826 affected**,
+(3 243 integrations and 766 Lovelace plugins, 27 unreachable), **826 affected**,
 **2 158 findings**, across 8 Home Assistant releases: 10 in 2026.10, 16 in 2026.11,
 11 in 2027.5, 45 in 2027.6, 26 in 2027.7, 588 in 2027.8, 134 in 2027.9 and 216 in 2027.10
 (counted by distinct integration domain). 64 of the 124 announced removals have a

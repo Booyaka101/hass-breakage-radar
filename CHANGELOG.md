@@ -103,6 +103,14 @@ written once and sits in a subscriber's reader for months, so it says "Logs a wa
 from Home Assistant 2026.10 (October 2026)" and leaves "about 20 days away" to the
 board, which is rebuilt daily.
 
+### Clean and unreachable Lovelace cards were missing from the coverage count
+
+`index.json` reported `repos_clean` and `repos_unreachable` as the length of two lists
+that are keyed by integration domain. A Lovelace card has no domain, so all 756 clean
+cards and 8 unreachable ones fell out of both numbers. The board never showed either,
+but the README repeated the unreachable one. Counted off the per-category tallies
+instead: 2 412 clean becomes 3 168, and 19 unreachable becomes 27. No finding changes.
+
 ### What the re-crawl measured
 
 All 4 009 catalogue repositories were rescanned on Python 3.14, the same interpreter the

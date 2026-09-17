@@ -555,3 +555,31 @@ def test_discarded_markers_reach_the_board_minus_what_a_rule_covers():
     assert payload["coverage"]["markers_discarded"] == 1
     assert payload["coverage"]["discarded_symbols"] == ["is_closed"]
     assert "is_closed" in render_html(payload)
+
+
+def test_a_lovelace_card_counts_as_clean_and_as_unreachable():
+    """Cards have no domain, and the clean and unreachable tallies used to be
+    the length of two lists keyed by domain, so every card fell out of both."""
+    findings = copy.deepcopy(FINDINGS_DOC)
+    findings["repos"]["example/clean-card"] = {
+        "category": "plugin",
+        "version": "1.0.0",
+        "status": "scanned",
+        "findings": [],
+    }
+    findings["repos"]["example/gone-card"] = {
+        "category": "plugin",
+        "status": "unreachable",
+        "findings": [],
+    }
+    catalog = copy.deepcopy(CATALOG_DOC)
+    catalog["integrations"] += [
+        {"full_name": "example/clean-card", "category": "plugin"},
+        {"full_name": "example/gone-card", "category": "plugin"},
+    ]
+    coverage = build_payload(RULES_DOC, findings, catalog)["coverage"]
+
+    assert coverage["by_category"]["plugin"]["clean"] == 1
+    assert coverage["by_category"]["plugin"]["unreachable"] == 1
+    assert coverage["repos_clean"] == 2
+    assert coverage["repos_unreachable"] == 2
