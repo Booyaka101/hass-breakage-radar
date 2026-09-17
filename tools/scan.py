@@ -725,7 +725,9 @@ def main(argv: list[str] | None = None) -> int:
         )
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
-            checkpoint()
+        # A run that asked about nothing can still have dropped facts a rule no
+        # longer covers, and those are only in memory until this.
+        checkpoint()
 
     LOGGER.info(
         "slice done in %.0fs: %s | state has %d repos, findings file has %d repos%s",

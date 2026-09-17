@@ -589,6 +589,30 @@ def test_a_day_with_nothing_to_scan_still_refreshes_the_facts(tmp_path, monkeypa
     assert len(runs) == 2
 
 
+def test_a_fact_dropped_on_a_quiet_day_is_dropped_on_disk(tmp_path, monkeypatch):
+    """A repository whose findings are all gone loses its upstream fact, and
+    that happens whether or not the run had a lookup to spend. Most days it has
+    none, and the stale fact was written back untouched."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+    monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
+
+    def records_the_fact(records, rules, **kwargs):
+        records["a/one"]["upstream"] = {"symbol": "setup_scanner", "archived": True}
+        return 1
+
+    def drops_the_fact(records, rules, **kwargs):
+        records["a/one"].pop("upstream", None)
+        return 0
+
+    argv = _argv(tmp_path, rules_path, catalog_path)
+    monkeypatch.setattr(scan_module, "annotate", records_the_fact)
+    assert main(argv) == 0
+    monkeypatch.setattr(scan_module, "annotate", drops_the_fact)
+    assert main(argv) == 0
+    saved = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    assert "upstream" not in saved["repos"]["a/one"]
+
+
 def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, caplog):
     """1 519 files failed to parse on the 1.12.0 rescan because it ran on 3.11
     against rules extracted on 3.14, and the findings in them vanished without

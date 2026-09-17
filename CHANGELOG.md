@@ -65,8 +65,8 @@ rule that tripped it, and read nowhere: not by the board, not by the integration
 the action. The comment above it said it suppressed a duplicate prose rule, and it did
 not suppress anything. Its test was whether a matchable rule's symbol appears anywhere
 in the prose message, which is loose enough that rewording a blog post changes the
-answer, so it was not a sound basis for hiding a rule either. Gone, along with the three
-flags in `data/rules.json`. `rules_hash` is unchanged, so nothing is re-crawled for it.
+answer, so it was not a sound basis for hiding a rule either. Gone, along with the six
+flags it had set in `data/rules.json`. `rules_hash` is unchanged, so nothing is re-crawled for it.
 
 ### The post, not the page it is served on
 
@@ -131,8 +131,12 @@ which is what drops the link. Assuming it from the flag turns "already reported,
 it is" into "there is nowhere to report it" on a repository where the report is still
 sitting there.
 
-Lookups are saved every 25, failures included. A full budget of them takes about a quarter of an hour, and
-a job the runner cancels in the middle of that had spent the rate limit for nothing.
+Lookups are saved every 25, failures included, and the crawl workflow commits what was
+saved if the run is cancelled or hits its timeout. A full budget of them takes about a
+quarter of an hour, and a job cancelled in the middle of that had spent the rate limit
+for nothing and left nothing behind but a discarded workspace. A run with no lookup to
+make saves too: a repository whose findings are all gone drops its upstream fact either
+way, and on most days there is no lookup to save it alongside.
 
 `--only owner/repo` asks about that repository whatever its fact's age. A forced rescan
 carries the fact forward with its old timestamp, so the freshness gate had the one
