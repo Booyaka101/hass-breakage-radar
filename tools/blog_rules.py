@@ -174,17 +174,26 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
 
     Every release a sentence names, not the first: a post that lists two
     removals as hard-wrapped lines of one paragraph reads as a single
-    sentence, and the second one is a rule nobody would ever see missing. A
-    sentence that announces a removal is not also read for where its support
-    window ends, because that is the same deadline a release early.
+    sentence, and the second one is a rule nobody would ever see missing.
+
+    Where a support window ends is a deadline only where the post also
+    announces the removal at that release. "Supported until 2027.4" and
+    "removed in 2027.5" are one deadline said twice, and the earlier half
+    warns a release too soon, whether the post says it in one sentence or as
+    two bullets.
     """
     title_slug = url.rstrip("/").rsplit("/", 1)[-1]
     found: dict[str, dict[str, Any]] = {}
 
-    for sentence in _sentences(text):
-        versions = _releases(sentence, REMOVAL_PATTERNS) or _releases(
-            sentence, SUPPORT_END_PATTERNS
-        )
+    sentences = list(_sentences(text))
+    removals = {v for s in sentences for v in _releases(s, REMOVAL_PATTERNS)}
+
+    for sentence in sentences:
+        versions = _releases(sentence, REMOVAL_PATTERNS) or [
+            version
+            for version in _releases(sentence, SUPPORT_END_PATTERNS)
+            if version in removals
+        ]
         for version in versions:
             if version in found:
                 continue

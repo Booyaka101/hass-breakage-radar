@@ -156,6 +156,38 @@ def test_a_sentence_that_names_one_deadline_twice_makes_one_rule():
     assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
 
 
+def test_a_schedule_in_bullets_is_still_one_deadline():
+    """The support window and the removal are one deadline whether the post
+    says both in a sentence or gives each its own bullet, and every block is
+    its own sentence since the chrome fix."""
+    rules = extract_removals(
+        URL,
+        _text(
+            "<article><p>The shims are deprecated.</p><ul>"
+            "<li>Supported until Home Assistant Core 2027.4</li>"
+            "<li>Removed in Home Assistant Core 2027.5</li></ul></article>"
+        ),
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
+
+
+def test_a_support_window_the_post_backs_up_keeps_its_wording():
+    """The developer blog opens with the policy, "deprecated functionality
+    remains supported until 2027.8", and names the removals below it. The
+    release is real, and that sentence says more in a Repairs card than "It
+    is removed in Home Assistant Core 2027.8." does."""
+    rules = extract_removals(
+        URL,
+        _text(
+            "<article><p>Unless noted otherwise, deprecated functionality "
+            "remains supported until Home Assistant Core 2027.8.</p>"
+            "<p>It is removed in Home Assistant Core 2027.8.</p></article>"
+        ),
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.8"]
+    assert rules[0]["message"].startswith("Unless noted otherwise")
+
+
 def test_two_removal_phrasings_in_one_sentence_both_count():
     """Only the support window is read as the same deadline said twice. Two
     removals in one sentence, phrased differently, are two deadlines."""
