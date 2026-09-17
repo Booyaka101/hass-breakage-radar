@@ -151,34 +151,33 @@ def _sentences(text: str) -> Iterable[str]:
 
 
 def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
-    """Find every 'removed in <release>' sentence in one post's prose."""
+    """Find every 'removed in <release>' sentence in one post's prose.
+
+    Every release a sentence names, not the first: a post that lists two
+    removals as hard-wrapped lines of one paragraph reads as a single
+    sentence, and the second one is a rule nobody would ever see missing.
+    """
     title_slug = url.rstrip("/").rsplit("/", 1)[-1]
     found: dict[str, dict[str, Any]] = {}
 
     for sentence in _sentences(text):
         for pattern in REMOVAL_PATTERNS:
-            match = pattern.search(sentence)
-            if not match:
-                continue
-            version = normalise_version(match.group(1))
-            if not VERSION_RE.match(version):
-                continue
-            key = version
-            if key in found:
-                continue
-            trimmed = sentence if len(sentence) <= 400 else sentence[:397] + "..."
-            found[key] = {
-                "id": f"blog-{_slug(title_slug)}-{version}",
-                "kind": "prose",
-                "symbol": title_slug.replace("-", " "),
-                "message": trimmed,
-                "breaks_in": version,
-                "source": url,
-                "origin": "blog",
-                "confidence": "info",
-                "matchable": False,
-            }
-            break
+            for match in pattern.finditer(sentence):
+                version = normalise_version(match.group(1))
+                if not VERSION_RE.match(version) or version in found:
+                    continue
+                trimmed = sentence if len(sentence) <= 400 else sentence[:397] + "..."
+                found[version] = {
+                    "id": f"blog-{_slug(title_slug)}-{version}",
+                    "kind": "prose",
+                    "symbol": title_slug.replace("-", " "),
+                    "message": trimmed,
+                    "breaks_in": version,
+                    "source": url,
+                    "origin": "blog",
+                    "confidence": "info",
+                    "matchable": False,
+                }
     return list(found.values())
 
 

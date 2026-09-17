@@ -110,6 +110,20 @@ def test_the_post_is_the_longest_article_on_the_page():
     assert [rule["breaks_in"] for rule in rules] == ["2027.10", "2027.4"]
 
 
+def test_two_removals_wrapped_into_one_paragraph_are_both_kept():
+    """A hard-wrapped list of removals renders as one paragraph with <br>
+    between the lines, and a <br> is not a sentence end. Taking the first
+    release named in the sentence drops the rest of the list."""
+    post = POST.replace(
+        "<p>The widget helper has been deprecated and will be\nremoved in Home Assistant 2027.10.</p>",
+        "<p>Deprecated helpers:<br />the widget helper will be removed in "
+        "2027.10<br />the gadget helper will be removed in 2027.11.</p>",
+    )
+    assert post != POST
+    releases = [r["breaks_in"] for r in extract_removals(URL, _text(_post_body(post)))]
+    assert "2027.10" in releases and "2027.11" in releases
+
+
 def test_a_page_without_the_element_is_read_whole():
     """A Docusaurus redesign should cost the chrome fix, not every rule."""
     assert _post_body("<html><body><p>removed in 2027.10</p></body></html>").startswith(

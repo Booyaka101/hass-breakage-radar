@@ -89,6 +89,12 @@ mid-sentence, and reading it as the start of a new line of prose quotes the post
 the break onwards. None of the 55 cached posts that contain one produced a different
 rule either way, so this is a trap rather than a bug on today's blog.
 
+Because of that, a rule is made for every release a sentence names rather than the
+first one in it. A post that lists two removals as hard-wrapped lines of one paragraph
+is a single sentence once the wraps are soft again, and the second removal would have
+been a rule nobody could see missing. Measured over all 83 posts: the same rules, the
+same messages.
+
 ### One `--limit` for the whole run
 
 `--limit` bounds the repositories a run scans, and upstream lookups kept their own
@@ -111,6 +117,12 @@ was found for a search this rule no longer makes, and then the oldest. A run ask
 400 repositories at most. That
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
+
+A search that fails no longer costs the answers the repository itself gave. `look_up`
+asks GitHub about the repository first and searches second, and letting the search
+error out of the whole lookup threw the first answer away: a repository unarchived last
+week would have gone on telling everybody "archived, no fix is coming" for another week
+on evidence the run had in hand.
 
 The searches are spaced whether or not they answer. A failed one costs the same against
 the secondary rate limit as a good one, and the caller logs it and moves straight on to
@@ -138,8 +150,10 @@ are ranked the same way. A confirmation that errors keeps the report it was chec
 one 502 is not news about an issue.
 
 An issue transferred to another repository stops being linked. GitHub answers for it
-from wherever it went, with that repository's numbering, so recording the number it
+from wherever it went, under that repository's numbering, so recording the number it
 comes back with had the next run asking for an unrelated issue of ours by the same one.
+A repository that was merely renamed answers with the number asked for, which is the
+same issue, and keeps its link.
 
 A repository that has turned issues off is still asked about the report it is on file
 for. Turning them off hides the existing ones, and the API answers 404 or 410 for them,

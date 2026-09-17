@@ -188,12 +188,12 @@ def confirm_report(
         if err.code in (404, 410):
             return None
         raise
-    if not (item.get("repository_url") or "").lower().endswith(
-        f"/repos/{full_name.lower()}"
-    ):
-        # A transferred issue answers from wherever it went, with that
+    if item.get("number") != number:
+        # A transferred issue answers from wherever it went, under that
         # repository's numbering, and recording that number here would have
         # the next run asking for an unrelated issue of ours by the same one.
+        # A plain rename answers with the number asked for, which is the same
+        # issue and worth keeping.
         return None
     current = _report(item)
     if _rank(current, term, current_version=current_version)[0] <= 0:
@@ -245,6 +245,13 @@ def look_up(
             report = find_report(
                 full_name, term, current_version=current_version, token=token
             )
+        except (urllib.error.HTTPError, OSError) as err:
+            # The repository itself answered, and that answer is worth
+            # recording whatever the search did: a run that drops it here puts
+            # last week's "archived, nothing is coming" back in front of
+            # everybody for another week on evidence it already had.
+            LOGGER.debug("search failed for %s: %s", full_name, err)
+            report = known
         finally:
             # Spacing the searches, not their answers. A search that 502s costs
             # the same against the secondary rate limit as one that works, and

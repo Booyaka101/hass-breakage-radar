@@ -297,23 +297,41 @@ def _search_found_nothing(monkeypatch, issue):
     _searched(monkeypatch, issue)
 
 
-def test_a_search_that_fails_is_still_spaced_from_the_next_one(monkeypatch):
-    """A 502 costs the same against the secondary rate limit as an answer.
-    The caller logs a failed lookup and goes straight to the next repository,
-    so without this a bad patch fires the whole budget back to back."""
-    slept: list[float] = []
+def _search_errored(monkeypatch, slept):
     monkeypatch.setattr("tools.upstream.time.sleep", slept.append)
     monkeypatch.setattr(
         "tools.upstream.repo_facts",
         lambda *a, **k: {"archived": False, "issues_enabled": True},
     )
+
     def failing_search(*args, **kwargs):
         raise _http_error(502, {})
 
     monkeypatch.setattr("tools.upstream.find_report", failing_search)
-    with pytest.raises(urllib.error.HTTPError):
-        look_up("a/one", "setup_scanner", current_version=NOW, token="x")
+
+
+def test_a_search_that_fails_is_still_spaced_from_the_next_one(monkeypatch):
+    """A 502 costs the same against the secondary rate limit as an answer.
+    The caller goes straight to the next repository, so without this a bad
+    afternoon at GitHub fires the whole budget back to back."""
+    slept: list[float] = []
+    _search_errored(monkeypatch, slept)
+    look_up("a/one", "setup_scanner", current_version=NOW, token="x")
     assert slept == [SEARCH_INTERVAL]
+
+
+def test_a_search_that_fails_keeps_what_the_repository_itself_answered(monkeypatch):
+    """The repository was asked before the search and answered. Throwing that
+    away puts last week's "archived, nothing is coming" back in front of
+    everybody for another week, on evidence this run had in hand."""
+    slept: list[float] = []
+    _search_errored(monkeypatch, slept)
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["archived"] is False
+    assert facts["issues_enabled"] is True
+    assert facts["report"] == ON_FILE
 
 
 def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
@@ -357,6 +375,26 @@ def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
         "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
     )
     assert "report" not in facts
+
+
+def test_a_report_on_a_renamed_repository_is_kept(monkeypatch):
+    """A rename answers from the new name, redirected, with the number asked
+    for. It is the same issue, and the catalogue catches up on its own."""
+    _search_found_nothing(
+        monkeypatch,
+        {
+            "number": 41,
+            "repository_url": "https://api.github.com/repos/a/one-renamed",
+            "html_url": "https://github.com/a/one-renamed/issues/41",
+            "state": "open",
+            "title": "setup_scanner is deprecated",
+            "reactions": {"total_count": 3},
+        },
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"]["number"] == 41
 
 
 def test_a_report_that_is_gone_is_not_carried_forward(monkeypatch):
