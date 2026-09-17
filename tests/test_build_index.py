@@ -309,6 +309,30 @@ def test_a_filtered_no_detector_release_recounts_its_heading(payload):
     assert "shown + ' removal' + (shown === 1 ? '' : 's')" in board
 
 
+def test_the_no_detector_list_is_searched_on_its_own_field(payload):
+    """The word "source" is on every one of these rows, and the tables above
+    them search a field rather than their own markup for exactly that reason."""
+    payload["rules"].append(
+        {
+            "id": "blog-configurator-removal-2027.6",
+            "kind": "prose",
+            "symbol": "configurator",
+            "message": "The configurator integration is removed.",
+            "breaks_in": "2027.6",
+            "source": "https://developers.home-assistant.io/blog/post/",
+            "origin": "blog",
+            "confidence": "medium",
+            "matchable": False,
+        }
+    )
+    board = render_html(payload)
+    assert (
+        '<li data-search="blog-configurator-removal-2027.6 configurator '
+        'the configurator integration is removed.">' in board
+    )
+    assert "item.dataset.search.includes(needle)" in board
+
+
 def test_the_board_leaves_out_an_empty_no_detector_list(payload):
     assert "no-detector" not in render_html(payload)
 

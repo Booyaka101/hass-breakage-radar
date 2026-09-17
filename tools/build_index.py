@@ -476,7 +476,7 @@ function apply() {{
     let shown = 0;
     section.querySelectorAll('li').forEach(item => {{
       const visible = deadlines &&
-        (!needle || item.textContent.toLowerCase().includes(needle));
+        (!needle || item.dataset.search.includes(needle));
       item.hidden = !visible;
       if (visible) shown++;
     }});
@@ -618,9 +618,14 @@ def rule_item(rule_id: str, rule: dict[str, Any], today: date) -> str:
         where = f'<a href="{html.escape(source)}">source</a>'
     else:
         where = f"<code>{html.escape(source)}</code>"
+    message = clip(rule.get("message") or "", 200)
+    # What the box filters on, the way a repository row carries its own field:
+    # the word "source" and the markup around it are on every one of these.
+    search = f"{rule_id} {rule.get('symbol') or ''} {message}".lower()
     return (
-        f"<li><code>{html.escape(rule_id)}</code> &mdash; "
-        f"{html.escape(clip(rule.get('message') or '', 200))} "
+        f'<li data-search="{html.escape(search)}">'
+        f"<code>{html.escape(rule_id)}</code> &mdash; "
+        f"{html.escape(message)} "
         f"{where}{note}</li>"
     )
 
