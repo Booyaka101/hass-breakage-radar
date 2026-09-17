@@ -149,9 +149,14 @@ A removal schedule written as bullets is one deadline again. The support window 
 the removal are the same date said twice, and the check for that was per sentence while
 every list item is now its own sentence, so a post with "Supported until Core 2027.4"
 above "Removed in Core 2027.5" made two rules and the earlier one warns a release too
-soon. A support window counts as a deadline only where the post also announces the
-removal at that release. Over all 83 cached posts the rules come out byte for byte the
-same, ids and messages both.
+soon. A window that ends the release before a removal the post announces is that
+removal, said early. One that ends at the removal's own release still stands, and so
+does a post whose only deadline is the window it gives. Over all 83 cached posts the
+rules come out byte for byte the same, ids and messages both.
+
+Progress a crawl could not push is pushed by the step that rescues it. That step stages
+nothing, because the step before it had already committed and only the push failed, and
+stopping there left a scan and up to 400 lookups to die with the runner.
 
 A repository that was archived before it disappeared is still described as archived.
 Its issue tracker facts go when it 404s, because none of them can be checked any more,
