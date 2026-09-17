@@ -9,6 +9,24 @@ set -euo pipefail
 
 message="$1"
 
+# Render the page again on top of what is checked out now and fold it into the
+# commit. A run publishes markup rendered from the template it started with,
+# so taking the crawl's side of the page drops a template change that landed
+# mid-run; rendering again puts both in the file.
+republish() {
+  if python tools/build_index.py >/dev/null; then
+    git add docs/index.json docs/index.html docs/feed.xml docs/feed.xsl
+    git add state/feed.json data/rules.json
+    git diff --cached --quiet || git commit --quiet --amend --no-edit
+    return 0
+  fi
+  # A render that fails leaves the page this run built, which is what the push
+  # was about to carry anyway. Half of a written one cannot stay in the tree,
+  # though: the next attempt's rebase refuses to start on it.
+  git checkout -- docs state data/rules.json
+  return 1
+}
+
 # The step that saves a run's progress stages nothing when the step above it
 # already committed and only the push failed, and that commit is the progress
 # this script is here to land. Being ahead of the branch is work too.
@@ -34,10 +52,12 @@ for attempt in 1 2 3; do
   # it would drop a rule somebody merged mid-run until tomorrow's crawl derives
   # it again, so main wins that one file and the crawl's own output wins the
   # rest.
+  ours_rules=""
   base=$(git merge-base HEAD origin/main)
   if ! git diff --quiet "${base}" HEAD -- data/rules.json &&
      ! git diff --quiet "${base}" origin/main -- data/rules.json; then
     echo "main moved data/rules.json during the run; keeping its copy"
+    ours_rules=$(git rev-parse HEAD:data/rules.json)
     git checkout origin/main -- data/rules.json
     git commit --quiet --amend --no-edit --allow-empty
   fi
@@ -49,19 +69,15 @@ for attempt in 1 2 3; do
     echo "could not rebase cleanly; leaving main alone"
     exit 1
   fi
-  # The board is markup rendered from a template in tools/, so a run that
-  # publishes it rendered it from the copy it started with, and taking the
-  # crawl's side of the page drops a template change that landed mid-run.
-  # Rendering again on top of what is now checked out puts both in the file.
   if ! git diff --quiet origin/main HEAD -- docs/index.html; then
-    # A render that fails leaves the page this run built, which is what the
-    # push was about to carry anyway. Half of a written one cannot stay in the
-    # tree, though: the next attempt's rebase refuses to start on it.
-    if python tools/build_index.py >/dev/null; then
-      git add docs/index.json docs/index.html docs/feed.xml docs/feed.xsl state/feed.json
-      git diff --cached --quiet || git commit --quiet --amend --no-edit
-    else
-      git checkout -- docs state
+    if ! republish && [ -n "${ours_rules}" ]; then
+      # Publishing refuses on findings that name a rule the rule set no longer
+      # has, and taking main's copy above is how a run comes by some. The
+      # rules it scanned against are the ones its page is about, and the
+      # merged ones arrive with tomorrow's crawl either way.
+      echo "the merged rules do not match this run's findings; keeping its own"
+      git cat-file blob "${ours_rules}" >data/rules.json
+      republish || true
     fi
   fi
 done

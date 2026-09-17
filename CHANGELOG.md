@@ -154,6 +154,12 @@ removal, said early. One that ends at the removal's own release still stands, an
 does a post whose only deadline is the window it gives. Over all 83 cached posts the
 rules come out byte for byte the same, ids and messages both.
 
+A crawl no longer publishes a board beside a rule set it does not match. Main gaining
+rules mid-run is usually main retiring one, and taking that copy left the run's findings
+naming rules it no longer has, which is what the build refuses to publish. The run keeps
+the rules it scanned against in that case, and tomorrow's crawl derives the merged ones
+anyway.
+
 Progress a crawl could not push is pushed by the step that rescues it. That step stages
 nothing, because the step before it had already committed and only the push failed, and
 stopping there left a scan and up to 400 lookups to die with the runner.

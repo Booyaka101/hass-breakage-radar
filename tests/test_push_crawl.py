@@ -28,6 +28,13 @@ pathlib.Path("docs/index.html").write_text(
 )
 """
 
+REFUSING = (
+    'import pathlib, sys\n'
+    'if "retired" in pathlib.Path("data/rules.json").read_text(encoding="utf-8"):\n'
+    "    sys.exit(1)\n"
+) + RENDER
+
+
 def _runs_the_script(shell: Path) -> bool:
     """Whether this shell can run the script at all, asked by running it.
 
@@ -197,6 +204,31 @@ def test_a_commit_the_last_attempt_could_not_push_still_goes(crawl):
     result = push(crawl)
     assert result.returncode == 0, result.stdout + result.stderr
     assert pushed(crawl, "data/findings.json") == "200\n"
+
+
+def test_rules_the_run_cannot_publish_against_are_not_taken(crawl):
+    """Main gaining a rule set mid-run is often main retiring a rule, and
+    this run's findings can name one. Publishing refuses on that, and a page
+    beside rules it does not match is the pair the scan's pruning exists to
+    stop, so the run keeps the rules it scanned with."""
+    other = crawl.parent / "other"
+    (other / "data" / "rules.json").write_text('{"retired": 1}\n', encoding="utf-8")
+    git(other, "commit", "-qam", "rules: retire one")
+    git(other, "push", "-q")
+
+    (crawl / "data" / "findings.json").write_text("200\n", encoding="utf-8")
+    (crawl / "data" / "rules.json").write_text('{"crawl": 1}\n', encoding="utf-8")
+    render(crawl)
+    git(crawl, "add", "data/findings.json", "data/rules.json", "docs/index.html")
+    (crawl / "tools" / "build_index.py").write_text(REFUSING, encoding="utf-8")
+    git(crawl, "add", "tools/build_index.py")
+
+    result = push(crawl)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert json.loads(pushed(crawl, "data/rules.json")) == {"crawl": 1}
+    page = pushed(crawl, "docs/index.html")
+    assert "the reworded standfirst" in page
+    assert "<div>200</div>" in page
 
 
 def test_a_rebase_that_cannot_start_says_so(crawl):
