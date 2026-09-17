@@ -173,16 +173,17 @@ def _warns_a_release_early(version: str, sentences: list[str], index: int) -> bo
     """Whether a support window ending here is the removal beside it, early.
 
     Only what a post says around the window counts. Bullets split a schedule
-    one paragraph used to say in a sentence, so the removal is next door, and
-    a post covering two deprecations can end one window the release before
-    the other is removed with no connection between them. A window that ends
-    at the removal's own release is the same deadline in the post's own
-    words, and often the better half: a policy sentence says more than "it is
-    removed in 2027.8" does.
+    one paragraph used to say in a sentence, and a schedule can carry a bullet
+    that names no release between the two that do, so the removal is within
+    two either way. Further than that a post covering two deprecations can end
+    one window the release before the other is removed with no connection
+    between them. A window that ends at the removal's own release is the same
+    deadline in the post's own words, and often the better half: a policy
+    sentence says more than "it is removed in 2027.8" does.
     """
     nearby = {
         release
-        for neighbour in sentences[max(index - 1, 0) : index + 2]
+        for neighbour in sentences[max(index - 2, 0) : index + 3]
         for release in _releases(neighbour, REMOVAL_PATTERNS)
     }
     return version not in nearby and next_release(version) in nearby

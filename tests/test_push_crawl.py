@@ -243,3 +243,20 @@ def test_a_rebase_that_cannot_start_says_so(crawl):
     assert result.returncode == 1, result.stderr
     assert "could not rebase cleanly" in result.stdout
     assert json.loads((crawl / "data" / "rules.json").read_text()) == {"dirty": 1}
+
+
+def test_a_main_with_no_common_ancestor_still_takes_the_crawl(crawl):
+    """A rebase replays onto an unrelated root happily. Asking for the merge
+    base first does not, and under set -e that answer ends the run before the
+    rebase, with the crawl's commit unpushed and nothing in the log."""
+    other = crawl.parent / "other"
+    git(other, "checkout", "-q", "--orphan", "fresh")
+    git(other, "commit", "-qm", "a history of its own")
+    git(other, "push", "-qf", "origin", "fresh:main")
+
+    (crawl / "data" / "findings.json").write_text("200\n", encoding="utf-8")
+    git(crawl, "add", "data/findings.json")
+
+    result = push(crawl)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert pushed(crawl, "data/findings.json") == "200\n"

@@ -53,8 +53,12 @@ for attempt in 1 2 3; do
   # it again, so main wins that one file and the crawl's own output wins the
   # rest.
   ours_rules=""
-  base=$(git merge-base HEAD origin/main)
-  if ! git diff --quiet "${base}" HEAD -- data/rules.json &&
+  # Histories with no common ancestor have nothing to compare against, and
+  # under set -e the substitution alone would end the run here, before the
+  # rebase that would have said so.
+  base=$(git merge-base HEAD origin/main || true)
+  if [ -n "${base}" ] &&
+     ! git diff --quiet "${base}" HEAD -- data/rules.json &&
      ! git diff --quiet "${base}" origin/main -- data/rules.json; then
     echo "main moved data/rules.json during the run; keeping its copy"
     ours_rules=$(git rev-parse HEAD:data/rules.json)

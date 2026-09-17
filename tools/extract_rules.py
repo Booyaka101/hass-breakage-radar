@@ -372,29 +372,38 @@ def _literal(node: ast.expr | None) -> str | None:
     return None
 
 
-def _text_of(expr: ast.expr) -> str:
-    """Best-effort text of one argument, f-strings included."""
-    literal = _literal(expr)
+def _what_text(node: ast.Call) -> str:
+    """Best-effort text of the first positional argument, f-strings included."""
+    if not node.args:
+        return ""
+    first = node.args[0]
+    literal = _literal(first)
     if literal is not None:
         return literal
-    if isinstance(expr, ast.JoinedStr):
+    if isinstance(first, ast.JoinedStr):
         # Render `{expr}` placeholders as a readable marker.
         parts: list[str] = []
-        for value in expr.values:
+        for value in first.values:
             if isinstance(value, ast.Constant) and isinstance(value.value, str):
                 parts.append(value.value)
             else:
                 parts.append("{...}")
         return "".join(parts)
     try:
-        return ast.unparse(expr)
+        return ast.unparse(first)
     except Exception:  # pragma: no cover - unparse is total in 3.12
         return ""
 
 
-def _what_text(node: ast.Call) -> str:
-    """Best-effort text of the first positional argument."""
-    return _text_of(node.args[0]) if node.args else ""
+def _written_name(expr: ast.expr | None) -> str:
+    """The name an argument writes down, empty when it is built at runtime.
+
+    A variable unparses to its own name and an f-string to a prefix plus the
+    marker for what it interpolates, and neither is a name the frontend or
+    core's strings file would show.
+    """
+    literal = _literal(expr) if expr is not None else None
+    return literal if isinstance(literal, str) else ""
 
 
 def _issue_key(callee: str, node: ast.Call) -> str:
@@ -406,18 +415,13 @@ def _issue_key(callee: str, node: ast.Call) -> str:
     """
     by_name = {keyword.arg: keyword.value for keyword in node.keywords if keyword.arg}
     if callee == "DeprecatedInfo":
-        moved = by_name.get("new_platform")
-        return _text_of(moved) if moved is not None else ""
+        return _written_name(by_name.get("new_platform"))
     if callee == "EntityDomainReplacementStrategy":
-        return _text_of(node.args[0]) if node.args else ""
-    # async_create_issue(hass, domain, issue_id, ...) last. A keyword passed a
-    # variable unparses to that variable's name, which names nothing.
+        return _written_name(node.args[0] if node.args else None)
+    # async_create_issue(hass, domain, issue_id, ...) last.
     written = [by_name.get("translation_key"), by_name.get("issue_id")]
     written.append(node.args[2] if len(node.args) >= 3 else None)
-    for expr in written:
-        if isinstance(expr, ast.JoinedStr) or _literal(expr) is not None:
-            return _text_of(expr)
-    return ""
+    return next((name for name in map(_written_name, written) if name), "")
 
 
 def _component_of(path: str) -> str:
@@ -975,6 +979,10 @@ def build_rules(
     be published next to the rules.
     """
     by_id: dict[str, dict[str, Any]] = {}
+    # (integration, release) of every repair issue that writes its name down,
+    # and the rules built from the calls in the same place that do not.
+    named_issues: set[tuple[str, str]] = set()
+    unnamed_issues: dict[tuple[str, str], list[str]] = {}
 
     for record in sorted(records, key=lambda r: (r["path"], r["line"])):
         callee = record["callee"]
@@ -1023,9 +1031,15 @@ def build_rules(
                 # The first argument of these calls is `hass`, which is what
                 # the generic symbol would otherwise be for every one of them.
                 symbol = record["issue_key"] or record["enclosing"] or symbol
-                rule_id = (
-                    f"core-issue-{_slug(record['enclosing'] or record['path'])}-{release}"
-                )
+                # The integration belongs in the id as well: several of them
+                # raise an issue from a same-named function, and one rule for
+                # all of those would say the name of whichever came first.
+                where = _component_of(record["path"]) or record["path"]
+                rule_id = f"core-issue-{_slug(where)}-{_slug(symbol)}-{release}"
+                if record["issue_key"]:
+                    named_issues.add((where, release))
+                else:
+                    unnamed_issues.setdefault((where, release), []).append(rule_id)
             else:
                 rule_id = f"core-{kind}-{_slug(symbol)}"
             rule_id = rule_id[:90]
@@ -1060,6 +1074,14 @@ def build_rules(
             f"#L{record['line']}"
         )
         by_id[rule_id] = payload
+
+    # An integration can raise one deadline twice, from a call that writes the
+    # issue name down and from a neighbouring one that builds it at runtime.
+    # The nameless rule is only worth a line of its own when it is the only one.
+    for scope, rule_ids in unnamed_issues.items():
+        if scope in named_issues:
+            for rule_id in rule_ids:
+                by_id.pop(rule_id, None)
 
     return sorted(
         by_id.values(), key=lambda r: (parse_version(r["breaks_in"]), r["id"])

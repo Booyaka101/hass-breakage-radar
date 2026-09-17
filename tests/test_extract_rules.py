@@ -519,7 +519,7 @@ def _warn_by_variable(hass, translation_key):
 
 def test_a_repair_issue_is_named_by_its_translation_key():
     rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
-    rule = rules["core-issue-warn-about-yaml-2027.3"]
+    rule = rules["core-issue-netio-deprecated-yaml-2027.3"]
     assert rule["symbol"] == "deprecated_yaml"
     assert rule["message"] == (
         "`netio` raises the `deprecated_yaml` repair issue, and the "
@@ -530,7 +530,78 @@ def test_a_repair_issue_is_named_by_its_translation_key():
 
 def test_a_repair_issue_keyed_by_a_variable_is_left_unnamed():
     rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
-    rule = rules["core-issue-warn-by-variable-2027.4"]
+    rule = rules["core-issue-netio-warn-by-variable-2027.4"]
     assert "translation_key" not in rule["message"]
     assert rule["message"].startswith("`netio` raises a repair issue")
     assert rule["symbol"] == "_warn_by_variable"
+
+
+def test_two_integrations_raising_the_same_issue_are_two_deadlines():
+    """One rule for both would name whichever file sorted first, and the other
+    integration would read as not being affected at all."""
+    rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
+    rules |= _rules_from("homeassistant/components/pjlink/media_player.py", ISSUE_SOURCE)
+    netio = rules["core-issue-netio-deprecated-yaml-2027.3"]
+    pjlink = rules["core-issue-pjlink-deprecated-yaml-2027.3"]
+    assert netio["message"].startswith("`netio` raises")
+    assert pjlink["message"].startswith("`pjlink` raises")
+
+
+NAMELESS_TWIN = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+async def async_setup_platform(hass, config, add_entities, discovery_info=None):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        f"deprecated_yaml_import_issue_{reason}",
+        breaks_in_ha_version="2027.3",
+        translation_key=f"deprecated_yaml_import_issue_{reason}",
+    )
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        "deprecated_yaml",
+        breaks_in_ha_version="2027.3",
+        translation_key="deprecated_yaml",
+    )
+"""
+
+
+def test_an_issue_built_at_runtime_does_not_double_up_the_named_one():
+    """Both calls are the same deadline, and an f-string renders its
+    placeholder as a marker, so the board would carry the marker as a name."""
+    rules = _rules_from("homeassistant/components/netio/switch.py", NAMELESS_TWIN)
+    issues = [rule_id for rule_id in rules if rule_id.startswith("core-issue-")]
+    assert issues == ["core-issue-netio-deprecated-yaml-2027.3"]
+    assert "{...}" not in rules[issues[0]]["message"]
+
+
+MOVED_SOURCE = b"""
+from homeassistant.const import Platform
+from homeassistant.helpers.deprecation import DeprecatedInfo
+
+
+class SirenSwitch:
+    info = DeprecatedInfo(new_platform=Platform.SIREN, breaks_in_ha_version="2027.5.0")
+
+
+class ValveSwitch:
+    info = DeprecatedInfo(new_platform="valve", breaks_in_ha_version="2027.6.0")
+"""
+
+
+def test_a_platform_named_by_a_constant_is_not_the_platform_name():
+    """`Platform.SIREN` unparses to itself, and a board that says entities move
+    to `Platform.SIREN` is naming a Python symbol, not a platform."""
+    rules = _rules_from("homeassistant/components/ring/switch.py", MOVED_SOURCE)
+    constant = rules["core-issue-ring-sirenswitch-2027.5"]
+    assert constant["message"] == (
+        "`ring` moves these entities, and the ones on the old platform stop "
+        "working in Home Assistant 2027.5."
+    )
+    written = rules["core-issue-ring-valve-2027.6"]
+    assert "moves these entities to `valve`" in written["message"]

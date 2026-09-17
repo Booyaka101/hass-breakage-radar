@@ -52,12 +52,39 @@ extractor reads the first argument as the rule's prose, which for every one of t
 the argument named `hass`. A repair issue is named by its translation key, so that is
 what the rule takes now, falling back to the issue id and then to the platform a
 `DeprecatedInfo` moves entities to: "`netio` raises the `deprecated_yaml` repair issue,
-and the configuration it reports stops working in Home Assistant 2027.3." A key handed
-in as a variable names nothing, so those rules stay unnamed rather than publish the
-variable's own name, and the symbol follows the same order. Measured over the cached
-core tarball: 21 pending rules change message, none change id or release, and
-`rules_hash` covers matchers and releases rather than messages, so nothing is
-re-crawled for it.
+and the configuration it reports stops working in Home Assistant 2027.3." A key the call
+does not write down names nothing, whether it arrives as a variable, an f-string or a
+constant like `Platform.SIREN`, so those rules stay unnamed rather than publish the
+expression's own text, and the symbol follows the same order.
+
+The integration is part of the rule id now as well. decora_wifi and touchline both raise
+theirs from a function called `async_setup_platform`, and one rule for both named
+whichever file sorted first while the other read as unaffected. Where an integration
+raises one deadline twice, from a call that writes the issue name down and from a
+neighbour that builds it at runtime, only the named one is published.
+
+Measured over the cached core tarball: 25 pending rules, each naming its own integration
+and its own issue, and two left as "raises a repair issue" because nothing in the call
+says which. `rules_hash` is built from the matchable rules, and none of these are
+matchable, so nothing is re-crawled for any of it.
+
+### A bullet between the two halves of a schedule no longer splits it
+
+"Supported until 2027.4" above "Removed in 2027.5" is one deadline, and the check for
+that read one sentence either side of the window. A schedule can carry a bullet that
+names no release between them, "no new integrations may use them from now on", which put
+the removal out of view and published the window as a deadline of its own, a release
+early. It reads two either side now. Over all 83 posts on the developer blog the rules
+come out the same at either width, so this is about the shape of a schedule rather than
+about today's corpus.
+
+### A crawl that cannot find a merge base says so
+
+`push_crawl.sh` asks for the merge base before deciding who owns `data/rules.json` after
+main moved mid-run. Under `set -e` a main with no common ancestor ended the script on
+that question alone, before the rebase, leaving the crawl's commit unpushed and nothing
+in the log to say why. The answer is optional now, and the rebase, which replays onto an
+unrelated root happily, gets to decide.
 
 ### A rule can say what to search its own repositories for
 

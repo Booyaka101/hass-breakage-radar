@@ -171,6 +171,21 @@ def test_a_schedule_in_bullets_is_still_one_deadline():
     assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
 
 
+def test_a_schedule_with_a_note_between_the_bullets_is_one_deadline():
+    """A schedule reads as bullets, and one of them saying what happens in the
+    meantime does not make the window above it a deadline of its own."""
+    rules = extract_removals(
+        URL,
+        _text(
+            "<article><p>The shims are deprecated.</p><ul>"
+            "<li>Supported until Home Assistant Core 2027.4</li>"
+            "<li>No new integrations may use them from now on</li>"
+            "<li>Removed in Home Assistant Core 2027.5</li></ul></article>"
+        ),
+    )
+    assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
+
+
 def test_a_support_window_the_post_backs_up_keeps_its_wording():
     """The developer blog opens with the policy, "deprecated functionality
     remains supported until 2027.8", and names the removals below it. The
