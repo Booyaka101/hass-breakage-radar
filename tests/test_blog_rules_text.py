@@ -7,7 +7,7 @@ what a user reads unless it is stripped here.
 
 from __future__ import annotations
 
-from tools.blog_rules import _text, extract_removals
+from tools.blog_rules import _post_body, _text, extract_removals
 
 URL = "https://developers.home-assistant.io/blog/2026/08/31/deprecate-widget-helper/"
 
@@ -73,3 +73,30 @@ def test_no_message_carries_the_page_furniture():
         assert "Skip to main content" not in rule["message"]
         assert "\u200b" not in rule["message"]
         assert not rule["message"].endswith("...")
+
+
+#: The same page with another post named in the sidebar, which is where the
+#: blog puts the four most recent ones. It renders before the post.
+LISTED = POST.replace(
+    '<main><article class="">',
+    '<aside><nav aria-label="Blog recent posts navigation"><ul>'
+    '<li><a href="/blog/2026/09/02/drop-legacy-api">The legacy API will be '
+    "removed in 2027.2</a></li></ul></nav></aside>"
+    '<main><article class="">',
+)
+
+
+def test_a_post_listed_in_the_sidebar_is_not_quoted_as_this_post():
+    """Every page lists the recent posts, and the list comes first, so a
+    removal named in one of those titles would be attributed to every post
+    crawled while it is up there."""
+    rules = extract_removals(URL, _text(_post_body(LISTED)))
+    assert [rule["breaks_in"] for rule in rules] == ["2027.10", "2027.4"]
+    assert not any("legacy API" in rule["message"] for rule in rules)
+
+
+def test_a_page_without_the_element_is_read_whole():
+    """A Docusaurus redesign should cost the chrome fix, not every rule."""
+    assert _post_body("<html><body><p>removed in 2027.10</p></body></html>").startswith(
+        "<html>"
+    )

@@ -89,6 +89,7 @@ _BLOCK_RE = re.compile(
     r"|article|header|footer|nav|main|aside|br)\b[^>]*>"
 )
 _POST_HREF_RE = re.compile(r'href="(/blog/\d{4}/\d{2}/\d{2}/[a-z0-9\-._]+)"', re.I)
+_ARTICLE_RE = re.compile(r"(?is)<article\b.*</article>")
 
 
 def _text(markup: str) -> str:
@@ -103,6 +104,18 @@ def _text(markup: str) -> str:
         for line in text.split("\n")
     )
     return "\n".join(line for line in lines if line)
+
+
+def _post_body(markup: str) -> str:
+    """The post itself, without the chrome Docusaurus wraps around it.
+
+    The navigation, the recent-posts list and the footer are prose too, and
+    they render before the post, so a release named in one of them would be
+    quoted instead of the post's own sentence. Falling back to the whole page
+    keeps a redesign from quietly producing no rules at all.
+    """
+    match = _ARTICLE_RE.search(markup)
+    return match.group(0) if match else markup
 
 
 def _slug(text: str) -> str:
@@ -192,7 +205,7 @@ def fetch_blog_rules(
         except Exception as err:
             LOGGER.warning("skipping %s: %s", url, err)
             continue
-        hits = extract_removals(url, _text(body))
+        hits = extract_removals(url, _text(_post_body(body)))
         if hits:
             LOGGER.info(
                 "%s -> %s",

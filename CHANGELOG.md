@@ -58,6 +58,23 @@ a release two behind and misspells the only word that would have carried it. Tit
 naming a release still to come are unaffected, including eltako's "Home Assistant 2027.8
 API changes" and luxtronik2's "adapt to the HA device registry changes before 2027.8".
 
+### The post, not the page it is served on
+
+`_text` fixed the run-on sentence, but the whole rendered page still went into
+`extract_removals`: the navigation, the recent-posts list the blog puts on every post,
+and the footer. All of it renders before the post does, and the first sentence naming a
+release wins, so a removal named in one of those four listed titles would have been
+quoted as this post's own, on every post crawled while it was up there. Extraction is
+scoped to the `<article>` now, falling back to the whole page if a redesign ever drops
+it. Over all 83 posts that is 3 856 lines of chrome gone and the same 19 rules, ids and
+messages byte for byte.
+
+### One `--limit` for the whole run
+
+`--limit` bounds the repositories a run scans, and upstream lookups kept their own
+default of 400 regardless. A `--limit 5` smoke test scanned five repositories and then
+spent a quarter of an hour on four hundred lookups. The flag now covers both.
+
 ### Every affected repository gets its facts checked again
 
 `annotate` was only shown the repositories the slice had just rescanned, and a slice

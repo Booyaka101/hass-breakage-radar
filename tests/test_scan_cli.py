@@ -518,6 +518,22 @@ def test_a_repository_outside_the_slice_is_still_offered_for_a_lookup(
     assert offered == ["a/one", "b/two", "z/delisted"]
 
 
+def test_one_limit_covers_the_scan_and_the_lookups(tmp_path, monkeypatch):
+    """--limit is how much work a run does. Left to its own default, a
+    --limit 5 smoke test scanned five repositories and then spent a quarter of
+    an hour on four hundred lookups."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+    budget: list[int] = []
+    monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
+    monkeypatch.setattr(
+        scan_module,
+        "annotate",
+        lambda records, rules, **kwargs: budget.append(kwargs["limit"]),
+    )
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--limit", "1")) == 0
+    assert budget == [1]
+
+
 def test_a_day_with_nothing_to_scan_still_refreshes_the_facts(tmp_path, monkeypatch):
     """Most days the slice is empty: 4 009 of the 4 021 state entries are
     already current. Returning early there is a week with no refresh at all."""

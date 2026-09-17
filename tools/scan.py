@@ -493,7 +493,9 @@ def select_slice(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--limit", type=int, default=400, help="repos per run")
+    parser.add_argument(
+        "--limit", type=int, default=400, help="repos per run, scanned and looked up"
+    )
     parser.add_argument("--catalog", type=Path, default=DATA_DIR / "catalog.json")
     parser.add_argument("--rules", type=Path, default=DATA_DIR / "rules.json")
     parser.add_argument("--findings", type=Path, default=DATA_DIR / "findings.json")
@@ -711,7 +713,9 @@ def main(argv: list[str] | None = None) -> int:
         # one repository; it should not spend the run's lookups elsewhere.
         wanted = set(args.only or ())
         known = {n: r for n, r in repos.items() if not wanted or n in wanted}
-        looked_up = annotate(known, rules_by_id, current_version=current_version)
+        looked_up = annotate(
+            known, rules_by_id, current_version=current_version, limit=args.limit
+        )
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
             checkpoint()
