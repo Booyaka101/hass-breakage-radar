@@ -145,6 +145,14 @@ crawl rewrites, disappeared from the pushed page. The page is rendered again aft
 rebase now, so the merged template and this run's data land together, and a run that
 publishes no board does not render one.
 
+A repository keeps the report it already has. The scan holds a fact through its rule
+being overtaken by one that breaks sooner, and the lookup then aimed the next search at
+the sooner rule and overwrote the link with whatever that found, which is usually
+nothing. The two agree now: a fact carrying a report is asked about under the term it
+was found with while the repository still has that deprecation. Over the 826 affected
+repositories the target is identical for all of them today, so this changes nothing in
+the published index and stops a link going missing the day a sooner rule lands.
+
 A push that cannot rebase says why. `set -e` takes a failing `git rebase --abort`,
 and an abort fails when the rebase never started, so the one case the message was
 written for, a tree too dirty to rebase, was the one that exited with git's code and

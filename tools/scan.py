@@ -72,10 +72,14 @@ from tools.rules_engine import (  # noqa: E402
     load_rules,
     looks_minified_js,
     matchable_rules,
-    rule_search_term,
     scan_sources,
 )
-from tools.upstream import FACT_MAX_AGE_DAYS, LOOKUP_LIMIT, annotate  # noqa: E402
+from tools.upstream import (  # noqa: E402
+    FACT_MAX_AGE_DAYS,
+    LOOKUP_LIMIT,
+    annotate,
+    upstream_still_applies,
+)
 
 CODELOAD = "https://codeload.github.com/{full_name}/tar.gz/{ref}"
 
@@ -320,24 +324,6 @@ def warn_if_older_python(extractor_python: str | None) -> bool:
 def findings_hash(findings: list[dict[str, Any]]) -> str:
     blob = json.dumps(findings, sort_keys=True).encode("utf-8")
     return hashlib.sha256(blob).hexdigest()[:16]
-
-
-def upstream_still_applies(
-    upstream: dict[str, Any],
-    findings: list[dict[str, Any]],
-    rules_by_id: dict[str, Any],
-) -> bool:
-    """Whether a recorded upstream fact is still about what a repository has.
-
-    The fact is the repository's own issue about one deprecated symbol. It
-    stays true while the repository still uses that symbol, which survives the
-    rule being re-dated, renamed, or overtaken by one that breaks sooner.
-    """
-    symbol = upstream.get("symbol")
-    return bool(symbol) and any(
-        rule_search_term(rules_by_id.get(f.get("rule_id")) or {}) == symbol
-        for f in findings
-    )
 
 
 def rules_hash(rules: list[Rule]) -> str:

@@ -324,11 +324,39 @@ def _confirmed(
         return known
 
 
+def upstream_still_applies(
+    upstream: dict[str, Any],
+    findings: list[dict[str, Any]],
+    rules_by_id: dict[str, Any],
+) -> bool:
+    """Whether a recorded upstream fact is still about what a repository has.
+
+    The fact is the repository's own issue about one deprecated symbol. It
+    stays true while the repository still uses that symbol, which survives the
+    rule being re-dated, renamed, or overtaken by one that breaks sooner.
+    """
+    symbol = upstream.get("symbol")
+    return bool(symbol) and any(
+        rule_search_term(rules_by_id.get(f.get("rule_id")) or {}) == symbol
+        for f in findings
+    )
+
+
 def _wanted(record: dict[str, Any], rules_by_id: dict[str, Any]) -> str:
-    """What to search this repository for: the term its soonest break asks."""
+    """What to search this repository for: the term its soonest break asks.
+
+    A report already found is the exception. It was filed under the term it
+    was found with, and the scan keeps such a fact through a rule being
+    overtaken by one that breaks sooner. Re-aiming it here would undo that
+    within the week and trade a link somebody can open for a search that may
+    well answer nothing.
+    """
     findings = record.get("findings") or []
     if not findings:
         return ""
+    fact = record.get("upstream") or {}
+    if fact.get("report") and upstream_still_applies(fact, findings, rules_by_id):
+        return str(fact["symbol"])
     earliest = min(findings, key=lambda f: parse_version(f.get("breaks_in", "")))
     return rule_search_term(rules_by_id.get(earliest.get("rule_id"), {}))
 

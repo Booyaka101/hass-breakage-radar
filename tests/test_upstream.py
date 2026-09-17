@@ -255,6 +255,42 @@ def test_a_fact_the_rule_no_longer_aims_at_is_refreshed_however_fresh(monkeypatc
     assert records["a/one"]["upstream"]["symbol"] == "device_registry.devices"
 
 
+def test_a_report_found_for_a_later_break_is_not_traded_for_a_sooner_search(
+    monkeypatch,
+):
+    """The scan keeps a fact through its rule being overtaken by one that
+    breaks sooner. Aiming the next lookup at the sooner rule instead undid
+    that within the week, and a search that answers nothing is worse than the
+    link it replaced."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    asked = []
+
+    def fake(full_name, term, **kwargs):
+        asked.append(term)
+        return {"archived": False, "issues_enabled": True, "symbol": term}
+
+    monkeypatch.setattr("tools.upstream.look_up", fake)
+    records = {
+        "a/one": {
+            "findings": [
+                {"rule_id": "later", "breaks_in": "2027.9"},
+                {"rule_id": "sooner", "breaks_in": "2027.4"},
+            ],
+            "upstream": {
+                "symbol": "async_get_device",
+                "checked_utc": "2026-01-01T00:00:00Z",
+                "report": ON_FILE,
+            },
+        }
+    }
+    rules = {
+        "later": {"symbol": "DeviceRegistry.async_get_device"},
+        "sooner": {"symbol": "setup_scanner"},
+    }
+    assert annotate(records, rules, current_version=NOW) == 1
+    assert asked == ["async_get_device"]
+
+
 def test_a_fact_with_no_timestamp_is_asked_again_not_compared(monkeypatch):
     """The queue reads that field with an `or ""` and the freshness test read
     it raw, so a null one took the whole upstream phase down with it rather
