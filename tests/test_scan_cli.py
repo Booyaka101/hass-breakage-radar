@@ -20,7 +20,7 @@ from tools.scan import (
     select_slice,
     upstream_still_applies,
 )
-from tools.upstream import FACT_MAX_AGE_DAYS
+from tools.upstream import FACT_MAX_AGE_DAYS, LOOKUP_LIMIT
 
 RULE = Rule(
     id="legacy-device-tracker-platform",
@@ -522,7 +522,9 @@ def test_a_repository_outside_the_slice_is_still_offered_for_a_lookup(
 def test_one_limit_covers_the_scan_and_the_lookups(tmp_path, monkeypatch):
     """--limit is how much work a run does. Left to its own default, a
     --limit 5 smoke test scanned five repositories and then spent a quarter of
-    an hour on four hundred lookups."""
+    an hour on four hundred lookups. It buys lookups up to the cap only: a
+    full rescan asks for thousands of repositories, and thousands of lookups
+    at 2.1 seconds apart outlast the job they run in."""
     rules_path, catalog_path = _write_inputs(tmp_path)
     budget: list[int] = []
     monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
@@ -533,6 +535,8 @@ def test_one_limit_covers_the_scan_and_the_lookups(tmp_path, monkeypatch):
     )
     assert main(_argv(tmp_path, rules_path, catalog_path, "--limit", "1")) == 0
     assert budget == [1]
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--limit", "4000")) == 0
+    assert budget == [1, LOOKUP_LIMIT]
 
 
 def test_naming_a_repository_asks_about_it_however_young_its_fact_is(

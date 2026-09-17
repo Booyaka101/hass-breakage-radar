@@ -794,7 +794,7 @@ For the crawler:
 
 | Setting | Where | Default |
 |---|---|---|
-| Repos per run | `tools/scan.py --limit N` | `400` |
+| Repos per run | `tools/scan.py --limit N` | `400` (upstream lookups cap at 400) |
 | Rescan everything | `tools/scan.py --force` | off |
 | One repository | `tools/scan.py --only owner/repo` | — |
 | Politeness pause | `tools/scan.py --sleep 0.25` | `0` |

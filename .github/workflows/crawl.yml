@@ -118,6 +118,9 @@ jobs:
           # Progress files only. The index is rebuilt after the scan, so
           # publishing stays the business of a run that got that far, and a
           # commit the step above made and could not push stays unpushed.
+          # The index survives a step, so the reset is what keeps a half-built
+          # docs/ the step above had already staged out of this commit.
+          git reset
           git add data/catalog.json data/findings.json state/crawl.json
           # Whatever else the run had rewritten by then, the rule stamps or a
           # half-built index, is not being committed, and rebasing needs the

@@ -99,7 +99,9 @@ same messages.
 
 `--limit` bounds the repositories a run scans, and upstream lookups kept their own
 default of 400 regardless. A `--limit 5` smoke test scanned five repositories and then
-spent a quarter of an hour on four hundred lookups. The flag now covers both.
+spent a quarter of an hour on four hundred lookups. The flag now covers both, up to the
+400 the lookups were always capped at: a full local rescan asks for 4 000 repositories,
+which the scan fits in the job and 4 000 lookups at 2.1 seconds apart would not.
 
 ### Every affected repository gets its facts checked again
 
@@ -117,6 +119,17 @@ was found for a search this rule no longer makes, and then the oldest. A run ask
 400 repositories at most. That
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
+
+A repository that answers 404 loses what was on file about it instead of carrying it
+forward. It is deleted, private, or gone somewhere the crawl cannot follow, and its
+findings stay in the index on purpose, but an "already reported" link nobody can open
+was being republished every week and restamped as freshly checked by the failure that
+found it missing.
+
+A crawl that does not finish commits only its progress files. The git index survives a
+step, so a publishing step that died after staging `docs/` left the half-built index
+staged for the step that saves progress, which would have pushed the lot under a message
+saying it had saved a scan. It clears the index before staging its three files now.
 
 A search that fails no longer costs the answers the repository itself gave. `look_up`
 asks GitHub about the repository first and searches second, and letting the search

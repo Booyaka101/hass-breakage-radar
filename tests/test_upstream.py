@@ -558,6 +558,34 @@ def test_a_failed_lookup_keeps_what_the_repository_already_answered(monkeypatch)
     assert records["b/two"]["upstream"]["symbol"] == "setup_scanner"
 
 
+def test_a_repository_that_is_gone_loses_the_fact_it_had(monkeypatch):
+    """404 is the repository saying it is deleted or private, not a blip. Read
+    as one, its "already reported" link stays on the board for good, restamped
+    as freshly checked every week by the failure itself."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up", _raises_in_lookup(_http_error(404, {}))
+    )
+    monkeypatch.setattr("tools.upstream.utc_now_iso", lambda: "2026-09-17T12:00:00Z")
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {
+                "symbol": "setup_scanner",
+                "archived": False,
+                "issues_enabled": True,
+                "report": ON_FILE,
+                "checked_utc": "2026-01-01T00:00:00Z",
+            },
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+    assert records["a/one"]["upstream"] == {
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-17T12:00:00Z",
+    }
+
+
 def test_a_failed_lookup_still_costs_the_budget(monkeypatch):
     """Every affected repository is a candidate now, and a repository renamed
     out from under the catalogue 404s. Counting answers instead of requests

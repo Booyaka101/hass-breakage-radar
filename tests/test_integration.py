@@ -138,6 +138,10 @@ def test_a_crawl_that_does_not_finish_still_commits_its_progress(repo_root):
         "data/findings.json",
         "state/crawl.json",
     }
+    # The index carries over from the step that publishes, so the step has to
+    # clear it or a commit that died after staging docs/ gets published here.
+    reset = re.search(r"^\s*git reset\s*$", step, re.M)
+    assert reset and reset.start() < staged.start()
 
 
 def test_the_author_guide_is_reachable_from_the_readme(repo_root):

@@ -45,6 +45,11 @@ RELEASE_MENTION = re.compile(r"\b20\d\d\.\d+\b")
 #: An issue gets closed, renamed, or opened after the crawl last looked.
 FACT_MAX_AGE_DAYS = 7
 
+#: How many repositories one run asks about. At SEARCH_INTERVAL apart this is
+#: about a quarter of an hour of the crawl job's ninety minutes, and up to two
+#: REST calls each against the token's hourly budget.
+LOOKUP_LIMIT = 400
+
 
 class SearchExhausted(RuntimeError):
     """The search rate limit is spent; stop looking things up this run."""
@@ -317,7 +322,7 @@ def annotate(
     rules_by_id: dict[str, Any],
     *,
     current_version: str,
-    limit: int = 400,
+    limit: int = LOOKUP_LIMIT,
     max_age_days: int = FACT_MAX_AGE_DAYS,
     checkpoint: Callable[[], None] | None = None,
 ) -> int:
@@ -378,7 +383,13 @@ def annotate(
             # Record the attempt, so the repository comes round again with the
             # rest of them rather than sorting to the front of every run's
             # budget for good.
-            carried = dict(fact)
+            gone = isinstance(err, urllib.error.HTTPError) and err.code in (404, 410)
+            # A repository that answers 404 is deleted, private or gone
+            # somewhere the crawl cannot follow. Its findings stay in the index
+            # on purpose, but nothing on file about its issue tracker is
+            # evidence any more, so it is dropped rather than republished
+            # every week off the back of a failure.
+            carried = {} if gone else dict(fact)
             if not on_file:
                 # Whatever was on file was found for a term this rule no longer
                 # asks for. The rest of it is still true about the repository.
