@@ -12,6 +12,10 @@ class DeviceEntry:
     """Merely shares a name with the core class."""
 
 
+class ChildDeviceEntry:
+    """So does this one, and widening the type list did not change that."""
+
+
 class Coordinator:
     def __init__(self, hass, entry, api):
         self.hass = hass
@@ -61,9 +65,14 @@ def uses_entry(hass, entry):
     return entry.config_entries, hass.config_entries.async_entries("demo")
 
 
-def own_class(device: DeviceEntry):
-    """This file's own DeviceEntry, not the registry's."""
-    return device.config_entries
+def own_class(device: DeviceEntry, child: ChildDeviceEntry):
+    """This file's own classes, not the registry's."""
+    return device.config_entries, child.config_entries
+
+
+def own_child_lookup(registry, config_entry, device_id):
+    """A plain parameter proves nothing, whatever the method is called."""
+    return registry.async_get_or_create_child(config_entry, device_id).config_entries
 
 
 def from_a_local_helper(reg, entry_id):

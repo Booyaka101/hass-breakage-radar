@@ -4,6 +4,89 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.15.0 — 2026-09-17
+
+### Deleted and child device entries read the same deprecated properties
+
+The 2026-09-15 post that moved the removal to 2027.10 also says
+`DeletedDeviceEntry.config_entries` and `config_entries_subentries` "are deprecated and
+report on the same terms", and core 2026.9 adds `ChildDeviceEntry`, which inherits all
+three properties from `BaseDeviceEntry`. 1.14.0 shipped `device-entry-config-entries`
+proving only `DeviceEntry`, so neither class was matched. Both are in `entry_types` now.
+
+`entry_types` on its own would not have been enough. It gates the annotation path and
+nothing else, so `def f(child: ChildDeviceEntry)` would have been found and the way
+people actually get hold of one would not. Read off released core 2026.9.0, the lookups
+that hand back a child entry are three registry methods and two module functions, and
+the rule names them too:
+
+    async_get_child_device_by_identifier
+    async_get_or_create_child
+    async_update_child_device
+    async_child_entries_for_config_entry
+    async_entries_for_parent_device
+
+A deleted device needed nothing new. `deleted_devices` was already in
+`entry_containers`, and `registry.async_get` already returns the union.
+
+`registry.child_devices` is deliberately absent. It is a `Collection`, so subscripting
+it raises `TypeError`, and a matcher for it could not fire on code that runs.
+
+`device-entry-primary-config-entry` is a plain `attr_access` with no receiver proof, so
+it covered every receiver already and did not change.
+
+### `async_entries_for_config_subentry` has never existed
+
+`entry_functions` listed it. It is in no released core `device_registry`, checked
+against 2026.8.0 and 2026.9.0, so it was offering to prove a receiver from a call
+nobody can make. Removed. Nothing ever matched it, which is how it survived.
+
+### What the re-crawl measured
+
+`entry_types` lives inside `match` and `match` feeds `rules_hash`, so this queued all
+4 009 catalogue repositories for a rescan. The control is 1.14.0's own crawl: same
+catalogue, same day, same Python 3.14, differing only in the rules.
+
+| Release | 1.14.0 | This release |
+|---|---|---|
+| 2026.10 | 13 | 13 |
+| 2026.11 | 42 | 42 |
+| 2027.5 | 16 | 16 |
+| 2027.6 | 46 | 46 |
+| 2027.7 | 29 | 29 |
+| 2027.8 | 1 387 | 1 387 |
+| 2027.9 | 258 | 258 |
+| 2027.10 | 367 | 367 |
+
+2 158 findings over 826 repositories, unchanged, and not one repository's finding set
+moved by a line.
+
+That is the result and the reason is worth writing down. Nine repositories in the
+catalogue name the new classes or their lookups somewhere in their Python, and not one
+does it in a shape a rule can use. Most of the mentions are comments and docstrings
+about the migration ahead. The rest reach the new API at runtime so the integration
+still loads on 2026.8: `hasattr(dr, "ChildDeviceEntry")`, `getattr(dr,
+"ChildDeviceEntry", ())`, `getattr(registry, "async_get_or_create_child", None)`. One
+calls `async_update_child_device` statically and throws the return value away, which is
+not a read of anything. A name fetched at runtime is not a type any AST can prove, so
+the rule is ready for the version bump that takes those shims out rather than finding
+somebody today.
+
+### Upstream facts
+
+The rescan re-ran the "already reported upstream" lookup for 400 repositories, which is
+the per-run cap. Eight more repositories link an existing issue, 90 becomes 98, and two
+existing links picked up a state or reaction change. Twenty-one were carrying a `symbol`
+recorded before 1.14.0 re-dated the rules, so the soonest-breaking finding had changed
+under them and they had been searched for the wrong name.
+
+### The detection sentence read wrong when it was cut
+
+`check_local.py` prints the first 400 characters of a rule message, which landed at
+"proven to be a DeviceEntry", exactly the claim this release widens. The sentence now
+says "a device entry, including a deleted or child device", which survives the cut. No
+code changed and `rules_hash` does not move for a message.
+
 ## 1.14.0 — 2026-09-17
 
 ### `DeviceEntry.config_entries` is removed in 2027.10, not 2027.8

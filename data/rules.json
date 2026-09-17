@@ -3077,7 +3077,7 @@
       "id": "device-entry-config-entries",
       "kind": "attr",
       "symbol": "DeviceEntry.config_entries",
-      "message": "DeviceEntry.config_entries is deprecated; use DeviceEntry.config_entry_id instead. A custom integration reading it logs a warning from Home Assistant Core 2026.10, and 'the properties remain available to custom integrations until Home Assistant Core 2027.10, two releases later than the 2027.8 given in the earlier post.' Detected only where the receiver is proven to be a DeviceEntry (a registry lookup, a DeviceEntry annotation, or the async_remove_config_entry_device contract); hass.config_entries is never flagged. Reading the property on a synthesized composite device is exempt and does not report.",
+      "message": "DeviceEntry.config_entries is deprecated; use DeviceEntry.config_entry_id instead. A custom integration reading it logs a warning from Home Assistant Core 2026.10, and 'the properties remain available to custom integrations until Home Assistant Core 2027.10, two releases later than the 2027.8 given in the earlier post.' Detected only where the receiver is proven to be a device entry, including a deleted or child device (a registry lookup, an annotation, or the async_remove_config_entry_device contract); hass.config_entries is never flagged. Reading the property on a synthesized composite device is exempt and does not report, but a deleted device and a child device are never composites, so every read on one of those reports.",
       "breaks_in": "2027.10",
       "reports_in": "2026.10",
       "source": "https://developers.home-assistant.io/blog/2026/09/15/device-entry-config-entries-deprecation",
@@ -3098,14 +3098,19 @@
           "DeviceRegistry"
         ],
         "entry_types": [
-          "DeviceEntry"
+          "DeviceEntry",
+          "DeletedDeviceEntry",
+          "ChildDeviceEntry"
         ],
         "entry_methods": [
           "async_get",
+          "async_get_child_device_by_identifier",
           "async_get_device",
           "async_get_device_by_connection",
           "async_get_device_by_identifier",
           "async_get_or_create",
+          "async_get_or_create_child",
+          "async_update_child_device",
           "async_update_device"
         ],
         "entry_containers": [
@@ -3113,10 +3118,11 @@
           "deleted_devices"
         ],
         "entry_functions": [
+          "async_child_entries_for_config_entry",
           "async_entries_for_area",
           "async_entries_for_config_entry",
-          "async_entries_for_config_subentry",
-          "async_entries_for_label"
+          "async_entries_for_label",
+          "async_entries_for_parent_device"
         ],
         "entry_params": {
           "async_remove_config_entry_device": 3
@@ -3173,5 +3179,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-17T01:15:51Z"
+  "blog_merged_utc": "2026-09-17T02:20:38Z"
 }

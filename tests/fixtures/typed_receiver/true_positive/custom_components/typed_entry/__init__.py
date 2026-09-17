@@ -5,7 +5,7 @@ each one is a finding. Line numbers are pinned in ``test_typed_receiver.py``.
 """
 
 from homeassistant.helpers import device_registry as dr
-from homeassistant.helpers.device_registry import DeviceEntry, DeviceRegistry
+from homeassistant.helpers.device_registry import ChildDeviceEntry, DeviceEntry, DeviceRegistry
 
 
 async def async_remove_config_entry_device(hass, config_entry, device_entry) -> bool:
@@ -73,3 +73,19 @@ def from_the_registry_mapping(hass, device_id):
             return device
     deleted = reg.deleted_devices[device_id]
     return deleted.config_entries, dr.async_get(hass).devices.get(device_id).config_entries
+
+
+def deleted_and_child(deleted: dr.DeletedDeviceEntry, child: ChildDeviceEntry):
+    """Neither class can be a composite, so neither read has an exemption."""
+    return deleted.config_entries, child.config_entries
+
+
+def child_devices_of(hass, config_entry, device_id):
+    """The child-device lookups, which return ChildDeviceEntry the same way."""
+    reg = dr.async_get(hass)
+    for child in dr.async_child_entries_for_config_entry(reg, config_entry.entry_id):
+        if child.config_entries:
+            return child
+    for child in dr.async_entries_for_parent_device(reg, device_id):
+        return child.config_entries
+    return reg.async_get_or_create_child(config_entry, device_id).config_entries

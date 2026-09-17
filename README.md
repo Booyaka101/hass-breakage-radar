@@ -866,6 +866,11 @@ real package is used instead.
   `hass.config_entries` among them. A missed
   call is a rule that stays quiet; a wrong one would waste a maintainer's afternoon,
   so the matcher is built to under-report.
+  A receiver proved to be a `DeletedDeviceEntry` or a `ChildDeviceEntry` counts the
+  same way, because both carry the properties. Nothing in the catalogue matches that
+  way yet: every integration that has touched the 2026.9 classes reaches them through
+  `getattr(dr, "ChildDeviceEntry", ())` so it still runs on 2026.8, and a name fetched
+  at runtime is not a type any AST can prove.
 * **A scoped `attr` rule resolves base classes one level, inside one file.** A class
   deriving from `StateVacuumEntity` is matched whether it names the base directly, under
   an import alias, dotted as `vacuum.StateVacuumEntity`, among several bases, or through
