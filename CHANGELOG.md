@@ -125,7 +125,13 @@ the title as stored and published, cut to 140 characters, so the search and the 
 are ranked the same way. A confirmation that errors keeps the report it was checking:
 one 502 is not news about an issue.
 
-Lookups are saved every 25. A full budget of them takes about a quarter of an hour, and
+A repository that has turned issues off is still asked about the report it is on file
+for. Turning them off hides the existing ones, and the API answers 404 or 410 for them,
+which is what drops the link. Assuming it from the flag turns "already reported, here
+it is" into "there is nowhere to report it" on a repository where the report is still
+sitting there.
+
+Lookups are saved every 25, failures included. A full budget of them takes about a quarter of an hour, and
 a job the runner cancels in the middle of that had spent the rate limit for nothing.
 
 `--only owner/repo` asks about that repository whatever its fact's age. A forced rescan

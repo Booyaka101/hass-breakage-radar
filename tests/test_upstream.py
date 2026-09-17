@@ -14,7 +14,15 @@ import pytest
 
 from tools.common import utc_now_iso
 from tools.rules_engine import rule_search_term, search_term
-from tools.upstream import SearchExhausted, annotate, look_up, relevance, repo_facts
+from tools.upstream import (
+    SearchExhausted,
+    annotate,
+    confirm_report,
+    find_report,
+    look_up,
+    relevance,
+    repo_facts,
+)
 
 #: The release core is building, which is what the crawler passes.
 NOW = "2026.10"
@@ -350,54 +358,28 @@ def test_a_weak_hit_is_still_better_than_a_report_that_is_gone(monkeypatch):
     assert facts["report"] == weak
 
 
-def test_a_long_titled_report_is_still_asked_about(monkeypatch):
-    """Titles are stored cut to 140 characters, so one that names the symbol
-    after that ranks at nothing however relevant the issue is."""
-    live = {
+def test_the_search_and_the_confirmation_read_the_same_title(monkeypatch):
+    """Both score the title as it is stored and published, cut to 140
+    characters. Scoring the full one in either place has them disagreeing
+    about the same issue, and the link flips depending on which found it."""
+    item = {
         "number": 41,
         "html_url": "https://github.com/a/one/issues/41",
-        "state": "closed",
+        "state": "open",
         "title": "Bug report about the integration " + "x" * 120 + " setup_scanner",
     }
-    _searched(monkeypatch, live)
-    known = {"number": 41, "state": "closed", "title": live["title"][:140]}
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=known, token="x"
-    )
-    assert facts["report"]["number"] == 41
 
+    def api(path, **kwargs):
+        return {"items": [item]} if path == "/search/issues" else item
 
-def test_a_confirmation_that_errors_keeps_the_report_it_was_checking(monkeypatch):
-    """A 502 on the one extra call is not news about the issue. Dropping the
-    link over it costs a week of "nobody has reported this" on a repository
-    where somebody has."""
-    _search_found_nothing(monkeypatch, _http_error(502, {}))
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    monkeypatch.setattr("tools.upstream._api", api)
+    found = find_report("a/one", "setup_scanner", current_version=NOW, token="x")
+    on_file = {"number": 41, "state": "open", "title": item["title"][:140]}
+    confirmed = confirm_report(
+        "a/one", on_file, "setup_scanner", current_version=NOW, token="x"
     )
-    assert facts["report"] == ON_FILE
-
-
-def test_the_lookups_are_saved_as_they_are_made(monkeypatch):
-    """A full budget of them takes about a quarter of an hour. A job cancelled
-    or timed out in the middle of that had spent the rate limit for nothing."""
-    monkeypatch.setenv("GITHUB_TOKEN", "x")
-    monkeypatch.setattr(
-        "tools.upstream.look_up",
-        lambda *a, **k: {"archived": False, "issues_enabled": True},
-    )
-    saves: list[int] = []
-    records = {f"a/{n:03d}": {"findings": FINDING} for n in range(60)}
-    asked = annotate(
-        records,
-        SOON,
-        current_version=NOW,
-        checkpoint=lambda: saves.append(
-            sum(1 for r in records.values() if r.get("upstream"))
-        ),
-    )
-    assert asked == 60
-    assert saves == [25, 50]
+    assert found is None
+    assert confirmed is None
 
 
 def test_a_repository_with_no_report_on_file_costs_no_second_request(monkeypatch):
@@ -556,6 +538,77 @@ def test_a_spent_rate_limit_still_ends_the_run(monkeypatch):
     records = {n: {"findings": FINDING} for n in ("a/one", "b/two")}
     assert annotate(records, SOON, current_version=NOW) == 1
     assert calls == ["a/one"]
+
+
+def _issues_turned_off(monkeypatch, issue):
+    monkeypatch.setattr("tools.upstream.time.sleep", lambda _seconds: None)
+    monkeypatch.setattr(
+        "tools.upstream.repo_facts",
+        lambda *a, **k: {"archived": False, "issues_enabled": False},
+    )
+    monkeypatch.setattr("tools.upstream.find_report", _never_called)
+
+    def api(path, **kwargs):
+        assert path == "/repos/a/one/issues/41", path
+        if isinstance(issue, Exception):
+            raise issue
+        return issue
+
+    monkeypatch.setattr("tools.upstream._api", api)
+
+
+def test_a_report_still_served_survives_issues_being_turned_off(monkeypatch):
+    """Whether the issue is still readable is GitHub's answer to give, not
+    ours to assume from the flag. Dropping the link on the flag alone turns
+    "already reported, here it is" into "there is nowhere to report it"."""
+    _issues_turned_off(
+        monkeypatch,
+        {
+            "number": 41,
+            "html_url": "https://github.com/a/one/issues/41",
+            "state": "open",
+            "title": "setup_scanner is deprecated",
+            "reactions": {"total_count": 3},
+        },
+    )
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"]["number"] == 41
+    assert facts["issues_enabled"] is False
+
+
+def test_a_report_hidden_with_the_issue_tracker_is_dropped(monkeypatch):
+    """410 is what the API answers for an issue on a repository that has
+    turned them off, so this settles itself."""
+    _issues_turned_off(monkeypatch, _http_error(410, {}))
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert "report" not in facts
+
+
+def test_a_failed_lookup_is_saved_like_any_other(monkeypatch):
+    """It writes checked_utc, which is what stops the repository leading every
+    run's queue. Losing that to a cancelled job costs the whole point of it."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up", _raises_in_lookup(RuntimeError("timeout"))
+    )
+    saves: list[int] = []
+    records = {f"a/{n:03d}": {"findings": FINDING} for n in range(60)}
+    assert (
+        annotate(
+            records,
+            SOON,
+            current_version=NOW,
+            checkpoint=lambda: saves.append(
+                sum(1 for r in records.values() if r.get("upstream"))
+            ),
+        )
+        == 60
+    )
+    assert saves == [25, 50]
 
 
 def test_an_archived_repository_does_not_keep_republishing_its_report(monkeypatch):

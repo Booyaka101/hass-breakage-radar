@@ -188,9 +188,10 @@ def confirm_report(
         if err.code in (404, 410):
             return None
         raise
-    if relevance(item.get("title", ""), term, current_version=current_version) <= 0:
+    current = _report(item)
+    if _rank(current, term, current_version=current_version)[0] <= 0:
         return None
-    return _report(item)
+    return current
 
 
 def repo_facts(full_name: str, *, token: str) -> dict[str, Any]:
@@ -223,6 +224,15 @@ def look_up(
     if not token:
         return {}
     facts = repo_facts(full_name, token=token)
+    if known and not facts["issues_enabled"] and not facts["archived"]:
+        # Turning issues off hides the existing ones, and the API answers 404
+        # or 410 for them, which is what drops the link. Saying "nowhere to
+        # report it" while the report is still there to read would be worse.
+        current = _confirmed(
+            full_name, known, term, current_version=current_version, token=token
+        )
+        if current:
+            facts["report"] = current
     if facts["issues_enabled"] and not facts["archived"]:
         report = find_report(
             full_name, term, current_version=current_version, token=token
@@ -332,10 +342,9 @@ def annotate(
             break
         except Exception as err:  # noqa: BLE001 - context is optional
             LOGGER.debug("upstream lookup failed for %s: %s", full_name, err)
-            # Record the attempt and nothing else, so the repository comes
-            # round again with the rest of them rather than sorting to the
-            # front of every run's budget for good. A fact with no answer in it
-            # reads exactly as no fact at all.
+            # Record the attempt, so the repository comes round again with the
+            # rest of them rather than sorting to the front of every run's
+            # budget for good.
             carried = dict(fact)
             if not on_file:
                 # Whatever was on file was found for a term this rule no longer
@@ -346,12 +355,11 @@ def annotate(
                 "symbol": term,
                 "checked_utc": utc_now_iso(),
             }
-            continue
-        if not facts:
-            continue
-        facts["symbol"] = term
-        facts["checked_utc"] = utc_now_iso()
-        record["upstream"] = facts
+        else:
+            if facts:
+                facts["symbol"] = term
+                facts["checked_utc"] = utc_now_iso()
+                record["upstream"] = facts
         if checkpoint and asked % 25 == 0:
             checkpoint()
     return asked
