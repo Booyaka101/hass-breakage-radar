@@ -446,8 +446,13 @@ def annotate(
             # somewhere the crawl cannot follow. Its findings stay in the index
             # on purpose, but nothing on file about its issue tracker is
             # evidence any more, so it is dropped rather than republished
-            # every week off the back of a failure.
-            carried = {} if gone else dict(fact)
+            # every week off the back of a failure. That it was archived
+            # survives: the card then says a fix is not coming and to plan a
+            # replacement, which is the one thing still true about it.
+            if gone:
+                carried = {"archived": True} if fact.get("archived") else {}
+            else:
+                carried = dict(fact)
             if not on_file:
                 # Whatever was on file was found for a term this rule no longer
                 # asks for. The rest of it is still true about the repository.
