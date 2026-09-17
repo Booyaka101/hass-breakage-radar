@@ -48,14 +48,14 @@ def test_worked_example_yields_exactly_two_findings(rule):
     assert [f.to_dict() for f in hits] == [
         {
             "rule_id": RULE_ID,
-            "breaks_in": "2027.8",
+            "breaks_in": "2027.10",
             "file": "custom_components/x/__init__.py",
             "line": 4,
             "confidence": "high",
         },
         {
             "rule_id": RULE_ID,
-            "breaks_in": "2027.8",
+            "breaks_in": "2027.10",
             "file": "custom_components/x/__init__.py",
             "line": 9,
             "confidence": "high",

@@ -23,7 +23,7 @@ import urllib.request
 from typing import Any
 
 from tools.common import LOGGER
-from tools.rules_engine import search_term
+from tools.rules_engine import parse_version, search_term
 
 API = "https://api.github.com"
 
@@ -155,7 +155,7 @@ def annotate(
         if not findings:
             record.pop("upstream", None)
             continue
-        earliest = min(findings, key=lambda f: f.get("breaks_in", ""))
+        earliest = min(findings, key=lambda f: parse_version(f.get("breaks_in", "")))
         rule = rules_by_id.get(earliest.get("rule_id"), {})
         try:
             facts = look_up(full_name, rule.get("symbol", ""), token=token)

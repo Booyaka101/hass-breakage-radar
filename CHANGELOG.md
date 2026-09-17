@@ -4,6 +4,142 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.14.0 — 2026-09-17
+
+### `DeviceEntry.config_entries` is removed in 2027.10, not 2027.8
+
+Home Assistant's 2026-09-15 post,
+[DeviceEntry config entries deprecation](https://developers.home-assistant.io/blog/2026/09/15/device-entry-config-entries-deprecation),
+moved the date the 2026-07-21 post had given: "The properties remain available to
+custom integrations until Home Assistant Core 2027.10, two releases later than the
+2027.8 given in the earlier post." `device-entry-config-entries` and
+`device-entry-primary-config-entry` were still shipping 2027.8, which is 366 findings
+across 216 repositories carrying a deadline two releases too early.
+
+The same post is why three neighbouring rules did *not* move.
+`device-registry-config-entries-field`,
+`device-registry-config-entries-subentries-field` and
+`device-registry-primary-config-entry-field` match a Lovelace card reading fields off
+a WebSocket response, and the post says of itself: "This change only concerns the
+Python properties... so WebSocket clients are not affected and see no new warnings",
+and "Those fields are deprecated on their own schedule." That schedule is the
+2026-08-19 post, still saying "they are scheduled for removal in Home Assistant Core
+2027.8." So the 12 card findings keep 2027.8. A WebSocket field does not warn, so a
+card author has no log to check the date against, and moving it would have been the
+one wrong date nobody could catch.
+
+### Rules can carry the release they start warning in
+
+2027.10 is not the first thing a maintainer notices. Core PR #181949 lands in 2026.10
+and makes the properties "report at runtime: core and core integrations raise
+`RuntimeError`, custom integrations log a warning." Both releases matter and they are a
+year apart, so a rule can now carry `reports_in` next to `breaks_in`:
+
+    "breaks_in": "2027.10",
+    "reports_in": "2026.10",
+
+It is a second date, never a second deadline. Ordering, bucketing, retirement and
+"breaks soonest" all key off `breaks_in` exactly as before, and a repository hit by a
+true 2027.8 rule and a re-dated 2027.10 one appears under both with 2027.8 driving the
+sort. A rule whose two releases are the same carries no `reports_in` at all: the value
+is dropped where the rules are loaded, so no renderer ever has to decide when two dates
+are really one, and every rule that had one date still renders exactly as it did.
+
+The board prints "Logs a warning from Home Assistant 2026.10 (October 2026, about 20
+days away)" under the rule; `index.json` carries `reports_in` on the rule; the sensor's
+`details` carry it per finding; `check_local.py` says it in the text output and folds it
+into the release cell of the job summary as `2027.10 (warns from 2026.10)`.
+
+### `modbus.get_hub`
+
+New rule from the 2026-09-02 post: "As of Home Assistant Core 2026.10,
+`modbus.get_hub` is deprecated. It will be removed in Home Assistant Core 2027.10."
+The replacement is `async_get_unit`, and the post is blunt that "This is not a
+one-to-one swap." Your config flow has to collect the host, port and unit id the user
+used to write in the YAML hub, so the rule says that rather than naming a function and
+leaving.
+
+Core's own `report_usage` marker had already produced `core-call-get-hub` at the right
+date with no source, no replacement and medium confidence. The hand-written rule
+supersedes it. One repository in the catalogue calls it,
+`wills106/homeassistant-solax-modbus`, on the same file and line as before.
+
+### An upstream issue is about a symbol, not about a scan
+
+The crawler records, per repository, whether the deprecation it found is already
+reported in that repository's own issues. Carrying that fact across a rescan used to
+require the new findings to equal the old ones exactly. Re-dating a rule changes
+`breaks_in` on every finding it produced and superseding one changes `rule_id`, so this
+release would have thrown away 216 repositories' worth of lookups and spent them again
+against a 30-per-minute search API.
+
+The comparison now asks what the fact is actually about, which is the symbol: the fact
+stays while the repository still uses that symbol, and goes when it does not. Fixing it
+in that direction also caught the bug pointing the other way. 41 repositories were
+carrying an "already reported" link about `async_import_statistics` or
+`async_add_external_statistics` with no such finding left, 34 of them with no findings
+at all, kept since 1.13.0 removed those findings because an empty list equals an empty
+list. Two of them were live wrong links on the published board. All 41 are gone.
+
+`annotate` also picked the finding to search for with `min` over the release *string*,
+where "2027.10" sorts before "2027.9". With 2027.10 populated for the first time, every
+one of those 216 repositories would have been searched for the wrong symbol. Five more
+release comparisons across the tools were sorting labels as text and are now numeric;
+`check_local.py` was listing a 2027.10 finding above a 2027.9 one, which is the thing a
+maintainer has least time for reported last.
+
+### One truncation, used in five places
+
+Every rule message quotes the post it came from, so the re-dated ones are long enough
+to be cut everywhere they render. The cuts were slicing mid-word: the board read "in
+the log unt source" and "reading eith source". There is now one `clip` in the rules
+engine that cuts on a word boundary, and the board, the job summary, the text output,
+the sensor's `details` and the feed's rule labels all use it. The feed used a
+single-character ellipsis and now uses three dots like everywhere else, which shows
+up on one prose rule's label.
+
+The RSS feed carries the warning release too, worded without a countdown. An item is
+written once and sits in a subscriber's reader for months, so it says "Logs a warning
+from Home Assistant 2026.10 (October 2026)" and leaves "about 20 days away" to the
+board, which is rebuilt daily.
+
+### What the re-crawl measured
+
+All 4 009 catalogue repositories were rescanned on Python 3.14, the same interpreter the
+daily crawl uses. The control is the daily crawl's own pass over the same catalogue from
+the same day on the old rules, so the two differ only in the rules.
+
+| Release | Daily crawl | This release |
+|---|---|---|
+| 2026.10 | 13 | 13 |
+| 2026.11 | 42 | 42 |
+| 2027.5 | 16 | 16 |
+| 2027.6 | 46 | 46 |
+| 2027.7 | 29 | 29 |
+| 2027.8 | 1 752 | 1 387 |
+| 2027.9 | 258 | 258 |
+| 2027.10 | 1 | 367 |
+
+2 157 findings over 825 repositories becomes 2 158 over 826. Exactly 366 findings move
+from 2027.8 to 2027.10, over 216 repositories, and nothing else moves release at all.
+Two repositories changed what was found in them: `wills106/homeassistant-solax-modbus`,
+where `core-call-get-hub` became `modbus-get-hub` on the same file and line, and
+`hudsonbrendon/HA-drivvo`, which was unreachable for the daily crawl and answered for
+this one. Every other repository in the catalogue reproduced its previous findings
+place for place.
+
+By rule, across the whole catalogue:
+
+| Rule | Findings | Repositories | Removed in |
+|---|---|---|---|
+| `device-entry-config-entries` | 329 | 203 | 2027.10 |
+| `device-entry-primary-config-entry` | 37 | 18 | 2027.10 |
+| `device-registry-config-entries-field` | 11 | 11 | 2027.8 |
+| `device-registry-primary-config-entry-field` | 1 | 1 | 2027.8 |
+| `device-registry-config-entries-subentries-field` | 0 | 0 | 2027.8 |
+| `modbus-get-hub` | 1 | 1 | 2027.10 |
+
+
 ## 1.13.0 — 2026-09-11
 
 ### The statistics metadata rules were reading a key as a keyword

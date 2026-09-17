@@ -13,7 +13,13 @@ import pytest
 from tools import scan as scan_module
 from tools.common import NotFound, RateLimited
 from tools.rules_engine import Rule, matchable_rules
-from tools.scan import main, rules_hash, scan_repo, select_slice
+from tools.scan import (
+    main,
+    rules_hash,
+    scan_repo,
+    select_slice,
+    upstream_still_applies,
+)
 
 RULE = Rule(
     id="legacy-device-tracker-platform",
@@ -390,11 +396,11 @@ SAME_FINDING = [
 ]
 
 
-def _rescan_one(tmp_path, monkeypatch, findings: list[dict]) -> dict:
-    """Force a rescan of a/one that reproduces ``findings``, and return it."""
+def _rescan_one(tmp_path, monkeypatch, findings: list[dict], upstream=None) -> dict:
+    """Force a rescan of a/one over a record holding ``findings``, and return it."""
     rules_path, catalog_path = _write_inputs(tmp_path, catalog=CATALOG[:1])
     (tmp_path / "findings.json").write_text(
-        _findings_doc(UPSTREAM, findings), encoding="utf-8"
+        _findings_doc(upstream or UPSTREAM, findings), encoding="utf-8"
     )
     monkeypatch.setattr(
         scan_module,
@@ -414,11 +420,15 @@ def test_an_unchanged_rescan_keeps_the_upstream_report(tmp_path, monkeypatch):
     assert _rescan_one(tmp_path, monkeypatch, SAME_FINDING)["upstream"] == UPSTREAM
 
 
-def test_a_rescan_that_finds_something_else_drops_the_upstream_report(
+def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     tmp_path, monkeypatch
 ):
-    changed = [{**SAME_FINDING[0], "rule_id": "some-other-rule", "line": 99}]
-    assert "upstream" not in _rescan_one(tmp_path, monkeypatch, changed)
+    """Carrying it forward would keep linking people to an issue about an API
+    the repository has already migrated off."""
+    other = {**UPSTREAM, "symbol": "async_import_statistics"}
+    assert "upstream" not in _rescan_one(
+        tmp_path, monkeypatch, SAME_FINDING, upstream=other
+    )
 
 
 def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, caplog):
@@ -436,3 +446,33 @@ def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, ca
     assert warn_if_older_python("3.11") is False
     assert warn_if_older_python(None) is False
     assert warn_if_older_python("garbage") is False
+
+
+def test_a_rule_renamed_for_the_same_symbol_keeps_the_upstream_report(
+    tmp_path, monkeypatch
+):
+    """A hand-written rule superseding core's own changes the rule id but not
+    the API. The issue the repo already filed is about the API."""
+    renamed = [{**SAME_FINDING[0], "rule_id": "core-moduledef-setup-scanner"}]
+    assert _rescan_one(tmp_path, monkeypatch, renamed)["upstream"] == UPSTREAM
+
+
+def test_a_rule_breaking_sooner_does_not_discard_the_fact():
+    """The fact is about a symbol the repository uses, not about which of its
+    deprecations happens to break first."""
+    symbols = {"soon": {"symbol": "other"}, "later": {"symbol": "setup_scanner"}}
+    findings = [
+        {"rule_id": "soon", "breaks_in": "2027.8"},
+        {"rule_id": "later", "breaks_in": "2027.10"},
+    ]
+    assert upstream_still_applies(UPSTREAM, findings, symbols) is True
+
+
+def test_a_repository_that_fixed_the_symbol_loses_the_fact():
+    symbols = {"soon": {"symbol": "other"}}
+    findings = [{"rule_id": "soon", "breaks_in": "2027.8"}]
+    assert upstream_still_applies(UPSTREAM, findings, symbols) is False
+
+
+def test_no_findings_leaves_nothing_for_an_upstream_fact_to_be_about():
+    assert upstream_still_applies(UPSTREAM, [], {}) is False

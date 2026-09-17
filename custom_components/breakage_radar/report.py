@@ -17,7 +17,13 @@ from .const import (
     MAX_DETAILS,
     SUPPORTED_SCHEMA,
 )
-from .rules_engine import is_future, parse_version, search_term
+from .rules_engine import (
+    clip,
+    is_future,
+    parse_version,
+    reports_before_removal,
+    search_term,
+)
 
 # describe_when and release_estimated_date are re-exported: the repairs card
 # and the tests reach them through this module.
@@ -224,32 +230,35 @@ def build_report(
                     },
                 )
             rule = rules.get(finding.get("rule_id"), {})
-            details.append(
-                {
-                    "domain": domain,
-                    "kind": kind,
-                    "rule_id": finding.get("rule_id", ""),
-                    "breaks_in": release,
-                    "file": finding.get("file", ""),
-                    "line": finding.get("line", 0),
-                    "confidence": finding.get("confidence", ""),
-                    "source": source,
-                    "when": when,
-                    "days_until": days,
-                    "due": describe_when(release, days),
-                    "repository": (entry or {}).get("full_name", ""),
-                    # A local finding matched the installed bytes, so the
-                    # scanned version is the installed one.
-                    "scanned_version": (
-                        installed.get(domain, "")
-                        if source == "local"
-                        else (entry or {}).get("version", "")
-                    ),
-                    "installed_version": installed.get(domain, ""),
-                    "message": (rule.get("message") or "")[:300],
-                    "learn_more": rule.get("source", ""),
-                }
-            )
+            detail = {
+                "domain": domain,
+                "kind": kind,
+                "rule_id": finding.get("rule_id", ""),
+                "breaks_in": release,
+                "file": finding.get("file", ""),
+                "line": finding.get("line", 0),
+                "confidence": finding.get("confidence", ""),
+                "source": source,
+                "when": when,
+                "days_until": days,
+                "due": describe_when(release, days),
+                "repository": (entry or {}).get("full_name", ""),
+                # A local finding matched the installed bytes, so the
+                # scanned version is the installed one.
+                "scanned_version": (
+                    installed.get(domain, "")
+                    if source == "local"
+                    else (entry or {}).get("version", "")
+                ),
+                "installed_version": installed.get(domain, ""),
+                "message": clip(rule.get("message") or "", 300),
+                "learn_more": rule.get("source", ""),
+            }
+            # Only carried when the API warns before it is removed, so a
+            # consumer never has to decide when two dates are really one.
+            if reports_before_removal(rule.get("reports_in"), rule.get("breaks_in", "")):
+                detail["reports_in"] = rule["reports_in"]
+            details.append(detail)
 
     for domain in sorted(installed):
         # Breakage Radar is reported on like anything else.

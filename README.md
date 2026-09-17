@@ -48,10 +48,10 @@ or into Home Assistant's own `feedreader` integration; open it in a browser and 
 renders as a page.
 
 **In the published index right now:** all 4 009 HACS repositories crawled
-(3 244 integrations and 765 Lovelace plugins, 19 unreachable), **922 affected**,
-**2 504 findings**, across 8 Home Assistant releases: 11 in 2026.10, 96 in 2026.11,
-11 in 2027.5, 51 in 2027.6, 28 in 2027.7, 735 in 2027.8, 142 in 2027.9 and 1 in 2027.10
-(counted by distinct integration domain). 63 of the 123 announced removals have a
+(3 243 integrations and 766 Lovelace plugins, 19 unreachable), **826 affected**,
+**2 158 findings**, across 8 Home Assistant releases: 10 in 2026.10, 16 in 2026.11,
+11 in 2027.5, 45 in 2027.6, 26 in 2027.7, 588 in 2027.8, 134 in 2027.9 and 216 in 2027.10
+(counted by distinct integration domain). 64 of the 124 announced removals have a
 matcher behind them; the board says so on itself, and the other 60 are carried for
 their deadline only. Three markers are refused as too vague to match, which the board
 also states: `InfraredEntity`, a class name too short to match on its own, and the two
@@ -525,10 +525,18 @@ prose with no `report_usage` call behind them — the legacy device tracker plat
 the device registry single-config-entry changes, the device tracker property removals.
 Each one quotes its source post.
 
-Core sometimes carries a marker for the same removal whose message is prose the
-extractor cannot turn into a matcher. A hand-written rule can name those ids in
-`supersedes`, and the merge drops them: two board entries for one deprecation, one of
-them with no matcher and no advice, reads as two problems.
+A rule can also carry `reports_in`, the release the API starts logging a warning in when
+that is earlier than the release it is removed in. `DeviceEntry.config_entries` warns
+from 2026.10 and is removed in 2027.10, and a board showing only one of those either
+hides the logs filling up next month or moves a two-year deadline forward by two years.
+It is a second date on the same rule, never a second deadline: ordering, bucketing and
+retirement all key off `breaks_in`. A rule whose two releases are the same carries no
+`reports_in` at all, and renders exactly as every other rule does.
+
+Core, and the blog itself, sometimes carry a marker for the same removal whose message
+is prose the extractor cannot turn into a matcher. A hand-written rule can name those
+ids in `supersedes`, and the merge drops them: two board entries for one deprecation,
+one of them with no matcher and no advice, reads as two problems.
 
 **3. Blog prose (`origin: blog`).** Every removal sentence found on
 <https://developers.home-assistant.io/blog/>, published as `matchable: false` so the

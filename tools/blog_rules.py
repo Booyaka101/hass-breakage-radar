@@ -53,6 +53,8 @@ from tools.rules_engine import (  # noqa: E402
     VERSION_RE,
     is_pending,
     normalise_version,
+    parse_version,
+    reports_before_removal,
 )
 
 BLOG_INDEX = "https://developers.home-assistant.io/blog/"
@@ -173,7 +175,9 @@ def fetch_blog_rules(
         hits = extract_removals(url, _text(body))
         if hits:
             LOGGER.info(
-                "%s -> %s", url, ", ".join(sorted(h["breaks_in"] for h in hits))
+                "%s -> %s",
+                url,
+                ", ".join(sorted((h["breaks_in"] for h in hits), key=parse_version)),
             )
         rules.extend(hits)
     return rules
@@ -205,6 +209,20 @@ def load_manual_rules(path: Path) -> list[dict[str, Any]]:
         entry.setdefault("confidence", "high")
         entry["matchable"] = bool(entry.get("match"))
         entry["breaks_in"] = normalise_version(entry["breaks_in"])
+        if "reports_in" in entry:
+            entry["reports_in"] = normalise_version(entry["reports_in"])
+            # A report release that is not ahead of the removal is not a second
+            # date, so it never reaches a renderer and never has to be special
+            # cased there.
+            if not reports_before_removal(entry["reports_in"], entry["breaks_in"]):
+                LOGGER.warning(
+                    "manual rule %s reports in %s but is removed in %s; "
+                    "dropping the report release",
+                    entry["id"],
+                    entry["reports_in"],
+                    entry["breaks_in"],
+                )
+                del entry["reports_in"]
         rules.append(entry)
     return rules
 
@@ -245,9 +263,10 @@ def merge(
     and one finding reported twice reads as two problems.
 
     ``supersedes`` is the same idea for the case the matcher cannot see. A
-    hand-written matcher for a deprecation core announces only in prose leaves
-    the extracted prose rule behind, saying the same thing with no matcher and
-    no advice. The manual rule names the ids it replaces.
+    hand-written matcher for a deprecation announced only in prose leaves the
+    prose rule behind, saying the same thing with no matcher and no advice --
+    whether that prose came out of core or off the blog. The manual rule names
+    the ids it replaces.
     """
     hand_written = {_what_it_matches(rule["match"]) for rule in manual if rule.get("match")}
     superseded = {rule_id for rule in manual for rule_id in rule.get("supersedes", ())}
@@ -276,7 +295,7 @@ def merge(
     }
 
     for rule in blog:
-        if rule["id"] in merged:
+        if rule["id"] in merged or rule["id"] in superseded:
             continue
         # Suppress a prose rule that only restates a release we already match on
         # with a real matcher, to keep the board free of duplicates.
@@ -287,7 +306,9 @@ def merge(
     for rule in merged.values():
         rule["expired"] = not is_pending(rule["breaks_in"], pending_floor)
 
-    return sorted(merged.values(), key=lambda r: (r["breaks_in"], r["id"]))
+    return sorted(
+        merged.values(), key=lambda r: (parse_version(r["breaks_in"]), r["id"])
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

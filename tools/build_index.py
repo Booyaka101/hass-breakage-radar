@@ -42,8 +42,18 @@ from tools.common import (  # noqa: E402
 from tools.feed import build as build_feed  # noqa: E402
 from tools.feed import update_first_seen
 from tools.release import floor_from_payload  # noqa: E402
-from tools.rules_engine import is_pending, parse_version  # noqa: E402
-from tools.schedule import days_until, long_date, release_estimated_date  # noqa: E402
+from tools.rules_engine import (  # noqa: E402
+    clip,
+    is_pending,
+    parse_version,
+    reports_before_removal,
+)
+from tools.schedule import (  # noqa: E402
+    days_until,
+    describe_report,
+    long_date,
+    release_estimated_date,
+)
 
 SCHEMA_VERSION = 1
 INDEX_URL = "https://booyaka101.github.io/hass-breakage-radar/index.json"
@@ -355,6 +365,7 @@ section.release > h2 {{ font-size:19px; margin:0 0 4px;
   font-size:13px; }}
 .rulelist li {{ margin:3px 0; }}
 .rulelist code {{ color:var(--ink); }}
+.reports {{ display:block; color:var(--warn); }}
 table {{ width:100%; border-collapse:collapse; background:var(--panel);
   border:1px solid var(--line); border-radius:10px; overflow:hidden; }}
 th, td {{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--line);
@@ -570,6 +581,25 @@ def _relative(days: int) -> str:
     return f"{-days} days ago"
 
 
+def rule_item(rule_id: str, rule: dict[str, Any], today: date) -> str:
+    """One entry in a release section's rule list.
+
+    A deprecation that starts logging a warning before the release it is
+    removed in carries that release too, because a user reading "2027.10" has
+    no other way to learn their log fills up next month.
+    """
+    reports_in = rule.get("reports_in") or ""
+    note = ""
+    if reports_before_removal(reports_in, rule.get("breaks_in", "")):
+        said = describe_report(reports_in, days_until(reports_in, today))
+        note = f'<span class="reports">{html.escape(said)}</span>'
+    return (
+        f"<li><code>{html.escape(rule_id)}</code> &mdash; "
+        f"{html.escape(clip(rule.get('message') or '', 200))} "
+        f"<a href=\"{html.escape(rule.get('source', ''))}\">source</a>{note}</li>"
+    )
+
+
 def release_heading(release: str, today: date) -> str:
     """'Home Assistant 2026.10 - 7 October 2026 - in 46 days'."""
     when = release_estimated_date(release)
@@ -641,10 +671,7 @@ def render_html(payload: dict[str, Any]) -> str:
             }
         )
         rule_items = "".join(
-            f"<li><code>{html.escape(rid)}</code> &mdash; "
-            f"{html.escape((rules_by_id.get(rid, {}).get('message') or '')[:200])} "
-            f"<a href=\"{html.escape(rules_by_id.get(rid, {}).get('source', ''))}\">source</a></li>"
-            for rid in release_rules
+            rule_item(rid, rules_by_id.get(rid, {}), today) for rid in release_rules
         )
 
         rows: list[str] = []

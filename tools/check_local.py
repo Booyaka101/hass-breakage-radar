@@ -45,12 +45,15 @@ from tools.rules_engine import (  # noqa: E402
     Finding,
     Rule,
     ScanStats,
+    clip,
     is_future,
     load_rules,
     looks_minified_js,
+    parse_version,
+    reports_before_removal,
     scan_sources,
 )
-from tools.schedule import days_until, describe_when  # noqa: E402
+from tools.schedule import days_until, describe_report, describe_when  # noqa: E402
 
 INDEX_URL = "https://booyaka101.github.io/hass-breakage-radar/index.json"
 
@@ -185,11 +188,20 @@ def _escape(value: str, *, property_value: bool = False) -> str:
     return out
 
 
+def _reports_from(rule: Rule | None, today: date) -> str:
+    """When the rule warns before it breaks, the sentence saying so."""
+    if rule is None or not reports_before_removal(rule.reports_in, rule.breaks_in):
+        return ""
+    return describe_report(rule.reports_in, days_until(rule.reports_in, today))
+
+
 def _describe(finding: Finding, rule: Rule | None, today: date) -> tuple[str, str]:
     """``(title, one-line message)`` shared by both output formats."""
     when = describe_when(finding.breaks_in, days_until(finding.breaks_in, today))
     title = f"Breaks in Home Assistant {finding.breaks_in} ({when})"
-    parts = [(rule.message if rule else "").strip()[:400] or finding.symbol]
+    parts = [clip((rule.message if rule else "").strip(), 400) or finding.symbol]
+    if reports := _reports_from(rule, today):
+        parts.append(f"{reports}.")
     parts.append(f"[{finding.confidence} confidence, rule {finding.rule_id}]")
     if rule and rule.source:
         parts.append(rule.source)
@@ -205,8 +217,10 @@ def render_text(findings: list[Finding], rules: dict[str, Rule], today: date) ->
             f"    breaks in Home Assistant {finding.breaks_in} "
             f"({finding.confidence} confidence, rule {finding.rule_id})"
         )
+        if reports := _reports_from(rule, today):
+            print(f"    {reports[0].lower()}{reports[1:]}")
         if rule and rule.message:
-            print(f"    {rule.message[:200]}")
+            print(f"    {clip(rule.message, 200)}")
         if rule and rule.source:
             print(f"    {rule.source}")
         print()
@@ -246,9 +260,15 @@ def render_github(
         "| --- | --- | --- | --- | --- |",
     ]
     for finding in findings:
+        rule = rules.get(finding.rule_id)
         when = describe_when(finding.breaks_in, days_until(finding.breaks_in, today))
+        # An earlier report release goes in the same cell rather than a column
+        # of its own, which most rows would leave empty.
+        breaks = finding.breaks_in
+        if rule and reports_before_removal(rule.reports_in, rule.breaks_in):
+            breaks += f" (warns from {rule.reports_in})"
         lines.append(
-            f"| {finding.breaks_in} | {when} | `{finding.file}:{finding.line}` "
+            f"| {breaks} | {when} | `{finding.file}:{finding.line}` "
             f"| {finding.rule_id} | {finding.confidence} |"
         )
     lines.extend(
@@ -421,7 +441,7 @@ def main(argv: list[str] | None = None) -> int:
         print("OK - no scheduled removals found in this checkout.")
         return 0
 
-    findings.sort(key=lambda f: (f.breaks_in, f.file, f.line))
+    findings.sort(key=lambda f: (parse_version(f.breaks_in), f.file, f.line))
     messages = {rule.id: rule for rule in load_rules(rules_payload)}
     today = date.today()
     blocking = {

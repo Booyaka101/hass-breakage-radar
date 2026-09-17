@@ -73,6 +73,7 @@ from tools.rules_engine import (  # noqa: E402
     looks_minified_js,
     matchable_rules,
     scan_sources,
+    search_term,
 )
 from tools.upstream import annotate  # noqa: E402
 
@@ -321,6 +322,25 @@ def findings_hash(findings: list[dict[str, Any]]) -> str:
     return hashlib.sha256(blob).hexdigest()[:16]
 
 
+def upstream_still_applies(
+    upstream: dict[str, Any],
+    findings: list[dict[str, Any]],
+    rules_by_id: dict[str, Any],
+) -> bool:
+    """Whether a recorded upstream fact is still about what a repository has.
+
+    The fact is the repository's own issue about one deprecated symbol. It
+    stays true while the repository still uses that symbol, which survives the
+    rule being re-dated, renamed, or overtaken by one that breaks sooner.
+    """
+    symbol = upstream.get("symbol")
+    return bool(symbol) and any(
+        search_term((rules_by_id.get(f.get("rule_id")) or {}).get("symbol") or "")
+        == symbol
+        for f in findings
+    )
+
+
 def rules_hash(rules: list[Rule]) -> str:
     """Identity of "what a scan would produce": rules *and* engine semantics."""
     blob = json.dumps(
@@ -530,6 +550,7 @@ def main(argv: list[str] | None = None) -> int:
         LOGGER.error("no matchable pending rules; refusing to scan")
         return 2
     rhash = rules_hash(active)
+    rules_by_id = {rule.id: {"symbol": rule.symbol} for rule in active}
     LOGGER.info(
         "%d matchable rules (core dev %s, pending from %s via %s, rules_hash %s)",
         len(active),
@@ -642,7 +663,13 @@ def main(argv: list[str] | None = None) -> int:
         counters["skipped_vendor"] += record.get("skipped_vendor", 0)
 
         previous = repos.get(full_name)
-        if previous and previous.get("upstream") and previous.get("findings") == record["findings"]:
+        if (
+            previous
+            and previous.get("upstream")
+            and upstream_still_applies(
+                previous["upstream"], record["findings"], rules_by_id
+            )
+        ):
             # The upstream report is about the deprecation, not about when we
             # last looked. An engine bump requeues every repository, and the
             # search API allows 30 lookups a minute, so discarding a fact that
@@ -678,7 +705,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.no_upstream:
         scanned_now = {n: repos[n] for n in (e["full_name"] for e in todo) if n in repos}
-        looked_up = annotate(scanned_now, {r.id: {"symbol": r.symbol} for r in active})
+        looked_up = annotate(scanned_now, rules_by_id)
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
             checkpoint()

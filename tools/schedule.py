@@ -71,3 +71,15 @@ def describe_when(release: str, days: int | None) -> str:
     if years < 1.25:
         return f"{month}, about a year away"
     return f"{month}, about {years:.1f} years away".replace(".0 ", " ")
+
+
+def describe_report(release: str, days: int | None) -> str:
+    """How a deprecation that warns before it breaks is phrased everywhere.
+
+    Only ever shown next to a later removal release, so it says what starts
+    happening rather than what stops working.
+    """
+    return (
+        f"Logs a warning from Home Assistant {release} "
+        f"({describe_when(release, days)})"
+    )

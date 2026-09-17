@@ -451,3 +451,77 @@ def test_the_check_states_what_it_could_not_look_for(fixtures_dir, tmp_path, cap
         main([str(fixtures_dir / "false_positive"), "--rules", str(rules)])
     assert "1 of 2 announced removals have a matcher" in caplog.text
     assert "2 marker(s) too vague to match" in caplog.text
+
+
+# --------------------------------------------------------------------------- #
+# Deprecations that warn before they break
+# --------------------------------------------------------------------------- #
+
+
+@pytest.fixture
+def warning_rules(local_rules, tmp_path):
+    """The legacy tracker rule again, but warning two years before removal,
+    alongside one that breaks sooner on an earlier line of the same file."""
+    path = tmp_path / "warning-rules.json"
+    payload = json.loads(local_rules.read_text(encoding="utf-8"))
+    payload["rules"][0].update(breaks_in="2027.10", reports_in="2026.10")
+    payload["rules"].append(
+        {
+            "id": "const-conf-host",
+            "breaks_in": "2027.9",
+            "message": "Imports CONF_HOST from homeassistant.const.",
+            "source": "https://developers.home-assistant.io/blog/",
+            "confidence": "high",
+            "match": {
+                "type": "import_from",
+                "modules": ["homeassistant.const"],
+                "names": ["CONF_HOST"],
+            },
+        }
+    )
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    return path
+
+
+def test_the_check_names_the_release_the_warning_starts_in(
+    fixtures_dir, warning_rules, capsys
+):
+    code = main([str(fixtures_dir / "true_positive"), "--rules", str(warning_rules)])
+    out = capsys.readouterr().out
+    assert code == 1
+    assert "breaks in Home Assistant 2027.10" in out
+    assert "logs a warning from Home Assistant 2026.10" in out
+
+
+def test_a_rule_with_one_date_prints_one_date(fixtures_dir, local_rules, capsys):
+    code = main([str(fixtures_dir / "true_positive"), "--rules", str(local_rules)])
+    out = capsys.readouterr().out
+    assert code == 1
+    assert "logs a warning" not in out
+
+
+def test_the_job_summary_carries_both_releases_in_one_cell(
+    fixtures_dir, warning_rules, tmp_path, monkeypatch
+):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    main(
+        [
+            str(fixtures_dir / "true_positive"),
+            "--rules",
+            str(warning_rules),
+            "--format",
+            "github",
+        ]
+    )
+    assert "2027.10 (warns from 2026.10)" in summary.read_text(encoding="utf-8")
+
+
+def test_findings_are_ordered_by_release_not_by_text(
+    fixtures_dir, warning_rules, capsys
+):
+    """2027.9 comes before 2027.10. Ordered as text it comes after, and the
+    thing a maintainer has least time to fix is reported last."""
+    main([str(fixtures_dir / "true_positive"), "--rules", str(warning_rules)])
+    out = capsys.readouterr().out
+    assert out.index("device_tracker.py:7") < out.index("device_tracker.py:12")
