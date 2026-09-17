@@ -622,8 +622,9 @@ def main(argv: list[str] | None = None) -> int:
         "" if args.no_tarball_cache else f", tag tarballs cached under {args.tarball_cache or TARBALL_CACHE_DIR}",
     )
     if not todo:
-        LOGGER.info("nothing to do -- every repository is up to date")
-        return 0
+        # Not a reason to return: the upstream facts below age out on their own
+        # clock, and a quiet day is exactly when there is room to refresh them.
+        LOGGER.info("nothing to scan -- every repository is up to date")
 
     started = time.time()
     counters = {
@@ -705,8 +706,11 @@ def main(argv: list[str] | None = None) -> int:
     checkpoint()
 
     if not args.no_upstream:
-        catalogued = {entry["full_name"] for entry in catalog}
-        known = {n: r for n, r in repos.items() if n in catalogued}
+        # A repository delisted from HACS keeps its findings and stays in the
+        # index, so it keeps its upstream fact too. --only is for looking at
+        # one repository; it should not spend the run's lookups elsewhere.
+        wanted = set(args.only or ())
+        known = {n: r for n, r in repos.items() if not wanted or n in wanted}
         looked_up = annotate(known, rules_by_id, current_version=current_version)
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)

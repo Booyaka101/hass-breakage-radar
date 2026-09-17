@@ -66,10 +66,17 @@ release was therefore never asked about again, and its recorded issue stayed in 
 index for good: the 14 wrong `devices` links and the 8 titles above would have outlived
 their own fix.
 
-Every affected repository is offered on every run now. A fact is asked about again when
-it is more than a week old, or when the rule behind it has been re-aimed since, oldest
-first, and a run still stops after 400 lookups. That is about two days' worth for the
-826 affected repositories, and it is why facts carry `checked_utc`.
+Every affected repository is offered on every run now, including the ones delisted from
+HACS that keep their findings, and including on a day with nothing to scan, which is
+most days. A fact is asked about again when it is more than a week old, or when the rule
+behind it has been re-aimed since, oldest first, and a run stops after 400 requests. That
+is about two days' worth for the 826 affected repositories, and it is why facts carry
+`checked_utc`.
+
+A refresh that finds nothing keeps the report it already had, as long as that report's
+own title still passes the gate above. The search answers with its own top ten, so an
+issue can fall out of the answer without anything having happened to it, and an empty
+"already reported" column sends everybody off to file a duplicate.
 
 ## 1.15.0 — 2026-09-17
 

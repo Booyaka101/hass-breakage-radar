@@ -207,6 +207,64 @@ def test_a_fact_older_than_the_max_age_is_asked_again(monkeypatch):
     records = {"a/one": {"findings": FINDING, "upstream": fresh}}
     assert annotate(records, SOON, current_version=NOW, max_age_days=0) == 1
 
+def test_a_report_survives_a_search_that_comes_back_empty(monkeypatch):
+    """The search answers with its own top ten. An issue falling out of that
+    is not the issue being gone, and emptying the "already reported" column
+    sends everybody off to file a duplicate."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    report = {"number": 41, "url": "u", "state": "open", "title": "setup_scanner is deprecated"}
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {"symbol": "setup_scanner", "report": report},
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+    assert records["a/one"]["upstream"]["report"] == report
+
+
+def test_a_report_the_gate_now_rejects_is_not_carried_over(monkeypatch):
+    """This is the point of the release gate: "Not working on 2021.12" was
+    published as a repository's answer to a 2027 removal."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {
+                "symbol": "setup_scanner",
+                "report": {"number": 7, "title": "Not working on 2021.12"},
+            },
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+    assert "report" not in records["a/one"]["upstream"]
+
+
+def test_a_failed_lookup_still_costs_the_budget(monkeypatch):
+    """Every affected repository is a candidate now, and a repository renamed
+    out from under the catalogue 404s. Counting answers instead of requests
+    would let one bad run walk the whole 800."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    asked: list[str] = []
+
+    def fail(full_name, term, **kwargs):
+        asked.append(full_name)
+        raise RuntimeError("404")
+
+    monkeypatch.setattr("tools.upstream.look_up", fail)
+    records = {n: {"findings": FINDING} for n in ("a/one", "b/two", "c/three")}
+    assert annotate(records, SOON, current_version=NOW, limit=2) == 2
+    assert asked == ["a/one", "b/two"]
+
+
 @pytest.mark.parametrize(
     "rule,expected",
     [

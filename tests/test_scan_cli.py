@@ -455,6 +455,23 @@ def test_the_current_release_reaches_the_upstream_lookup(tmp_path, monkeypatch):
     assert seen["rules"][RULE.id] == {"symbol": "setup_scanner", "search": None}
 
 
+def _found_nothing(entry, rules, fetched=None):
+    """A scan of a repository with nothing wrong in it."""
+    return (
+        {
+            "domain": entry["domain"],
+            "version": entry["last_version"],
+            "ref": "refs/tags/1.0.0",
+            "status": "scanned",
+            "scanned_utc": "2026-08-08T00:00:00Z",
+            "files_scanned": 1,
+            "syntax_errors": 0,
+            "findings": [],
+        },
+        [],
+    )
+
+
 def test_a_repository_outside_the_slice_is_still_offered_for_a_lookup(
     tmp_path, monkeypatch
 ):
@@ -467,39 +484,27 @@ def test_a_repository_outside_the_slice_is_still_offered_for_a_lookup(
             {
                 "schema": 1,
                 "repos": {
-                    "b/two": {
-                        "domain": "two",
+                    name: {
+                        "domain": name.split("/")[1],
                         "status": "scanned",
                         "findings": [
                             {
                                 "rule_id": RULE.id,
                                 "breaks_in": "2027.5",
-                                "file": "custom_components/two/device_tracker.py",
+                                "file": f"custom_components/{name.split('/')[1]}/device_tracker.py",
                                 "line": 7,
                                 "confidence": "high",
                             }
                         ],
                     }
+                    # z/delisted is published while it has findings, catalogue
+                    # or no catalogue, so its fact has to age like the rest.
+                    for name in ("b/two", "z/delisted")
                 },
             }
         ),
         encoding="utf-8",
     )
-
-    def fake_scan_repo(entry, rules, fetched=None):
-        return (
-            {
-                "domain": entry["domain"],
-                "version": entry["last_version"],
-                "ref": "refs/tags/1.0.0",
-                "status": "scanned",
-                "scanned_utc": "2026-08-08T00:00:00Z",
-                "files_scanned": 1,
-                "syntax_errors": 0,
-                "findings": [],
-            },
-            [],
-        )
 
     offered: list[str] = []
 
@@ -507,10 +512,25 @@ def test_a_repository_outside_the_slice_is_still_offered_for_a_lookup(
         offered.extend(sorted(records))
         return 0
 
-    monkeypatch.setattr(scan_module, "scan_repo", fake_scan_repo)
+    monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
     monkeypatch.setattr(scan_module, "annotate", fake_annotate)
     assert main(_argv(tmp_path, rules_path, catalog_path, "--limit", "1")) == 0
-    assert offered == ["a/one", "b/two"]
+    assert offered == ["a/one", "b/two", "z/delisted"]
+
+
+def test_a_day_with_nothing_to_scan_still_refreshes_the_facts(tmp_path, monkeypatch):
+    """Most days the slice is empty: 4 009 of the 4 021 state entries are
+    already current. Returning early there is a week with no refresh at all."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+    monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
+    runs: list[int] = []
+    monkeypatch.setattr(
+        scan_module, "annotate", lambda records, rules, **kw: runs.append(len(records))
+    )
+    argv = _argv(tmp_path, rules_path, catalog_path)
+    assert main(argv) == 0
+    assert main(argv) == 0, "the second run has nothing left to scan"
+    assert len(runs) == 2
 
 
 def test_an_older_interpreter_than_the_extractor_is_warned_about(monkeypatch, caplog):

@@ -186,8 +186,9 @@ def annotate(
     left alone, so a run spends its lookups on the oldest ones and on the rules
     that have been re-aimed since.
 
-    Returns how many were looked up. Anything that fails is skipped rather
-    than allowed to fail the crawl: this is extra context, not the product.
+    Returns how many repositories were asked, failures included: the budget is
+    requests, not answers. Anything that fails is skipped rather than allowed
+    to fail the crawl, because this is extra context, not the product.
     """
     token = _token()
     if not token:
@@ -197,9 +198,9 @@ def annotate(
     stale_before = (
         datetime.now(UTC) - timedelta(days=max_age_days)
     ).strftime("%Y-%m-%dT%H:%M:%SZ")
-    done = 0
+    asked = 0
     for full_name, record in sorted(records.items(), key=_staleness):
-        if done >= limit:
+        if asked >= limit:
             break
         findings = record.get("findings") or []
         if not findings:
@@ -211,6 +212,7 @@ def annotate(
         fact = record.get("upstream") or {}
         if fact.get("symbol") == term and fact.get("checked_utc", "") > stale_before:
             continue
+        asked += 1
         try:
             facts = look_up(
                 full_name, term, current_version=current_version, token=token
@@ -221,9 +223,23 @@ def annotate(
         except Exception as err:  # noqa: BLE001 - context is optional
             LOGGER.debug("upstream lookup failed for %s: %s", full_name, err)
             continue
-        if facts:
-            facts["symbol"] = term
-            facts["checked_utc"] = utc_now_iso()
-            record["upstream"] = facts
-            done += 1
-    return done
+        if not facts:
+            continue
+        reported = fact.get("report")
+        if (
+            reported
+            and "report" not in facts
+            and fact.get("symbol") == term
+            and relevance(
+                reported.get("title", ""), term, current_version=current_version
+            )
+            > 0
+        ):
+            # A search answers with ten hits ranked by its own relevance, so an
+            # issue drops out of the answer without anything having happened to
+            # it. Only a link this run's own gate would still accept is kept.
+            facts["report"] = reported
+        facts["symbol"] = term
+        facts["checked_utc"] = utc_now_iso()
+        record["upstream"] = facts
+    return asked
