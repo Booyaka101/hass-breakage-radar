@@ -145,6 +145,15 @@ crawl rewrites, disappeared from the pushed page. The page is rendered again aft
 rebase now, so the merged template and this run's data land together, and a run that
 publishes no board does not render one.
 
+A push that cannot rebase says why. `set -e` takes a failing `git rebase --abort`,
+and an abort fails when the rebase never started, so the one case the message was
+written for, a tree too dirty to rebase, was the one that exited with git's code and
+printed nothing. Rendering the board again is also allowed to fail without taking the
+push with it, but not to leave half a page in the tree for the next attempt to trip on.
+
+A fact whose `checked_utc` is null is asked about again instead of ending the run. The
+queue already read that field defensively and the freshness test next to it did not.
+
 A crawl that does not finish commits only its progress files. The git index survives a
 step, so a publishing step that died after staging `docs/` left the half-built index
 staged for the step that saves progress, which would have pushed the lot under a message

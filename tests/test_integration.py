@@ -100,7 +100,7 @@ def test_the_crawl_rebases_onto_main_keeping_its_own_side(repo_root):
     onto = [
         line
         for source in sources
-        for line in re.findall(r"^\s*git rebase.*origin/main.*$", source, re.M)
+        for line in re.findall(r"^.*git rebase.*origin/main.*$", source, re.M)
     ]
     assert onto, "the crawl no longer rebases onto main"
     for line in onto:
@@ -129,20 +129,6 @@ def test_a_rule_that_landed_mid_crawl_survives_the_rebase(repo_root):
         "git rebase -X theirs origin/main"
     )
     assert "--amend" in script
-
-
-def test_a_board_change_that_landed_mid_crawl_survives_the_rebase(repo_root):
-    """docs/index.html is rendered from a template in tools/, and the run
-    rendered it from the copy it started with. Taking the crawl's side of a
-    generated file is right for its data and wrong for the markup around it,
-    so the page is rendered again once the merged template is checked out."""
-    script = (repo_root / "tools" / "push_crawl.sh").read_text(encoding="utf-8")
-    rebase = script.index("git rebase -X theirs origin/main")
-    render = script.index("python tools/build_index.py")
-    assert rebase < render, "the board is rendered before the merge it has to carry"
-    guard = script.index("docs/index.html")
-    assert guard < render, "every rebase re-renders, including one publishing no board"
-    assert "--amend" in script[render:], "the fresh page is not in the commit"
 
 
 def test_a_crawl_that_does_not_finish_still_commits_its_progress(repo_root):

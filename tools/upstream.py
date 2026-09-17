@@ -393,7 +393,7 @@ def annotate(
             record.pop("upstream", None)
             continue
         fact = record.get("upstream") or {}
-        if fact.get("symbol") == term and fact.get("checked_utc", "") > stale_before:
+        if fact.get("symbol") == term and (fact.get("checked_utc") or "") > stale_before:
             continue
         asked += 1
         on_file = fact.get("report") if fact.get("symbol") == term else None

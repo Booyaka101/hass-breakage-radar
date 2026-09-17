@@ -255,6 +255,24 @@ def test_a_fact_the_rule_no_longer_aims_at_is_refreshed_however_fresh(monkeypatc
     assert records["a/one"]["upstream"]["symbol"] == "device_registry.devices"
 
 
+def test_a_fact_with_no_timestamp_is_asked_again_not_compared(monkeypatch):
+    """The queue reads that field with an `or ""` and the freshness test read
+    it raw, so a null one took the whole upstream phase down with it rather
+    than costing the repository it was on a lookup."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {"symbol": "setup_scanner", "checked_utc": None},
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+
+
 def test_a_fact_older_than_the_max_age_is_asked_again(monkeypatch):
     monkeypatch.setenv("GITHUB_TOKEN", "x")
     monkeypatch.setattr(

@@ -33,21 +33,27 @@ for attempt in 1 2 3; do
     git checkout origin/main -- data/rules.json
     git commit --quiet --amend --no-edit --allow-empty
   fi
-  git rebase -X theirs origin/main || {
-    git rebase --abort
+  # An abort that fails is a rebase that never started, which is still a
+  # rebase that did not happen, and letting set -e take that one exits the
+  # script with git's code and none of this explanation.
+  if ! git rebase -X theirs origin/main; then
+    git rebase --abort || true
     echo "could not rebase cleanly; leaving main alone"
     exit 1
-  }
+  fi
   # The board is markup rendered from a template in tools/, so a run that
   # publishes it rendered it from the copy it started with, and taking the
   # crawl's side of the page drops a template change that landed mid-run.
   # Rendering again on top of what is now checked out puts both in the file.
   if ! git diff --quiet origin/main HEAD -- docs/index.html; then
     # A render that fails leaves the page this run built, which is what the
-    # push was about to carry anyway.
+    # push was about to carry anyway. Half of a written one cannot stay in the
+    # tree, though: the next attempt's rebase refuses to start on it.
     if python tools/build_index.py >/dev/null; then
       git add docs/index.json docs/index.html docs/feed.xml docs/feed.xsl state/feed.json
       git diff --cached --quiet || git commit --quiet --amend --no-edit
+    else
+      git checkout -- docs state
     fi
   fi
 done
