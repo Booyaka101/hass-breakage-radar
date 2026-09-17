@@ -46,9 +46,11 @@ is dropped where the rules are loaded, so no renderer ever has to decide when tw
 are really one, and every rule that had one date still renders exactly as it did.
 
 The board prints "Logs a warning from Home Assistant 2026.10 (October 2026, about 20
-days away)" under the rule; `index.json` carries `reports_in` on the rule; the sensor's
-`details` carry it per finding; `check_local.py` says it in the text output and folds it
-into the release cell of the job summary as `2027.10 (warns from 2026.10)`.
+days away)" under the rule; `index.json` carries `reports_in` on the rule; the sensor
+carries it per finding, in the diagnostics and in the trimmed `findings` attribute, since
+the near date is the one an automation has any reason to fire on; `check_local.py` says
+it in the text output and folds it into the release cell of the job summary as
+`2027.10 (warns from 2026.10)`; the RSS feed says it without a countdown.
 
 ### `modbus.get_hub`
 

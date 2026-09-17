@@ -78,6 +78,10 @@ class BreakageRadarSensor(CoordinatorEntity[BreakageRadarCoordinator], SensorEnt
             {
                 "domain": detail["domain"],
                 "breaks_in": detail["breaks_in"],
+                # Empty on all but the few APIs that warn before they go. The
+                # warning is the near date, so it is the one an automation has
+                # any reason to fire on.
+                "reports_in": detail.get("reports_in", ""),
                 "when": detail["when"],
                 "file": detail["file"],
                 "line": detail["line"],

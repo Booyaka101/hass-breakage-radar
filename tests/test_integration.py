@@ -228,6 +228,26 @@ def test_sensor_state_and_attributes(sample_index):
     assert "last_error" not in sensor.extra_state_attributes
 
 
+def test_the_sensor_carries_the_release_a_finding_starts_warning_in(sample_index):
+    """The removal is a year out and the warning is next month, so the warning
+    is the date an automation has any reason to fire on. It survives the trim
+    the 16 KB attribute limit forces; every other finding carries an empty
+    string, which is a handful of bytes and keeps the list templatable."""
+    sample_index["rules"][0]["reports_in"] = "2026.10"
+    report = build_report(sample_index, {"fixture_tracker": "0.1.0"})
+    sensor = BreakageRadarSensor(FakeCoordinator(report))
+
+    (finding,) = sensor.extra_state_attributes["findings"]
+    assert finding["breaks_in"] == "2027.5"
+    assert finding["reports_in"] == "2026.10"
+
+
+def test_a_finding_with_one_date_reports_an_empty_warning_release(sample_index):
+    report = build_report(sample_index, {"fixture_tracker": "0.1.0"})
+    sensor = BreakageRadarSensor(FakeCoordinator(report))
+    assert sensor.extra_state_attributes["findings"][0]["reports_in"] == ""
+
+
 def test_sensor_is_unavailable_and_keeps_the_last_report_on_failure(sample_index):
     report = build_report(sample_index, {"fixture_tracker": "0.1.0"})
     coordinator = FakeCoordinator(report, success=False, error="HTTP 503")
