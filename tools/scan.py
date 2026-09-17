@@ -721,6 +721,7 @@ def main(argv: list[str] | None = None) -> int:
             # Naming a repository is asking about that repository. A fact that
             # is merely young is not a reason to answer nothing.
             max_age_days=0 if wanted else FACT_MAX_AGE_DAYS,
+            checkpoint=checkpoint,
         )
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)

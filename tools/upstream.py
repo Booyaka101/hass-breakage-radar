@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
@@ -127,7 +128,12 @@ def _report(item: dict[str, Any]) -> dict[str, Any]:
 def _rank(
     report: dict[str, Any] | None, term: str, *, current_version: str
 ) -> tuple[int, bool]:
-    """Where :func:`find_report` would have put this one, or nothing at all."""
+    """How much this one looks like the report, or nothing at all.
+
+    Over the title as :func:`_report` stores it, cut to 140 characters, which
+    is also the title anyone reading the board is shown. An open issue wins a
+    tie: it is the one worth adding a reaction to.
+    """
     if not report:
         return (0, False)
     return (
@@ -139,11 +145,7 @@ def _rank(
 def find_report(
     full_name: str, term: str, *, current_version: str, token: str
 ) -> dict[str, Any] | None:
-    """The most relevant existing issue matching ``term``, or None.
-
-    Open issues win over closed ones at equal relevance, because an open
-    report is the one worth adding a reaction to.
-    """
+    """The most relevant existing issue matching ``term``, or None."""
     if not term:
         return None
     payload = _api(
@@ -153,14 +155,12 @@ def find_report(
     )
     best = None
     for item in payload.get("items", []):
-        score = relevance(
-            item.get("title", ""), term, current_version=current_version
-        )
-        if score <= 0:
+        candidate = _report(item)
+        rank = _rank(candidate, term, current_version=current_version)
+        if rank[0] <= 0:
             continue                       # matched the body only; not evidence
-        rank = (score, item.get("state") == "open")
         if best is None or rank > best[0]:
-            best = (rank, _report(item))
+            best = (rank, candidate)
     return best[1] if best else None
 
 
@@ -213,10 +213,11 @@ def look_up(
     """Repository facts plus any existing report. Never raises except when the
     rate limit is spent, which the caller uses to stop early.
 
-    ``known`` is the report this repository was already on file for. It is
-    asked about by number whenever the search comes back with nothing better,
-    which is both how a dropped issue is told from a deleted one and how a good
-    link survives a run where only a weaker hit came back.
+    ``known`` is the report this repository was already on file for. Whenever
+    the search does not come back with that one, it is asked about by number:
+    the search ranks its own way over ten hits, so the issue drops out of the
+    answer without anything having happened to it, and replacing a real report
+    with an unrelated hit sends everybody off to file a duplicate.
     """
     token = token or _token()
     if not token:
@@ -228,12 +229,12 @@ def look_up(
         )
         time.sleep(SEARCH_INTERVAL)
         found = _rank(report, term, current_version=current_version)
-        # Ranked on the title as stored, which is cut to 140 characters, so a
-        # long one can rank at nothing. A search that came back with nothing is
-        # reason enough to ask on its own.
-        outranked = _rank(known, term, current_version=current_version) > found
-        if known and (report is None or outranked):
-            current = confirm_report(
+        if (
+            known
+            and (report or {}).get("number") != known.get("number")
+            and _rank(known, term, current_version=current_version) >= found
+        ):
+            current = _confirmed(
                 full_name, known, term, current_version=current_version, token=token
             )
             if current and _rank(current, term, current_version=current_version) >= found:
@@ -241,6 +242,21 @@ def look_up(
         if report:
             facts["report"] = report
     return facts
+
+
+def _confirmed(
+    full_name: str, known: dict[str, Any], term: str, **kwargs: Any
+) -> dict[str, Any] | None:
+    """:func:`confirm_report`, with the known report standing in on a failure.
+
+    Dropping a good link because the one extra call came back 502 costs a week
+    of "nobody has reported this" on a repository where somebody has.
+    """
+    try:
+        return confirm_report(full_name, known, term, **kwargs)
+    except (urllib.error.HTTPError, OSError) as err:
+        LOGGER.debug("could not confirm %s #%s: %s", full_name, known.get("number"), err)
+        return known
 
 
 def _staleness(item: tuple[str, Any]) -> str:
@@ -260,6 +276,7 @@ def annotate(
     current_version: str,
     limit: int = 400,
     max_age_days: int = FACT_MAX_AGE_DAYS,
+    checkpoint: Callable[[], None] | None = None,
 ) -> int:
     """Add upstream facts to scan records that have findings.
 
@@ -271,8 +288,12 @@ def annotate(
     that have been re-aimed since.
 
     Returns how many repositories were asked, failures included: the budget is
-    requests, not answers. Anything that fails is skipped rather than allowed
+    asking, not answering. Anything that fails is skipped rather than allowed
     to fail the crawl, because this is extra context, not the product.
+
+    ``checkpoint`` is called every 25 lookups. A full run of them takes about
+    a quarter of an hour, and a cancelled job that saved none of it has spent
+    the rate limit for nothing.
     """
     token = _token()
     if not token:
@@ -331,4 +352,6 @@ def annotate(
         facts["symbol"] = term
         facts["checked_utc"] = utc_now_iso()
         record["upstream"] = facts
+        if checkpoint and asked % 25 == 0:
+            checkpoint()
     return asked

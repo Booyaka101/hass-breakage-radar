@@ -105,11 +105,18 @@ an issue renamed into something unrelated stops being linked. An archived reposi
 not searched at all, so there is nothing to have missed and its fact is replaced as
 before.
 
-The report on file is also asked about when the search comes back with something
-weaker. The search ranks its own way and answers with ten hits, so a run where the real
+The report on file is also asked about when the search comes back with anything that
+is not it. The search ranks its own way and answers with ten hits, so a run where the real
 report drops out and an unrelated "Deprecated YAML config" does not would otherwise
 swap the link, and swap it back the run after. A hit that scores higher than the one on
-file is taken as it stands, at no extra request.
+file is taken as it stands, at no extra request, and a tie goes to the one on file so
+the link does not flip between two issues that score the same. Relevance is scored on
+the title as stored and published, cut to 140 characters, so the search and the fact
+are ranked the same way. A confirmation that errors keeps the report it was checking:
+one 502 is not news about an issue.
+
+Lookups are saved every 25. A full budget of them takes about a quarter of an hour, and
+a job the runner cancels in the middle of that had spent the rate limit for nothing.
 
 `--only owner/repo` asks about that repository whatever its fact's age. A forced rescan
 carries the fact forward with its old timestamp, so the freshness gate had the one

@@ -554,6 +554,26 @@ def test_naming_a_repository_asks_about_it_however_young_its_fact_is(
     assert ages == [FACT_MAX_AGE_DAYS, 0]
 
 
+def test_a_crawl_killed_during_the_lookups_keeps_the_ones_it_made(
+    tmp_path, monkeypatch
+):
+    """The runner's timeout covers the lookups too, and they are the slowest
+    part of a quiet day: 2.1 seconds apart, up to four hundred of them."""
+    rules_path, catalog_path = _write_inputs(tmp_path)
+
+    def annotate(records, rules, *, checkpoint, **kwargs):
+        records["a/one"]["upstream"] = {"symbol": "setup_scanner", "archived": True}
+        checkpoint()
+        raise TimeoutError("runner cancelled the job")
+
+    monkeypatch.setattr(scan_module, "scan_repo", _found_nothing)
+    monkeypatch.setattr(scan_module, "annotate", annotate)
+    with pytest.raises(TimeoutError):
+        main(_argv(tmp_path, rules_path, catalog_path))
+    saved = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    assert saved["repos"]["a/one"]["upstream"]["archived"] is True
+
+
 def test_a_day_with_nothing_to_scan_still_refreshes_the_facts(tmp_path, monkeypatch):
     """Most days the slice is empty: 4 009 of the 4 021 state entries are
     already current. Returning early there is a week with no refresh at all."""

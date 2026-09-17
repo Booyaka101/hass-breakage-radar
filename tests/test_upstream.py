@@ -326,14 +326,17 @@ def test_a_weaker_hit_does_not_displace_the_report_on_file(monkeypatch):
 
 
 def test_a_better_hit_is_taken_without_a_second_request(monkeypatch):
+    """A tie goes to the report on file, which is what stops the link flipping
+    between two issues that score the same, so this one has to beat it."""
     better = {
         "number": 88,
         "title": "setup_scanner removed in 2027.9",
         "state": "open",
     }
+    weaker = {"number": 41, "title": "setup_scanner stopped working", "state": "open"}
     _searched(monkeypatch, AssertionError("asked for nothing"), found=better)
     facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+        "a/one", "setup_scanner", current_version=NOW, known=weaker, token="x"
     )
     assert facts["report"] == better
 
@@ -362,6 +365,39 @@ def test_a_long_titled_report_is_still_asked_about(monkeypatch):
         "a/one", "setup_scanner", current_version=NOW, known=known, token="x"
     )
     assert facts["report"]["number"] == 41
+
+
+def test_a_confirmation_that_errors_keeps_the_report_it_was_checking(monkeypatch):
+    """A 502 on the one extra call is not news about the issue. Dropping the
+    link over it costs a week of "nobody has reported this" on a repository
+    where somebody has."""
+    _search_found_nothing(monkeypatch, _http_error(502, {}))
+    facts = look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+    assert facts["report"] == ON_FILE
+
+
+def test_the_lookups_are_saved_as_they_are_made(monkeypatch):
+    """A full budget of them takes about a quarter of an hour. A job cancelled
+    or timed out in the middle of that had spent the rate limit for nothing."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": False, "issues_enabled": True},
+    )
+    saves: list[int] = []
+    records = {f"a/{n:03d}": {"findings": FINDING} for n in range(60)}
+    asked = annotate(
+        records,
+        SOON,
+        current_version=NOW,
+        checkpoint=lambda: saves.append(
+            sum(1 for r in records.values() if r.get("upstream"))
+        ),
+    )
+    assert asked == 60
+    assert saves == [25, 50]
 
 
 def test_a_repository_with_no_report_on_file_costs_no_second_request(monkeypatch):
