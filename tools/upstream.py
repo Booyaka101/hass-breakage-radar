@@ -70,7 +70,15 @@ def _api(path: str, *, token: str, params: dict[str, str] | None = None) -> Any:
         with urllib.request.urlopen(request, timeout=30) as response:
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as err:
-        if err.code in (403, 429):
+        # 403 is both "you have asked too often" and "this repository is
+        # blocked". Only the first means stop: the headers are what tell them
+        # apart, and treating a blocked repository as a spent budget ends the
+        # refresh on every run from then on.
+        spent = (
+            err.headers.get("retry-after") is not None
+            or err.headers.get("x-ratelimit-remaining") == "0"
+        )
+        if err.code == 429 or (err.code == 403 and spent):
             raise SearchExhausted(f"{path}: HTTP {err.code}") from err
         raise
 
@@ -222,12 +230,18 @@ def annotate(
             break
         except Exception as err:  # noqa: BLE001 - context is optional
             LOGGER.debug("upstream lookup failed for %s: %s", full_name, err)
+            if fact:
+                # A repository that answers 404 every day sorts to the front of
+                # every run's budget otherwise, ahead of the ones with an answer.
+                fact["checked_utc"] = utc_now_iso()
             continue
         if not facts:
             continue
         reported = fact.get("report")
+        searched = facts.get("issues_enabled") and not facts.get("archived")
         if (
-            reported
+            searched
+            and reported
             and "report" not in facts
             and fact.get("symbol") == term
             and relevance(

@@ -8,11 +8,13 @@ raw search hit is not evidence on its own.
 
 from __future__ import annotations
 
+import urllib.error
+
 import pytest
 
 from tools.common import utc_now_iso
 from tools.rules_engine import rule_search_term, search_term
-from tools.upstream import annotate, relevance
+from tools.upstream import SearchExhausted, annotate, relevance, repo_facts
 
 #: The release core is building, which is what the crawler passes.
 NOW = "2026.10"
@@ -263,6 +265,90 @@ def test_a_failed_lookup_still_costs_the_budget(monkeypatch):
     records = {n: {"findings": FINDING} for n in ("a/one", "b/two", "c/three")}
     assert annotate(records, SOON, current_version=NOW, limit=2) == 2
     assert asked == ["a/one", "b/two"]
+
+
+def _http_error(code, headers):
+    return urllib.error.HTTPError("https://api.github.com/x", code, "no", headers, None)
+
+
+def _raises(error):
+    def urlopen(request, timeout=0):
+        raise error
+
+    return urlopen
+
+
+def test_a_403_with_the_budget_spent_ends_the_run(monkeypatch):
+    monkeypatch.setattr(
+        "urllib.request.urlopen", _raises(_http_error(403, {"x-ratelimit-remaining": "0"}))
+    )
+    with pytest.raises(SearchExhausted):
+        repo_facts("a/one", token="x")
+
+
+def test_a_403_from_a_blocked_repository_is_just_that_repository(monkeypatch):
+    monkeypatch.setattr(
+        "urllib.request.urlopen",
+        _raises(_http_error(403, {"x-ratelimit-remaining": "4999"})),
+    )
+    with pytest.raises(urllib.error.HTTPError):
+        repo_facts("a/one", token="x")
+
+
+def test_a_failure_stops_blocking_the_front_of_the_queue(monkeypatch):
+    """403 is both "you asked too often" and "this repository is blocked". Read
+    as the first, one blocked repository ends the refresh on every run, and it
+    sorts to the front of them because its fact never gets a timestamp."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    calls: list[str] = []
+
+    def blocked(full_name, term, **kwargs):
+        calls.append(full_name)
+        raise _http_error(403, {"x-ratelimit-remaining": "4999"})
+
+    monkeypatch.setattr("tools.upstream.look_up", blocked)
+    fact = {"symbol": "setup_scanner", "checked_utc": "2026-01-01T00:00:00Z"}
+    records = {
+        "a/one": {"findings": FINDING, "upstream": fact},
+        "b/two": {"findings": FINDING},
+    }
+    assert annotate(records, SOON, current_version=NOW) == 2
+    assert calls == ["b/two", "a/one"]
+    assert records["a/one"]["upstream"]["checked_utc"] > "2026-01-01T00:00:00Z"
+
+
+def test_a_spent_rate_limit_still_ends_the_run(monkeypatch):
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    calls: list[str] = []
+
+    def limited(full_name, term, **kwargs):
+        calls.append(full_name)
+        raise SearchExhausted("search: HTTP 403")
+
+    monkeypatch.setattr("tools.upstream.look_up", limited)
+    records = {n: {"findings": FINDING} for n in ("a/one", "b/two")}
+    assert annotate(records, SOON, current_version=NOW) == 1
+    assert calls == ["a/one"]
+
+
+def test_an_archived_repository_does_not_keep_republishing_its_report(monkeypatch):
+    """Nothing searched, so there is nothing to have missed the report."""
+    monkeypatch.setenv("GITHUB_TOKEN", "x")
+    monkeypatch.setattr(
+        "tools.upstream.look_up",
+        lambda *a, **k: {"archived": True, "issues_enabled": True},
+    )
+    records = {
+        "a/one": {
+            "findings": FINDING,
+            "upstream": {
+                "symbol": "setup_scanner",
+                "report": {"number": 41, "title": "setup_scanner is deprecated"},
+            },
+        }
+    }
+    assert annotate(records, SOON, current_version=NOW) == 1
+    assert "report" not in records["a/one"]["upstream"]
 
 
 @pytest.mark.parametrize(

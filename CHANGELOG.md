@@ -73,10 +73,19 @@ behind it has been re-aimed since, oldest first, and a run stops after 400 reque
 is about two days' worth for the 826 affected repositories, and it is why facts carry
 `checked_utc`.
 
-A refresh that finds nothing keeps the report it already had, as long as that report's
-own title still passes the gate above. The search answers with its own top ten, so an
-issue can fall out of the answer without anything having happened to it, and an empty
-"already reported" column sends everybody off to file a duplicate.
+A refresh whose search finds nothing keeps the report it already had, as long as that
+report's own title still passes the gate above. The search answers with its own top ten,
+so an issue can fall out of the answer without anything having happened to it, and an
+empty "already reported" column sends everybody off to file a duplicate. An archived
+repository is not searched at all, so there is nothing to have missed and its fact is
+replaced as before.
+
+GitHub answers 403 both for "you have asked too often" and for "this repository is
+blocked". Only the first ends a run now, told apart by the rate limit headers. Read as
+the second, one blocked repository would have ended the refresh on every run from then
+on, and it would have been first in the queue each time, because a lookup that fails
+records nothing. A failed lookup stamps the fact it could not refresh, so it takes its
+turn at the back like everything else.
 
 ## 1.15.0 — 2026-09-17
 
