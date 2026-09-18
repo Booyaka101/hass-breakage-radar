@@ -9,8 +9,10 @@ below have to be reviewed rather than silently drifting.
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import re
+import tarfile
 
 import pytest
 
@@ -239,6 +241,36 @@ def test_cli_offline_without_cache_fails_cleanly(tmp_path):
         main(["--tarball", str(tmp_path / "nope.tar.gz"), "--output", str(tmp_path / "o.json")])
         == 2
     )
+
+
+def _one_file_core_cannot_parse(mini_tarball, tmp_path):
+    """The pinned fixture with one rule-bearing file replaced by syntax this
+    interpreter refuses, which is what an interpreter behind core looks like."""
+    broken = tmp_path / "core_broken.tar.gz"
+    with tarfile.open(mini_tarball) as src, tarfile.open(broken, "w:gz") as out:
+        for member in src.getmembers():
+            data = src.extractfile(member).read() if member.isfile() else b""
+            if member.name.endswith("helpers/device.py"):
+                data = b"breaks_in_ha_version\ndef oops(:\n"
+                member.size = len(data)
+            out.addfile(member, io.BytesIO(data))
+    return broken
+
+
+def test_a_run_that_cannot_parse_core_keeps_the_rules_already_written(
+    mini_tarball, tmp_path
+):
+    """Core parses on a new enough interpreter, so a file that does not is this
+    tool being behind it, and the run derives fewer rules than the last one did.
+    Writing that over the fuller set drops every finding those rules found and
+    moves rules_hash, which sends the scanner back over the whole catalogue."""
+    output = tmp_path / "rules.json"
+    assert main(["--tarball", str(mini_tarball), "--output", str(output)]) == 0
+    before = output.read_bytes()
+
+    broken = _one_file_core_cannot_parse(mini_tarball, tmp_path)
+    assert main(["--tarball", str(broken), "--output", str(output)]) == 2
+    assert output.read_bytes() == before
 
 
 def test_shipped_rules_have_release_versions(shipped_rules):

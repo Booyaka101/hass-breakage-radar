@@ -49,6 +49,7 @@ from tools.common import (  # noqa: E402
     DATA_DIR,
     LOGGER,
     download_to,
+    read_json,
     setup_logging,
     utc_now_iso,
     write_json,
@@ -1248,6 +1249,23 @@ def main(argv: list[str] | None = None) -> int:
         "discarded_markers": discarded,
         "rules": rules,
     }
+    # Core parses on a new enough interpreter, so a file that does not is this
+    # tool being behind it rather than core being broken. Writing the smaller
+    # rule set over a fuller one drops every finding those rules found and moves
+    # rules_hash, which sends the scanner back over the whole catalogue.
+    if unparsed:
+        already = (read_json(args.output, default={}) or {}).get("counts", {})
+        if len(matchable) < already.get("matchable_future", 0):
+            LOGGER.error(
+                "%d core file(s) would not parse and this run derives %d matchable "
+                "rule(s) against the %d already written; keeping those. Run this on "
+                "a CPython at least as new as core's dev branch.",
+                len(unparsed),
+                len(matchable),
+                already["matchable_future"],
+            )
+            return 2
+
     write_json(args.output, payload)
 
     LOGGER.info(

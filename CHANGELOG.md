@@ -4,7 +4,7 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
-## 1.16.0 — 2026-09-17
+## 1.16.0 — 2026-09-18
 
 ### Blog rule messages are the post, not the page furniture
 
@@ -132,6 +132,21 @@ report lost to the rule, dyson_local's "depracation warnings on 2026.8.0b0", whi
 a release two behind and misspells the only word that would have carried it. Titles
 naming a release still to come are unaffected, including eltako's "Home Assistant 2027.8
 API changes" and luxtronik2's "adapt to the HA device registry changes before 2027.8".
+
+### An extractor behind core no longer overwrites the rules it cannot see
+
+Core's dev branch uses CPython syntax before the release that ships it, which is why the
+crawl pins Python 3.14. Run the extractor on anything older and 26 core files fail to
+parse, the run derives 32 matchable rules instead of 64, and it writes that over the full
+set and exits 0. The warning it logs is the only sign. What follows is worse than a
+smaller board: `prune_retired_findings` deletes every finding those 32 rules found, and
+the halved `rules_hash` queues all 4 687 catalogue entries for a rescan that takes twelve
+days at 400 a run.
+
+A run that could not parse a core file now compares what it derived against what is
+already written, and refuses to replace a fuller set with a smaller one. The board keeps
+yesterday's rules, and the step goes red instead of quiet. A first run, or one that
+parsed everything, is unaffected.
 
 ### A flag nothing read
 
