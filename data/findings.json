@@ -181,140 +181,148 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:36:04Z"
       }
     },
     "3dg1luk43/ha_washdata": {
       "domain": "ha_washdata",
       "category": "integration",
-      "version": "v0.5.5",
-      "ref": "refs/tags/v0.5.5",
+      "version": "v0.5.6",
+      "ref": "refs/tags/v0.5.6",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:17Z",
+      "scanned_utc": "2026-09-18T03:30:50Z",
       "files_scanned": 48,
       "syntax_errors": 0,
       "skipped_minified": 2,
       "skipped_vendor": 0,
-      "stargazers_count": 1303,
+      "stargazers_count": 1306,
       "findings": [
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 535,
+          "line": 772,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 580,
+          "line": 817,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 614,
+          "line": 851,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 638,
+          "line": 875,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 676,
+          "line": 913,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 830,
+          "line": 985,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 888,
+          "line": 1043,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 971,
+          "line": 1126,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1048,
+          "line": 1203,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1064,
+          "line": 1219,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1085,
+          "line": 1240,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1109,
+          "line": 1264,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1113,
+          "line": 1268,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1144,
+          "line": 1299,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1148,
+          "line": 1303,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/ha_washdata/__init__.py",
-          "line": 1181,
+          "line": 1349,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-config-entries-field",
           "breaks_in": "2027.8",
-          "file": "custom_components/ha_washdata/www/ha-washdata-panel.js",
-          "line": 5257,
+          "file": "custom_components/ha_washdata/www/ha-washdata-card.js",
+          "line": 1068,
           "confidence": "medium"
+        },
+        {
+          "rule_id": "device-registry-primary-config-entry-field",
+          "breaks_in": "2027.8",
+          "file": "custom_components/ha_washdata/www/ha-washdata-card.js",
+          "line": 1069,
+          "confidence": "high"
         }
       ],
       "domains": [
@@ -323,7 +331,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:06Z"
       }
     },
     "3ll3d00d/jriver_homeassistant": {
@@ -436,7 +445,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:31:07Z"
       }
     },
     "5a2v0/HA-WiFi-Sensor-Tracker": {
@@ -585,7 +595,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:36:09Z"
       }
     },
     "ADNPolymerase/ha-oklyn": {
@@ -700,7 +711,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:36:12Z"
       }
     },
     "AaronDavidSchneider/SonosAlarm": {
@@ -764,7 +776,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:36:15Z"
       }
     },
     "AboveColin/HA-Philips-Pet-Series": {
@@ -794,7 +807,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:09Z"
       }
     },
     "AkA57/liveboxtvuhd": {
@@ -841,7 +855,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:17Z"
       }
     },
     "AlbrechtL/hass-padersprinter": {
@@ -946,7 +961,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:36:21Z"
       }
     },
     "Alexwijn/SAT": {
@@ -1024,7 +1040,8 @@
           "title": "HA 2026.8.0 beta deprecation warning on concentration",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:36:23Z"
       }
     },
     "AlexxIT/WebRTC": {
@@ -1106,7 +1123,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:36:26Z"
       }
     },
     "AlexxIT/YandexStation": {
@@ -1150,7 +1168,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_extract_entity_ids"
+        "symbol": "async_extract_entity_ids",
+        "checked_utc": "2026-09-18T03:36:29Z"
       }
     },
     "AllonGit/energy_hub_poland": {
@@ -1238,7 +1257,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:31Z"
       }
     },
     "AndreaTomatis/loex-xsmart-integration": {
@@ -1506,7 +1526,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:34Z"
       }
     },
     "Apollo3zehn/ha-grocery-list": {
@@ -1577,7 +1598,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:36:37Z"
       }
     },
     "ArnyminerZ/ha-axpert-inverter": {
@@ -1651,10 +1673,10 @@
     "Athozs/hass-additional-ca": {
       "domain": "additional_ca",
       "category": "integration",
-      "version": "0.6.0",
-      "ref": "refs/tags/0.6.0",
+      "version": "0.6.1",
+      "ref": "refs/tags/0.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:32Z",
+      "scanned_utc": "2026-09-18T03:30:55Z",
       "files_scanned": 6,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -1706,7 +1728,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "ScannerEntity"
+        "symbol": "ScannerEntity",
+        "checked_utc": "2026-09-18T03:36:40Z"
       }
     },
     "Austinsuyoyo/panasonic_iot_tw": {
@@ -1859,7 +1882,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:36:42Z"
       }
     },
     "BJReplay/ha-solcast-solar": {
@@ -1889,7 +1913,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "get_astral_location"
+        "symbol": "get_astral_location",
+        "checked_utc": "2026-09-18T03:36:45Z"
       }
     },
     "Babel-Innovations/ha-lucarne": {
@@ -2004,7 +2029,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:36:48Z"
       }
     },
     "BenAhrdt/home-assistant-lorawan": {
@@ -2041,7 +2067,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:51Z"
       }
     },
     "BenJamesAndo/ha-propresenter": {
@@ -2071,7 +2098,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:53Z"
       }
     },
     "BenPru/luxtronik": {
@@ -2108,7 +2136,8 @@
           "title": "chore(coordinator): 🔧 adapt to the HA device registry changes before 2027.8",
           "reactions": 0
         },
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:36:56Z"
       }
     },
     "BenPru/novus300_Rs485": {
@@ -2417,7 +2446,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_remove_helper_config_entry_from_source_device"
+        "symbol": "async_remove_helper_config_entry_from_source_device",
+        "checked_utc": "2026-09-18T03:36:59Z"
       }
     },
     "BottlecapDave/HomeAssistant-Smol": {
@@ -2597,7 +2627,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:37:01Z"
       }
     },
     "C2gl/tududi_integration": {
@@ -2668,7 +2699,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:37:04Z"
       }
     },
     "CJNE/ha-sunspec": {
@@ -2858,7 +2890,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:07Z"
       }
     },
     "Chance-Konstruktion/ha-powerline": {
@@ -2888,7 +2921,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:09Z"
       }
     },
     "Chance-Konstruktion/ha-rejuvenation-bed": {
@@ -2932,7 +2966,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:37:12Z"
       }
     },
     "CharlesGillanders/homeassistant-alphaESS": {
@@ -2962,7 +2997,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:37:15Z"
       }
     },
     "CharlesP44/Beem_Energy": {
@@ -3027,7 +3063,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:37:18Z"
       }
     },
     "Chiralistic/home-assistant-schulferien": {
@@ -3166,7 +3203,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:20Z"
       }
     },
     "Clap404/ha-danfoss-eco": {
@@ -3196,7 +3234,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:37:23Z"
       }
     },
     "Clooos/Bubble-Card-Tools": {
@@ -3352,7 +3391,8 @@
           "title": "[BUG]: Deprecation notices related to via_device",
           "reactions": 1
         },
-        "symbol": "ATTR_VIA_DEVICE"
+        "symbol": "ATTR_VIA_DEVICE",
+        "checked_utc": "2026-09-18T03:37:26Z"
       }
     },
     "CoderAS-ru/hass-neatsvor": {
@@ -3399,7 +3439,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:37:28Z"
       }
     },
     "Connectlife-LLC/HomeAssistantPlugin": {
@@ -3422,10 +3463,10 @@
     "Constantini21/intelbras_dvr": {
       "domain": "intelbras_dvr",
       "category": "integration",
-      "version": "v0.3.0",
-      "ref": "refs/tags/v0.3.0",
+      "version": "v0.3.1",
+      "ref": "refs/tags/v0.3.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:29Z",
+      "scanned_utc": "2026-09-18T03:30:51Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -3484,7 +3525,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:31Z"
       }
     },
     "CoreTex/homeassistant-eebus": {
@@ -3538,7 +3580,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:34Z"
       }
     },
     "Crazy-Duck/home-assistant-fiftyfive": {
@@ -3658,7 +3701,8 @@
           "title": "Two deprecated Home Assistant device registry calls, removal in 2027.8 and 2027.9",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:36Z"
       }
     },
     "Csontikka/ha-syncthing-extended": {
@@ -3695,7 +3739,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:37:39Z"
       }
     },
     "CtznSniiips/virtual_lymow": {
@@ -3759,7 +3804,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:42Z"
       }
     },
     "Currency-One/walutomat-ha": {
@@ -3869,7 +3915,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:31:12Z"
       }
     },
     "DDA1010/hydroponic-control": {
@@ -3916,7 +3963,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:44Z"
       }
     },
     "DMedina559/bsm-home-assistant-integration": {
@@ -4058,7 +4106,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:37:47Z"
       }
     },
     "DSorlov/http_agent": {
@@ -4088,7 +4137,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "report": {
+          "number": 62,
+          "url": "https://github.com/DSorlov/http_agent/issues/62",
+          "state": "open",
+          "title": "HA deprecated parameter warning.",
+          "reactions": 0
+        },
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:37:50Z"
       }
     },
     "DSorlov/snmp_printer": {
@@ -4176,7 +4233,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:37:53Z"
       }
     },
     "DTekNO/norway_alerts": {
@@ -4342,7 +4400,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "setup_scanner"
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-18T03:37:55Z"
       }
     },
     "DannyOosterveer/ourgrid": {
@@ -4406,14 +4465,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 44,
-          "url": "https://github.com/Darkdragon14/ha-access-control-manager/issues/44",
-          "state": "closed",
-          "title": "Sorting and filtering devices and entity's",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:15Z"
       }
     },
     "Darkdragon14/ha-aqara-devices": {
@@ -4443,7 +4496,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:37:58Z"
       }
     },
     "Darkdragon14/ha-guest-mode": {
@@ -4466,10 +4520,10 @@
     "DarwinsBuddy/WienerNetzeSmartmeter": {
       "domain": "wnsm",
       "category": "integration",
-      "version": "v1.8.1",
-      "ref": "refs/tags/v1.8.1",
+      "version": "v1.9.0",
+      "ref": "refs/tags/v1.9.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:31Z",
+      "scanned_utc": "2026-09-18T03:30:51Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -4521,7 +4575,8 @@
           "title": "Deprecated alias TrackerEntity",
           "reactions": 0
         },
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:38:01Z"
       }
     },
     "DavidBilodeau1/saguenay_collection": {
@@ -4592,7 +4647,8 @@
           "title": "Deprecated constant in new HA Core",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:38:04Z"
       }
     },
     "DeLuca21/ynab-ha": {
@@ -4690,7 +4746,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:06Z"
       }
     },
     "DeerMaximum/Technische-Alternative-CoE": {
@@ -4737,7 +4794,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:09Z"
       }
     },
     "Dekadinious/trsdm_custom_device_tracker_for_home_assistant": {
@@ -4835,7 +4893,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:12Z"
       }
     },
     "DigitalBites/LabelMateScene": {
@@ -4872,7 +4931,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:17Z"
       }
     },
     "DigitallyRefined/ha-cloudflare-speed-test": {
@@ -5070,7 +5130,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "ATTR_VIA_DEVICE"
+        "symbol": "ATTR_VIA_DEVICE",
+        "checked_utc": "2026-09-18T03:38:14Z"
       }
     },
     "Domoriks/demand_control": {
@@ -5206,7 +5267,8 @@
           "title": "Debug on by default and deprecation warnings (on 2026.9.0b0)",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:38:17Z"
       }
     },
     "EVWorth/hass-adtpulse": {
@@ -5250,7 +5312,8 @@
           "title": "Non-existent 'via_device' reference",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:38:20Z"
       }
     },
     "EarthGoodness/egi": {
@@ -5280,7 +5343,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:23Z"
       }
     },
     "EdLeckert/ha-tmobilehome": {
@@ -5358,7 +5422,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:25Z"
       }
     },
     "EffortlessHome/EffortlessHome": {
@@ -5388,7 +5453,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:20Z"
       }
     },
     "EiS94/db_info": {
@@ -5435,7 +5501,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:38:28Z"
       }
     },
     "ElectroceanTech/HomeAssistant": {
@@ -5517,7 +5584,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:31Z"
       }
     },
     "Elijaht-dev/mistralai-conversation": {
@@ -5727,10 +5795,10 @@
     "EvotecIT/homeassistant-kef": {
       "domain": "kef",
       "category": "integration",
-      "version": "v0.8.18",
-      "ref": "refs/tags/v0.8.18",
+      "version": "v0.8.19",
+      "ref": "refs/tags/v0.8.19",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:57Z",
+      "scanned_utc": "2026-09-18T03:31:00Z",
       "files_scanned": 25,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -5775,7 +5843,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:22Z"
       }
     },
     "ExMacro/hass_ensto_ble": {
@@ -5812,7 +5881,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:38:35Z"
       }
     },
     "Exlany/lipro-hass": {
@@ -5900,7 +5970,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:38:38Z"
       }
     },
     "FUjr/homeassistant-openwrt-ubus": {
@@ -6035,7 +6106,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:41Z"
       }
     },
     "FWeinb/ha-sg-150": {
@@ -6086,7 +6158,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:38:43Z"
       }
     },
     "FX6W9WZK/ha-audac": {
@@ -6191,7 +6264,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:38:46Z"
       }
     },
     "FaserF/ha-edeka": {
@@ -6221,7 +6295,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:49Z"
       }
     },
     "FaserF/ha-foodsharing": {
@@ -6286,7 +6361,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:38:51Z"
       }
     },
     "FaserF/ha-kadermanager": {
@@ -6333,7 +6409,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:38:54Z"
       }
     },
     "FaserF/ha-openwrt": {
@@ -6594,7 +6671,8 @@
           "title": "[Bug]: remove invalid via_device in MQTT discovery payload to prevent \"Unnamed Device\" creation",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:38:57Z"
       }
     },
     "FaserF/ha-traderepublic": {
@@ -6641,7 +6719,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:00Z"
       }
     },
     "Favio25/Kronoterm-homeassistant": {
@@ -6705,7 +6784,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "location_name"
+        "symbol": "location_name",
+        "checked_utc": "2026-09-18T03:39:02Z"
       }
     },
     "FernandoZueet/messages_store": {
@@ -6776,7 +6856,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:05Z"
       }
     },
     "Fiveol/ha-canvas": {
@@ -6891,7 +6972,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "ATTR_VIA_DEVICE"
+        "symbol": "ATTR_VIA_DEVICE",
+        "checked_utc": "2026-09-18T03:39:08Z"
       }
     },
     "FragMenthor/FragMenthor-home-assistant-custom-components-edenred-pt": {
@@ -6962,7 +7044,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:39:10Z"
       }
     },
     "FrogStoneMedia/paddle-conditions": {
@@ -7016,7 +7099,8 @@
           "title": "ISSUE: deprecation",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:39:13Z"
       }
     },
     "GKHerping/eloverblik-nordpool": {
@@ -7080,7 +7164,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:16Z"
       }
     },
     "GarthDB/ha-wattbox": {
@@ -7103,11 +7188,11 @@
     "Geek-MD/Battery_Devices_Monitor": {
       "domain": "battery_devices_monitor",
       "category": "integration",
-      "version": "v2.0.0",
-      "ref": "refs/tags/v2.0.0",
+      "version": "v2.0.1",
+      "ref": "refs/tags/v2.0.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:37Z",
-      "files_scanned": 8,
+      "scanned_utc": "2026-09-18T03:30:51Z",
+      "files_scanned": 10,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -7127,7 +7212,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:39:19Z"
       }
     },
     "Geek-MD/HA_Daily_Counter": {
@@ -7191,7 +7277,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:39:21Z"
       }
     },
     "GeiserX/genieacs-ha": {
@@ -7279,7 +7366,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:24Z"
       }
     },
     "Gr33n93/ha-waveshare-relay": {
@@ -7309,7 +7397,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:39:27Z"
       }
     },
     "GrandstreamEngineering/grandstream_home": {
@@ -7374,7 +7463,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:29Z"
       }
     },
     "Grandys/otel-exporter": {
@@ -7445,7 +7535,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:39:32Z"
       }
     },
     "Gugulator/boi_exchange_rates": {
@@ -7492,7 +7583,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:35Z"
       }
     },
     "GuilleGF/hassio-ovh": {
@@ -7549,10 +7641,10 @@
     "GuyKh/ims-custom-component": {
       "domain": "ims",
       "category": "integration",
-      "version": "0.1.44",
-      "ref": "refs/tags/0.1.44",
+      "version": "0.1.45",
+      "ref": "refs/tags/0.1.45",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:38Z",
+      "scanned_utc": "2026-09-18T03:30:51Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -7617,10 +7709,10 @@
     "GyroGearl00se/ha_froeling_lambdatronic_modbus": {
       "domain": "froeling_lambdatronic_modbus",
       "category": "integration",
-      "version": "v2.4.3",
-      "ref": "refs/tags/v2.4.3",
+      "version": "v2.5.0",
+      "ref": "refs/tags/v2.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:38Z",
+      "scanned_utc": "2026-09-18T03:30:51Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -7631,7 +7723,7 @@
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/froeling_lambdatronic_modbus/__init__.py",
-          "line": 116,
+          "line": 131,
           "confidence": "high"
         }
       ],
@@ -7641,7 +7733,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:37Z"
       }
     },
     "HA-Pulse/home-assistant-global-health-score": {
@@ -7712,7 +7805,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:40Z"
       }
     },
     "HCookie/Webhook-Service-home-assistant": {
@@ -7886,7 +7980,8 @@
           "title": "Detected that custom integration 'area_occupancy' calls `device_registry.async_get_device`",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:43Z"
       }
     },
     "HarvsG/ha-glinet4-integration": {
@@ -8008,7 +8103,8 @@
           "title": "PBS issue with HA 2026.9.0 on device_registry.devices",
           "reactions": 0
         },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:25Z"
       }
     },
     "Hollako/Tasmota-IR-Ready": {
@@ -8106,7 +8202,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:45Z"
       }
     },
     "Howard0000/home-assistant-hav-og-vind": {
@@ -8191,7 +8288,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:28Z"
       }
     },
     "Howard0000/home-assistant-systemair-modbus": {
@@ -8299,11 +8397,12 @@
         "report": {
           "number": 1877,
           "url": "https://github.com/Hyundai-Kia-Connect/kia_uvo/issues/1877",
-          "state": "open",
+          "state": "closed",
           "title": "The deprecated alias TrackerEntity was used from kia_uvo HA 2026.9.1",
           "reactions": 1
         },
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:39:48Z"
       }
     },
     "IATkachenko/HA-SleepAsAndroid": {
@@ -8333,7 +8432,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:51Z"
       }
     },
     "IATkachenko/HA-YandexWeather": {
@@ -8394,7 +8494,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:39:53Z"
       }
     },
     "ILoveMyProjects/StarlingBankEnhanced": {
@@ -8492,7 +8593,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:39:56Z"
       }
     },
     "IgnacioHR/de-dietrich-c230-ha": {
@@ -8567,7 +8669,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:39:59Z"
       }
     },
     "InTheDaylight14/nginx-proxy-manager-switches": {
@@ -8740,7 +8843,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:40:02Z"
       }
     },
     "JAAlperin/hass-bardolph": {
@@ -8852,7 +8956,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:04Z"
       }
     },
     "JanGiese/notion_todo": {
@@ -8913,7 +9018,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:07Z"
       }
     },
     "Jarauvi/elisa_kotiakku": {
@@ -8943,7 +9049,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:30Z"
       }
     },
     "JaviSoto/homeassistant-quilt": {
@@ -8966,15 +9073,15 @@
     "Javisen/proxmox_sensors": {
       "domain": "proxmox_sensors",
       "category": "integration",
-      "version": "4.0.5",
-      "ref": "refs/tags/4.0.5",
+      "version": "5.0.0",
+      "ref": "refs/tags/5.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:53:42Z",
-      "files_scanned": 29,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 47,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 65,
+      "stargazers_count": 66,
       "findings": [],
       "domains": [
         "proxmox_sensors"
@@ -9109,7 +9216,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:40:10Z"
       }
     },
     "Jezza34000/homeassistant_veolia": {
@@ -9180,7 +9288,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:12Z"
       }
     },
     "JoaoPedroBelo/bmw-wallbox-ha": {
@@ -9293,7 +9402,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:40:15Z"
       }
     },
     "JohNan/homeassistant-wellbeing": {
@@ -9344,7 +9454,8 @@
           "title": "Warning - It will be removed in HA Core 2027.8",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:40:18Z"
       }
     },
     "JohanAlvedal/PumpSteer": {
@@ -9544,7 +9655,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:20Z"
       }
     },
     "JurajNyiri/HomeAssistant-Tavos": {
@@ -9625,7 +9737,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:40:23Z"
       }
     },
     "Ka3seBr0t/HA_Philips_Air_Plus": {
@@ -9696,7 +9809,8 @@
           "title": "Home assistant warning - Deprecated alias ScannerEntity",
           "reactions": 0
         },
-        "symbol": "ScannerEntity"
+        "symbol": "ScannerEntity",
+        "checked_utc": "2026-09-18T03:40:26Z"
       }
     },
     "Kaluzaburza/Hoymiles_HIT_xxL_G3_ModBus": {
@@ -9764,14 +9878,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 40,
-          "url": "https://github.com/Kannix2005/homeassistant-selve/issues/40",
-          "state": "closed",
-          "title": "Selve integration stops working in 2025.12",
-          "reactions": 0
-        },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:40:29Z"
       }
     },
     "Kaptensanders/skolmat": {
@@ -9876,7 +9984,8 @@
           "title": "Home Assistant 2026.9 'better_thermostat' calls `device_registry.async_get_or_create` with a deprecated `via_device` parameter",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:40:32Z"
       }
     },
     "KevinHaendel/ha-ubee": {
@@ -9913,7 +10022,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "setup_scanner"
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-18T03:40:35Z"
       }
     },
     "Kilowahti/ha-kilowahti": {
@@ -9981,7 +10091,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:40:37Z"
       }
     },
     "KipK/vtherm_hysteresis": {
@@ -10011,7 +10122,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_remove_helper_config_entry_from_source_device"
+        "symbol": "async_remove_helper_config_entry_from_source_device",
+        "checked_utc": "2026-09-18T03:40:40Z"
       }
     },
     "KipK/vtherm_smartpi": {
@@ -10041,7 +10153,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_remove_helper_config_entry_from_source_device"
+        "symbol": "async_remove_helper_config_entry_from_source_device",
+        "checked_utc": "2026-09-18T03:40:43Z"
       }
     },
     "KiraPC/ha-switchbot-remote": {
@@ -10122,7 +10235,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_PARTS_PER_MILLION"
+        "symbol": "CONCENTRATION_PARTS_PER_MILLION",
+        "checked_utc": "2026-09-18T03:40:45Z"
       }
     },
     "Koky05/ha-budgetbakers-wallet": {
@@ -10152,7 +10266,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:40:48Z"
       }
     },
     "KoljaWindeler/ics": {
@@ -10233,7 +10348,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:33Z"
       }
     },
     "Korkuttum/blynk": {
@@ -10331,14 +10447,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 30,
-          "url": "https://github.com/KriVaTri/ESPHome-Update-Manager/issues/30",
-          "state": "closed",
-          "title": "External dashboard: 3 devices instantly report \"Device unavailable\" (~0.04ms) despite being reachable and updatable manually via the dashboa",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:36Z"
       }
     },
     "KriVaTri/EVCM": {
@@ -10470,7 +10580,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:51Z"
       }
     },
     "LarsK1/hass_solvis_control": {
@@ -10500,7 +10611,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:53Z"
       }
     },
     "LavermanJJ/home-assistant-solarfocus": {
@@ -10537,7 +10649,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:40:56Z"
       }
     },
     "LawPaul/HA_Solar_Shade": {
@@ -10560,11 +10673,11 @@
     "LayerTM/claude-ha": {
       "domain": "claude_ha",
       "category": "integration",
-      "version": "v1.10.0",
-      "ref": "refs/tags/v1.10.0",
+      "version": "v1.12.0",
+      "ref": "refs/tags/v1.12.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:59Z",
-      "files_scanned": 23,
+      "scanned_utc": "2026-09-18T03:31:01Z",
+      "files_scanned": 24,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -10806,14 +10919,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 75,
-          "url": "https://github.com/Limych/ha-jq300/issues/75",
-          "state": "closed",
-          "title": "Not working on 2021.12",
-          "reactions": 0
-        },
-        "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:40:59Z"
       }
     },
     "Limych/ha-narodmon": {
@@ -10843,7 +10950,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:41:02Z"
       }
     },
     "Limych/ha-snowtire": {
@@ -10952,7 +11060,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "ATTR_VIA_DEVICE"
+        "symbol": "ATTR_VIA_DEVICE",
+        "checked_utc": "2026-09-18T03:41:04Z"
       }
     },
     "Looking4Cache/home-assistant-remote-assistant": {
@@ -11033,7 +11142,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:41:07Z"
       }
     },
     "Ludy87/ecotrend-ista": {
@@ -11214,9 +11324,10 @@
         "webastoconnect"
       ],
       "upstream": {
-        "archived": false,
+        "archived": true,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:07Z"
       }
     },
     "MUbeira0/vigobus-integration": {
@@ -11280,7 +11391,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:10Z"
       }
     },
     "MadOne/hass_gira_iot_api": {
@@ -11395,7 +11507,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:13Z"
       }
     },
     "MarcelWepper/Inverter-Controller": {
@@ -11483,7 +11596,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:15Z"
       }
     },
     "MarcoGos/kleenex_pollenradar": {
@@ -11530,7 +11644,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:18Z"
       }
     },
     "Mariusthvdb/custom_local_icons": {
@@ -11577,7 +11692,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:21Z"
       }
     },
     "MartinStoffel/heizoel24mex": {
@@ -11720,7 +11836,8 @@
           "title": "\"via_device\" & \"async_add_entities\"  will stop working in 2025.12.0",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:41:23Z"
       }
     },
     "Matbe34/veoliaHA": {
@@ -11757,7 +11874,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_add_external_statistics"
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:41:26Z"
       }
     },
     "MateoGreil/homeassistant-comwatt": {
@@ -11787,7 +11905,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:41:29Z"
       }
     },
     "Material-Home-Assistant/material-home-assistant-integration": {
@@ -11834,7 +11953,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:31Z"
       }
     },
     "MattFryer/hass-bookstack": {
@@ -11891,32 +12011,19 @@
     "MattieGit/qube_heatpump": {
       "domain": "qube_heatpump",
       "category": "integration",
-      "version": "v2026.8.1",
-      "ref": "refs/tags/v2026.8.1",
+      "version": "v2026.9.5",
+      "ref": "refs/tags/v2026.9.5",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:53:51Z",
-      "files_scanned": 16,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 17,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
       "stargazers_count": 3,
-      "findings": [
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/qube_heatpump/config_flow.py",
-          "line": 475,
-          "confidence": "high"
-        }
-      ],
+      "findings": [],
       "domains": [
         "qube_heatpump"
-      ],
-      "upstream": {
-        "archived": false,
-        "issues_enabled": true,
-        "symbol": "async_get_device"
-      }
+      ]
     },
     "MauroDruwel/Weathercloud-HA": {
       "domain": "weathercloud",
@@ -11983,7 +12090,8 @@
           "title": "[BUG] Warning about deprecated constants",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:41:34Z"
       }
     },
     "Maxou44/ha-tiko-component": {
@@ -12030,7 +12138,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:37Z"
       }
     },
     "Megarushing/ha-ld2410": {
@@ -12211,7 +12320,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:41:39Z"
       }
     },
     "Micka41/bwt-aqa-perla-ble": {
@@ -12289,7 +12399,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:31:38Z"
       }
     },
     "Miloud-H/HA-Canada-Post": {
@@ -12360,7 +12471,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:42Z"
       }
     },
     "MislavMandaric/home-assistant-vaillant-vsmart": {
@@ -12431,14 +12543,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 2,
-          "url": "https://github.com/Moe8383/radar_map_manager/issues/2",
-          "state": "closed",
-          "title": "Link with list to compatible devices",
-          "reactions": 1
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:41Z"
       }
     },
     "Mofeywalker/openmensa-hass-component": {
@@ -12485,7 +12591,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:41:45Z"
       }
     },
     "MortUK/Aferiy-PS240-Local-": {
@@ -12529,7 +12636,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:47Z"
       }
     },
     "Motorline/ha-mconnect": {
@@ -12566,7 +12674,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:41:50Z"
       }
     },
     "Mr-Groch/HA-ESA-NASK-Air-Quality": {
@@ -12596,7 +12705,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:41:53Z"
       }
     },
     "Mr-Groch/ambihue": {
@@ -12854,7 +12964,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:41:55Z"
       }
     },
     "Nailik/vogels_motion_mount_ble": {
@@ -12884,7 +12995,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:41:58Z"
       }
     },
     "Nazze/ha_best_bottrop_garbage_collection": {
@@ -12983,7 +13095,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:01Z"
       }
     },
     "NemoN/ha-intex-swg": {
@@ -13275,7 +13388,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:42:03Z"
       }
     },
     "NirBY/ha-mashov": {
@@ -13346,7 +13460,8 @@
           "title": "Deprecated get_astral_location",
           "reactions": 1
         },
-        "symbol": "get_astral_location"
+        "symbol": "get_astral_location",
+        "checked_utc": "2026-09-18T03:42:06Z"
       }
     },
     "NoobPratik/ather-home-assistant": {
@@ -13466,7 +13581,13 @@
       ],
       "domains": [
         "wrist_assistant"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_statistics_metadata",
+        "checked_utc": "2026-09-18T03:31:44Z"
+      }
     },
     "OStrama/weishaupt_modbus": {
       "domain": "weishaupt_modbus",
@@ -13546,14 +13667,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 5,
-          "url": "https://github.com/OleSint/ha-connection-observer/issues/5",
-          "state": "closed",
-          "title": "all ESPHome devices listed as offline in latest version",
-          "reactions": 1
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:46Z"
       }
     },
     "OpenDisplay/Home_Assistant_Integration": {
@@ -13597,7 +13712,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:09Z"
       }
     },
     "OpenEPaperLink/Home_Assistant_Integration": {
@@ -13669,7 +13785,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:11Z"
       }
     },
     "OpenGrow-Box/OpenGrowBox-HA": {
@@ -13776,14 +13893,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 9,
-          "url": "https://github.com/OpenGrow-Box/OpenGrowBox-HA/issues/9",
-          "state": "closed",
-          "title": "Power Consumption Check for Smart Plugs on all Devices",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:49Z"
       }
     },
     "Orishas/fra_betriebsrichtung": {
@@ -13854,7 +13965,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:42:14Z"
       }
     },
     "PHeonix25/unifi_alerts": {
@@ -13918,7 +14030,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:42:17Z"
       }
     },
     "PanSzelescik/home-assistant-enea": {
@@ -13948,7 +14061,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:20Z"
       }
     },
     "PascalGohl/ha-profilux-mini": {
@@ -14104,7 +14218,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "setup_scanner"
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-18T03:42:22Z"
       }
     },
     "PaulBiod/ha-esphome-smart-updater": {
@@ -14226,7 +14341,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:25Z"
       }
     },
     "PersephoneKarnstein/ha-bluesky-feed": {
@@ -14370,7 +14486,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:42:28Z"
       }
     },
     "PeterLinuxOSS/iSauna": {
@@ -14564,7 +14681,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:42:30Z"
       }
     },
     "PimDoos/kia_connect": {
@@ -14594,7 +14712,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:42:33Z"
       }
     },
     "PimDoos/onesmartcontrolha": {
@@ -14631,7 +14750,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:42:36Z"
       }
     },
     "PineappleEmperor/ocado-ha": {
@@ -14661,7 +14781,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:38Z"
       }
     },
     "PineappleEmperor/settleup-ha": {
@@ -14790,7 +14911,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:41Z"
       }
     },
     "PiotrMachowski/Home-Assistant-custom-components-Rozkladzik": {
@@ -14861,7 +14983,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:42:44Z"
       }
     },
     "PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor": {
@@ -14993,7 +15116,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:42:46Z"
       }
     },
     "Poeschl/Remote-PicoTTS": {
@@ -15074,7 +15198,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:42:49Z"
       }
     },
     "Pouzor/freebox_player": {
@@ -15142,7 +15267,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "report": {
+          "number": 32,
+          "url": "https://github.com/Powerbaas/powerbaas-ha/issues/32",
+          "state": "open",
+          "title": "Deprecated `via_device` parameter used in `device_registry.async_get_or_create` — will break in HA 2027.8.0",
+          "reactions": 0
+        },
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:42:52Z"
       }
     },
     "PrayerZone/prayer-times-home-assistant": {
@@ -15252,7 +15385,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:42:54Z"
       }
     },
     "Pyhass/Hive-Custom-Component": {
@@ -15347,7 +15481,8 @@
           "title": "[bug] 'esphome_firmware_bridge' uses `device_registry.devices` as a mapping or calls its lookup methods",
           "reactions": 0
         },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:52Z"
       }
     },
     "RF1705/fritzbox-calllist": {
@@ -15411,7 +15546,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:54Z"
       }
     },
     "Rafciq/BM6": {
@@ -15458,7 +15594,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:42:57Z"
       }
     },
     "ReZ-TI/rezti_matter_knoblink": {
@@ -15546,7 +15683,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:00Z"
       }
     },
     "ReikanYsora/Helios-Forecast": {
@@ -15593,7 +15731,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "battery_level"
+        "symbol": "battery_level",
+        "checked_utc": "2026-09-18T03:43:03Z"
       }
     },
     "ReneNulschDE/mbapi2020": {
@@ -15725,7 +15864,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:43:06Z"
       }
     },
     "RobertD502/home-assistant-petkit": {
@@ -15779,7 +15919,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:08Z"
       }
     },
     "RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer": {
@@ -15809,7 +15950,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "ATTR_VIA_DEVICE"
+        "report": {
+          "number": 198,
+          "url": "https://github.com/RogerSelwyn/Home_Assistant_SkyQ_MediaPlayer/issues/198",
+          "state": "open",
+          "title": "[BUG] Deprecation warning in log for: device_registry.async_get_or_create",
+          "reactions": 0
+        },
+        "symbol": "ATTR_VIA_DEVICE",
+        "checked_utc": "2026-09-18T03:43:11Z"
       }
     },
     "RogerSelwyn/MS365-Calendar": {
@@ -16162,7 +16311,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:14Z"
       }
     },
     "Sanji78/bolletta": {
@@ -16209,7 +16359,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:57Z"
       }
     },
     "Sanji78/fritzbox_callmonitor_raw": {
@@ -16297,7 +16448,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:43:16Z"
       }
     },
     "Sanji78/vitesy_shelfy": {
@@ -16341,7 +16493,8 @@
           "title": "Variables `CONCENTRATION_MICROGRAMS_*` deprecated in HomeAssistant 2026.8.0",
           "reactions": 1
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:43:19Z"
       }
     },
     "SasPes/lpubelts_ha": {
@@ -16405,7 +16558,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:22Z"
       }
     },
     "Schrolli91/heidelberg_energy_control": {
@@ -16537,7 +16691,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:24Z"
       }
     },
     "Selectra-Dev/selectra-ha": {
@@ -16584,7 +16739,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:43:27Z"
       }
     },
     "Sennevds/media_player.template": {
@@ -16706,7 +16862,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:30Z"
       }
     },
     "Shaffer-Softworks/GlobalCache": {
@@ -16736,7 +16893,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:43:32Z"
       }
     },
     "Shaffer-Softworks/Openobserve": {
@@ -17004,7 +17162,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:35Z"
       }
     },
     "SmartyVan/hass-geolocator": {
@@ -17154,7 +17313,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:38Z"
       }
     },
     "SplinterHead/ha-honeygain": {
@@ -17269,7 +17429,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:40Z"
       }
     },
     "Sturmi77/solax-cloud-api-ha": {
@@ -17347,7 +17508,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:43:43Z"
       }
     },
     "SunboX/radpro-home-assistant-plugin": {
@@ -17442,7 +17604,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:43:46Z"
       }
     },
     "T-leco/investing_portfolio": {
@@ -17530,7 +17693,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:48Z"
       }
     },
     "Taraman17/hass-homee": {
@@ -17567,7 +17731,8 @@
           "title": "HA Deprecation Notice: custom integration 'homee' calls `device_registry.async_get_or_create` referencing a non existing `via_device`",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:43:51Z"
       }
     },
     "Tasshack/dreame-vacuum": {
@@ -17631,7 +17796,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:43:54Z"
       }
     },
     "TexhFexLabs/hydronode-homeassistant": {
@@ -17682,7 +17848,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:43:57Z"
       }
     },
     "ThaStealth/alfen_modbus": {
@@ -17736,7 +17903,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:31:59Z"
       }
     },
     "TheByteStuff/RemoteSyslog_Service": {
@@ -17851,7 +18019,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:43:59Z"
       }
     },
     "TheRealFalseReality/Aquarium-AI-Homeassistant": {
@@ -17949,7 +18118,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "battery_level"
+        "symbol": "battery_level",
+        "checked_utc": "2026-09-18T03:44:02Z"
       }
     },
     "ThomasLomas/ha-starlinghomehub": {
@@ -18061,7 +18231,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:44:04Z"
       }
     },
     "TimSoethout/goodwe-sems-home-assistant": {
@@ -18136,7 +18307,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:44:07Z"
       }
     },
     "TimoPtr/ha_eauidf": {
@@ -18166,7 +18338,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:10Z"
       }
     },
     "Tobhs/flights_above": {
@@ -18237,7 +18410,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:12Z"
       }
     },
     "TomBrien/cardiffwaste-ha": {
@@ -18387,14 +18561,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 110,
-          "url": "https://github.com/Tvalley71/dantherm/issues/110",
-          "state": "closed",
-          "title": "Deprecation warning: self.config_entry in options flow will stop working in HA 2025.12",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:02Z"
       }
     },
     "Tvalley71/pluggit": {
@@ -18459,7 +18627,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:05Z"
       }
     },
     "Tycho-MEC/apc-pdu": {
@@ -18540,7 +18709,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:15Z"
       }
     },
     "UnoSite/IsItPayday": {
@@ -18670,7 +18840,8 @@
           "title": "[Bug] Deprecation warning: ScannerEntity alias used from asusrouter",
           "reactions": 0
         },
-        "symbol": "ScannerEntity"
+        "symbol": "ScannerEntity",
+        "checked_utc": "2026-09-18T03:44:18Z"
       }
     },
     "Vaskivskyi/ha-chroma": {
@@ -18776,7 +18947,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:44:21Z"
       }
     },
     "Verbalinsurection/next_rocket_launch": {
@@ -18874,7 +19046,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_PARTS_PER_MILLION"
+        "symbol": "CONCENTRATION_PARTS_PER_MILLION",
+        "checked_utc": "2026-09-18T03:44:23Z"
       }
     },
     "VolantisDev/ha-aquanta": {
@@ -19112,7 +19285,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "battery_level"
+        "symbol": "battery_level",
+        "checked_utc": "2026-09-18T03:44:26Z"
       }
     },
     "WickedGhost/avinor_flight_data": {
@@ -19135,42 +19309,42 @@
     "WillCodeForCats/solaredge-modbus-multi": {
       "domain": "solaredge_modbus_multi",
       "category": "integration",
-      "version": "v4.0.1",
-      "ref": "refs/tags/v4.0.1",
+      "version": "v4.0.3",
+      "ref": "refs/tags/v4.0.3",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:47Z",
+      "scanned_utc": "2026-09-18T03:30:57Z",
       "files_scanned": 15,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 323,
+      "stargazers_count": 325,
       "findings": [
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/solaredge_modbus_multi/hub.py",
-          "line": 1295,
+          "line": 1293,
           "confidence": "high"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/solaredge_modbus_multi/hub.py",
-          "line": 1436,
+          "line": 1434,
           "confidence": "high"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/solaredge_modbus_multi/hub.py",
-          "line": 1612,
+          "line": 1610,
           "confidence": "high"
         },
         {
           "rule_id": "device-info-via-device",
           "breaks_in": "2027.8",
           "file": "custom_components/solaredge_modbus_multi/hub.py",
-          "line": 1784,
+          "line": 1782,
           "confidence": "high"
         }
       ],
@@ -19187,7 +19361,8 @@
           "title": "Migrate DeviceInfo via_device before Home Assistant 2027.8",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:44:29Z"
       }
     },
     "WillCodeForCats/tekmar-482": {
@@ -19241,7 +19416,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:44:32Z"
       }
     },
     "Wouter0100/homeassistant-nanokvm": {
@@ -19288,7 +19464,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:34Z"
       }
     },
     "WulfgarW/homeassistant-pycupra": {
@@ -19332,7 +19509,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "setup_scanner"
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-18T03:44:37Z"
       }
     },
     "Xerolux/idm-heatpump-hass": {
@@ -19362,7 +19540,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:44:39Z"
       }
     },
     "XiaoMi/ha_xiaomi_home": {
@@ -19448,7 +19627,8 @@
           "title": "DeviceTracker overrides deprecated battery_level and location_name (HA 2027.7)",
           "reactions": 1
         },
-        "symbol": "battery_level"
+        "symbol": "battery_level",
+        "checked_utc": "2026-09-18T03:44:42Z"
       }
     },
     "Xunil99/ha-bosch-ebike": {
@@ -19492,7 +19672,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:45Z"
       }
     },
     "Yeelight/ha_yeelight_pro": {
@@ -19599,7 +19780,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:48Z"
       }
     },
     "YossiKon/geely-connect": {
@@ -19636,7 +19818,8 @@
           "title": "Apparently async_get_device() will be deprecated in Home Assistant 2027.8.0, affecting __init__.py",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:50Z"
       }
     },
     "YukariChiba/hass_companieshouse": {
@@ -19745,7 +19928,8 @@
           "title": "Multiple deprecated device_registry calls (async_get_device, via_device) — will break in HA 2027.8.0",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:53Z"
       }
     },
     "Zwer2k/ha-pca301": {
@@ -19901,7 +20085,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:44:56Z"
       }
     },
     "abnvle/ha-matomo": {
@@ -19965,7 +20150,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:44:58Z"
       }
     },
     "absent42/Aqara-LANLink": {
@@ -20016,7 +20202,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:45:01Z"
       }
     },
     "aburow/apc-modbus-snmp-ha": {
@@ -20155,7 +20342,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:45:04Z"
       }
     },
     "adamf83/my-rail-commute": {
@@ -20226,7 +20414,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:06Z"
       }
     },
     "adamotte/ha-easycare-bywaterair": {
@@ -20291,7 +20480,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:09Z"
       }
     },
     "adamoutler/anycubic-homeassistant": {
@@ -20321,7 +20511,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:45:12Z"
       }
     },
     "adonixis/ufanet_intercom_ha": {
@@ -20477,7 +20668,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:45:14Z"
       }
     },
     "airalab/homeassistant-robonomics-integration": {
@@ -20507,7 +20699,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:45:17Z"
       }
     },
     "ajachierno/ha-airversa-diffuser-int": {
@@ -20595,7 +20788,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:45:20Z"
       }
     },
     "akshimassar/ha-fortum": {
@@ -20701,7 +20895,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:32:07Z"
       }
     },
     "al1505/ALs-HA-SundanceMarin": {
@@ -20830,7 +21025,8 @@
           "title": "[WARNING]: Deprecated constants",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:45:22Z"
       }
     },
     "alandtse/tesla": {
@@ -20905,7 +21101,8 @@
           "title": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER, CONCENTRATION_PARTS_PER_BILLION and CONCENTRATION_PARTS_PER_MILLION are deprecated",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:45:25Z"
       }
     },
     "albertogeniola/meross-homeassistant": {
@@ -20952,7 +21149,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_PARTS_PER_MILLION"
+        "symbol": "CONCENTRATION_PARTS_PER_MILLION",
+        "checked_utc": "2026-09-18T03:45:28Z"
       }
     },
     "alceasan/ha-deepgram-tts": {
@@ -21043,10 +21241,10 @@
     "alengwenus/ha-sma-ev-charger": {
       "domain": "smaev",
       "category": "integration",
-      "version": "1.4.0",
-      "ref": "refs/tags/1.4.0",
+      "version": "1.4.1",
+      "ref": "refs/tags/1.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:21Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -21067,7 +21265,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:45:31Z"
       }
     },
     "alepee/hass-hitachi_yutaki": {
@@ -21139,7 +21338,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:33Z"
       }
     },
     "alex-jung/ha-departures": {
@@ -21237,7 +21437,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:36Z"
       }
     },
     "alexdelprete/ha-abb-fimer-pvi-vsn-rest": {
@@ -21267,7 +21468,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:45:39Z"
       }
     },
     "alexdelprete/ha-sinapsi-alfa": {
@@ -21304,7 +21506,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:41Z"
       }
     },
     "alexdelprete/ha-sugar-valley-neopool": {
@@ -21369,7 +21572,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:45:44Z"
       }
     },
     "alexhaller/Elli-Charger_HA": {
@@ -21426,11 +21630,11 @@
     "alexlenk/ha-dev-tools": {
       "domain": "ha_dev_tools",
       "category": "integration",
-      "version": "v2.6.2",
-      "ref": "refs/tags/v2.6.2",
+      "version": "v2.9.2",
+      "ref": "refs/tags/v2.9.2",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:36Z",
-      "files_scanned": 23,
+      "scanned_utc": "2026-09-18T03:30:58Z",
+      "files_scanned": 26,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -21532,7 +21736,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:46Z"
       }
     },
     "alray31/RAV311-Remote": {
@@ -21647,7 +21852,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:45:49Z"
       }
     },
     "alryaz/hass-pandora-cas": {
@@ -21698,7 +21904,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:45:52Z"
       }
     },
     "alryaz/hass-pik-intercom": {
@@ -22041,7 +22248,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:45:54Z"
       }
     },
     "amitfin/daily_schedule": {
@@ -22156,7 +22364,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:45:57Z"
       }
     },
     "amosyuen/ha-epson-projector-link": {
@@ -22220,7 +22429,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:46:00Z"
       }
     },
     "analytix-energy-solutions/ticker": {
@@ -22257,7 +22467,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:46:02Z"
       }
     },
     "anant-j/Ultrahuman": {
@@ -22311,7 +22522,8 @@
           "title": "Replace deprecated constants",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:46:05Z"
       }
     },
     "andersonshatch/midea-ac-py": {
@@ -22491,7 +22703,8 @@
           "title": "Deprecated concentration constants – compatibility with Home Assistant Core 2027.8",
           "reactions": 0
         },
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:46:08Z"
       }
     },
     "andrew-blake/melcloudhome": {
@@ -22542,14 +22755,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 39,
-          "url": "https://github.com/andrew-blake/melcloudhome/issues/39",
-          "state": "closed",
-          "title": "Devices do not return to “available” status after connection loss",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:10Z"
       }
     },
     "andrew-codechimp/HA-Andrews-Arnold-Quota": {
@@ -22624,7 +22831,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:11Z"
       }
     },
     "andrew-codechimp/HA-Calendar-Event": {
@@ -22729,7 +22937,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_handle_source_entity_changes"
+        "symbol": "async_handle_source_entity_changes",
+        "checked_utc": "2026-09-18T03:46:13Z"
       }
     },
     "andrew-codechimp/HA-Wasp-In-A-Box": {
@@ -22817,7 +23026,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:16Z"
       }
     },
     "andrewtryder/ha-smart-oil-gauge": {
@@ -22939,7 +23149,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:46:19Z"
       }
     },
     "andyblac/Advanced-History-Integration": {
@@ -23027,7 +23238,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:21Z"
       }
     },
     "andystewart999/qBittorrent_MkII": {
@@ -23098,7 +23310,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:24Z"
       }
     },
     "aniolpages/ha-icqa": {
@@ -23135,27 +23348,28 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:46:26Z"
       }
     },
     "anker-charging/ha-anker-solix-official": {
       "domain": "anker_solix_official",
       "category": "integration",
-      "version": "v1.4.3",
-      "ref": "refs/tags/v1.4.3",
+      "version": "v1.5.0",
+      "ref": "refs/tags/v1.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:27Z",
-      "files_scanned": 20,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 19,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 240,
+      "stargazers_count": 241,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/anker_solix_official/coordinator.py",
-          "line": 985,
+          "line": 796,
           "confidence": "high"
         }
       ],
@@ -23172,7 +23386,8 @@
           "title": "[Bug]: Deprecation warning: device_registry.async_get_device used in coordinator.py (will break in HA 2027.8.0)",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:29Z"
       }
     },
     "ankohanse/hass-dab-pumps": {
@@ -23396,7 +23611,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:46:32Z"
       }
     },
     "arevindh/ha-tinxy-cloud": {
@@ -23630,7 +23846,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_extract_config_entry_ids"
+        "symbol": "async_extract_config_entry_ids",
+        "checked_utc": "2026-09-18T03:46:35Z"
       }
     },
     "astrandb/sentio": {
@@ -23728,7 +23945,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:46:37Z"
       }
     },
     "attilaszasz/vonage-homeassistant": {
@@ -23853,15 +24071,15 @@
     "aunefyren/bluesound_alt": {
       "domain": "bluesound_alt",
       "category": "integration",
-      "version": "v1.1.0",
-      "ref": "refs/tags/v1.1.0",
+      "version": "v1.2.0",
+      "ref": "refs/tags/v1.2.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:29Z",
-      "files_scanned": 5,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 7,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 4,
+      "stargazers_count": 5,
       "findings": [],
       "domains": [
         "bluesound_alt"
@@ -23870,11 +24088,11 @@
     "aunefyren/current": {
       "domain": "current",
       "category": "integration",
-      "version": "v1.1.1",
-      "ref": "refs/tags/v1.1.1",
+      "version": "v2.0.0",
+      "ref": "refs/tags/v2.0.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:29Z",
-      "files_scanned": 8,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 9,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -23986,7 +24204,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "setup_scanner"
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-18T03:46:40Z"
       }
     },
     "aydarik/hass-geekmagic": {
@@ -24023,7 +24242,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:46:42Z"
       }
     },
     "aykutvr/smartcosa-home-assistant-integration": {
@@ -24091,7 +24311,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:45Z"
       }
     },
     "azimut-energy/azimut-ha-integration": {
@@ -24189,7 +24410,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:46:48Z"
       }
     },
     "bacco007/sensor.waternsw": {
@@ -24522,7 +24744,8 @@
           "title": "eprecation warning with Home Assistant Core 2026.7 (get_astral_location)",
           "reactions": 2
         },
-        "symbol": "get_astral_location"
+        "symbol": "get_astral_location",
+        "checked_utc": "2026-09-18T03:46:50Z"
       }
     },
     "basilfx/homeassistant-biketrax": {
@@ -24559,7 +24782,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:46:53Z"
       }
     },
     "basnijholt/adaptive-lighting": {
@@ -24627,7 +24851,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:13Z"
       }
     },
     "bastgau/ha-cup-component": {
@@ -24817,7 +25042,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:46:56Z"
       }
     },
     "bemfa/bemfa_cloud_ha": {
@@ -24956,7 +25182,8 @@
           "title": "Device Tracker deprecation",
           "reactions": 2
         },
-        "symbol": "ScannerEntity"
+        "symbol": "ScannerEntity",
+        "checked_utc": "2026-09-18T03:46:58Z"
       }
     },
     "bennydiamond/regie_essence_ha": {
@@ -25143,7 +25370,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:01Z"
       }
     },
     "bharat/homeassistant-lockly": {
@@ -25275,7 +25503,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:47:04Z"
       }
     },
     "bigmoby/ialarm_controller": {
@@ -25366,10 +25595,10 @@
     "binarylogic/trinnov-altitude-homeassistant": {
       "domain": "trinnov_altitude",
       "category": "integration",
-      "version": "v2.2.11",
-      "ref": "refs/tags/v2.2.11",
+      "version": "v2.3.0",
+      "ref": "refs/tags/v2.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:35Z",
+      "scanned_utc": "2026-09-18T03:30:58Z",
       "files_scanned": 17,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -25434,15 +25663,15 @@
     "bjrnptrsn/climate_group_helper": {
       "domain": "climate_group_helper",
       "category": "integration",
-      "version": "1.10.0",
-      "ref": "refs/tags/1.10.0",
+      "version": "1.11.0",
+      "ref": "refs/tags/1.11.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:34Z",
+      "scanned_utc": "2026-09-18T03:30:54Z",
       "files_scanned": 26,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 117,
+      "stargazers_count": 118,
       "findings": [],
       "domains": [
         "climate_group_helper"
@@ -25482,7 +25711,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:47:06Z"
       }
     },
     "bkanuka/ha-run-chicken": {
@@ -25557,7 +25787,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "TrackerEntity"
+        "symbol": "TrackerEntity",
+        "checked_utc": "2026-09-18T03:47:09Z"
       }
     },
     "bkbilly/MeteoGR": {
@@ -25645,7 +25876,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:12Z"
       }
     },
     "bkbilly/oralb_ble": {
@@ -25709,7 +25941,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:14Z"
       }
     },
     "blaineventurine/simple_inventory": {
@@ -25763,7 +25996,8 @@
           "title": "Frigate integration calls deprecated `device_registry.async_get_device`",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:17Z"
       }
     },
     "blindlight86/HA_USR-R16": {
@@ -25864,11 +26098,12 @@
         "report": {
           "number": 50,
           "url": "https://github.com/bobbesnl/growatt_thor/issues/50",
-          "state": "open",
+          "state": "closed",
           "title": "Deprecated device_registry.async_get_device call in __init__.py",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:20Z"
       }
     },
     "bobsilesia/oblamatik": {
@@ -25939,7 +26174,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_PARTS_PER_BILLION"
+        "symbol": "CONCENTRATION_PARTS_PER_BILLION",
+        "checked_utc": "2026-09-18T03:47:22Z"
       }
     },
     "boralyl/kodi-recently-added": {
@@ -26034,7 +26270,8 @@
           "title": "Detected that custom integration 'bosch' calls `device_registry.async_get_or_create` with a deprecated `via_device` parameter",
           "reactions": 1
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:47:25Z"
       }
     },
     "botts7/ha-insights": {
@@ -26106,7 +26343,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:15Z"
       }
     },
     "bowbikes/layered-logic-mirror-ha": {
@@ -26170,7 +26408,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "setup_scanner"
+        "symbol": "setup_scanner",
+        "checked_utc": "2026-09-18T03:47:28Z"
       }
     },
     "bramstroker/homeassistant-powercalc": {
@@ -26208,7 +26447,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:47:30Z"
       }
     },
     "bramstroker/homeassistant-state-webhook": {
@@ -26289,7 +26529,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:47:33Z"
       }
     },
     "bremor/public_transport_victoria": {
@@ -26417,13 +26658,14 @@
         "archived": false,
         "issues_enabled": true,
         "report": {
-          "number": 46,
-          "url": "https://github.com/brettmeyerowitz/homeassistant-homgar/issues/46",
-          "state": "closed",
-          "title": "[Bug]: Something about \"referencing a non existing `via_device`\"",
+          "number": 113,
+          "url": "https://github.com/brettmeyerowitz/homeassistant-homgar/issues/113",
+          "state": "open",
+          "title": "[Bug]: Deprecated via_device usage warns on Core 2026.9; removal scheduled for 2027.8",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:47:36Z"
       }
     },
     "brewmarsh/meraki-homeassistant": {
@@ -26488,7 +26730,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:38Z"
       }
     },
     "brezlord/hass-waterco-electrochlor": {
@@ -26535,7 +26778,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:18Z"
       }
     },
     "brianegge/home-assistant-sdnotify": {
@@ -26640,7 +26884,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:41Z"
       }
     },
     "brmccrary/nuvo_tuner": {
@@ -26687,7 +26932,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:44Z"
       }
     },
     "bscholer/home-assistant-comma-ai": {
@@ -26724,7 +26970,8 @@
           "title": "Deprecation warning: CommaDeviceTracker overrides deprecated battery_level property (unsupported from HA 2027.7)",
           "reactions": 0
         },
-        "symbol": "battery_level"
+        "symbol": "battery_level",
+        "checked_utc": "2026-09-18T03:47:46Z"
       }
     },
     "buchuman/hisense_vrf": {
@@ -26761,7 +27008,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:47:49Z"
       }
     },
     "buggedcom/Enion-hass": {
@@ -26784,15 +27032,15 @@
     "bvis/aegis-hass": {
       "domain": "aegis_ajax",
       "category": "integration",
-      "version": "v1.21.0",
-      "ref": "refs/tags/v1.21.0",
+      "version": "v1.21.1",
+      "ref": "refs/tags/v1.21.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:40Z",
+      "scanned_utc": "2026-09-18T03:30:56Z",
       "files_scanned": 3455,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 115,
+      "stargazers_count": 116,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
@@ -26815,7 +27063,8 @@
           "title": "[Bug]: Deprecated device registry API usage — breaks in HA 2027.8.0",
           "reactions": 0
         },
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:52Z"
       }
     },
     "bvweerd/battery_controller": {
@@ -26859,7 +27108,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:47:54Z"
       }
     },
     "bvweerd/dynamic_energy_contract_calculator": {
@@ -26924,7 +27174,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_update_device"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:47:57Z"
       }
     },
     "bvweerd/simple_pid_controller": {
@@ -27162,7 +27413,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_remove_stale_devices_links_keep_entity_device"
+        "symbol": "async_remove_stale_devices_links_keep_entity_device",
+        "checked_utc": "2026-09-18T03:48:00Z"
       }
     },
     "cagnulein/switchbot_press": {
@@ -27267,7 +27519,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:02Z"
       }
     },
     "caliusoptimus/venceiver": {
@@ -27355,7 +27608,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_add_external_statistics"
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:48:05Z"
       }
     },
     "caplaz/micro-weather-station": {
@@ -27378,32 +27632,19 @@
     "car2home/car2home-homeassistant": {
       "domain": "car2home",
       "category": "integration",
-      "version": "v0.1.22",
-      "ref": "refs/tags/v0.1.22",
+      "version": "v0.1.24",
+      "ref": "refs/tags/v0.1.24",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:40Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
       "stargazers_count": 11,
-      "findings": [
-        {
-          "rule_id": "device-tracker-battery-level",
-          "breaks_in": "2027.7",
-          "file": "custom_components/car2home/device_tracker.py",
-          "line": 145,
-          "confidence": "high"
-        }
-      ],
+      "findings": [],
       "domains": [
         "car2home"
-      ],
-      "upstream": {
-        "archived": false,
-        "issues_enabled": true,
-        "symbol": "battery_level"
-      }
+      ]
     },
     "cardouken/homeassistant-unifi-unas": {
       "domain": "unifi_unas",
@@ -27488,7 +27729,8 @@
           "title": "deprecated `via_device` parameter; use `via_device_id` instead",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:48:08Z"
       }
     },
     "carloscae/solar-cover": {
@@ -27689,7 +27931,8 @@
           "title": "Deprecated via_device parameter in device registry call",
           "reactions": 0
         },
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:48:10Z"
       }
     },
     "cavefire/hass-openid": {
@@ -27787,7 +28030,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:48:13Z"
       }
     },
     "cedricziel/ha-matter-binding-helper": {
@@ -27838,7 +28082,8 @@
           "title": "Deprecation warning: device_registry.devices in ha_registry.py",
           "reactions": 0
         },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:21Z"
       }
     },
     "cedricziel/ha-sunlit": {
@@ -27889,7 +28134,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:48:16Z"
       }
     },
     "cermakjn/ha-fellow-stagg-ekg-pro": {
@@ -28198,7 +28444,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:48:18Z"
       }
     },
     "chriphil/homeassistant-binformed": {
@@ -28283,7 +28530,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "via_device"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:48:21Z"
       }
     },
     "chriscamicas/gazdebordeaux-ha": {
@@ -28354,7 +28602,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:24Z"
       }
     },
     "chrisns/hisense_vidaa": {
@@ -28384,7 +28633,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_extract_config_entry_ids"
+        "symbol": "async_extract_config_entry_ids",
+        "checked_utc": "2026-09-18T03:48:26Z"
       }
     },
     "christiaangoossens/hass-oidc-auth": {
@@ -28618,7 +28868,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:29Z"
       }
     },
     "clintongormley/everything-presence-pro-grid": {
@@ -28669,7 +28920,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:31Z"
       }
     },
     "clintongormley/ha-fado": {
@@ -28765,7 +29017,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_add_external_statistics"
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:48:34Z"
       }
     },
     "cloudless-garden/ha-gardena-smart-local-preview": {
@@ -28809,7 +29062,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:37Z"
       }
     },
     "cm-makes/aurum-ha": {
@@ -28856,7 +29110,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:48:39Z"
       }
     },
     "cnc-lasercraft/device-saver": {
@@ -29090,7 +29345,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "config_entries",
+        "checked_utc": "2026-09-18T03:48:42Z"
       }
     },
     "colings/synology_virtual_album": {
@@ -29127,7 +29383,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "primary_config_entry"
+        "symbol": "primary_config_entry",
+        "checked_utc": "2026-09-18T03:48:45Z"
       }
     },
     "connorgallopo/Superior-Plus-Propane": {
@@ -29208,7 +29465,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:47Z"
       }
     },
     "cowboyrushforth/home-assistant-molekule": {
@@ -29252,7 +29510,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER"
+        "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
+        "checked_utc": "2026-09-18T03:48:50Z"
       }
     },
     "cozify/han-home-assistant": {
@@ -29330,7 +29589,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "async_get_device"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:48:53Z"
       }
     },
     "craibo/ha_strava": {
@@ -29448,10 +29708,10 @@
     "culiplan/home-assistant-culiplan": {
       "domain": "culiplan",
       "category": "integration",
-      "version": "v0.14.3",
-      "ref": "refs/tags/v0.14.3",
+      "version": "v0.15.1",
+      "ref": "refs/tags/v0.15.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:17Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 32,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -29496,7 +29756,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:23Z"
       }
     },
     "custom-components/brewdog": {
@@ -30402,7 +30663,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:26Z"
       }
     },
     "d03n3rfr1tz3/hass-divoom": {
@@ -30620,7 +30882,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:29Z"
       }
     },
     "dala318/nordpool_planner": {
@@ -30697,81 +30960,19 @@
     "dalinicus/homeassistant-acinfinity": {
       "domain": "ac_infinity",
       "category": "integration",
-      "version": "2.2.0",
-      "ref": "refs/tags/2.2.0",
+      "version": "2.3.0",
+      "ref": "refs/tags/2.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:49Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
       "stargazers_count": 204,
-      "findings": [
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 173,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 183,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 193,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 203,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 221,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 238,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-info-via-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/core.py",
-          "line": 290,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "core-import-const-concentration-parts-per-million",
-          "breaks_in": "2027.8",
-          "file": "custom_components/ac_infinity/sensor.py",
-          "line": 14,
-          "confidence": "high"
-        }
-      ],
+      "findings": [],
       "domains": [
         "ac_infinity"
-      ],
-      "upstream": {
-        "archived": false,
-        "issues_enabled": true,
-        "symbol": "via_device"
-      }
+      ]
     },
     "damacus/robovac": {
       "domain": "robovac",
@@ -31086,7 +31287,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "CONCENTRATION_PARTS_PER_MILLION",
+        "checked_utc": "2026-09-18T03:32:31Z"
       }
     },
     "dasimon135/daikin_madoka": {
@@ -31218,7 +31420,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:32:34Z"
       }
     },
     "davesmeghead/visonic": {
@@ -31384,7 +31587,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "primary_config_entry"
+        "report": {
+          "number": 1154,
+          "url": "https://github.com/davidrapan/ha-solarman/issues/1154",
+          "state": "open",
+          "title": "Detected that custom integration 'solarman' calls `device_registry.async_get_device`",
+          "reactions": 0
+        },
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:32:36Z"
       }
     },
     "dawg-io/homeassistant-fluxcd": {
@@ -32311,7 +32522,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:32:39Z"
       }
     },
     "dext0r/ha-yandex-station-intents": {
@@ -32358,14 +32570,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 628,
-          "url": "https://github.com/dext0r/yandex_smart_home/issues/628",
-          "state": "open",
-          "title": "Не поддерживается тип devices.types.openable.door_lock",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:42Z"
       }
     },
     "dfanica/vent-axia-svara-ble": {
@@ -32487,7 +32693,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:32:44Z"
       }
     },
     "dibi73/ha-bookstack-sync": {
@@ -32559,7 +32766,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "report": {
+          "number": 146,
+          "url": "https://github.com/dibi73/ha-bookstack-sync/issues/146",
+          "state": "closed",
+          "title": "device_registry.devices mapping-style access is deprecated, breaks in HA 2027.9.0",
+          "reactions": 0
+        },
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:47Z"
       }
     },
     "diego7marques/ha-aws-cost": {
@@ -32740,21 +32955,28 @@
     "distante/ha-xplora-watch": {
       "domain": "xplora_watch",
       "category": "integration",
-      "version": "v1.5.0",
-      "ref": "refs/tags/v1.5.0",
+      "version": "v1.6.0",
+      "ref": "refs/tags/v1.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:27Z",
-      "files_scanned": 32,
+      "scanned_utc": "2026-09-18T03:30:55Z",
+      "files_scanned": 34,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
       "stargazers_count": 6,
       "findings": [
         {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/xplora_watch/coordinator.py",
+          "line": 938,
+          "confidence": "high"
+        },
+        {
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/xplora_watch/services.py",
-          "line": 225,
+          "line": 229,
           "confidence": "high"
         }
       ],
@@ -32764,7 +32986,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:32:50Z"
       }
     },
     "djansen1987/SAJeSolar": {
@@ -32913,14 +33136,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 25,
-          "url": "https://github.com/djiwondee/paperlesspaper-ha/issues/25",
-          "state": "closed",
-          "title": "Deleted paperlesspaper frames not removed from the device registry of HomeAssistant",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:32:52Z"
       }
     },
     "djlactose/smartslydr": {
@@ -33132,7 +33349,13 @@
       ],
       "domains": [
         "panasonic_smart_china"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:32:55Z"
+      }
     },
     "dlarrick/hass-kumo": {
       "domain": "kumo",
@@ -33567,7 +33790,13 @@
       ],
       "domains": [
         "octopus_french"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:32:58Z"
+      }
     },
     "doron1/ha-palgate": {
       "domain": "palgate",
@@ -33718,7 +33947,13 @@
       ],
       "domains": [
         "never_dry"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:33:01Z"
+      }
     },
     "drakhart/ha-vmoto-super-soco": {
       "domain": "super_soco_custom",
@@ -33929,7 +34164,13 @@
       ],
       "domains": [
         "aigues_barcelona"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_import_statistics",
+        "checked_utc": "2026-09-18T03:33:03Z"
+      }
     },
     "duhow/hass-cover-time-based": {
       "domain": "cover_time_based",
@@ -34533,7 +34774,13 @@
       ],
       "domains": [
         "haikubox"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:33:06Z"
+      }
     },
     "ekutner/home-connect-hass": {
       "domain": "home_connect_alt",
@@ -34999,7 +35246,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:08Z"
       }
     },
     "elninotech/inkview-home-assistant": {
@@ -35219,7 +35467,13 @@
       ],
       "domains": [
         "energiedaten"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:33:11Z"
+      }
     },
     "energy-tracker/home-assistant-energy-tracker": {
       "domain": "energy_tracker",
@@ -35275,11 +35529,11 @@
     "engelsofta/nodarion": {
       "domain": "nodarion",
       "category": "integration",
-      "version": "v1.23.2",
-      "ref": "refs/tags/v1.23.2",
+      "version": "v1.24.1",
+      "ref": "refs/tags/v1.24.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:54Z",
-      "files_scanned": 23,
+      "scanned_utc": "2026-09-18T03:30:53Z",
+      "files_scanned": 25,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -35452,10 +35706,10 @@
     "erazorlll/SPAcentral-for-balboa": {
       "domain": "spacentral_for_balboa",
       "category": "integration",
-      "version": "v1.0.1",
-      "ref": "refs/tags/v1.0.1",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:29Z",
+      "scanned_utc": "2026-09-18T03:30:54Z",
       "files_scanned": 28,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -35541,7 +35795,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:33:14Z"
       }
     },
     "eriknn/ha-pax_ble": {
@@ -37110,7 +37365,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:16Z"
       }
     },
     "g470258/hass-esplus": {
@@ -37232,7 +37488,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:19Z"
       }
     },
     "ganhammar/hass-oidc-server": {
@@ -38009,7 +38266,13 @@
       ],
       "domains": [
         "esb_smart_meter"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:33:22Z"
+      }
     },
     "gerione/daikin-ha-ekrhh-modbus": {
       "domain": "daikin_ha_ekrhh_modbus",
@@ -39190,7 +39453,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "report": {
+          "number": 93,
+          "url": "https://github.com/ha-china/blueprint-studio/issues/93",
+          "state": "open",
+          "title": "[BUG] Deprecation warnings",
+          "reactions": 0
+        },
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:24Z"
       }
     },
     "ha-china/cn_im_hub": {
@@ -39339,7 +39610,13 @@
       ],
       "domains": [
         "termoweb"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:33:27Z"
+      }
     },
     "ha-warmup/warmup": {
       "domain": "warmup",
@@ -39610,7 +39887,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:30Z"
       }
     },
     "hass-cortex/cortex-stt": {
@@ -39657,7 +39935,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:32Z"
       }
     },
     "hass-cortex/xiaomi-mimo-tts": {
@@ -39745,7 +40024,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:35Z"
       }
     },
     "hasscc/hass-edge-tts": {
@@ -40158,7 +40438,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:38Z"
       }
     },
     "hif2k1/battery_sim": {
@@ -40215,10 +40496,10 @@
     "hitchin999/YidCal": {
       "domain": "yidcal",
       "category": "integration",
-      "version": "v0.8.6",
-      "ref": "refs/tags/v0.8.6",
+      "version": "v0.8.7",
+      "ref": "refs/tags/v0.8.7",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:05Z",
+      "scanned_utc": "2026-09-18T03:30:53Z",
       "files_scanned": 109,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -40310,7 +40591,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:40Z"
       }
     },
     "hoechstleistungshaartrockner/simplechores": {
@@ -40845,7 +41127,11 @@
       ],
       "domains": [
         "drivvo"
-      ]
+      ],
+      "upstream": {
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:33:41Z"
+      }
     },
     "hudsonbrendon/HA-solar-plus-intelbras": {
       "domain": "solar_plus_intelbras",
@@ -40898,7 +41184,13 @@
       ],
       "domains": [
         "solar_plus_intelbras"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:33:43Z"
+      }
     },
     "hudsonbrendon/ha-gbs-control": {
       "domain": "gbs_control",
@@ -41012,7 +41304,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:46Z"
       }
     },
     "hultenvp/solis-sensor": {
@@ -41555,11 +41848,11 @@
     "iluvdata/pdf_scrape": {
       "domain": "pdf_scrape",
       "category": "integration",
-      "version": "2026.6.0",
-      "ref": "refs/tags/2026.6.0",
+      "version": "2026.9.0",
+      "ref": "refs/tags/2026.9.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:55:19Z",
-      "files_scanned": 7,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 9,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -41569,14 +41862,14 @@
           "rule_id": "device-entry-primary-config-entry",
           "breaks_in": "2027.10",
           "file": "custom_components/pdf_scrape/__init__.py",
-          "line": 81,
+          "line": 82,
           "confidence": "high"
         },
         {
           "rule_id": "device-entry-primary-config-entry",
           "breaks_in": "2027.10",
           "file": "custom_components/pdf_scrape/__init__.py",
-          "line": 83,
+          "line": 84,
           "confidence": "high"
         }
       ],
@@ -41626,10 +41919,10 @@
     "infernalK/ha-french-holidays": {
       "domain": "french_holidays",
       "category": "integration",
-      "version": "1.3.1",
-      "ref": "refs/tags/1.3.1",
+      "version": "1.3.2",
+      "ref": "refs/tags/1.3.2",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:48Z",
+      "scanned_utc": "2026-09-18T03:30:53Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -42036,21 +42329,21 @@
     "its-me-prash/vwgroup-connect-ha": {
       "domain": "vag_connect",
       "category": "integration",
-      "version": "v4.7.11",
-      "ref": "refs/tags/v4.7.11",
+      "version": "v4.7.13",
+      "ref": "refs/tags/v4.7.13",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:51Z",
+      "scanned_utc": "2026-09-18T03:30:59Z",
       "files_scanned": 99,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 104,
+      "stargazers_count": 105,
       "findings": [
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
           "file": "custom_components/vag_connect/coordinator.py",
-          "line": 4958,
+          "line": 5102,
           "confidence": "high"
         }
       ],
@@ -42697,7 +42990,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:33:48Z"
       }
     },
     "jasonjhofmann/visiblair-homeassistant": {
@@ -42875,7 +43169,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:33:51Z"
       }
     },
     "jaydeethree/Home-Assistant-weatherdotcom": {
@@ -43118,7 +43413,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:54Z"
       }
     },
     "jekalmin/extended_openai_conversation": {
@@ -43209,15 +43505,15 @@
     "jensfr1/ha-ecoflow-ocean2": {
       "domain": "ecoflow_ocean2",
       "category": "integration",
-      "version": "v0.5.0",
-      "ref": "refs/tags/v0.5.0",
+      "version": "v0.6.1",
+      "ref": "refs/tags/v0.6.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:55:22Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 13,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 7,
+      "stargazers_count": 8,
       "findings": [
         {
           "rule_id": "device-info-via-device",
@@ -43785,15 +44081,15 @@
     "jmcollin78/versatile_thermostat": {
       "domain": "versatile_thermostat",
       "category": "integration",
-      "version": "10.3.0",
-      "ref": "refs/tags/10.3.0",
+      "version": "10.4.0",
+      "ref": "refs/tags/10.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:56Z",
-      "files_scanned": 50,
+      "scanned_utc": "2026-09-18T03:30:54Z",
+      "files_scanned": 52,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 1173,
+      "stargazers_count": 1179,
       "findings": [],
       "domains": [
         "versatile_thermostat"
@@ -43863,7 +44159,20 @@
       ],
       "domains": [
         "parcelapp"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 91,
+          "url": "https://github.com/jmdevita/parcel-ha/issues/91",
+          "state": "open",
+          "title": "Deprecation warning in HA log for device_registry.devices",
+          "reactions": 0
+        },
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:33:56Z"
+      }
     },
     "jnalepka/grenton-objects-home-assistant": {
       "domain": "grenton_objects",
@@ -44153,10 +44462,10 @@
     "johnnyh1975/ha_roomba_plus": {
       "domain": "roomba_plus",
       "category": "integration",
-      "version": "v4.2.6",
-      "ref": "refs/tags/v4.2.6",
+      "version": "v4.2.7",
+      "ref": "refs/tags/v4.2.7",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:32:00Z",
+      "scanned_utc": "2026-09-18T03:31:02Z",
       "files_scanned": 82,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -44390,7 +44699,13 @@
       ],
       "domains": [
         "jemenaoutlook"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:33:59Z"
+      }
     },
     "joosthoi1/hockey-team-tracker": {
       "domain": "hockey_team_tracker",
@@ -44744,7 +45059,20 @@
       ],
       "domains": [
         "eg4_web_monitor"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "report": {
+          "number": 618,
+          "url": "https://github.com/joyfulhouse/eg4_web_monitor/issues/618",
+          "state": "open",
+          "title": "via_device deprecated, via_device_id should be used instead",
+          "reactions": 0
+        },
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:34:02Z"
+      }
     },
     "joyfulhouse/intellicenter": {
       "domain": "intellicenter",
@@ -45938,7 +46266,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "report": {
+          "number": 38,
+          "url": "https://github.com/kcofoni/ha-netro-watering/issues/38",
+          "state": "closed",
+          "title": "deprecated: 'netro_watering' calls `device_registry.async_get_or_create` referencing a non existing `via_device`",
+          "reactions": 0
+        },
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:34:05Z"
       }
     },
     "kcsoft/virtual-keys": {
@@ -46559,7 +46895,15 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "report": {
+          "number": 103,
+          "url": "https://github.com/killer0071234/ha-hiq/issues/103",
+          "state": "closed",
+          "title": "Add via_device to devices",
+          "reactions": 0
+        },
+        "symbol": "via_device",
+        "checked_utc": "2026-09-18T03:34:07Z"
       }
     },
     "kimjohnsson/wiheat": {
@@ -46751,10 +47095,10 @@
     "kmich/ha_ws_core": {
       "domain": "ws_core",
       "category": "integration",
-      "version": "v2.7.5",
-      "ref": "refs/tags/v2.7.5",
+      "version": "v2.7.6",
+      "ref": "refs/tags/v2.7.6",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:58Z",
+      "scanned_utc": "2026-09-18T03:31:01Z",
       "files_scanned": 27,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -46806,7 +47150,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:10Z"
       }
     },
     "knirzinger/hargassner-ha": {
@@ -47180,14 +47525,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 8,
-          "url": "https://github.com/koying/mqtt_discoverystream_ha/issues/8",
-          "state": "closed",
-          "title": "Errors with 2022.11.x",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:13Z"
       }
     },
     "kpoppel/homeassistant-eforsyning": {
@@ -47237,7 +47576,13 @@
       ],
       "domains": [
         "novafos"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_import_statistics",
+        "checked_utc": "2026-09-18T03:34:15Z"
+      }
     },
     "krahabb/meross_lan": {
       "domain": "meross_lan",
@@ -47574,7 +47919,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:34:18Z"
       }
     },
     "ksanislo/senso4s_ble": {
@@ -47611,7 +47957,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:34:21Z"
       }
     },
     "kubawolanin/ha-reaper": {
@@ -48211,7 +48558,13 @@
       ],
       "domains": [
         "genesisenergy"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:34:23Z"
+      }
     },
     "lewei50/ha_iammeter": {
       "domain": "iammeter_http",
@@ -48447,10 +48800,10 @@
     "lipelix/home-assistant-chmu-weather": {
       "domain": "chmu",
       "category": "integration",
-      "version": "v1.7.1",
-      "ref": "refs/tags/v1.7.1",
+      "version": "v1.7.3",
+      "ref": "refs/tags/v1.7.3",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:16Z",
+      "scanned_utc": "2026-09-18T03:30:55Z",
       "files_scanned": 7,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -49639,7 +49992,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:34:26Z"
       }
     },
     "magicbear/schneider_selogic": {
@@ -50079,7 +50433,13 @@
       ],
       "domains": [
         "octopus_spain_fork"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_update_statistics_metadata",
+        "checked_utc": "2026-09-18T03:34:29Z"
+      }
     },
     "mandinger/lowi-spain": {
       "domain": "lowi_spain",
@@ -50688,7 +51048,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:34:31Z"
       }
     },
     "marq24/ha-fordconnect-query": {
@@ -51094,7 +51455,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:34Z"
       }
     },
     "matfroh/abl_emh1_modbus": {
@@ -51375,15 +51737,15 @@
     "maximedeprince/ha-ilife": {
       "domain": "ilife",
       "category": "integration",
-      "version": "v0.5.5",
-      "ref": "refs/tags/v0.5.5",
+      "version": "v0.6.0",
+      "ref": "refs/tags/v0.6.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:51Z",
+      "scanned_utc": "2026-09-18T03:30:58Z",
       "files_scanned": 20,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 3,
+      "stargazers_count": 4,
       "findings": [],
       "domains": [
         "ilife"
@@ -51798,17 +52160,18 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:36Z"
       }
     },
     "mholzi/beatify": {
       "domain": "beatify",
       "category": "integration",
-      "version": "v4.7.0",
-      "ref": "refs/tags/v4.7.0",
+      "version": "v4.7.1",
+      "ref": "refs/tags/v4.7.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:04Z",
-      "files_scanned": 257,
+      "scanned_utc": "2026-09-18T03:30:55Z",
+      "files_scanned": 259,
       "syntax_errors": 0,
       "skipped_minified": 9,
       "skipped_vendor": 3,
@@ -52251,14 +52614,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 61,
-          "url": "https://github.com/mike-nott/mcp-assist/issues/61",
-          "state": "open",
-          "title": "What devices hould MCP Assist be able to access",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:39Z"
       }
     },
     "mike-nott/smart-announcements": {
@@ -52471,7 +52828,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:42Z"
       }
     },
     "mishasyrbu/ha-sunset-predictor": {
@@ -53808,7 +54166,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:44Z"
       }
     },
     "myTselection/Carbu_com": {
@@ -54041,7 +54400,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:34:47Z"
       }
     },
     "n-IA-hane/esphome-intercom": {
@@ -54339,7 +54699,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:50Z"
       }
     },
     "nb3rt/Aquilo-HomeAssistant": {
@@ -55008,7 +55369,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:52Z"
       }
     },
     "nilisos/hass-lisios-bridge": {
@@ -55203,7 +55565,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:34:55Z"
       }
     },
     "nnnlog/homeassistant-cvnet-smarthome": {
@@ -55411,7 +55774,13 @@
       ],
       "domains": [
         "shelly_cloud_diy"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_import_statistics",
+        "checked_utc": "2026-09-18T03:34:58Z"
+      }
     },
     "notf0und/hass-hume-ai-tts": {
       "domain": "hume_tts",
@@ -57258,14 +57627,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 62,
-          "url": "https://github.com/pgroene/kyber/issues/62",
-          "state": "closed",
-          "title": "Devices playing music not returned by Kyber integration",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:00Z"
       }
     },
     "philrenda/precipitation-radial-card": {
@@ -59062,10 +59425,10 @@
     "renaudallard/homeassistant_be_electricity_prices": {
       "domain": "be_electricity_prices",
       "category": "integration",
-      "version": "v0.23.7",
-      "ref": "refs/tags/v0.23.7",
+      "version": "v0.23.9",
+      "ref": "refs/tags/v0.23.9",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:59Z",
+      "scanned_utc": "2026-09-18T03:31:01Z",
       "files_scanned": 51,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -59177,11 +59540,11 @@
     "rexliteai/rexlite-home-assistant": {
       "domain": "rexlite",
       "category": "integration",
-      "version": "v0.1.20",
-      "ref": "refs/tags/v0.1.20",
+      "version": "v0.1.21",
+      "ref": "refs/tags/v0.1.21",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:44Z",
-      "files_scanned": 20,
+      "scanned_utc": "2026-09-18T03:30:58Z",
+      "files_scanned": 21,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -59296,10 +59659,10 @@
     "rhizomatics/supernotify": {
       "domain": "supernotify",
       "category": "integration",
-      "version": "v2.5.1",
-      "ref": "refs/tags/v2.5.1",
+      "version": "v2.5.2",
+      "ref": "refs/tags/v2.5.2",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:57Z",
+      "scanned_utc": "2026-09-18T03:31:00Z",
       "files_scanned": 47,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -59310,14 +59673,14 @@
           "rule_id": "device-entry-config-entries",
           "breaks_in": "2027.10",
           "file": "custom_components/supernotify/hass_api.py",
-          "line": 658,
+          "line": 663,
           "confidence": "high"
         },
         {
           "rule_id": "device-registry-devices-mapping",
           "breaks_in": "2027.9",
           "file": "custom_components/supernotify/hass_api.py",
-          "line": 685,
+          "line": 690,
           "confidence": "high"
         }
       ],
@@ -59327,14 +59690,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 21,
-          "url": "https://github.com/rhizomatics/supernotify/issues/21",
-          "state": "closed",
-          "title": "Possibility to notify all currently registered devices running the companion app",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:03Z"
       }
     },
     "richardvinger/f1-25-telemetry-for-home-assistant": {
@@ -59832,7 +60189,8 @@
           "title": "Deprecated device_registry.devices Issue",
           "reactions": 0
         },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:05Z"
       }
     },
     "rogorvi/sunthalpy": {
@@ -59964,7 +60322,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:08Z"
       }
     },
     "romain563/pooltechnologie": {
@@ -60110,7 +60469,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:35:11Z"
       }
     },
     "ronnnnnnnnnnnnn/multi_user_scale_router": {
@@ -60198,7 +60558,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:35:13Z"
       }
     },
     "rononline/soccerlive": {
@@ -60251,11 +60612,11 @@
     "roquerodrigo/ha-midea-dishwasher": {
       "domain": "midea_dishwasher",
       "category": "integration",
-      "version": "v1.2.0",
-      "ref": "refs/tags/v1.2.0",
+      "version": "v1.3.0",
+      "ref": "refs/tags/v1.3.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:55:46Z",
-      "files_scanned": 40,
+      "scanned_utc": "2026-09-18T03:30:52Z",
+      "files_scanned": 42,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -60448,15 +60809,15 @@
     "rroller/dahua": {
       "domain": "dahua",
       "category": "integration",
-      "version": "0.9.99",
-      "ref": "refs/tags/0.9.99",
+      "version": "0.10.2",
+      "ref": "refs/tags/0.10.2",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:58Z",
+      "scanned_utc": "2026-09-18T03:31:01Z",
       "files_scanned": 21,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 561,
+      "stargazers_count": 562,
       "findings": [],
       "domains": [
         "dahua"
@@ -60604,10 +60965,10 @@
     "rsheptolut/philips-home-access": {
       "domain": "philips_home_access",
       "category": "integration",
-      "version": "v1.0.4",
-      "ref": "refs/tags/v1.0.4",
+      "version": "v1.1.0",
+      "ref": "refs/tags/v1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:51:51Z",
+      "scanned_utc": "2026-09-18T03:30:50Z",
       "files_scanned": 23,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -60975,10 +61336,10 @@
     "rynecoop/ha-grocery-learning": {
       "domain": "grocery_learning",
       "category": "integration",
-      "version": "v0.35.5",
-      "ref": "refs/tags/v0.35.5",
+      "version": "v0.35.6",
+      "ref": "refs/tags/v0.35.6",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:49Z",
+      "scanned_utc": "2026-09-18T03:30:58Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -61128,21 +61489,21 @@
     "sam3gp8/jarvis-aio": {
       "domain": "jarvis",
       "category": "integration",
-      "version": "7.93.0",
-      "ref": "refs/tags/7.93.0",
+      "version": "7.94.0",
+      "ref": "refs/tags/7.94.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:32:03Z",
+      "scanned_utc": "2026-09-18T03:31:03Z",
       "files_scanned": 212,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 13,
+      "stargazers_count": 14,
       "findings": [
         {
           "rule_id": "device-registry-devices-mapping",
           "breaks_in": "2027.9",
           "file": "custom_components/jarvis/camera.py",
-          "line": 1292,
+          "line": 1346,
           "confidence": "high"
         },
         {
@@ -61159,7 +61520,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:16Z"
       }
     },
     "samilbeden/ha-tplink-cpe": {
@@ -61698,7 +62060,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:19Z"
       }
     },
     "sbr-labs/tuya-radiators": {
@@ -62386,7 +62749,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:35:22Z"
       }
     },
     "sfstar/hass-victron": {
@@ -63107,19 +63471,33 @@
     "simonkowallik/ha-mikrotik-netwatch": {
       "domain": "mikrotik_netwatch",
       "category": "integration",
-      "version": "1.0.2",
-      "ref": "refs/tags/1.0.2",
+      "version": "1.1.0",
+      "ref": "refs/tags/1.1.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:51:57Z",
+      "scanned_utc": "2026-09-18T03:30:50Z",
       "files_scanned": 5,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
       "stargazers_count": 1,
-      "findings": [],
+      "findings": [
+        {
+          "rule_id": "device-registry-async-get-device",
+          "breaks_in": "2027.8",
+          "file": "custom_components/mikrotik_netwatch/__init__.py",
+          "line": 245,
+          "confidence": "high"
+        }
+      ],
       "domains": [
         "mikrotik_netwatch"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:35:24Z"
+      }
     },
     "simplytoast1/Notify-for-HomeAssistant": {
       "domain": "notify_api",
@@ -63490,10 +63868,10 @@
     "slettmayer/ha-fermob": {
       "domain": "fermob",
       "category": "integration",
-      "version": "v0.10.6",
-      "ref": "refs/tags/v0.10.6",
+      "version": "v0.10.7",
+      "ref": "refs/tags/v0.10.7",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:14Z",
+      "scanned_utc": "2026-09-18T03:30:54Z",
       "files_scanned": 9,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -65650,7 +66028,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:27Z"
       }
     },
     "swartjean/ha-eskom-loadshedding": {
@@ -66299,11 +66678,11 @@
     "teh-hippo/ha-govee-led-ble": {
       "domain": "ha_govee_led_ble",
       "category": "integration",
-      "version": "v7.6.2",
-      "ref": "refs/tags/v7.6.2",
+      "version": "v7.8.0",
+      "ref": "refs/tags/v7.8.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:50Z",
-      "files_scanned": 73,
+      "scanned_utc": "2026-09-18T03:30:58Z",
+      "files_scanned": 77,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
@@ -67821,10 +68200,10 @@
     "tomasbedrich/home-assistant-hikconnect": {
       "domain": "hikconnect",
       "category": "integration",
-      "version": "3.1.2",
-      "ref": "refs/tags/3.1.2",
+      "version": "3.1.3",
+      "ref": "refs/tags/3.1.3",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:34Z",
+      "scanned_utc": "2026-09-18T03:30:53Z",
       "files_scanned": 8,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -68098,10 +68477,10 @@
     "townsmcp/mg-saic-ha": {
       "domain": "mg_saic",
       "category": "integration",
-      "version": "1.2.8",
-      "ref": "refs/tags/1.2.8",
+      "version": "1.2.9",
+      "ref": "refs/tags/1.2.9",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:09Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 24,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -68704,7 +69083,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_update_device",
+        "checked_utc": "2026-09-18T03:35:29Z"
       }
     },
     "tuzkiyoung/treeow": {
@@ -69359,10 +69739,10 @@
     "v1k70rk4/HASS.Agent.NET10-Integration": {
       "domain": "hass_agent",
       "category": "integration",
-      "version": "v10.6.8",
-      "ref": "refs/tags/v10.6.8",
+      "version": "v10.7.0",
+      "ref": "refs/tags/v10.7.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:40Z",
+      "scanned_utc": "2026-09-18T03:30:57Z",
       "files_scanned": 12,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -69372,36 +69752,8 @@
         {
           "rule_id": "device-registry-async-get-device",
           "breaks_in": "2027.8",
-          "file": "custom_components/hass_agent/__init__.py",
-          "line": 540,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/hass_agent/button.py",
-          "line": 79,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/hass_agent/media_player.py",
-          "line": 63,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/hass_agent/sensor.py",
-          "line": 263,
-          "confidence": "high"
-        },
-        {
-          "rule_id": "device-registry-async-get-device",
-          "breaks_in": "2027.8",
-          "file": "custom_components/hass_agent/update.py",
-          "line": 35,
+          "file": "custom_components/hass_agent/entity.py",
+          "line": 27,
           "confidence": "high"
         }
       ],
@@ -69989,7 +70341,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:32Z"
       }
     },
     "vlioscz/is3-export": {
@@ -70686,7 +71039,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:35Z"
       }
     },
     "wirkaufenfair/Stand-Up-Pls-Home-Assistant": {
@@ -71604,10 +71958,10 @@
     "zackwag/landbook-ha": {
       "domain": "landbook",
       "category": "integration",
-      "version": "v1.3.13",
-      "ref": "refs/tags/v1.3.13",
+      "version": "v1.4.1",
+      "ref": "refs/tags/v1.4.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:40Z",
+      "scanned_utc": "2026-09-18T03:30:57Z",
       "files_scanned": 10,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -72120,7 +72474,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:37Z"
       }
     },
     "slx612/WOL-Home-Assistant-And-Alexa": {
@@ -72310,10 +72665,10 @@
     "BTNBx/xPower-Flow-Card": {
       "domain": "",
       "category": "plugin",
-      "version": "v1.3.37",
-      "ref": "refs/tags/v1.3.37",
+      "version": "v1.3.38",
+      "ref": "refs/tags/v1.3.38",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:23Z",
+      "scanned_utc": "2026-09-18T03:30:55Z",
       "files_scanned": 1,
       "syntax_errors": 0,
       "skipped_minified": 1,
@@ -72856,10 +73211,10 @@
     "GyroGearl00se/lovelace-froeling-card": {
       "domain": "",
       "category": "plugin",
-      "version": "v3.2.0",
-      "ref": "refs/tags/v3.2.0",
+      "version": "v3.2.1",
+      "ref": "refs/tags/v3.2.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:52:55Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 1,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -73515,10 +73870,10 @@
     "ManfredTremmel/lovelace-heat-pump-card": {
       "domain": "",
       "category": "plugin",
-      "version": "v0.9.1",
-      "ref": "refs/tags/v0.9.1",
+      "version": "v0.9.2",
+      "ref": "refs/tags/v0.9.2",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:14Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 1,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -79479,10 +79834,10 @@
     "mkshb/hass-evcc-card": {
       "domain": "",
       "category": "plugin",
-      "version": "v0.7.7",
-      "ref": "refs/tags/v0.7.7",
+      "version": "v0.7.8",
+      "ref": "refs/tags/v0.7.8",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:56:15Z",
+      "scanned_utc": "2026-09-18T03:30:52Z",
       "files_scanned": 1,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -80276,29 +80631,29 @@
     "punxaphil/custom-sonos-card": {
       "domain": "",
       "category": "plugin",
-      "version": "v10.8.3",
-      "ref": "refs/tags/v10.8.3",
+      "version": "v10.8.4",
+      "ref": "refs/tags/v10.8.4",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:35Z",
+      "scanned_utc": "2026-09-18T03:30:55Z",
       "files_scanned": 128,
       "syntax_errors": 0,
       "skipped_minified": 2,
       "skipped_vendor": 0,
-      "stargazers_count": 330,
+      "stargazers_count": 332,
       "findings": []
     },
     "punxaphil/maxi-media-player": {
       "domain": "",
       "category": "plugin",
-      "version": "v10.8.3",
-      "ref": "refs/tags/v10.8.3",
+      "version": "v10.8.4",
+      "ref": "refs/tags/v10.8.4",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:35Z",
+      "scanned_utc": "2026-09-18T03:30:56Z",
       "files_scanned": 0,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 110,
+      "stargazers_count": 111,
       "findings": []
     },
     "qlerup/energy-graph-scheduler-card": {
@@ -80697,11 +81052,11 @@
     "rudizl/platinum-weather-card-plus-charts": {
       "domain": "",
       "category": "plugin",
-      "version": "v2.3.4",
-      "ref": "refs/tags/v2.3.4",
+      "version": "v2.4.0",
+      "ref": "refs/tags/v2.4.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:30Z",
-      "files_scanned": 48,
+      "scanned_utc": "2026-09-18T03:30:54Z",
+      "files_scanned": 50,
       "syntax_errors": 0,
       "skipped_minified": 2,
       "skipped_vendor": 0,
@@ -81693,10 +82048,10 @@
     "timmaurice/lovelace-blitzortung-lightning-card": {
       "domain": "",
       "category": "plugin",
-      "version": "1.18.0",
-      "ref": "refs/tags/1.18.0",
+      "version": "1.18.1",
+      "ref": "refs/tags/1.18.1",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:29Z",
+      "scanned_utc": "2026-09-18T03:30:55Z",
       "files_scanned": 18,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -82537,7 +82892,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:40Z"
       }
     },
     "MacSiem/ha-smart-reports": {
@@ -82676,7 +83032,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:43Z"
       }
     },
     "TomTuTHub/tomtut-pool-dosing-vigipool": {
@@ -82716,13 +83073,13 @@
     "chriguschneider/weather-station-card": {
       "domain": "",
       "category": "plugin",
-      "version": "v2.4.3",
-      "ref": "refs/tags/v2.4.3",
+      "version": "v2.5.0",
+      "ref": "refs/tags/v2.5.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:36Z",
-      "files_scanned": 155,
+      "scanned_utc": "2026-09-18T03:30:58Z",
+      "files_scanned": 153,
       "syntax_errors": 0,
-      "skipped_minified": 17,
+      "skipped_minified": 23,
       "skipped_vendor": 0,
       "stargazers_count": 11,
       "findings": []
@@ -83224,15 +83581,15 @@
     "PraxiGEN/custom-stack-cards": {
       "domain": "",
       "category": "plugin",
-      "version": "v1.1.3-lit",
-      "ref": "refs/tags/v1.1.3-lit",
+      "version": "v1.1.4-lit",
+      "ref": "refs/tags/v1.1.4-lit",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:58:10Z",
+      "scanned_utc": "2026-09-18T03:30:55Z",
       "files_scanned": 2,
       "syntax_errors": 0,
       "skipped_minified": 0,
       "skipped_vendor": 0,
-      "stargazers_count": 7,
+      "stargazers_count": 8,
       "findings": []
     },
     "QuadNL/Vattenfall-InCharge-integration": {
@@ -83536,10 +83893,10 @@
     "cyrilcolinet/enki-integration-hass": {
       "domain": "enki",
       "category": "integration",
-      "version": "v1.22.0",
-      "ref": "refs/tags/v1.22.0",
+      "version": "v1.23.0",
+      "ref": "refs/tags/v1.23.0",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T01:57:03Z",
+      "scanned_utc": "2026-09-18T03:30:53Z",
       "files_scanned": 62,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -83636,14 +83993,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "report": {
-          "number": 2,
-          "url": "https://github.com/hiSweid/last_changed_keeper/issues/2",
-          "state": "closed",
-          "title": "No longer working in HA core-2026.7.4",
-          "reactions": 0
-        },
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:45Z"
       }
     },
     "igor-zukowski/ha-smsplanet": {
@@ -84326,7 +84677,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:48Z"
       }
     },
     "dennisbest85/energy-flow-price-card": {
@@ -84630,7 +84982,13 @@
       ],
       "domains": [
         "waterbeep"
-      ]
+      ],
+      "upstream": {
+        "archived": false,
+        "issues_enabled": true,
+        "symbol": "async_add_external_statistics",
+        "checked_utc": "2026-09-18T03:35:50Z"
+      }
     },
     "MacSiem/ha-frigate-privacy": {
       "domain": "ha_frigate_privacy",
@@ -84826,7 +85184,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:53Z"
       }
     },
     "dn5qMDW3/briiv": {
@@ -84869,10 +85228,10 @@
     "hiSweid/ha-auto-organizer": {
       "domain": "auto_organizer",
       "category": "integration",
-      "version": "v0.11.12",
-      "ref": "refs/tags/v0.11.12",
+      "version": "v0.11.13",
+      "ref": "refs/tags/v0.11.13",
       "status": "scanned",
-      "scanned_utc": "2026-09-17T03:31:56Z",
+      "scanned_utc": "2026-09-18T03:31:00Z",
       "files_scanned": 11,
       "syntax_errors": 0,
       "skipped_minified": 0,
@@ -85003,7 +85362,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:56Z"
       }
     },
     "tis24dev/addhOn": {
@@ -85533,7 +85893,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "devices"
+        "symbol": "device_registry.devices",
+        "checked_utc": "2026-09-18T03:35:58Z"
       }
     },
     "MacSiem/ha-encoding-fixer": {
@@ -86152,7 +86513,8 @@
       "upstream": {
         "archived": false,
         "issues_enabled": true,
-        "symbol": "config_entries"
+        "symbol": "async_get_device",
+        "checked_utc": "2026-09-18T03:36:01Z"
       }
     },
     "m4rkireland/ha-portainer-swarm-monitor": {
@@ -86632,7 +86994,7 @@
       ]
     }
   },
-  "updated_utc": "2026-09-17T03:33:14Z",
+  "updated_utc": "2026-09-18T03:48:53Z",
   "rules_hash": "0b8d69041792edb5",
   "core_version": "2026.10"
 }
