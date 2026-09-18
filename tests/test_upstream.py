@@ -349,6 +349,27 @@ ON_FILE = {
 }
 
 
+def _still_served(**over):
+    """GitHub's answer for the report already on file, before a test changes a
+    field of it. ``_repository`` fills in the repository it came from."""
+    return {
+        "number": 41,
+        "html_url": "https://github.com/a/one/issues/41",
+        "state": "open",
+        "title": "setup_scanner is deprecated",
+        "reactions": {"total_count": 3},
+        **over,
+    }
+
+
+def _look_up():
+    """The lookup every test below makes: one repository, one symbol, and the
+    report on file as what the last run recorded."""
+    return look_up(
+        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
+    )
+
+
 def _repository(monkeypatch, issue, *, issues_enabled, search):
     """A repository whose search answers ``search`` and whose issue 41 answers
     ``issue``, either the payload the API returns or the error it raises."""
@@ -407,9 +428,7 @@ def test_a_search_that_fails_keeps_what_the_repository_itself_answered(monkeypat
     everybody for another week, on evidence this run had in hand."""
     slept: list[float] = []
     _search_errored(monkeypatch, slept)
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert facts["archived"] is False
     assert facts["issues_enabled"] is True
     assert facts["report"] == ON_FILE
@@ -430,9 +449,7 @@ def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
             "reactions": {"total_count": 9},
         },
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert facts["report"]["state"] == "closed"
     assert facts["report"]["reactions"] == 9
 
@@ -443,18 +460,13 @@ def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
     for an unrelated issue of ours by the same one."""
     _search_found_nothing(
         monkeypatch,
-        {
-            "number": 7,
-            "repository_url": "https://api.github.com/repos/c/elsewhere",
-            "html_url": "https://github.com/c/elsewhere/issues/7",
-            "state": "open",
-            "title": "setup_scanner is deprecated",
-            "reactions": {"total_count": 3},
-        },
+        _still_served(
+            number=7,
+            repository_url="https://api.github.com/repos/c/elsewhere",
+            html_url="https://github.com/c/elsewhere/issues/7",
+        ),
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert "report" not in facts
 
 
@@ -464,14 +476,11 @@ def test_a_report_on_a_renamed_repository_is_kept(monkeypatch):
     its own."""
     _search_found_nothing(
         monkeypatch,
-        {
-            "number": 41,
-            "repository_url": "https://api.github.com/repos/a/one-renamed",
-            "html_url": "https://github.com/a/one-renamed/issues/41",
-            "state": "open",
-            "title": "setup_scanner is deprecated",
-            "reactions": {"total_count": 3},
-        },
+        _still_served(
+            number=41,
+            repository_url="https://api.github.com/repos/a/one-renamed",
+            html_url="https://github.com/a/one-renamed/issues/41",
+        ),
     )
     monkeypatch.setattr(
         "tools.upstream.repo_facts",
@@ -481,9 +490,7 @@ def test_a_report_on_a_renamed_repository_is_kept(monkeypatch):
             "canonical": "a/one-renamed",
         },
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert facts["report"]["number"] == 41
     assert "canonical" not in facts, "the fact is about the repository, not its name"
 
@@ -518,18 +525,13 @@ def test_a_report_transferred_onto_the_same_number_is_not_kept(monkeypatch):
     rename. Where the answer came from can."""
     _search_found_nothing(
         monkeypatch,
-        {
-            "number": 41,
-            "repository_url": "https://api.github.com/repos/c/elsewhere",
-            "html_url": "https://github.com/c/elsewhere/issues/41",
-            "state": "open",
-            "title": "setup_scanner is deprecated",
-            "reactions": {"total_count": 3},
-        },
+        _still_served(
+            number=41,
+            repository_url="https://api.github.com/repos/c/elsewhere",
+            html_url="https://github.com/c/elsewhere/issues/41",
+        ),
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert "report" not in facts
 
 
@@ -538,9 +540,7 @@ def test_a_report_that_is_gone_is_not_carried_forward(monkeypatch):
     stored would keep publishing the link for as long as the repository has
     findings."""
     _search_found_nothing(monkeypatch, _http_error(404, {}))
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert "report" not in facts
 
 
@@ -550,9 +550,7 @@ def test_a_report_the_gate_now_rejects_is_not_carried_over(monkeypatch):
     _search_found_nothing(
         monkeypatch, {"number": 41, "title": "Not working on 2021.12", "state": "open"}
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert "report" not in facts
 
 
@@ -562,18 +560,10 @@ def test_a_weaker_hit_does_not_displace_the_report_on_file(monkeypatch):
     swaps a real report for an unrelated one, and swaps it back next run."""
     _searched(
         monkeypatch,
-        {
-            "number": 41,
-            "html_url": "https://github.com/a/one/issues/41",
-            "state": "open",
-            "title": "setup_scanner is deprecated",
-            "reactions": {"total_count": 3},
-        },
+        _still_served(),
         found={"number": 77, "title": "Deprecated YAML config", "state": "open"},
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert facts["report"]["number"] == 41
 
 
@@ -596,9 +586,7 @@ def test_a_better_hit_is_taken_without_a_second_request(monkeypatch):
 def test_a_weak_hit_is_still_better_than_a_report_that_is_gone(monkeypatch):
     weak = {"number": 77, "title": "Deprecated YAML config", "state": "open"}
     _searched(monkeypatch, _http_error(404, {}), found=weak)
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert facts["report"] == weak
 
 
@@ -896,17 +884,9 @@ def test_a_report_still_served_survives_issues_being_turned_off(monkeypatch):
     "already reported, here it is" into "there is nowhere to report it"."""
     _issues_turned_off(
         monkeypatch,
-        {
-            "number": 41,
-            "html_url": "https://github.com/a/one/issues/41",
-            "state": "open",
-            "title": "setup_scanner is deprecated",
-            "reactions": {"total_count": 3},
-        },
+        _still_served(),
     )
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert facts["report"]["number"] == 41
     assert facts["issues_enabled"] is False
 
@@ -915,9 +895,7 @@ def test_a_report_hidden_with_the_issue_tracker_is_dropped(monkeypatch):
     """410 is what the API answers for an issue on a repository that has
     turned them off, so this settles itself."""
     _issues_turned_off(monkeypatch, _http_error(410, {}))
-    facts = look_up(
-        "a/one", "setup_scanner", current_version=NOW, known=ON_FILE, token="x"
-    )
+    facts = _look_up()
     assert "report" not in facts
 
 

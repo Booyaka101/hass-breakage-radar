@@ -270,20 +270,24 @@ def test_a_rule_whose_source_is_a_path_is_not_a_link(payload):
     assert 'href="homeassistant/' not in board
 
 
+def _no_detector_rule():
+    """An announced removal with nothing to match it on, which is what puts a
+    rule in the deadline bucket rather than in a repository table."""
+    return {
+        "id": "blog-configurator-removal-2027.6",
+        "kind": "prose",
+        "symbol": "configurator",
+        "message": "The configurator integration is removed.",
+        "breaks_in": "2027.6",
+        "source": "https://developers.home-assistant.io/blog/post/",
+        "origin": "blog",
+        "confidence": "medium",
+        "matchable": False,
+    }
+
+
 def test_the_board_lists_the_removals_no_matcher_covers(payload):
-    payload["rules"].append(
-        {
-            "id": "blog-configurator-removal-2027.6",
-            "kind": "prose",
-            "symbol": "configurator",
-            "message": "The configurator integration is removed.",
-            "breaks_in": "2027.6",
-            "source": "https://developers.home-assistant.io/blog/post/",
-            "origin": "blog",
-            "confidence": "medium",
-            "matchable": False,
-        }
-    )
+    payload["rules"].append(_no_detector_rule())
     board = render_html(payload)
     assert "Announced removals with no detector (1)" in board
     assert "blog-configurator-removal-2027.6" in board
@@ -312,19 +316,7 @@ def test_a_filtered_no_detector_release_recounts_its_heading(payload):
 def test_the_no_detector_list_is_searched_on_its_own_field(payload):
     """The word "source" is on every one of these rows, and the tables above
     them search a field rather than their own markup for exactly that reason."""
-    payload["rules"].append(
-        {
-            "id": "blog-configurator-removal-2027.6",
-            "kind": "prose",
-            "symbol": "configurator",
-            "message": "The configurator integration is removed.",
-            "breaks_in": "2027.6",
-            "source": "https://developers.home-assistant.io/blog/post/",
-            "origin": "blog",
-            "confidence": "medium",
-            "matchable": False,
-        }
-    )
+    payload["rules"].append(_no_detector_rule())
     board = render_html(payload)
     assert (
         '<li data-search="blog-configurator-removal-2027.6 configurator '

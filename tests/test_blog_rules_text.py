@@ -156,16 +156,24 @@ def test_a_sentence_that_names_one_deadline_twice_makes_one_rule():
     assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
 
 
+def _schedule(*bullets):
+    """A post that gives its deprecation schedule as bullets."""
+    items = "".join(f"<li>{bullet}</li>" for bullet in bullets)
+    return _text(
+        "<article><p>The shims are deprecated.</p>"
+        "<ul>" + items + "</ul></article>"
+    )
+
+
 def test_a_schedule_in_bullets_is_still_one_deadline():
     """The support window and the removal are one deadline whether the post
     says both in a sentence or gives each its own bullet, and every block is
     its own sentence since the chrome fix."""
     rules = extract_removals(
         URL,
-        _text(
-            "<article><p>The shims are deprecated.</p><ul>"
-            "<li>Supported until Home Assistant Core 2027.4</li>"
-            "<li>Removed in Home Assistant Core 2027.5</li></ul></article>"
+        _schedule(
+            "Supported until Home Assistant Core 2027.4",
+            "Removed in Home Assistant Core 2027.5",
         ),
     )
     assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
@@ -176,11 +184,10 @@ def test_a_schedule_with_a_note_between_the_bullets_is_one_deadline():
     meantime does not make the window above it a deadline of its own."""
     rules = extract_removals(
         URL,
-        _text(
-            "<article><p>The shims are deprecated.</p><ul>"
-            "<li>Supported until Home Assistant Core 2027.4</li>"
-            "<li>No new integrations may use them from now on</li>"
-            "<li>Removed in Home Assistant Core 2027.5</li></ul></article>"
+        _schedule(
+            "Supported until Home Assistant Core 2027.4",
+            "No new integrations may use them from now on",
+            "Removed in Home Assistant Core 2027.5",
         ),
     )
     assert [rule["breaks_in"] for rule in rules] == ["2027.5"]
