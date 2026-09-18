@@ -72,6 +72,7 @@ jobs:
         run: python tools/build_index.py
 
       - name: Run the test suite against the fresh data
+        id: verify
         run: |
           python -m pip install --disable-pip-version-check --quiet pytest
           python -m pytest
@@ -96,28 +97,34 @@ jobs:
           else
             git checkout -- data/rules.json
           fi
-          if git diff --cached --quiet; then
-            echo "No index changes to commit."
-            exit 0
-          fi
           SCANNED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_scanned'])")
           AFFECTED=$(python -c "import json;print(json.load(open('docs/index.json'))['coverage']['repos_affected'])")
-          git commit -m "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
+          bash tools/push_crawl.sh "chore(crawl): refresh index (${SCANNED} scanned, ${AFFECTED} affected)"
 
-          # A slice takes about ten minutes, so main can move while it runs.
-          # These files are generated, not authored, so rebasing and keeping
-          # ours is always the right answer for them.
-          for attempt in 1 2 3; do
-            if git push; then
-              exit 0
-            fi
-            echo "push rejected (attempt ${attempt}); rebasing onto the updated main"
-            git fetch origin main
-            git rebase -X ours origin/main || {
-              git rebase --abort
-              echo "could not rebase cleanly; leaving main alone"
-              exit 1
-            }
-          done
-          echo "still could not push after three attempts"
-          exit 1
+      - name: Save the crawl progress if the run did not finish
+        # The scan writes its progress to disk every 25 repositories, and the
+        # lookups are the slow part of it: up to 400 of them, 2.1 seconds
+        # apart. Without this a crash, the cancel button or the job timeout
+        # throws all of that away with the workspace and the next run spends
+        # the rate limit on the same repositories again. always() rather than
+        # cancelled() because a timeout is documented as neither that nor a
+        # failure, and not at all when the suite ran and failed: fresh data
+        # the tests reject is not progress. After a run that finished there is
+        # nothing uncommitted left and this does nothing.
+        if: ${{ always() && steps.verify.outcome != 'failure' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Progress files only. The index is rebuilt after the scan, so
+          # publishing stays the business of a run that got that far. A commit
+          # the step above made and could not push goes as it stands, because
+          # that is a finished run's work rather than this step's.
+          # The index survives a step, so the reset is what keeps a half-built
+          # docs/ the step above had already staged out of this commit.
+          git reset
+          git add data/catalog.json data/findings.json state/crawl.json
+          # Whatever else the run had rewritten by then, the rule stamps or a
+          # half-built index, is not being committed, and rebasing needs the
+          # working tree clean.
+          git checkout -- .
+          bash tools/push_crawl.sh "chore(crawl): save progress from a run that did not finish"

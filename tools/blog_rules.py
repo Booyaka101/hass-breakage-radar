@@ -47,7 +47,7 @@ from tools.common import (  # noqa: E402
     utc_now_iso,
     write_json,
 )
-from tools.release import floor_from_payload  # noqa: E402
+from tools.release import floor_from_payload, next_release  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     MATCHER_TYPES,
     VERSION_RE,
@@ -60,7 +60,8 @@ from tools.rules_engine import (  # noqa: E402
 BLOG_INDEX = "https://developers.home-assistant.io/blog/"
 BLOG_BASE = "https://developers.home-assistant.io"
 
-#: Sentences that announce a removal, all seen live on the real blog.
+#: Sentences that name the release something stops working in, all seen live
+#: on the real blog.
 REMOVAL_PATTERNS = [
     re.compile(
         r"(?:will be |is )?removed in (?:the )?(?:Home Assistant )?(?:Core )?(\d{4}\.\d+(?:\.\d+)?)",
@@ -70,24 +71,65 @@ REMOVAL_PATTERNS = [
         r"will stop working in (?:the )?(?:Home Assistant )?(?:Core )?(\d{4}\.\d+(?:\.\d+)?)",
         re.I,
     ),
+    re.compile(r"Removal in (?:Home Assistant )?Core (\d{4}\.\d+(?:\.\d+)?)", re.I),
+]
+
+#: The same deadline said the other way round, naming the last release it still
+#: works in. Only read when the sentence does not announce a removal outright:
+#: "supported until 2027.4 and removed in 2027.5" is one deadline twice, and
+#: this half of it is a release early.
+SUPPORT_END_PATTERNS = [
     re.compile(
         r"(?:supported|kept|keeps working) until (?:Home Assistant )?(?:Core )?(\d{4}\.\d+(?:\.\d+)?)",
         re.I,
     ),
-    re.compile(r"Removal in (?:Home Assistant )?Core (\d{4}\.\d+(?:\.\d+)?)", re.I),
 ]
 
 _TAG_RE = re.compile(r"<[^>]+>")
 _WS_RE = re.compile(r"\s+")
+_HSPACE_RE = re.compile(r"[^\S\n]+")
+_ZERO_WIDTH_RE = re.compile("[\u200b\u200c\u200d\ufeff]")
+_LOOSE_PUNCT_RE = re.compile(r" +([.,;:!?])")
+#: Both ends of every element that starts a new line of prose. Closing tags on
+#: their own leave a nested list or a table cell running into the text beside
+#: it. Not ``br``: a line break inside a paragraph is a soft wrap like any
+#: other, and a sentence broken over one would be quoted from the break on.
+_BLOCK_RE = re.compile(
+    r"(?i)</?(?:p|div|li|ul|ol|h[1-6]|table|tr|td|th|blockquote|pre|section"
+    r"|article|header|footer|nav|main|aside)\b[^>]*>"
+)
 _POST_HREF_RE = re.compile(r'href="(/blog/\d{4}/\d{2}/\d{2}/[a-z0-9\-._]+)"', re.I)
+_ARTICLE_RE = re.compile(r"(?is)<article\b.*?</article>")
 
 
 def _text(markup: str) -> str:
-    """Strip HTML down to readable prose."""
+    """Strip HTML down to readable prose, one block element per line."""
     markup = re.sub(r"(?is)<(script|style).*?</\1>", " ", markup)
-    markup = re.sub(r"(?i)<br\s*/?>", "\n", markup)
-    markup = re.sub(r"(?i)</(p|div|li|h[1-6])>", "\n", markup)
-    return _WS_RE.sub(" ", html.unescape(_TAG_RE.sub(" ", markup))).strip()
+    # Source newlines are soft wraps, so they go before the block boundaries do.
+    # The other order splits a wrapped sentence down the middle.
+    markup = _BLOCK_RE.sub("\n", _WS_RE.sub(" ", markup))
+    text = _ZERO_WIDTH_RE.sub("", html.unescape(_TAG_RE.sub(" ", markup)))
+    lines = (
+        _LOOSE_PUNCT_RE.sub(r"\1", _HSPACE_RE.sub(" ", line)).strip()
+        for line in text.split("\n")
+    )
+    return "\n".join(line for line in lines if line)
+
+
+def _post_body(markup: str) -> str:
+    """The post itself, without the chrome Docusaurus wraps around it.
+
+    The navigation, the recent-posts list and the footer are prose too, and
+    they render before the post, so a release named in one of them would be
+    quoted instead of the post's own sentence. Falling back to the whole page
+    keeps a redesign from quietly producing no rules at all.
+
+    A post page carries one ``article`` today. If a redesign ever wraps the
+    listed posts in one each, the longest is still the post being read, where
+    spanning from the first to the last would put the chrome back.
+    """
+    articles = _ARTICLE_RE.findall(markup)
+    return max(articles, key=len) if articles else markup
 
 
 def _slug(text: str) -> str:
@@ -105,30 +147,81 @@ def discover_posts(index_html: str) -> list[str]:
 
 
 def _sentences(text: str) -> Iterable[str]:
-    for sentence in re.split(r"(?<=[.!?])\s+", text):
+    """Sentence ends, plus the block boundaries :func:`_text` marked.
+
+    A page's navigation carries no full stop, so without the second kind the
+    whole sidebar reads as one sentence and lands in a rule message.
+    """
+    for sentence in re.split(r"(?<=[.!?])[^\S\n]+|\n+", text):
         sentence = sentence.strip()
         if sentence:
             yield sentence
 
 
+def _releases(sentence: str, patterns: list[re.Pattern[str]]) -> list[str]:
+    """Every release one sentence names in these words, in the order named.
+
+    Left to right rather than pattern by pattern: a sentence that says two
+    deadlines rarely words both the same way, and grouping by wording would
+    hand back the later one first.
+    """
+    found: dict[str, int] = {}
+    for pattern in patterns:
+        for match in pattern.finditer(sentence):
+            version = normalise_version(match.group(1))
+            if VERSION_RE.match(version):
+                found.setdefault(version, match.start(1))
+    return sorted(found, key=found.__getitem__)
+
+
+def _warns_a_release_early(version: str, sentences: list[str], index: int) -> bool:
+    """Whether a support window ending here is the removal beside it, early.
+
+    Only what a post says around the window counts. Bullets split a schedule
+    one paragraph used to say in a sentence, and a schedule can carry a bullet
+    that names no release between the two that do, so the removal is within
+    two either way. Further than that a post covering two deprecations can end
+    one window the release before the other is removed with no connection
+    between them. A window that ends at the removal's own release is the same
+    deadline said twice, so it is kept and the half the post says first is the
+    one quoted.
+    """
+    nearby = {
+        release
+        for neighbour in sentences[max(index - 2, 0) : index + 3]
+        for release in _releases(neighbour, REMOVAL_PATTERNS)
+    }
+    return version not in nearby and next_release(version) in nearby
+
+
 def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
-    """Find every 'removed in <release>' sentence in one post's prose."""
+    """Find every 'removed in <release>' sentence in one post's prose.
+
+    Every release a sentence names, not the first: a post that lists two
+    removals as hard-wrapped lines of one paragraph reads as a single
+    sentence, and the second one is a rule nobody would ever see missing.
+
+    Where a support window ends is a deadline of its own unless the removal
+    beside it lands a release later, which makes the window that removal said
+    a release too soon, whether the post says both in one sentence or gives
+    each its own bullet.
+    """
     title_slug = url.rstrip("/").rsplit("/", 1)[-1]
     found: dict[str, dict[str, Any]] = {}
 
-    for sentence in _sentences(text):
-        for pattern in REMOVAL_PATTERNS:
-            match = pattern.search(sentence)
-            if not match:
-                continue
-            version = normalise_version(match.group(1))
-            if not VERSION_RE.match(version):
-                continue
-            key = version
-            if key in found:
+    sentences = list(_sentences(text))
+
+    for index, sentence in enumerate(sentences):
+        versions = _releases(sentence, REMOVAL_PATTERNS) or [
+            version
+            for version in _releases(sentence, SUPPORT_END_PATTERNS)
+            if not _warns_a_release_early(version, sentences, index)
+        ]
+        for version in versions:
+            if version in found:
                 continue
             trimmed = sentence if len(sentence) <= 400 else sentence[:397] + "..."
-            found[key] = {
+            found[version] = {
                 "id": f"blog-{_slug(title_slug)}-{version}",
                 "kind": "prose",
                 "symbol": title_slug.replace("-", " "),
@@ -139,7 +232,6 @@ def extract_removals(url: str, text: str) -> list[dict[str, Any]]:
                 "confidence": "info",
                 "matchable": False,
             }
-            break
     return list(found.values())
 
 
@@ -172,7 +264,7 @@ def fetch_blog_rules(
         except Exception as err:
             LOGGER.warning("skipping %s: %s", url, err)
             continue
-        hits = extract_removals(url, _text(body))
+        hits = extract_removals(url, _text(_post_body(body)))
         if hits:
             LOGGER.info(
                 "%s -> %s",
@@ -283,24 +375,9 @@ def merge(
     for rule in manual:
         merged[rule["id"]] = rule
 
-    matchable_symbols = {
-        name
-        for rule in merged.values()
-        if rule.get("match")
-        for name in (
-            rule["match"].get("names", [])
-            + rule["match"].get("bases", [])
-            + rule["match"].get("files", [])
-        )
-    }
-
     for rule in blog:
         if rule["id"] in merged or rule["id"] in superseded:
             continue
-        # Suppress a prose rule that only restates a release we already match on
-        # with a real matcher, to keep the board free of duplicates.
-        if any(symbol in rule["message"] for symbol in matchable_symbols):
-            rule = {**rule, "duplicate_of_matchable_release": True}
         merged[rule["id"]] = rule
 
     for rule in merged.values():

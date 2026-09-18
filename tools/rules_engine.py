@@ -106,6 +106,10 @@ class Rule:
     #: ``breaks_in``; ``breaks_in`` stays the one release that orders, buckets
     #: and retires a rule.
     reports_in: str | None = None
+    #: What to paste into the upstream issue search instead of the reduced
+    #: symbol. Set it when that reduction is a word repositories use for
+    #: something else: "devices" finds every unrelated device bug there is.
+    search: str | None = None
 
     @property
     def matchable(self) -> bool:
@@ -127,6 +131,8 @@ class Rule:
             payload["replacement"] = self.replacement
         if self.reports_in:
             payload["reports_in"] = self.reports_in
+        if self.search:
+            payload["search"] = self.search
         if self.match:
             payload["match"] = self.match
         return payload
@@ -145,6 +151,7 @@ class Rule:
             match=payload.get("match"),
             replacement=payload.get("replacement"),
             reports_in=payload.get("reports_in"),
+            search=payload.get("search"),
         )
 
 
@@ -186,6 +193,11 @@ def search_term(symbol: str) -> str:
     function name, which is what someone would paste into an issue.
     """
     return symbol.split("(")[0].strip().split(".")[-1].strip()
+
+
+def rule_search_term(rule: dict[str, Any]) -> str:
+    """What to search an integration's own repository for, given a rule payload."""
+    return (rule.get("search") or "").strip() or search_term(rule.get("symbol") or "")
 
 
 @dataclass

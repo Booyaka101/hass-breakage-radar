@@ -4,6 +4,379 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.16.0 — 2026-09-18
+
+### Blog rule messages are the post, not the page furniture
+
+Four rules in the published index opened with "| Home Assistant Developer Docs Skip to
+main content Developers Home Assistant Overview Core Frontend...". `_text()` flattened
+the whole rendered page, and `_sentences()` split on full stops only, so a navigation
+sidebar that carries no full stop ran into the first real sentence of the post and the
+pair was truncated at 400 characters. `_text()` now starts a new line at both ends of
+every block element, drops the zero-width characters Docusaurus injects into heading
+anchors, and collapses the source's soft wraps before it does either, because the other
+order cuts a wrapped sentence in half. `_sentences()` treats those line breaks as
+sentence ends.
+
+Ten messages change. The configurator rule now reads "The Configurator integration has
+been deprecated and will be removed in Home Assistant 2027.10.", and the legacy device
+tracker one "The legacy (non-config-entry) device tracker platform API is deprecated and
+will be removed in the Home Assistant 2027.5 release."
+
+Measured over all 83 posts on the developer blog: the same 19 rules, same ids, same
+releases, same symbols, no navigation left in any message and nothing truncated.
+`rules_hash` covers matchers and releases, not messages, so nothing is re-crawled for
+this.
+
+### The board lists the removals it has no detector for
+
+The coverage note counted 60 announced removals with no matcher and said they were
+"listed for their deadline only", and nothing on the page listed them. They were in
+`docs/index.json` and nowhere a person reading the board would find them. The board now
+ends with a collapsed "Announced removals with no detector", grouped by release with
+each rule's own source link beside it. The repository filter skips that list instead of
+hiding it as a section whose table has no rows, and the search box narrows it to the
+rules whose id, symbol or message matches, on the same kind of field the repository
+tables have always carried.
+
+Twenty-six "source" links on the board pointed at a path relative to the board itself,
+`homeassistant/helpers/service.py:351` and the like, so they resolved to a 404 on the
+GitHub Pages domain. A rule extracted from core source carries the blob URL as well,
+which is what the feed has always linked; the board links it too now, and a rule with
+nothing but a file and a line gets that in code rather than a link that goes nowhere.
+The rebuilt board has none left.
+
+### A repair issue now says which issue it is
+
+Twenty-five of the 124 published rules carried the message "hass", and two more
+"self.hass", which is the same thing said from inside a config flow. Core raises these as
+`async_create_issue(hass, DOMAIN, issue_id, breaks_in_ha_version=...)`, and the
+extractor reads the first argument as the rule's prose, which for every one of them is
+the argument named `hass`. A repair issue is named by its translation key, so that is
+what the rule takes now, falling back to the issue id and then to the platform a
+`DeprecatedInfo` moves entities to: "`netio` raises the `deprecated_yaml` repair issue,
+and the configuration it reports stops working in Home Assistant 2027.3." A key built at
+runtime, as a variable or an f-string, names nothing, so those rules stay unnamed rather
+than publish the expression's own text, and the symbol follows the same order. Every
+platform move in core writes its platform as an identifier rather than a string, either
+`Platform.SIREN` or `SIREN_DOMAIN`, and both say the domain in the name itself, so the
+platform is read off the identifier for those two calls.
+
+The integration is part of the rule id now as well. decora_wifi and touchline both raise
+theirs from a function called `async_setup_platform`, and one rule for both named
+whichever file sorted first while the other read as unaffected. Where one function raises
+one deadline twice, from a call that writes the issue name down and from a neighbour that
+builds it at runtime, only the named one is published. It has to be the same function and
+not merely the same integration: several of them deprecate two unrelated things in one
+release, and those keep a rule each.
+
+Measured over the cached core tarball: 33 pending rules, each naming its own integration
+and its own issue, and three left as "raises a repair issue" because nothing in the call
+says which. `rules_hash` is built from the matchable rules, and none of these are
+matchable, so nothing is re-crawled for any of it. `data/rules.json` in the repository is
+still the last crawl's copy; the first crawl after this rebuilds it against a fresh core
+snapshot, which is also where the new ids reach the board.
+
+### A bullet between the two halves of a schedule no longer splits it
+
+"Supported until 2027.4" above "Removed in 2027.5" is one deadline, and the check for
+that read one sentence either side of the window. A schedule can carry a bullet that
+names no release between them, "no new integrations may use them from now on", which put
+the removal out of view and published the window as a deadline of its own, a release
+early. It reads two either side now. Over all 83 posts on the developer blog the rules
+come out the same at either width, so this is about the shape of a schedule rather than
+about today's corpus.
+
+### A crawl that cannot find a merge base says so
+
+`push_crawl.sh` asks for the merge base before deciding who owns `data/rules.json` after
+main moved mid-run. Under `set -e` a main with no common ancestor ended the script on
+that question alone, before the rebase, leaving the crawl's commit unpushed and nothing
+in the log to say why. The answer is optional now, and the rebase, which replays onto an
+unrelated root happily, gets to decide.
+
+### A rule can say what to search its own repositories for
+
+`search_term` reduces a symbol to its last dotted part, which turns
+`DeviceRegistry.devices` into `devices`. Asked across all 125 repositories the rule
+affects, that term finds a report in 53 of them and `device_registry.devices` in 16,
+and only 13 of those are the same issue. The other 40 are about something else: "Devices
+do not return to available status after connection loss", "Link with list to compatible
+devices", "Sorting and filtering devices and entity's". The dotted term is what
+`device-registry-devices-mapping` now carries in a new optional `search` field on the
+rule.
+
+A fact recorded under the old term no longer matches the rule that asked for it, so the
+next crawl looks those repositories up again rather than carrying the wrong link
+forward. The companion integration builds the same term the same way, so the search link
+in a Repairs notice agrees with the board.
+
+A lookup that fails on a timeout keeps the term the fact was already found under rather
+than the one the search never completed under, so one bad minute does not park a
+re-aimed rule for a week. A 404 still records the new term, because that is an answer
+about the repository.
+
+PROGRESS said this term "has not produced a wrong link yet". That was wrong. The 14
+above are in the index as shipped.
+
+### A release named in an issue title only counts if it is still ahead
+
+`DEPRECATION_WORDS` included a bare `20\d\d.\d+`, so "Not working on 2021.12" and
+"Errors with 2022.11.x" scored as deprecation notices and were published as the
+repository's own issue about a 2027 removal. A release in a title now scores only while
+it is at or ahead of the oldest release that has not shipped, which is the same line the
+rules themselves are pending from, so a title about the release currently in RC still
+counts while one about a release people are running does not. Eight of the 98 reports in the published index
+stop being linked: seven are bugs in releases from 2021.12 to 2026.7, and one is a real
+report lost to the rule, dyson_local's "depracation warnings on 2026.8.0b0", which names
+a release two behind and misspells the only word that would have carried it. Titles
+naming a release still to come are unaffected, including eltako's "Home Assistant 2027.8
+API changes" and luxtronik2's "adapt to the HA device registry changes before 2027.8".
+
+### An extractor behind core no longer overwrites the rules it cannot see
+
+Core's dev branch uses CPython syntax before the release that ships it, which is why the
+crawl pins Python 3.14. Run the extractor on anything older and 26 core files fail to
+parse, the run derives 32 matchable rules instead of 64, and it writes that over the full
+set and exits 0. The warning it logs is the only sign. What follows is worse than a
+smaller board: `prune_retired_findings` deletes every finding those 32 rules found, and
+the halved `rules_hash` queues all 4 687 catalogue entries for a rescan that takes twelve
+days at 400 a run.
+
+A run that could not parse a core file now compares what it derived against what is
+already written, and refuses to replace a fuller set with a smaller one. The board keeps
+yesterday's rules, and the step goes red instead of quiet. A first run, or one that
+parsed everything, is unaffected.
+
+### A flag nothing read
+
+`duplicate_of_matchable_release` was computed in `merge`, written into every published
+rule that tripped it, and read nowhere: not by the board, not by the integration, not by
+the action. The comment above it said it suppressed a duplicate prose rule, and it did
+not suppress anything. Its test was whether a matchable rule's symbol appears anywhere
+in the prose message, which is loose enough that rewording a blog post changes the
+answer, so it was not a sound basis for hiding a rule either. Gone, along with the six
+flags it had set in `data/rules.json`. `rules_hash` is unchanged, so nothing is re-crawled for it.
+
+### The post, not the page it is served on
+
+`_text` fixed the run-on sentence, but the whole rendered page still went into
+`extract_removals`: the navigation, the recent-posts list the blog puts on every post,
+and the footer. All of it renders before the post does, and the first sentence naming a
+release wins, so a removal named in one of those four listed titles would have been
+quoted as this post's own, on every post crawled while it was up there. Extraction is
+scoped to the `<article>` now, falling back to the whole page if a redesign ever drops
+it. Over all 83 posts that is 3 856 lines of chrome gone and the same 19 rules, ids and
+messages byte for byte.
+
+The post is the longest `<article>` on the page, not everything from the first one to
+the last. All 83 posts carry exactly one today and the extracted text is identical
+either way, but a redesign that wrapped each listed post in an article of its own would
+otherwise have put the chrome straight back.
+
+A `<br>` is not a block boundary either. Markdown renders a hard-wrapped line as one,
+mid-sentence, and reading it as the start of a new line of prose quotes the post from
+the break onwards. None of the 55 cached posts that contain one produced a different
+rule either way, so this is a trap rather than a bug on today's blog.
+
+Because of that, a rule is made for every release a sentence names in the same words,
+rather than the first one it names. A post that lists two removals as hard-wrapped
+lines of one paragraph is a single sentence once the wraps are soft again, and the
+second removal would have been a rule nobody could see missing. A sentence that
+announces a removal is not also read for where its support window ends, because
+"supported until 2027.4 and removed in 2027.5" is one deadline said two ways and the
+earlier half of it warns a release too soon. Two removals in one sentence are still two.
+Measured over all 83 posts: the same rules, the same messages.
+
+### One `--limit` for the whole run
+
+`--limit` bounds the repositories a run scans, and upstream lookups kept their own
+default of 400 regardless. A `--limit 5` smoke test scanned five repositories and then
+spent a quarter of an hour on four hundred lookups. The flag now covers both, up to the
+400 the lookups were always capped at: a full local rescan asks for 4 000 repositories,
+which the scan fits in the job and 4 000 lookups at 2.1 seconds apart would not.
+
+### Every affected repository gets its facts checked again
+
+`annotate` was only shown the repositories the slice had just rescanned, and a slice
+skips anything whose version and matchers are both unchanged. A repository that cuts no
+release was therefore never asked about again, and its recorded issue stayed in the
+index for good: the 14 wrong `devices` links and the 8 titles above would have outlived
+their own fix.
+
+Every affected repository is offered on every run now, including the ones delisted from
+HACS that keep their findings, and including on a day with nothing to scan, which is
+most days. A fact is asked about again when it is more than a week old, or when the rule
+behind it has been re-aimed since. A re-aimed one goes first, because the link it holds
+was found for a search this rule no longer makes, and then the oldest. A run asks about
+400 repositories at most. That
+is about two days' worth for the 826 affected repositories, and it is why facts carry
+`checked_utc`.
+
+A repository that answers 404 loses what was on file about it instead of carrying it
+forward. It is deleted, private, or gone somewhere the crawl cannot follow, and its
+findings stay in the index on purpose, but an "already reported" link nobody can open
+was being republished every week and restamped as freshly checked by the failure that
+found it missing.
+
+A rule merged while a crawl is running is no longer rebased away. The crawl takes its
+own side of every generated file it pushes, which is right for an index built from the
+catalogue and wrong for `data/rules.json`: that one is generated from `manual_rules.json`
+and the blog, and the run generated it before the merge landed. Main keeps that one file
+now, so a rule ships the day its pull request lands rather than the day after.
+
+A board change merged while a crawl is running survives the same rebase. `data/`
+is the only thing in `docs/index.html` the crawl generates; the rest is markup from
+`PAGE_TEMPLATE` in `tools/build_index.py`, and the run rendered the page from the
+template it checked out ten minutes earlier. Taking its side of the file therefore
+reverted the merged wording until the next day's run. Measured in a scratch clone: a
+pull request that edits the standfirst, which sits one line above the counters the
+crawl rewrites, disappeared from the pushed page. The page is rendered again after the
+rebase now, so the merged template and this run's data land together, and a run that
+publishes no board does not render one.
+
+A removal schedule written as bullets is one deadline again. The support window and
+the removal are the same date said twice, and the check for that was per sentence while
+every list item is now its own sentence, so a post with "Supported until Core 2027.4"
+above "Removed in Core 2027.5" made two rules and the earlier one warns a release too
+soon. A window that ends the release before the removal beside it is that removal, said
+early. One that ends at the removal's own release still stands, so does a post whose
+only deadline is the window it gives, and so does a post covering two deprecations whose
+dates happen to land a release apart. Over all 83 cached posts the rules come out byte
+for byte the same, ids and messages both.
+
+A crawl no longer publishes a board beside a rule set it does not match. Main gaining
+rules mid-run is usually main retiring one, and taking that copy left the run's findings
+naming rules it no longer has, which is what the build refuses to publish. The run keeps
+the rules it scanned against in that case, and tomorrow's crawl derives the merged ones
+anyway.
+
+Progress a crawl could not push is pushed by the step that rescues it. That step stages
+nothing, because the step before it had already committed and only the push failed, and
+stopping there left a scan and up to 400 lookups to die with the runner.
+
+A repository the scan pruned back to no findings loses its upstream fact even on a run
+that spent its lookup budget first. The fact is the repository's issue about a finding,
+and no lookup decides that, so it no longer waits behind one.
+
+A repository that disappears keeps whichever of its facts says there is nowhere to
+report the breakage. The rest of its issue tracker facts go when it 404s, because none
+of them can be checked any more, but a repository being archived or taking no issues is
+not undone by it going away, and a card holding either says so instead of offering a
+search on a URL that 404s as well.
+
+A repository keeps the report it already has. The scan holds a fact through its rule
+being overtaken by one that breaks sooner, and the lookup then aimed the next search at
+the sooner rule and overwrote the link with whatever that found, which is usually
+nothing. The two agree now: a fact carrying a report is asked about under the term it
+was found with while the repository still has that deprecation. Over the 826 affected
+repositories the target is identical for all of them today, so this changes nothing in
+the published index and stops a link going missing the day a sooner rule lands.
+
+A push that cannot rebase says why. `set -e` takes a failing `git rebase --abort`,
+and an abort fails when the rebase never started, so the one case the message was
+written for, a tree too dirty to rebase, was the one that exited with git's code and
+printed nothing. Rendering the board again is also allowed to fail without taking the
+push with it, but not to leave half a page in the tree for the next attempt to trip on.
+
+A fact whose `checked_utc` is null is asked about again instead of ending the run. The
+queue already read that field defensively and the freshness test next to it did not.
+
+A crawl that does not finish commits only its progress files. The git index survives a
+step, so a publishing step that died after staging `docs/` left the half-built index
+staged for the step that saves progress, which would have pushed the lot under a message
+saying it had saved a scan. It clears the index before staging its three files now.
+
+A search that fails no longer costs the answers the repository itself gave. `look_up`
+asks GitHub about the repository first and searches second, and letting the search
+error out of the whole lookup threw the first answer away: a repository unarchived last
+week would have gone on telling everybody "archived, no fix is coming" for another week
+on evidence the run had in hand.
+
+The searches are spaced whether or not they answer. A failed one costs the same against
+the secondary rate limit as a good one, and the caller logs it and moves straight on to
+the next repository, so a bad afternoon at GitHub would have fired the whole budget back
+to back.
+
+A refresh whose search finds nothing asks for the report it already had by number. The
+search answers with its own top ten, so an issue can fall out of the answer without
+anything having happened to it, and an empty "already reported" column sends everybody
+off to file a duplicate. Asking for it directly is also what notices the ones that are
+really gone, deleted or transferred or moved behind a login, and it picks up a close, a
+retitle or new reactions while it is there. The title is put through the same gate, so
+an issue renamed into something unrelated stops being linked. An archived repository is
+not searched at all, so there is nothing to have missed and its fact is replaced as
+before.
+
+The report on file is also asked about when the search comes back with anything that
+is not it. The search ranks its own way and answers with ten hits, so a run where the real
+report drops out and an unrelated "Deprecated YAML config" does not would otherwise
+swap the link, and swap it back the run after. A hit that scores higher than the one on
+file is taken as it stands, at no extra request, and a tie goes to the one on file so
+the link does not flip between two issues that score the same. Relevance is scored on
+the title as stored, which is the whole one, so the search and the fact are ranked the
+same way and an issue that names the symbol late in a long title is still the report.
+Repairs cuts the title to 140 characters when it shows it, which is where that number
+belonged. A confirmation that errors keeps the report it was checking:
+one 502 is not news about an issue.
+
+A renamed repository is searched under the name it answers to now. GitHub's search
+rejects a `repo:` qualifier naming a repository that has been renamed, with a 422 rather
+than an empty answer, so one that moved could never pick up a report: measured on
+`facebook/jest`, which answers as `jestjs/jest` and only matches under that name. The
+repository lookup each run already makes resolves it, because that one does follow the
+redirect.
+
+An issue transferred to another repository stops being linked. GitHub answers for it
+from wherever it went, so the link pointed at a repository the integration is not in,
+and the number it comes back with is that repository's, which had the next run asking
+for an unrelated issue of ours by the same one. The answer has to come from the
+repository being asked about, whatever it is called now: a rename redirects the
+repository lookup and the issue alike, so the name that lookup answered under is the
+one the check reads.
+
+A repository that has turned issues off is still asked about the report it is on file
+for. Turning them off hides the existing ones, and the API answers 404 or 410 for them,
+which is what drops the link. Assuming it from the flag turns "already reported, here
+it is" into "there is nowhere to report it" on a repository where the report is still
+sitting there.
+
+Lookups are saved every 25, failures included, and the crawl workflow commits what was
+saved when a run does not finish. A full budget of them takes about a quarter of an
+hour, and a run that crashed, was cancelled or hit the 90-minute timeout in the middle
+of that had spent the rate limit for nothing and left nothing behind but a discarded
+workspace. Progress files only: the index is rebuilt after the scan, so publishing
+stays the business of a run that got that far, and a run whose suite rejected the fresh
+data saves nothing at all. A run with no lookup to make saves too:
+a repository whose findings are all gone drops its upstream fact either way, and on most
+days there is no lookup to save it alongside.
+
+Both crawl commits go through one `tools/push_crawl.sh`, which retries onto a main that
+moved while the run was going. The progress commit pushed once and gave up, which is the
+one commit nothing else would have kept.
+
+The crawl's rebase onto a moved `main` kept the wrong side of a conflict. Rebase swaps
+the names, so `ours` there is `origin/main` and `theirs` is the commit being replayed,
+which for a generated file is the only side worth keeping: the run would have discarded
+its own refresh and published `main`'s older index instead.
+
+`--only owner/repo` asks about that repository whatever its fact's age. A forced rescan
+carries the fact forward with its old timestamp, so the freshness gate had the one
+command whose whole point is that repository doing no lookups at all for a week.
+
+A lookup that fails outright keeps what the repository last answered, rather than
+blanking the fact for a week over one timeout. The report is the exception when the
+rule behind it has been re-aimed since: it was found for a term this rule no longer
+asks about, so it goes.
+
+GitHub answers 403 both for "you have asked too often" and for "this repository is
+blocked". Only the first ends a run now, told apart by the rate limit headers or, for a
+secondary limit that sends neither, by the message. Read as the second, one blocked
+repository would have ended the refresh on every run from then on, and it would have led
+the queue every time, because a lookup that fails records nothing. A failed lookup now
+records the attempt, and the repository comes round again with the rest. A fact with no
+answer in it reads exactly as no fact at all, in a Repairs notice and on the board.
+
 ## 1.15.0 — 2026-09-17
 
 ### Deleted and child device entries read the same deprecated properties

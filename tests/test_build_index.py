@@ -252,6 +252,83 @@ def test_html_board_says_so_when_every_removal_has_a_matcher(payload):
     assert "All 1 announced removals tracked here have a matcher" in board
 
 
+def test_a_core_rule_links_the_blob_rather_than_its_own_path(payload):
+    rule = payload["rules"][0]
+    rule["source"] = "homeassistant/helpers/service.py:418"
+    rule["source_url"] = "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418"
+    board = render_html(payload)
+    assert 'href="https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418"' in board
+    assert 'href="homeassistant/' not in board
+
+
+def test_a_rule_whose_source_is_a_path_is_not_a_link(payload):
+    rule = payload["rules"][0]
+    rule["source"] = "homeassistant/helpers/service.py:418"
+    rule.pop("source_url", None)
+    board = render_html(payload)
+    assert "<code>homeassistant/helpers/service.py:418</code>" in board
+    assert 'href="homeassistant/' not in board
+
+
+def _no_detector_rule():
+    """An announced removal with nothing to match it on, which is what puts a
+    rule in the deadline bucket rather than in a repository table."""
+    return {
+        "id": "blog-configurator-removal-2027.6",
+        "kind": "prose",
+        "symbol": "configurator",
+        "message": "The configurator integration is removed.",
+        "breaks_in": "2027.6",
+        "source": "https://developers.home-assistant.io/blog/post/",
+        "origin": "blog",
+        "confidence": "medium",
+        "matchable": False,
+    }
+
+
+def test_the_board_lists_the_removals_no_matcher_covers(payload):
+    payload["rules"].append(_no_detector_rule())
+    board = render_html(payload)
+    assert "Announced removals with no detector (1)" in board
+    assert "blog-configurator-removal-2027.6" in board
+    assert "The configurator integration is removed." in board
+    assert "Home Assistant 2027.6 - 2 June 2027" in board
+    # Nothing to filter by repository, so the repository filter has to skip it.
+    assert '<section class="release deadline">' in board
+    assert "section.release:not(.deadline)" in board
+
+
+def test_the_no_detector_bucket_answers_the_dropdowns_too(payload):
+    """Skipping the repository filter is not skipping the other two. A bucket
+    that sat still under them would read as the only thing left matching."""
+    board = render_html(payload)
+    assert "const deadlines = !cat.value && !conf.value;" in board
+    assert "const visible = deadlines &&" in board
+
+
+def test_a_filtered_no_detector_release_recounts_its_heading(payload):
+    """The heading carries the count, and a release section one loop up keeps
+    its own in step. One that says 12 above a single item is the stale one."""
+    board = render_html(payload)
+    assert "shown + ' removal' + (shown === 1 ? '' : 's')" in board
+
+
+def test_the_no_detector_list_is_searched_on_its_own_field(payload):
+    """The word "source" is on every one of these rows, and the tables above
+    them search a field rather than their own markup for exactly that reason."""
+    payload["rules"].append(_no_detector_rule())
+    board = render_html(payload)
+    assert (
+        '<li data-search="blog-configurator-removal-2027.6 configurator '
+        'the configurator integration is removed.">' in board
+    )
+    assert "item.dataset.search.includes(needle)" in board
+
+
+def test_the_board_leaves_out_an_empty_no_detector_list(payload):
+    assert "no-detector" not in render_html(payload)
+
+
 def test_html_board_handles_an_empty_crawl():
     empty = build_payload(RULES_DOC, {"schema": 1, "repos": {}}, CATALOG_DOC)
     html = render_html(empty)

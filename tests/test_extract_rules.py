@@ -9,8 +9,10 @@ below have to be reviewed rather than silently drifting.
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import re
+import tarfile
 
 import pytest
 
@@ -239,6 +241,36 @@ def test_cli_offline_without_cache_fails_cleanly(tmp_path):
         main(["--tarball", str(tmp_path / "nope.tar.gz"), "--output", str(tmp_path / "o.json")])
         == 2
     )
+
+
+def _one_file_core_cannot_parse(mini_tarball, tmp_path):
+    """The pinned fixture with one rule-bearing file replaced by syntax this
+    interpreter refuses, which is what an interpreter behind core looks like."""
+    broken = tmp_path / "core_broken.tar.gz"
+    with tarfile.open(mini_tarball) as src, tarfile.open(broken, "w:gz") as out:
+        for member in src.getmembers():
+            data = src.extractfile(member).read() if member.isfile() else b""
+            if member.name.endswith("helpers/device.py"):
+                data = b"breaks_in_ha_version\ndef oops(:\n"
+                member.size = len(data)
+            out.addfile(member, io.BytesIO(data))
+    return broken
+
+
+def test_a_run_that_cannot_parse_core_keeps_the_rules_already_written(
+    mini_tarball, tmp_path
+):
+    """Core parses on a new enough interpreter, so a file that does not is this
+    tool being behind it, and the run derives fewer rules than the last one did.
+    Writing that over the fuller set drops every finding those rules found and
+    moves rules_hash, which sends the scanner back over the whole catalogue."""
+    output = tmp_path / "rules.json"
+    assert main(["--tarball", str(mini_tarball), "--output", str(output)]) == 0
+    before = output.read_bytes()
+
+    broken = _one_file_core_cannot_parse(mini_tarball, tmp_path)
+    assert main(["--tarball", str(broken), "--output", str(output)]) == 2
+    assert output.read_bytes() == before
 
 
 def test_shipped_rules_have_release_versions(shipped_rules):
@@ -489,3 +521,203 @@ class _TemplateCameraEntity:
     assert not any(
         (rule.get("match") or {}).get("in_class_base") for rule in rules.values()
     )
+ISSUE_SOURCE = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+def _warn_about_yaml(hass, platform):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        f"deprecated_yaml_{platform}",
+        breaks_in_ha_version="2027.3",
+        is_fixable=False,
+        translation_key="deprecated_yaml",
+    )
+
+
+def _warn_by_variable(hass, translation_key):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        issue_id=translation_key,
+        breaks_in_ha_version="2027.4",
+        translation_key=translation_key,
+    )
+"""
+
+
+def test_a_repair_issue_is_named_by_its_translation_key():
+    rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
+    rule = rules["core-issue-netio-deprecated-yaml-2027.3"]
+    assert rule["symbol"] == "deprecated_yaml"
+    assert rule["message"] == (
+        "`netio` raises the `deprecated_yaml` repair issue, and the "
+        "configuration it reports stops working in Home Assistant 2027.3."
+    )
+    assert rule["matchable"] is False
+
+
+def test_a_repair_issue_keyed_by_a_variable_is_left_unnamed():
+    rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
+    rule = rules["core-issue-netio-warn-by-variable-2027.4"]
+    assert "translation_key" not in rule["message"]
+    assert rule["message"].startswith("`netio` raises a repair issue")
+    assert rule["symbol"] == "_warn_by_variable"
+
+
+def test_two_integrations_raising_the_same_issue_are_two_deadlines():
+    """One rule for both would name whichever file sorted first, and the other
+    integration would read as not being affected at all."""
+    rules = _rules_from("homeassistant/components/netio/switch.py", ISSUE_SOURCE)
+    rules |= _rules_from("homeassistant/components/pjlink/media_player.py", ISSUE_SOURCE)
+    netio = rules["core-issue-netio-deprecated-yaml-2027.3"]
+    pjlink = rules["core-issue-pjlink-deprecated-yaml-2027.3"]
+    assert netio["message"].startswith("`netio` raises")
+    assert pjlink["message"].startswith("`pjlink` raises")
+
+
+NAMELESS_TWIN = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+async def async_setup_platform(hass, config, add_entities, discovery_info=None):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        f"deprecated_yaml_import_issue_{reason}",
+        breaks_in_ha_version="2027.3",
+        translation_key=f"deprecated_yaml_import_issue_{reason}",
+    )
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        "deprecated_yaml",
+        breaks_in_ha_version="2027.3",
+        translation_key="deprecated_yaml",
+    )
+"""
+
+
+def test_an_issue_built_at_runtime_does_not_double_up_the_named_one():
+    """Both calls are the same deadline, and an f-string renders its
+    placeholder as a marker, so the board would carry the marker as a name."""
+    rules = _rules_from("homeassistant/components/netio/switch.py", NAMELESS_TWIN)
+    issues = [rule_id for rule_id in rules if rule_id.startswith("core-issue-")]
+    assert issues == ["core-issue-netio-deprecated-yaml-2027.3"]
+    assert "{...}" not in rules[issues[0]]["message"]
+
+
+LONG_TWIN = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+class TheVeryLongCoordinatorClassName:
+    async def async_migrate_the_old_yaml_configuration(self, hass, reason):
+        ir.async_create_issue(
+            hass,
+            DOMAIN,
+            f"deprecated_yaml_import_issue_{reason}",
+            breaks_in_ha_version="2027.3",
+            translation_key=f"deprecated_yaml_import_issue_{reason}",
+        )
+        ir.async_create_issue(
+            hass,
+            DOMAIN,
+            "deprecated_yaml",
+            breaks_in_ha_version="2027.3",
+            translation_key="deprecated_yaml",
+        )
+"""
+
+
+def test_a_nameless_twin_with_a_long_id_is_dropped_too():
+    """Ids are cut to 90 characters, and a rule is filed under the cut one, so
+    a name kept from before the cut matches nothing."""
+    rules = _rules_from(
+        "homeassistant/components/a_very_long_integration_domain_name/coordinator.py",
+        LONG_TWIN,
+    )
+    assert list(rules) == [
+        "core-issue-a-very-long-integration-domain-name-deprecated-yaml-2027.3"
+    ]
+
+
+MOVED_SOURCE = b"""
+from homeassistant.const import Platform
+from homeassistant.helpers.deprecation import DeprecatedInfo
+
+from homeassistant.components.number import DOMAIN as NUMBER_DOMAIN
+
+
+class SirenSwitch:
+    info = DeprecatedInfo(new_platform=Platform.SIREN, breaks_in_ha_version="2027.5.0")
+
+
+class NumberSwitch:
+    info = DeprecatedInfo(new_platform=NUMBER_DOMAIN, breaks_in_ha_version="2027.6.0")
+
+
+class ValveSwitch:
+    info = DeprecatedInfo(new_platform="valve", breaks_in_ha_version="2027.7.0")
+"""
+
+
+def test_a_platform_named_by_a_constant_is_read_off_the_name():
+    """Core never writes these as strings: every one of the 14 call sites in
+    the cached tarball says the platform in a `Platform.X` or `X_DOMAIN`
+    identifier, and dropping those leaves one nameless rule for a whole
+    integration's move."""
+    rules = _rules_from("homeassistant/components/ring/switch.py", MOVED_SOURCE)
+    assert "moves these entities to `siren`" in (
+        rules["core-issue-ring-siren-2027.5"]["message"]
+    )
+    assert "moves these entities to `number`" in (
+        rules["core-issue-ring-number-2027.6"]["message"]
+    )
+    assert "moves these entities to `valve`" in (
+        rules["core-issue-ring-valve-2027.7"]["message"]
+    )
+
+
+UNRELATED_PAIR = b"""
+from homeassistant.helpers import issue_registry as ir
+
+from .const import DOMAIN
+
+
+def _warn_about_yaml(hass):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        "deprecated_yaml",
+        breaks_in_ha_version="2027.3",
+        translation_key="deprecated_yaml",
+    )
+
+
+def _warn_about_the_other_thing(hass, key):
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        issue_id=key,
+        breaks_in_ha_version="2027.3",
+        translation_key=key,
+    )
+"""
+
+
+def test_two_deprecations_in_one_release_keep_a_rule_each():
+    """The nameless one is dropped as a twin of the named one, and these are
+    not twins: one function's issue says nothing about another's."""
+    rules = _rules_from("homeassistant/components/netio/switch.py", UNRELATED_PAIR)
+    assert sorted(rules) == [
+        "core-issue-netio-deprecated-yaml-2027.3",
+        "core-issue-netio-warn-about-the-other-thing-2027.3",
+    ]

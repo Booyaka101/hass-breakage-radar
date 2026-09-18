@@ -498,7 +498,7 @@
       "id": "blog-frontend-component-updates-2026-4-2026.5",
       "kind": "prose",
       "symbol": "frontend component updates 2026.4",
-      "message": "ha-input is the successor of ha-textfield ha-textfield API stays but the component is migrated to use ha-input internally and will be removed in 2026.5 Also replaces ha-outlined-text-field ha-input-search replaces search-input and search-input-outlined ha-input-multi replaces ha-multi-textfield ha-input-copy replaces copy-textfield This component also introduces new semantic theme variables for...",
+      "message": "ha-textfield API stays but the component is migrated to use ha-input internally and will be removed in 2026.5",
       "breaks_in": "2026.5",
       "source": "https://developers.home-assistant.io/blog/2026/03/25/frontend-component-updates-2026.4/",
       "origin": "blog",
@@ -580,13 +580,12 @@
       "id": "blog-media-player-standby-state-deprecated-2026.8",
       "kind": "prose",
       "symbol": "media player standby state deprecated",
-      "message": "The media player STANDBY state is deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into the he...",
+      "message": "The media player state MediaPlayerState.STANDBY has been deprecated as decided in home-assistant/architecture#799 and will be removed in Home Assistant Core 2026.8.",
       "breaks_in": "2026.8",
       "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": true
     },
     {
@@ -1592,7 +1591,6 @@
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -1678,7 +1676,7 @@
       "id": "blog-doorbell-standard-event-type-2027.4",
       "kind": "prose",
       "symbol": "doorbell standard event type",
-      "message": "Doorbell entities that do not include DoorbellEventType.RING will log a deprecation warning and will stop working in Home Assistant 2027.4 .",
+      "message": "Doorbell entities that do not include DoorbellEventType.RING will log a deprecation warning and will stop working in Home Assistant 2027.4.",
       "breaks_in": "2027.4",
       "source": "https://developers.home-assistant.io/blog/2026/04/15/doorbell-standard-event-type/",
       "origin": "blog",
@@ -1690,7 +1688,7 @@
       "id": "blog-entity-id-mismatched-domain-deprecated-2027.5",
       "kind": "prose",
       "symbol": "entity id mismatched domain deprecated",
-      "message": "Setting an entity ID with the wrong domain will log a deprecation warning and will stop working in Home Assistant 2027.5 .",
+      "message": "Setting an entity ID with the wrong domain will log a deprecation warning and will stop working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/07/entity-id-mismatched-domain-deprecated/",
       "origin": "blog",
@@ -1702,13 +1700,12 @@
       "id": "blog-legacy-device-tracker-deprecation-2027.5",
       "kind": "prose",
       "symbol": "legacy device tracker deprecation",
-      "message": "Deprecation of legacy device tracker platform API | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into t...",
+      "message": "The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.",
       "breaks_in": "2027.5",
       "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -1981,13 +1978,12 @@
       "id": "blog-device-tracker-changes-2027.7",
       "kind": "prose",
       "symbol": "device tracker changes",
-      "message": "Changes to device tracker entity models | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into the helper ...",
+      "message": "The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.",
       "breaks_in": "2027.7",
       "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2112,13 +2108,12 @@
       "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
       "kind": "prose",
       "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "Deprecation of the home_assistant_start flag of async_initialize_triggers | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 err...",
+      "message": "The dedicated home_assistant_start flag of async_initialize_triggers is deprecated and will be removed in Home Assistant Core 2027.8.",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -2149,7 +2144,7 @@
       "id": "blog-device-registry-websocket-api-changes-2027.8",
       "kind": "prose",
       "symbol": "device registry websocket api changes",
-      "message": "The old fields are kept for backwards compatibility and are deprecated ; they are scheduled for removal in Home Assistant Core 2027.8.",
+      "message": "The old fields are kept for backwards compatibility and are deprecated; they are scheduled for removal in Home Assistant Core 2027.8.",
       "breaks_in": "2027.8",
       "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
       "origin": "blog",
@@ -2770,7 +2765,7 @@
       "id": "blog-device-registry-websocket-api-changes-2027.9",
       "kind": "prose",
       "symbol": "device registry websocket api changes",
-      "message": "It replaces config/device_registry/remove_config_entry , which took both a device_id and a config_entry_id : { \"type\": \"config/device_registry/remove_config_entry\", \"config_entry_id\": \"wxyz5678\", \"device_id\": \"abcd1234\" } That command still works but is deprecated : it logs a warning and will be removed in Home Assistant Core 2027.9.",
+      "message": "That command still works but is deprecated: it logs a warning and will be removed in Home Assistant Core 2027.9.",
       "breaks_in": "2027.9",
       "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
       "origin": "blog",
@@ -2991,6 +2986,7 @@
       "origin": "manual",
       "confidence": "high",
       "replacement": "DeviceRegistry.async_get(device_id)",
+      "search": "device_registry.devices",
       "supersedes": [
         "core-prose-uses-device-registry-devices-as-a-mapping-or-calls-its-lookup-methods-which-i"
       ],
@@ -3041,13 +3037,12 @@
       "id": "blog-deprecate-configurator-2027.10",
       "kind": "prose",
       "symbol": "deprecate configurator",
-      "message": "Configurator integration is now deprecated | Home Assistant Developer Docs Skip to main content Developers Home Assistant Overview Core Frontend Supervisor Apps Operating System Voice Translations Android Apple platforms Misc Blog Recent posts 2026 `DeviceEntry.config_entries` deprecation is now enforced New stop action and idle activity for lawn mowers OAuth2 error handling moved into the help...",
+      "message": "The Configurator integration has been deprecated and will be removed in Home Assistant 2027.10.",
       "breaks_in": "2027.10",
       "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
       "origin": "blog",
       "confidence": "info",
       "matchable": false,
-      "duplicate_of_matchable_release": true,
       "expired": false
     },
     {
@@ -3179,5 +3174,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-17T03:31:32Z"
+  "blog_merged_utc": "2026-09-17T06:34:13Z"
 }

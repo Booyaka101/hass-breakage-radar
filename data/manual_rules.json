@@ -298,6 +298,7 @@
       "origin": "manual",
       "confidence": "high",
       "replacement": "DeviceRegistry.async_get(device_id)",
+      "search": "device_registry.devices",
       "supersedes": ["core-prose-uses-device-registry-devices-as-a-mapping-or-calls-its-lookup-methods-which-i"],
       "match": {
         "type": "container_use",

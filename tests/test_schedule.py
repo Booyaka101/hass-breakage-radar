@@ -496,6 +496,24 @@ def test_an_archived_repository_says_so_instead_of_sending_people_there(sample_i
     assert "/issues" not in text
 
 
+def test_a_long_report_title_is_cut_down_for_the_card(sample_index):
+    """The crawler stores the whole title because that is what it scores
+    relevance on. A Repairs card is not the place to print 250 characters of
+    it."""
+    from custom_components.breakage_radar.repairs import describe_links
+
+    title = "Deprecated " + "very " * 50 + "old call to setup_scanner"
+    text = describe_links(_links(sample_index, {
+        "archived": False, "issues_enabled": True,
+        "report": {"number": 41, "state": "open",
+                   "url": "https://github.com/example/x/issues/41",
+                   "title": title},
+    }))
+    assert title not in text
+    assert "[#41 Deprecated very very" in text
+    assert "..." in text
+
+
 def test_a_repository_with_issues_disabled_does_not_send_people_to_report(sample_index):
     from custom_components.breakage_radar.repairs import describe_links
 

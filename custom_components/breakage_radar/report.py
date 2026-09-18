@@ -22,13 +22,17 @@ from .rules_engine import (
     is_future,
     parse_version,
     reports_before_removal,
-    search_term,
+    rule_search_term,
 )
 
 # describe_when and release_estimated_date are re-exported: the repairs card
 # and the tests reach them through this module.
 from .schedule import days_until as _schedule_days_until
 from .schedule import describe_when, release_estimated_date  # noqa: F401
+
+#: An upstream issue title as a Repairs card shows it. The crawler stores the
+#: whole one, because that is what it scores relevance on.
+REPORT_TITLE_CHARS = 140
 
 
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -43,6 +47,13 @@ def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
             if domain and domain not in mapping:
                 mapping[domain] = integration
     return mapping
+
+
+def _shown(report: dict[str, Any]) -> dict[str, Any]:
+    """An upstream report with its title cut to what a card can carry."""
+    if not report:
+        return {}
+    return {**report, "title": clip(report.get("title") or "", REPORT_TITLE_CHARS)}
 
 
 def _index_by_card(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -213,20 +224,23 @@ def build_report(
                     {
                         "repository": (entry or {}).get("full_name", ""),
                         "repo_url": (entry or {}).get("repo_url", ""),
-                        # The deprecated symbol is the search term that finds an
-                        # existing report; a vague word like "deprecated" does not,
-                        # and neither does `StateVacuumEntity.battery_level` whole.
-                        "symbol": search_term(rule.get("symbol", "")),
+                        # What finds an existing report: the rule's own search
+                        # term if it names one, else the deprecated symbol. A
+                        # vague word like "deprecated" does not, and neither
+                        # does `StateVacuumEntity.battery_level` whole.
+                        "symbol": rule_search_term(rule),
                         # source_url is a real link; source can be a bare
                         # "file.py:418" reference for core-derived rules.
                         "learn_more": (
                             rule.get("source_url") or rule.get("source") or ""
                         ),
                         # What the crawler already found upstream, so nobody
-                        # files a report that exists.
+                        # files a report that exists. The title is stored whole
+                        # because that is what the crawler scores it on, and
+                        # shown short because it goes in a Repairs card.
                         "archived": bool(upstream.get("archived")),
                         "issues_enabled": upstream.get("issues_enabled"),
-                        "report": upstream.get("report") or {},
+                        "report": _shown(upstream.get("report") or {}),
                     },
                 )
             rule = rules.get(finding.get("rule_id"), {})

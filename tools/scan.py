@@ -73,9 +73,13 @@ from tools.rules_engine import (  # noqa: E402
     looks_minified_js,
     matchable_rules,
     scan_sources,
-    search_term,
 )
-from tools.upstream import annotate  # noqa: E402
+from tools.upstream import (  # noqa: E402
+    FACT_MAX_AGE_DAYS,
+    LOOKUP_LIMIT,
+    annotate,
+    upstream_still_applies,
+)
 
 CODELOAD = "https://codeload.github.com/{full_name}/tar.gz/{ref}"
 
@@ -322,25 +326,6 @@ def findings_hash(findings: list[dict[str, Any]]) -> str:
     return hashlib.sha256(blob).hexdigest()[:16]
 
 
-def upstream_still_applies(
-    upstream: dict[str, Any],
-    findings: list[dict[str, Any]],
-    rules_by_id: dict[str, Any],
-) -> bool:
-    """Whether a recorded upstream fact is still about what a repository has.
-
-    The fact is the repository's own issue about one deprecated symbol. It
-    stays true while the repository still uses that symbol, which survives the
-    rule being re-dated, renamed, or overtaken by one that breaks sooner.
-    """
-    symbol = upstream.get("symbol")
-    return bool(symbol) and any(
-        search_term((rules_by_id.get(f.get("rule_id")) or {}).get("symbol") or "")
-        == symbol
-        for f in findings
-    )
-
-
 def rules_hash(rules: list[Rule]) -> str:
     """Identity of "what a scan would produce": rules *and* engine semantics."""
     blob = json.dumps(
@@ -494,7 +479,9 @@ def select_slice(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--limit", type=int, default=400, help="repos per run")
+    parser.add_argument(
+        "--limit", type=int, default=400, help="repos per run, scanned and looked up"
+    )
     parser.add_argument("--catalog", type=Path, default=DATA_DIR / "catalog.json")
     parser.add_argument("--rules", type=Path, default=DATA_DIR / "rules.json")
     parser.add_argument("--findings", type=Path, default=DATA_DIR / "findings.json")
@@ -550,7 +537,9 @@ def main(argv: list[str] | None = None) -> int:
         LOGGER.error("no matchable pending rules; refusing to scan")
         return 2
     rhash = rules_hash(active)
-    rules_by_id = {rule.id: {"symbol": rule.symbol} for rule in active}
+    rules_by_id = {
+        rule.id: {"symbol": rule.symbol, "search": rule.search} for rule in active
+    }
     LOGGER.info(
         "%d matchable rules (core dev %s, pending from %s via %s, rules_hash %s)",
         len(active),
@@ -621,8 +610,9 @@ def main(argv: list[str] | None = None) -> int:
         "" if args.no_tarball_cache else f", tag tarballs cached under {args.tarball_cache or TARBALL_CACHE_DIR}",
     )
     if not todo:
-        LOGGER.info("nothing to do -- every repository is up to date")
-        return 0
+        # Not a reason to return: the upstream facts below age out on their own
+        # clock, and a quiet day is exactly when there is room to refresh them.
+        LOGGER.info("nothing to scan -- every repository is up to date")
 
     started = time.time()
     counters = {
@@ -704,11 +694,31 @@ def main(argv: list[str] | None = None) -> int:
     checkpoint()
 
     if not args.no_upstream:
-        scanned_now = {n: repos[n] for n in (e["full_name"] for e in todo) if n in repos}
-        looked_up = annotate(scanned_now, rules_by_id)
+        # A repository delisted from HACS keeps its findings and stays in the
+        # index, so it keeps its upstream fact too. --only is for looking at
+        # one repository; it should not spend the run's lookups elsewhere.
+        wanted = set(args.only or ())
+        known = {n: r for n, r in repos.items() if not wanted or n in wanted}
+        looked_up = annotate(
+            known,
+            rules_by_id,
+            # The floor, not dev: a title naming the release in RC is about a
+            # removal nobody has run into yet, same as the rules are.
+            current_version=floor,
+            # One flag for the whole run, but a lookup costs a two second wait
+            # and a scan of 4000 repositories fits in the job while 4000
+            # lookups would sleep out its timeout on their own.
+            limit=min(args.limit, LOOKUP_LIMIT),
+            # Naming a repository is asking about that repository. A fact that
+            # is merely young is not a reason to answer nothing.
+            max_age_days=0 if wanted else FACT_MAX_AGE_DAYS,
+            checkpoint=checkpoint,
+        )
         if looked_up:
             LOGGER.info("looked up upstream issues for %d repo(s)", looked_up)
-            checkpoint()
+        # A run that asked about nothing can still have dropped facts a rule no
+        # longer covers, and those are only in memory until this.
+        checkpoint()
 
     LOGGER.info(
         "slice done in %.0fs: %s | state has %d repos, findings file has %d repos%s",

@@ -49,6 +49,7 @@ from tools.common import (  # noqa: E402
     DATA_DIR,
     LOGGER,
     download_to,
+    read_json,
     setup_logging,
     utc_now_iso,
     write_json,
@@ -393,6 +394,62 @@ def _what_text(node: ast.Call) -> str:
         return ast.unparse(first)
     except Exception:  # pragma: no cover - unparse is total in 3.12
         return ""
+
+
+def _written_name(expr: ast.expr | None) -> str:
+    """The name an argument writes down, empty when it is built at runtime.
+
+    A variable unparses to its own name and an f-string to a prefix plus the
+    marker for what it interpolates, and neither is a name the frontend or
+    core's strings file would show.
+    """
+    literal = _literal(expr) if expr is not None else None
+    return literal if isinstance(literal, str) else ""
+
+
+def _platform_name(expr: ast.expr | None) -> str:
+    """The platform an argument names, written down or as core spells it.
+
+    Every one of these calls in core names the platform in an identifier
+    rather than a string, as ``Platform.SIREN`` or as ``SIREN_DOMAIN``, and
+    both say the domain in the name itself.
+    """
+    written = _written_name(expr)
+    if written:
+        return written
+    if (
+        isinstance(expr, ast.Attribute)
+        and isinstance(expr.value, ast.Name)
+        and expr.value.id == "Platform"
+    ):
+        return expr.attr.lower()
+    if isinstance(expr, ast.Name) and expr.id.endswith("_DOMAIN"):
+        return expr.id[: -len("_DOMAIN")].lower()
+    return ""
+
+
+def _issue_key(callee: str, node: ast.Call) -> str:
+    """The label a repair issue is known by, or what it moves entities to.
+
+    ``async_create_issue`` takes ``hass`` first, so the first argument says
+    nothing about the issue; the translation key is what the frontend shows
+    and what core's strings file calls it.
+    """
+    by_name = {keyword.arg: keyword.value for keyword in node.keywords if keyword.arg}
+    if callee == "DeprecatedInfo":
+        return _platform_name(by_name.get("new_platform"))
+    if callee == "EntityDomainReplacementStrategy":
+        return _platform_name(node.args[0] if node.args else None)
+    # async_create_issue(hass, domain, issue_id, ...) last.
+    written = [by_name.get("translation_key"), by_name.get("issue_id")]
+    written.append(node.args[2] if len(node.args) >= 3 else None)
+    return next((name for name in map(_written_name, written) if name), "")
+
+
+def _component_of(path: str) -> str:
+    """The integration a core file belongs to, empty for helpers and core."""
+    _, marker, rest = path.partition("homeassistant/components/")
+    return rest.split("/", 1)[0] if marker else ""
 
 
 def _enclosing_name(chain: list[str]) -> str:
@@ -780,6 +837,7 @@ def extract_from_source(
             "callee": callee,
             "version": version,
             "what": _what_text(node),
+            "issue_key": _issue_key(callee, node) if callee in ISSUE_CALLS else "",
             "enclosing": _enclosing_name([n.name for n in chain]),
             "path": path,
             "line": node.lineno,
@@ -883,16 +941,47 @@ def _import_rule(record: dict[str, Any], release: str) -> dict[str, Any]:
     }
 
 
+def _issue_message(callee: str, record: dict[str, Any], release: str) -> str:
+    """What the deadline on a repair issue is about.
+
+    The call takes ``hass`` first, so without this the rule's whole message is
+    the word "hass".
+    """
+    key = record.get("issue_key") or ""
+    component = _component_of(record["path"])
+    raiser = f"`{component}`" if component else "Home Assistant"
+    if callee == "DeprecatedInfo":
+        moved = f" to `{key}`" if key else ""
+        return (
+            f"{raiser} moves these entities{moved}, and the ones on the old "
+            f"platform stop working in Home Assistant {release}."
+        )
+    if callee == "EntityDomainReplacementStrategy":
+        replaced = f" `{key}`" if key else ""
+        return (
+            f"{raiser} replaces its{replaced} entities, and the old ones stop "
+            f"working in Home Assistant {release}."
+        )
+    named = f"the `{key}` repair issue" if key else "a repair issue"
+    return (
+        f"{raiser} raises {named}, and the configuration it reports stops "
+        f"working in Home Assistant {release}."
+    )
+
+
 def _rule_message(
     imported: dict[str, Any] | None,
     matcher: dict[str, Any] | None,
     callee: str,
     symbol: str,
-    what: str,
+    record: dict[str, Any],
     release: str,
 ) -> str:
     if imported:
         return imported["message"]
+    if callee in ISSUE_CALLS:
+        return _issue_message(callee, record, release)
+    what = record["what"]
     if matcher and matcher.get("in_class_base"):
         return _scoped_message(symbol, release, what)
     if matcher and matcher["type"] in ("call_missing_arg_key", "call_missing_kwarg"):
@@ -912,6 +1001,11 @@ def build_rules(
     be published next to the rules.
     """
     by_id: dict[str, dict[str, Any]] = {}
+    # Where every repair issue that writes its name down was raised, and the
+    # rules built from the calls beside those that do not.
+    named_issues: set[tuple[str, str, str]] = set()
+    named_issue_ids: set[str] = set()
+    unnamed_issues: dict[tuple[str, str, str], list[str]] = {}
 
     for record in sorted(records, key=lambda r: (r["path"], r["line"])):
         callee = record["callee"]
@@ -957,12 +1051,27 @@ def build_rules(
             symbol = _symbol_for(callee, record["what"], record["enclosing"], matcher)
             kind = _kind_for(callee, matcher)
             if callee in ISSUE_CALLS:
-                rule_id = (
-                    f"core-issue-{_slug(record['enclosing'] or record['path'])}-{release}"
-                )
+                # The first argument of these calls is `hass`, which is what
+                # the generic symbol would otherwise be for every one of them.
+                symbol = record["issue_key"] or record["enclosing"] or symbol
+                # The integration belongs in the id as well: several of them
+                # raise an issue from a same-named function, and one rule for
+                # all of those would say the name of whichever came first.
+                where = _component_of(record["path"]) or record["path"]
+                # The same function, not just the same integration: two of
+                # them can deprecate unrelated things in one release.
+                issue_scope = (record["path"], record["enclosing"], release)
+                rule_id = f"core-issue-{_slug(where)}-{_slug(symbol)}-{release}"
             else:
+                issue_scope = None
                 rule_id = f"core-{kind}-{_slug(symbol)}"
             rule_id = rule_id[:90]
+            # After the truncation, because that is the id by_id is keyed on.
+            if issue_scope and record["issue_key"]:
+                named_issues.add(issue_scope)
+                named_issue_ids.add(rule_id)
+            elif issue_scope:
+                unnamed_issues.setdefault(issue_scope, []).append(rule_id)
 
         existing = by_id.get(rule_id)
         if existing:
@@ -976,7 +1085,7 @@ def build_rules(
             id=rule_id,
             kind=kind,
             symbol=symbol,
-            message=_rule_message(imported, matcher, callee, symbol, record["what"], release),
+            message=_rule_message(imported, matcher, callee, symbol, record, release),
             breaks_in=release,
             source=f"homeassistant/{record['path'].split('homeassistant/', 1)[-1]}:{record['line']}"
             if record["path"].startswith("homeassistant/")
@@ -994,6 +1103,15 @@ def build_rules(
             f"#L{record['line']}"
         )
         by_id[rule_id] = payload
+
+    # One function can raise one deadline twice, from a call that writes the
+    # issue name down and from a neighbour that builds it at runtime. The
+    # nameless rule is only worth a line of its own when it is the only one.
+    for scope, rule_ids in unnamed_issues.items():
+        if scope in named_issues:
+            for rule_id in rule_ids:
+                if rule_id not in named_issue_ids:
+                    by_id.pop(rule_id, None)
 
     return sorted(
         by_id.values(), key=lambda r: (parse_version(r["breaks_in"]), r["id"])
@@ -1131,6 +1249,23 @@ def main(argv: list[str] | None = None) -> int:
         "discarded_markers": discarded,
         "rules": rules,
     }
+    # Core parses on a new enough interpreter, so a file that does not is this
+    # tool being behind it rather than core being broken. Writing the smaller
+    # rule set over a fuller one drops every finding those rules found and moves
+    # rules_hash, which sends the scanner back over the whole catalogue.
+    if unparsed:
+        already = (read_json(args.output, default={}) or {}).get("counts", {})
+        if len(matchable) < already.get("matchable_future", 0):
+            LOGGER.error(
+                "%d core file(s) would not parse and this run derives %d matchable "
+                "rule(s) against the %d already written; keeping those. Run this on "
+                "a CPython at least as new as core's dev branch.",
+                len(unparsed),
+                len(matchable),
+                already["matchable_future"],
+            )
+            return 2
+
     write_json(args.output, payload)
 
     LOGGER.info(
