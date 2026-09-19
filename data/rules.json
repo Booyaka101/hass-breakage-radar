@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-18T03:30:21Z",
+  "generated_utc": "2026-09-19T03:29:48Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "e80f6c6fbca619756159d33f4be2a85092ad9e947f5ffe890ebd27dc16b73627",
+  "core_tarball_sha256": "16e0d968cb04c2afb0c27fccd7bc4f70ec20a7f088acda5489b2971763d0ee95",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 184,
     "future": 131,
     "matchable_future": 64,
-    "core_files_scanned": 10194,
+    "core_files_scanned": 10202,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -3205,7 +3205,7 @@
       "symbol": "is_closed",
       "message": "hass.states.is_state(entity_id, 'closed')",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/cover/__init__.py:96",
+      "source": "homeassistant/components/cover/__init__.py:95",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -3220,7 +3220,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L96"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L95"
     },
     {
       "id": "device-entry-config-entries",
@@ -3328,5 +3328,5 @@
       "expired": false
     }
   ],
-  "blog_merged_utc": "2026-09-18T03:30:49Z"
+  "blog_merged_utc": "2026-09-19T03:30:04Z"
 }
