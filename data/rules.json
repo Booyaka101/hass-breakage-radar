@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-19T03:29:48Z",
+  "generated_utc": "2026-09-20T03:31:14Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "16e0d968cb04c2afb0c27fccd7bc4f70ec20a7f088acda5489b2971763d0ee95",
+  "core_tarball_sha256": "43486cff6e032e04daf0f04779f223b4ecfd411b6f2e4661c329d62dab17ca93",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 184,
-    "future": 131,
+    "total": 187,
+    "future": 134,
     "matchable_future": 64,
-    "core_files_scanned": 10202,
+    "core_files_scanned": 10203,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
-    "from_core_ast": 144,
+    "from_core_ast": 147,
     "from_manual": 22,
     "from_blog": 18
   },
@@ -292,13 +292,13 @@
       "symbol": "siren",
       "message": "`ring` moves these entities to `siren`, and the ones on the old platform stop working in Home Assistant 2025.4.",
       "breaks_in": "2025.4",
-      "source": "homeassistant/components/ring/switch.py:62",
+      "source": "homeassistant/components/ring/switch.py:98",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/switch.py#L62"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/switch.py#L98"
     },
     {
       "id": "core-issue-tplink-siren-2025.4",
@@ -500,13 +500,13 @@
       "symbol": "ChatLog.async_update_llm_data",
       "message": "ChatLog.async_update_llm_data",
       "breaks_in": "2026.1",
-      "source": "homeassistant/components/conversation/chat_log.py:672",
+      "source": "homeassistant/components/conversation/chat_log.py:695",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L672"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L695"
     },
     {
       "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
@@ -1550,7 +1550,7 @@
       "symbol": "async_render_no_api_prompt",
       "message": "an empty string",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/llm.py:55",
+      "source": "homeassistant/helpers/llm.py:56",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1565,7 +1565,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L55"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L56"
     },
     {
       "id": "core-issue-aqualogic-deprecated-yaml-2027.2",
@@ -3326,7 +3326,49 @@
       },
       "matchable": true,
       "expired": false
+    },
+    {
+      "id": "core-prose-accesses-toolresultcontent-tool-result-which-is-deprecated-use-toolresultco",
+      "kind": "prose",
+      "symbol": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultCo...",
+      "message": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultContent.result` instead",
+      "breaks_in": "2027.11",
+      "source": "homeassistant/components/conversation/chat_log.py:306",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L306"
+    },
+    {
+      "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
+      "kind": "prose",
+      "symbol": "returns a JSON object from a tool, which is deprecated; return a ToolResult inst...",
+      "message": "returns a JSON object from a tool, which is deprecated; return a ToolResult instead",
+      "breaks_in": "2027.11",
+      "source": "homeassistant/helpers/llm.py:234",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L234"
+    },
+    {
+      "id": "core-prose-sets-tool-result-on-a-tool-result-delta-which-is-deprecated-set-result-to",
+      "kind": "prose",
+      "symbol": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to ...",
+      "message": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to a ToolResult instead",
+      "breaks_in": "2027.11",
+      "source": "homeassistant/components/conversation/chat_log.py:611",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-19T03:30:04Z"
+  "blog_merged_utc": "2026-09-20T03:31:32Z"
 }
