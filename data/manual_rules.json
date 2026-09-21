@@ -5,6 +5,9 @@
     "These exist because the announcement is prose only -- there is no report_usage() call",
     "in core carrying a string-literal breaks_in_ha_version for them, so tools/extract_rules.py",
     "cannot find them automatically.",
+    "A rule also lands here once core deletes the marker the extractor read it from:",
+    "the deprecation shim goes away in the release it breaks in, and the repositories",
+    "still calling it are exactly the ones that need the warning.",
     "Rules with matchable=false ship as information only: they appear on the board so a user",
     "knows the release is coming, but the crawler will not claim a repo is affected.",
     "Curation policy (see README 'How rules are chosen'): a matcher is only enabled when the",
@@ -430,6 +433,82 @@
         "type": "call",
         "names": ["get_hub"],
         "modules": ["homeassistant.components.modbus"]
+      }
+    },
+    {
+      "id": "core-call-extract-entity-ids",
+      "kind": "call",
+      "symbol": "extract_entity_ids",
+      "message": "Passes hass to extract_entity_ids. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
+      "breaks_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
+      "supersedes": ["blog-deprecate-hass-argument-service-helpers-2026.10"],
+      "match": {
+        "type": "call_hass_argument",
+        "names": ["extract_entity_ids"],
+        "modules": ["homeassistant.helpers.service"]
+      }
+    },
+    {
+      "id": "core-call-async-extract-entities",
+      "kind": "call",
+      "symbol": "async_extract_entities",
+      "message": "Passes hass to async_extract_entities. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
+      "breaks_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_hass_argument",
+        "names": ["async_extract_entities"],
+        "modules": ["homeassistant.helpers.service"]
+      }
+    },
+    {
+      "id": "core-call-async-extract-entity-ids",
+      "kind": "call",
+      "symbol": "async_extract_entity_ids",
+      "message": "Passes hass to async_extract_entity_ids. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
+      "breaks_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_hass_argument",
+        "names": ["async_extract_entity_ids"],
+        "modules": ["homeassistant.helpers.service"]
+      }
+    },
+    {
+      "id": "core-call-async-extract-config-entry-ids",
+      "kind": "call",
+      "symbol": "async_extract_config_entry_ids",
+      "message": "Passes hass to async_extract_config_entry_ids. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
+      "breaks_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_hass_argument",
+        "names": ["async_extract_config_entry_ids"],
+        "modules": ["homeassistant.helpers.service"]
+      }
+    },
+    {
+      "id": "core-call-verify-domain-control",
+      "kind": "call",
+      "symbol": "verify_domain_control",
+      "message": "Passes hass to verify_domain_control. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The decorator takes the domain on its own now: @verify_domain_control(DOMAIN). Only the form that passes hass is matched.",
+      "breaks_in": "2026.10",
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
+      "match": {
+        "type": "call_hass_argument",
+        "names": ["verify_domain_control"],
+        "modules": ["homeassistant.helpers.service"]
       }
     }
   ]

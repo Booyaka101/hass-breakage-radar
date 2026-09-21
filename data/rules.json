@@ -1,26 +1,26 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-20T03:31:14Z",
+  "generated_utc": "2026-09-21T04:02:13Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
-  "pending_floor_source": "pypi",
-  "core_tarball_sha256": "43486cff6e032e04daf0f04779f223b4ecfd411b6f2e4661c329d62dab17ca93",
+  "pending_floor_source": "cache",
+  "core_tarball_sha256": "32d104bdd24c129e0e7f7825c271021de18fecc6e1417b3371282b28414299c7",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 187,
+    "total": 185,
     "future": 134,
     "matchable_future": 64,
-    "core_files_scanned": 10203,
+    "core_files_scanned": 10218,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
-    "from_core_ast": 147,
-    "from_manual": 22,
-    "from_blog": 18
+    "from_core_ast": 141,
+    "from_manual": 27,
+    "from_blog": 17
   },
   "unparsed_core_files": [],
   "discarded_markers": [
@@ -336,58 +336,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L701"
-    },
-    {
-      "id": "core-call-async-listen-once-run-immediately",
-      "kind": "call",
-      "symbol": "async_listen_once(run_immediately=...)",
-      "message": "calls `async_listen_once` with run_immediately",
-      "breaks_in": "2025.5",
-      "source": "homeassistant/core.py:1799",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "call_kwarg",
-        "names": [
-          "async_listen_once"
-        ],
-        "modules": [
-          "homeassistant.core"
-        ],
-        "kwargs": [
-          "run_immediately"
-        ]
-      },
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1799"
-    },
-    {
-      "id": "core-call-async-listen-run-immediately",
-      "kind": "call",
-      "symbol": "async_listen(run_immediately=...)",
-      "message": "calls `async_listen` with run_immediately",
-      "breaks_in": "2025.5",
-      "source": "homeassistant/core.py:1729",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "call_kwarg",
-        "names": [
-          "async_listen"
-        ],
-        "modules": [
-          "homeassistant.core"
-        ],
-        "kwargs": [
-          "run_immediately"
-        ]
-      },
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1729"
     },
     {
       "id": "core-issue-camera-deprecated-filename-template-2025.6",
@@ -866,27 +814,14 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3845"
     },
     {
-      "id": "blog-deprecate-hass-argument-service-helpers-2026.10",
-      "kind": "prose",
-      "symbol": "deprecate hass argument service helpers",
-      "message": "Support for the hass argument will be removed in Home Assistant 2026.10.",
-      "breaks_in": "2026.10",
-      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-call-async-extract-config-entry-ids",
       "kind": "call",
       "symbol": "async_extract_config_entry_ids",
-      "message": "passes `hass` to `async_extract_config_entry_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "message": "Passes hass to async_extract_config_entry_ids. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
       "breaks_in": "2026.10",
-      "source": "homeassistant/helpers/service.py:418",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
       "match": {
         "type": "call_hass_argument",
         "names": [
@@ -896,20 +831,18 @@
           "homeassistant.helpers.service"
         ]
       },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L418"
+      "matchable": true,
+      "expired": false
     },
     {
       "id": "core-call-async-extract-entities",
       "kind": "call",
       "symbol": "async_extract_entities",
-      "message": "passes `hass` to `async_extract_entities`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "message": "Passes hass to async_extract_entities. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
       "breaks_in": "2026.10",
-      "source": "homeassistant/helpers/service.py:364",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
       "match": {
         "type": "call_hass_argument",
         "names": [
@@ -919,20 +852,18 @@
           "homeassistant.helpers.service"
         ]
       },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L364"
+      "matchable": true,
+      "expired": false
     },
     {
       "id": "core-call-async-extract-entity-ids",
       "kind": "call",
       "symbol": "async_extract_entity_ids",
-      "message": "passes `hass` to `async_extract_entity_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "message": "Passes hass to async_extract_entity_ids. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
       "breaks_in": "2026.10",
-      "source": "homeassistant/helpers/service.py:403",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
       "match": {
         "type": "call_hass_argument",
         "names": [
@@ -942,20 +873,21 @@
           "homeassistant.helpers.service"
         ]
       },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L403"
+      "matchable": true,
+      "expired": false
     },
     {
       "id": "core-call-extract-entity-ids",
       "kind": "call",
       "symbol": "extract_entity_ids",
-      "message": "passes `hass` to `extract_entity_ids`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "message": "Passes hass to extract_entity_ids. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The ServiceCall object has carried a reference to HomeAssistant as a property since 2025.1, so there is no replacement argument: 'just remove the hass argument'. A call that already omits it is not matched.",
       "breaks_in": "2026.10",
-      "source": "homeassistant/helpers/service.py:351",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
+      "supersedes": [
+        "blog-deprecate-hass-argument-service-helpers-2026.10"
+      ],
       "match": {
         "type": "call_hass_argument",
         "names": [
@@ -965,20 +897,18 @@
           "homeassistant.helpers.service"
         ]
       },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L351"
+      "matchable": true,
+      "expired": false
     },
     {
       "id": "core-call-verify-domain-control",
       "kind": "call",
       "symbol": "verify_domain_control",
-      "message": "passes `hass` to `verify_domain_control`, where the leading `hass` argument is ignored and is removed in Home Assistant 2026.10. Drop the argument from the call.",
+      "message": "Passes hass to verify_domain_control. 'Providing hass argument to the following service helpers is deprecated: verify_domain_control, extract_entity_ids, async_extract_entities, async_extract_entity_ids, and async_extract_config_entry_ids. ... Support for the hass argument will be removed in Home Assistant 2026.10.' The decorator takes the domain on its own now: @verify_domain_control(DOMAIN). Only the form that passes hass is matched.",
       "breaks_in": "2026.10",
-      "source": "homeassistant/helpers/service.py:1028",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
+      "source": "https://developers.home-assistant.io/blog/2025/09/22/deprecate-hass-argument-service-helpers/",
+      "origin": "manual",
+      "confidence": "high",
       "match": {
         "type": "call_hass_argument",
         "names": [
@@ -988,9 +918,8 @@
           "homeassistant.helpers.service"
         ]
       },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/service.py#L1028"
+      "matchable": true,
+      "expired": false
     },
     {
       "id": "core-issue-decora-wifi-deprecated-yaml-2026.10",
@@ -1837,6 +1766,20 @@
       "confidence": "info",
       "matchable": false,
       "expired": false
+    },
+    {
+      "id": "core-issue-xbox-deprecated-entity-2027.4",
+      "kind": "issue",
+      "symbol": "deprecated_entity",
+      "message": "`xbox` raises the `deprecated_entity` repair issue, and the configuration it reports stops working in Home Assistant 2027.4.",
+      "breaks_in": "2027.4",
+      "source": "homeassistant/components/xbox/entity.py:204",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/xbox/entity.py#L204"
     },
     {
       "id": "blog-entity-id-mismatched-domain-deprecated-2027.5",
@@ -3370,5 +3313,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-20T03:31:32Z"
+  "blog_merged_utc": "2026-09-21T04:02:36Z"
 }
