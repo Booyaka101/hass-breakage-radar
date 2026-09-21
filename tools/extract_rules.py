@@ -1118,6 +1118,50 @@ def build_rules(
     )
 
 
+def retain_vanished(
+    rules: list[dict[str, Any]],
+    previous: dict[str, Any] | None,
+    *,
+    floor: str,
+    core_version: str,
+    discarded: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Rules this run no longer finds, kept because their removal is still ahead.
+
+    Core deletes a deprecation shim in the release it removes the API in, so
+    the marker this tool reads disappears exactly when the rule matters most:
+    the API is already gone on dev, and every repository still calling it
+    breaks on the release everybody is about to install. Dropping the rule
+    there is the one moment the board must not go quiet, and the rule retires
+    on its own once ``breaks_in`` falls behind the floor.
+
+    Only this tool's own rules are carried: a hand-written or blog rule that
+    left its source file was taken out on purpose. A marker this run refused
+    is not carried either, so tightening a gate can still remove a rule.
+    """
+    if not previous:
+        return []
+    # Symbols as well as ids: a gate that changes how a rule is named would
+    # otherwise publish the retired entry beside the one that replaced it.
+    found = {rule["id"] for rule in rules} | {rule["symbol"] for rule in rules}
+    refused = {entry["symbol"] for entry in discarded}
+    kept: list[dict[str, Any]] = []
+    for rule in previous.get("rules", []):
+        if rule.get("origin") != "core-ast":
+            continue
+        if rule["id"] in found or rule["symbol"] in found:
+            continue
+        if not rule.get("matchable") or not is_pending(rule["breaks_in"], floor):
+            continue
+        if rule.get("symbol") in refused:
+            continue
+        carried = dict(rule)
+        carried.setdefault("retained_since", core_version)
+        carried["expired"] = False
+        kept.append(carried)
+    return kept
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--ref", default="dev", help="core git ref (default: dev)")
@@ -1217,6 +1261,48 @@ def main(argv: list[str] | None = None) -> int:
         key=lambda d: (parse_version(d["breaks_in"]), d["symbol"], d["source"])
     )
     pending_discarded = [d for d in discarded if is_pending(d["breaks_in"], latest.floor)]
+
+    previous = read_json(args.output, default={}) or {}
+
+    # Core parses on a new enough interpreter, so a file that does not is this
+    # tool being behind it rather than core being broken. Writing the smaller
+    # rule set over a fuller one drops every finding those rules found and moves
+    # rules_hash, which sends the scanner back over the whole catalogue. Counted
+    # before retention, so a file this interpreter cannot read is never mistaken
+    # for core having deleted what was in it.
+    if unparsed:
+        derived = sum(1 for r in rules if r["matchable"] and not r["expired"])
+        already = previous.get("counts", {}).get("matchable_future", 0)
+        if derived < already:
+            LOGGER.error(
+                "%d core file(s) would not parse and this run derives %d matchable "
+                "rule(s) against the %d already written; keeping those. Run this on "
+                "a CPython at least as new as core's dev branch.",
+                len(unparsed),
+                derived,
+                already,
+            )
+            return 2
+
+    retained = retain_vanished(
+        rules,
+        previous,
+        floor=latest.floor,
+        core_version=current,
+        discarded=discarded,
+    )
+    for rule in retained:
+        LOGGER.warning(
+            "core no longer declares %s, keeping %s which still breaks in %s",
+            rule["symbol"],
+            rule["id"],
+            rule["breaks_in"],
+        )
+    if retained:
+        rules = sorted(
+            rules + retained, key=lambda r: (parse_version(r["breaks_in"]), r["id"])
+        )
+
     future = [r for r in rules if not r["expired"]]
     matchable = [r for r in future if r["matchable"]]
 
@@ -1244,27 +1330,15 @@ def main(argv: list[str] | None = None) -> int:
             # keyword. Scoping one to its entity base class takes it off here.
             "markers_discarded": len(discarded),
             "markers_discarded_pending": len(pending_discarded),
+            # Rules core stopped declaring while their removal is still
+            # pending. A number that is not zero is a hand-written rule
+            # waiting to be written, not a failure.
+            "retained": len(retained),
         },
         "unparsed_core_files": unparsed,
         "discarded_markers": discarded,
         "rules": rules,
     }
-    # Core parses on a new enough interpreter, so a file that does not is this
-    # tool being behind it rather than core being broken. Writing the smaller
-    # rule set over a fuller one drops every finding those rules found and moves
-    # rules_hash, which sends the scanner back over the whole catalogue.
-    if unparsed:
-        already = (read_json(args.output, default={}) or {}).get("counts", {})
-        if len(matchable) < already.get("matchable_future", 0):
-            LOGGER.error(
-                "%d core file(s) would not parse and this run derives %d matchable "
-                "rule(s) against the %d already written; keeping those. Run this on "
-                "a CPython at least as new as core's dev branch.",
-                len(unparsed),
-                len(matchable),
-                already["matchable_future"],
-            )
-            return 2
 
     write_json(args.output, payload)
 

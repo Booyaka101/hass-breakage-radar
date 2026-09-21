@@ -428,6 +428,10 @@ def main(argv: list[str] | None = None) -> int:
         "from_core_ast": sum(1 for r in merged if r.get("origin") == "core-ast"),
         "from_manual": sum(1 for r in merged if r.get("origin") == "manual"),
         "from_blog": sum(1 for r in merged if r.get("origin") == "blog"),
+        # Recounted rather than carried over: a hand-written rule that
+        # supersedes a retained one takes it out here, and the count is what
+        # tells the crawl whether anything still needs writing.
+        "retained": sum(1 for r in merged if r.get("retained_since")),
     }
     write_json(args.rules, payload)
 

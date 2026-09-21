@@ -521,6 +521,17 @@ an exact module has no receiver to infer, so the 18-character gate does not appl
 are keyed on the deprecating module, never the symbol alone, because the same name
 imported from the replacement path is the fix rather than the problem.
 
+Core deletes a deprecation shim in the release it removes the API in, so the marker a
+rule was read from disappears at the moment the rule matters most: the API is already
+gone on `dev`, and the repositories still calling it break on the release everybody is
+about to install. A rule that goes missing that way is carried forward with
+`retained_since` set to the core version it vanished in, as long as it is matchable and
+its `breaks_in` has not shipped yet. It retires by itself at that release, `counts.retained`
+says how many are being carried, and the crawl annotates the run so the deprecation can
+be written into `data/manual_rules.json` before then. A marker this run's own gates
+refused is not carried, so tightening a gate still takes a rule out, and a core file the
+interpreter cannot parse aborts the run before any of this: unreadable is not deleted.
+
 **2. Hand-curated (`origin: manual`, `data/manual_rules.json`).** Removals announced in
 prose with no `report_usage` call behind them — the legacy device tracker platform API,
 the device registry single-config-entry changes, the device tracker property removals.

@@ -54,6 +54,25 @@ jobs:
       - name: Merge blog and hand-curated rules
         run: python tools/blog_rules.py
 
+      - name: Report rules core has stopped declaring
+        # An annotation rather than a failure: the rule is still being applied,
+        # and left alone it retires by itself in the release it names. Writing
+        # it into data/manual_rules.json is what makes it outlive that release,
+        # which is worth doing while repositories are still calling the API.
+        run: |
+          python - <<'PY'
+          import json
+
+          rules = json.load(open("data/rules.json", encoding="utf-8"))["rules"]
+          for rule in rules:
+              if rule.get("retained_since"):
+                  print(
+                      f"::warning::{rule['id']}: core no longer declares "
+                      f"{rule['symbol']}, kept since {rule['retained_since']} "
+                      f"because it breaks in {rule['breaks_in']}"
+                  )
+          PY
+
       - name: Fetch the HACS catalogue
         run: python tools/catalog.py
 
