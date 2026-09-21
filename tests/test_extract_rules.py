@@ -27,6 +27,7 @@ from tools.extract_rules import (
     iter_core_python,
     main,
     module_of,
+    retain_vanished,
 )
 
 RELEASE_RE = re.compile(r"^\d{4}\.\d+$")
@@ -263,7 +264,9 @@ def test_a_run_that_cannot_parse_core_keeps_the_rules_already_written(
     """Core parses on a new enough interpreter, so a file that does not is this
     tool being behind it, and the run derives fewer rules than the last one did.
     Writing that over the fuller set drops every finding those rules found and
-    moves rules_hash, which sends the scanner back over the whole catalogue."""
+    moves rules_hash, which sends the scanner back over the whole catalogue.
+    Retention does not stand in for this: a file this interpreter cannot read
+    is not core having deleted what was in it."""
     output = tmp_path / "rules.json"
     assert main(["--tarball", str(mini_tarball), "--output", str(output)]) == 0
     before = output.read_bytes()
@@ -721,3 +724,131 @@ def test_two_deprecations_in_one_release_keep_a_rule_each():
         "core-issue-netio-deprecated-yaml-2027.3",
         "core-issue-netio-warn-about-the-other-thing-2027.3",
     ]
+
+
+VANISHED = {
+    "id": "core-call-async-extract-entity-ids",
+    "kind": "call",
+    "symbol": "async_extract_entity_ids",
+    "message": "passes `hass` to `async_extract_entity_ids`, where it is ignored.",
+    "breaks_in": "2026.10",
+    "source": "homeassistant/helpers/service.py:403",
+    "origin": "core-ast",
+    "confidence": "medium",
+    "matchable": True,
+    "match": {"type": "call_hass_argument", "names": ["async_extract_entity_ids"]},
+    "expired": False,
+    "occurrences": 1,
+}
+
+
+def _previous(rule, **over):
+    return {"core_version": "2026.9.0", "rules": [dict(rule, **over)]}
+
+
+def test_a_rule_core_stopped_declaring_is_kept_while_its_removal_is_ahead():
+    """Core deletes the shim in the release it removes the API in, so the
+    marker goes at the moment the rule matters most."""
+    kept = retain_vanished(
+        [], _previous(VANISHED), floor="2026.9", core_version="2026.10.0dev0",
+        discarded=[],
+    )
+    assert [r["id"] for r in kept] == ["core-call-async-extract-entity-ids"]
+    assert kept[0]["retained_since"] == "2026.10.0dev0"
+    assert kept[0]["expired"] is False
+
+
+def test_the_version_retention_started_is_stamped_once():
+    kept = retain_vanished(
+        [], _previous(VANISHED, retained_since="2026.10.0dev0"), floor="2026.9",
+        core_version="2026.11.0dev0", discarded=[],
+    )
+    assert kept[0]["retained_since"] == "2026.10.0dev0"
+
+
+def test_a_rule_retires_once_its_release_has_shipped():
+    """Retention is self-limiting: the rule leaves on the release it named."""
+    assert retain_vanished(
+        [], _previous(VANISHED), floor="2026.11", core_version="2026.11.0dev0",
+        discarded=[],
+    ) == []
+
+
+def test_a_marker_this_run_refused_is_not_carried():
+    """Tightening a gate has to be able to take a rule out."""
+    assert retain_vanished(
+        [],
+        _previous(VANISHED),
+        floor="2026.9",
+        core_version="2026.10.0dev0",
+        discarded=[{"symbol": "async_extract_entity_ids", "reason": "denylisted"}],
+    ) == []
+
+
+@pytest.mark.parametrize("origin", ["manual", "blog"])
+def test_only_rules_this_tool_derived_are_carried(origin):
+    """A hand-written rule that left the file it lives in was taken out."""
+    assert retain_vanished(
+        [], _previous(VANISHED, origin=origin), floor="2026.9",
+        core_version="2026.10.0dev0", discarded=[],
+    ) == []
+
+
+def test_a_rule_core_still_declares_is_not_carried_twice():
+    assert retain_vanished(
+        [VANISHED], _previous(VANISHED), floor="2026.9",
+        core_version="2026.10.0dev0", discarded=[],
+    ) == []
+
+
+def test_an_unmatchable_rule_is_not_carried():
+    """It found nothing while it was in core and would find nothing now."""
+    assert retain_vanished(
+        [], _previous(VANISHED, matchable=False), floor="2026.9",
+        core_version="2026.10.0dev0", discarded=[],
+    ) == []
+
+
+def _core_without(mini_tarball, tmp_path, dropped):
+    """The pinned fixture with one rule-bearing file emptied, which is what
+    core looks like the day it deletes a deprecation shim."""
+    trimmed = tmp_path / "core_trimmed.tar.gz"
+    with tarfile.open(mini_tarball) as src, tarfile.open(trimmed, "w:gz") as out:
+        for member in src.getmembers():
+            data = src.extractfile(member).read() if member.isfile() else b""
+            if member.name.endswith(dropped):
+                data = b""
+                member.size = 0
+            out.addfile(member, io.BytesIO(data))
+    return trimmed
+
+
+def test_deleting_the_marker_upstream_does_not_drop_the_rule(mini_tarball, tmp_path):
+    """The whole point, end to end: the two rules in helper_integration.py
+    survive core deleting the file they were read from, and the board keeps
+    warning about a 2027.8 removal that has not happened yet."""
+    output = tmp_path / "rules.json"
+    assert main(["--tarball", str(mini_tarball), "--output", str(output)]) == 0
+    before = json.loads(output.read_text(encoding="utf-8"))
+    ours = {
+        r["id"] for r in before["rules"] if "helper_integration.py" in r["source"]
+    }
+    assert len(ours) == 2
+
+    trimmed = _core_without(mini_tarball, tmp_path, "helpers/helper_integration.py")
+    assert main(["--tarball", str(trimmed), "--output", str(output)]) == 0
+    after = json.loads(output.read_text(encoding="utf-8"))
+
+    assert ours <= {r["id"] for r in after["rules"]}
+    assert after["counts"]["retained"] == 2
+    assert after["counts"]["matchable_future"] == before["counts"]["matchable_future"]
+
+
+def test_a_rule_core_renamed_does_not_come_back_beside_its_replacement():
+    """Matching on the symbol too: an id that moves because a gate changed is
+    the same deprecation, not a second one."""
+    renamed = dict(VANISHED, id="core-call-service-async-extract-entity-ids")
+    assert retain_vanished(
+        [renamed], _previous(VANISHED), floor="2026.9",
+        core_version="2026.10.0dev0", discarded=[],
+    ) == []
