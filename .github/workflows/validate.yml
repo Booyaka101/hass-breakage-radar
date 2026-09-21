@@ -88,7 +88,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+
+      # hacs/action reads the branch from the API rather than from the
+      # checkout, so a pull_request run that starts after the branch was
+      # merged and deleted fails on a 404 about a ref, which says nothing
+      # about the code and lands as a red release in the run list.
+      - name: The branch this run is about still exists
+        id: head
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF: ${{ github.head_ref || github.ref_name }}
+          # The fork for a pull request from one, so a contributor's branch is
+          # looked for where it actually lives.
+          REPO: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+        run: |
+          if gh api "repos/${REPO}/git/ref/heads/${REF}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::${REF} is gone, so there is nothing for HACS to fetch"
+          fi
+
       - uses: hacs/action@main
+        if: steps.head.outputs.exists == 'true'
         with:
           category: integration
 
