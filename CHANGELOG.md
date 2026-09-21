@@ -4,6 +4,71 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.17.0 — 2026-09-21
+
+### The crawl stopped publishing because core deleted a deprecation
+
+Home Assistant removed the `hass` argument from five `homeassistant/helpers/service.py`
+helpers on `dev` for 2026.10. Removing the argument removes the `report_usage` call that
+announced it, which is the only thing `tools/extract_rules.py` reads, so the five rules
+stopped being derived: 44 matchable rules out of core became 39, and 64 in the merged set
+became 59. Two tests in `tests/test_scanner.py` looked those rules up in the shipped set
+to build their fixture, so they failed, and the crawl gates on the suite. The 2026-09-21
+run stopped there, and so would every run after it, because the cause is upstream and does
+not come back. A failure at that step blocks publishing the index and saving the crawl
+progress with it.
+
+The tests declare the matcher they exercise instead of reading it out of `data/rules.json`,
+the way `VACUUM_RULE` in the same file already did. A test that pins itself to live data
+fails for reasons that have nothing to do with the code it covers.
+
+### A rule core deletes is kept until the release it names
+
+The failure above is not specific to those five. Core deletes the deprecation shim in the
+release it removes the API in, so the marker behind every `core-ast` rule disappears in
+the release that rule breaks in. That is the moment the rule matters most: the API is gone
+on `dev`, and the repositories still calling it break on the release everybody is about to
+install. `core-call-async-generate-entity-id` was next, around 2027.2.
+
+The extractor now carries a rule it no longer finds, on four conditions: it derived that
+rule itself, the rule is matchable, its `breaks_in` has not shipped, and this run's own
+gates did not refuse the symbol. Carried rules get `retained_since`, the core version they
+went missing in, and are counted in `counts.retained`. The crawl turns a count above zero
+into a run annotation naming the rule, because a carried rule is a deprecation that wants
+hand-writing into `data/manual_rules.json` before its deadline.
+
+Nothing accumulates. A carried rule retires by itself at the release it names, denylisting
+or gating a symbol still removes it outright, and `tools/blog_rules.py` recounts after the
+merge, so a hand-written rule that supersedes a carried one ends the annotation with no
+flag for anyone to clear. `rules_hash` covers matchers and releases, both preserved, so
+retention never re-crawls anything.
+
+The unparsed-core-file guard moved above retention and counts the rules the run actually
+derived. Retention must not stand in for it: a file a too-old interpreter cannot read
+looks exactly like core having deleted what was in it, and the run would have quietly
+succeeded on half a rule set for good. That case still exits 2.
+
+Replayed against the rule set at 27f9c45 and the same core tarball the failing run used
+(sha256 `32d104bdd24c`), all five service helper rules are carried and the matchable count
+goes back to 44.
+
+### The service helper rules are hand-written now
+
+Retention would have kept those five alive until 2026.10 and then dropped them, and the
+removal is real, so they are in `data/manual_rules.json` under their original ids. The
+matcher is `call_hass_argument` pinned to `homeassistant.helpers.service`, which only
+fires where the file's imports prove the call reaches that module and `hass` is actually
+passed. Measured over the 4 687 cached catalogue tarballs before curating: 14 call sites
+in 9 repositories and no false positive, which is what took the confidence from medium to
+high. The published index carries 13 of them across 10 repositories, the difference being
+repositories the crawl has not re-reached.
+
+Keeping the original ids is deliberate. The feed's first-seen dates, the board's saved
+links and anything a user has bookmarked all key off the rule id, and a new id would have
+presented a three-week-old deadline as today's news. `tests/test_service_hass_argument.py`
+checks the shipped set against the before and after examples in the announcement post
+rather than assuming five rules exist.
+
 ## 1.16.0 — 2026-09-18
 
 ### Blog rule messages are the post, not the page furniture
