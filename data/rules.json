@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-22T03:31:49Z",
+  "generated_utc": "2026-09-23T03:32:07Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "4e5aa0fc664c206414cf328419c8bf418f41c64f5bccb9a05819faf51fdb8d73",
+  "core_tarball_sha256": "573f430958ab18d216bb9ebad2a082779cd140824a6564ae06629b63410e62d2",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 185,
+    "total": 184,
     "future": 134,
     "matchable_future": 64,
-    "core_files_scanned": 10232,
+    "core_files_scanned": 10234,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 141,
+    "from_core_ast": 140,
     "from_manual": 27,
     "from_blog": 17
   },
@@ -650,20 +650,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lovelace/__init__.py#L524"
-    },
-    {
-      "id": "core-issue-samsungtv-deprecated-implicit-wake-on-lan-2026.8",
-      "kind": "issue",
-      "symbol": "deprecated_implicit_wake_on_lan",
-      "message": "`samsungtv` raises the `deprecated_implicit_wake_on_lan` repair issue, and the configuration it reports stops working in Home Assistant 2026.8.",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/samsungtv/entity.py:98",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/samsungtv/entity.py#L98"
     },
     {
       "id": "core-issue-telegram-migrate-notify-2026.8",
@@ -3314,5 +3300,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-22T03:32:15Z"
+  "blog_merged_utc": "2026-09-23T03:32:27Z"
 }
