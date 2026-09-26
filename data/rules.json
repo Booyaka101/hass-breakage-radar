@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-25T03:30:49Z",
+  "generated_utc": "2026-09-26T03:30:26Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "cba3d2b03dd908ce721670e119b7a451bd9f0d8f666fad115de329bc5ea32833",
+  "core_tarball_sha256": "90b90b342549d931ef954de427f02d2f1098cc0ac22c5d663ae7329e921e73a9",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 184,
     "future": 134,
     "matchable_future": 64,
-    "core_files_scanned": 10236,
+    "core_files_scanned": 10242,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -489,13 +489,13 @@
       "symbol": "async_setup_platform",
       "message": "`openevse` raises a repair issue, and the configuration it reports stops working in Home Assistant 2026.6.",
       "breaks_in": "2026.6",
-      "source": "homeassistant/components/openevse/sensor.py:415",
+      "source": "homeassistant/components/openevse/sensor.py:412",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L415"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L412"
     },
     {
       "id": "core-issue-bluesound-deprecated-service-join-2026.7",
@@ -531,13 +531,13 @@
       "symbol": "deprecated_yaml",
       "message": "`openevse` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.7.",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/openevse/sensor.py:431",
+      "source": "homeassistant/components/openevse/sensor.py:428",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L431"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/openevse/sensor.py#L428"
     },
     {
       "id": "core-issue-telegram-bot-deprecated-timeout-parameter-2026.7",
@@ -3300,5 +3300,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-25T03:31:14Z"
+  "blog_merged_utc": "2026-09-26T03:30:49Z"
 }
