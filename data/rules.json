@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-27T03:33:57Z",
+  "generated_utc": "2026-09-28T03:38:16Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "7c5cfd51b05ee9185915d6881aed1d9948f40506aecdf14ba00086380de5e901",
+  "core_tarball_sha256": "bed20ab2d18ba11fca077180e6b87525ed54f8a142f204dbc0950e1bac90d4cc",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 184,
-    "future": 134,
+    "total": 183,
+    "future": 133,
     "matchable_future": 64,
     "core_files_scanned": 10246,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 140,
+    "from_core_ast": 139,
     "from_manual": 27,
     "from_blog": 17
   },
@@ -921,20 +921,6 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L76"
-    },
-    {
-      "id": "core-issue-picotts-deprecated-yaml-2026.10",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`picotts` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.10.",
-      "breaks_in": "2026.10",
-      "source": "homeassistant/components/picotts/issue.py:12",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/picotts/issue.py#L12"
     },
     {
       "id": "blog-recorder-statistics-api-changes-2026.11",
@@ -3300,5 +3286,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-27T03:34:28Z"
+  "blog_merged_utc": "2026-09-28T03:38:42Z"
 }
