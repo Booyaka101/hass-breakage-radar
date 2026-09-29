@@ -1,17 +1,17 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-28T03:38:16Z",
+  "generated_utc": "2026-09-29T03:34:14Z",
   "core_ref": "dev",
   "core_version": "2026.10",
   "latest_release": "2026.9",
   "rc_release": null,
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "bed20ab2d18ba11fca077180e6b87525ed54f8a142f204dbc0950e1bac90d4cc",
+  "core_tarball_sha256": "6ef583ab7f55eedeabd18283f6cdf2eff2b989a76588bfe52be39dbfadd236cb",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 183,
+    "total": 186,
     "future": 133,
     "matchable_future": 64,
     "core_files_scanned": 10246,
@@ -19,9 +19,9 @@
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 139,
+    "from_core_ast": 138,
     "from_manual": 27,
-    "from_blog": 17
+    "from_blog": 21
   },
   "unparsed_core_files": [],
   "discarded_markers": [
@@ -279,13 +279,13 @@
       "symbol": "number",
       "message": "`ring` moves these entities to `number`, and the ones on the old platform stop working in Home Assistant 2025.4.",
       "breaks_in": "2025.4",
-      "source": "homeassistant/components/ring/sensor.py:236",
+      "source": "homeassistant/components/ring/sensor.py:257",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 4,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/sensor.py#L236"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/sensor.py#L257"
     },
     {
       "id": "core-issue-ring-siren-2025.4",
@@ -339,20 +339,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L701"
     },
     {
-      "id": "core-issue-camera-deprecated-filename-template-2025.6",
-      "kind": "issue",
-      "symbol": "deprecated_filename_template",
-      "message": "`camera` raises the `deprecated_filename_template` repair issue, and the configuration it reports stops working in Home Assistant 2025.6.",
-      "breaks_in": "2025.6",
-      "source": "homeassistant/components/camera/__init__.py:1043",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/camera/__init__.py#L1043"
-    },
-    {
       "id": "core-issue-heos-sign-in-out-deprecated-2025.8",
       "kind": "issue",
       "symbol": "sign_in_out_deprecated",
@@ -365,6 +351,18 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/heos/services.py#L142"
+    },
+    {
+      "id": "blog-template-hass-required-2025.10",
+      "kind": "prose",
+      "symbol": "template hass required",
+      "message": "It has been marked as deprecated, and scheduled for removal in Home Assistant Core 2025.10.",
+      "breaks_in": "2025.10",
+      "source": "https://developers.home-assistant.io/blog/2024/09/02/template-hass-required/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
     },
     {
       "id": "core-issue-hue-deprecated-effect-none-2025.10",
@@ -421,6 +419,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3092"
     },
     {
+      "id": "blog-area-squared-units-2025.12",
+      "kind": "prose",
+      "symbol": "area squared units",
+      "message": "The AREA_SQUARE_METERS constant has been deprecated and will be removed in Home Assistant 2025.12.",
+      "breaks_in": "2025.12",
+      "source": "https://developers.home-assistant.io/blog/2024/12/26/area-squared-units/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
       "id": "core-call-async-get-or-create",
       "kind": "call",
       "symbol": "async_get_or_create",
@@ -444,6 +454,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2596"
     },
     {
+      "id": "blog-dt-util-utc-to-timestamp-deprecation-2026.1",
+      "kind": "prose",
+      "symbol": "dt util utc to timestamp deprecation",
+      "message": "The utility function homeassistant.util.dt.utc_to_timestamp is deprecated and will be removed in Home Assistant Core 2026.1, custom integrations which call it should instead call the stdlib method datetime.datetime.timestamp()",
+      "breaks_in": "2026.1",
+      "source": "https://developers.home-assistant.io/blog/2024/11/28/dt-util-utc-to-timestamp-deprecation/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
+    },
+    {
       "id": "core-prose-chatlog-async-update-llm-data",
       "kind": "prose",
       "symbol": "ChatLog.async_update_llm_data",
@@ -456,6 +478,18 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L695"
+    },
+    {
+      "id": "blog-service-info-2026.2",
+      "kind": "prose",
+      "symbol": "service info",
+      "message": "The old import locations are deprecated and will be removed in Home Assistant 2026.2.",
+      "breaks_in": "2026.2",
+      "source": "https://developers.home-assistant.io/blog/2025/01/15/service-info/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": true
     },
     {
       "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
@@ -1429,7 +1463,7 @@
       "symbol": "async_generate_entity_id",
       "message": "calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_registry.py:1310",
+      "source": "homeassistant/helpers/entity_registry.py:1327",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1444,7 +1478,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1310"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1327"
     },
     {
       "id": "core-call-async-render-no-api-prompt",
@@ -1601,13 +1635,13 @@
       "symbol": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "message": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity.py:1560",
+      "source": "homeassistant/helpers/entity.py:1566",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1560"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1566"
     },
     {
       "id": "core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit",
@@ -3286,5 +3320,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-28T03:38:42Z"
+  "blog_merged_utc": "2026-09-29T03:34:56Z"
 }
