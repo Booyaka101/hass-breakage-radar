@@ -4,6 +4,30 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## 1.17.1 — 2026-10-03
+
+### An ignored repair stays ignored across a restart
+
+Dismissing the grouped "upcoming" Repairs issue with Ignore lasted only until
+the next restart. Shutdown unloads config entries, and the unload handler
+deleted every Breakage Radar issue on the way out. The Ignore lives on the
+issue registry entry (`dismissed_version`, persisted even for non-persistent
+issues), so deleting the entries threw the dismissal away and startup raised
+the summary repair again as new.
+
+Unload leaves the issues in place now. A non-persistent issue that is not
+recreated after a restart leaves the Repairs panel on its own, so a user who
+disables the integration still sees the panel clear eventually. The sweep
+moved to `async_remove_entry()`, which runs when the config entry is removed
+and deletes every Breakage Radar issue. That is unconditional rather than
+last-entry-only because the config flow pins a single entry (`unique_id` is
+the domain).
+
+A finding that later turns imminent or broken keeps its own issue id, so its
+actionable repair still appears while the grouped summary stays ignored.
+Reported in #61 with the exact reproduction; regression tests cover the
+unload and removal paths (#62).
+
 ## 1.17.0 — 2026-09-21
 
 ### The crawl stopped publishing because core deleted a deprecation
