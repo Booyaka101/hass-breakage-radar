@@ -426,6 +426,72 @@ def test_broken_now_issue_for_an_uninstalled_component_is_swept(sample_index):
     ) not in ir.created
 
 
+def test_an_ignored_repair_survives_unload_and_setup_again(sample_index):
+    """Shutdown unloads the entry and start-up sets it up again, recreating
+    the issues against the registry entry that carries the user's Ignore.
+    Deleting the issues in between (issue #61) threw that dismissal away, so
+    the ignored summary repair came back after every restart.
+    """
+    import asyncio
+    from types import SimpleNamespace
+
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar import async_unload_entry
+    from custom_components.breakage_radar.const import DOMAIN, ISSUE_ID
+    from custom_components.breakage_radar.repairs import async_sync_issue
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own test harness")
+
+    async def unload_platforms(entry, platforms):
+        return True
+
+    ir.created.clear()
+    hass = HomeAssistant()
+    hass.config_entries = SimpleNamespace(async_unload_platforms=unload_platforms)
+    entry = ConfigEntry()
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = object()
+
+    async_sync_issue(hass, build_report(sample_index, {"fixture_tracker": "0.1.0"}))
+    assert (DOMAIN, ISSUE_ID) in ir.created
+
+    assert asyncio.run(async_unload_entry(hass, entry)) is True
+    # The registry entry must still be there: start-up recreates the issue
+    # against it, and that is what keeps the Ignore attached.
+    assert (DOMAIN, ISSUE_ID) in ir.created
+    assert DOMAIN not in hass.data
+
+
+def test_removing_the_entry_takes_the_repairs_issues_with_it(sample_index):
+    """Unloading no longer cleans up, so the config entry's removal is where
+    the sweep happens -- summary and alert issues alike."""
+    import asyncio
+
+    from homeassistant.core import HomeAssistant
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar import async_remove_entry
+    from custom_components.breakage_radar.const import DOMAIN
+    from custom_components.breakage_radar.repairs import async_sync_issue
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own test harness")
+
+    ir.created.clear()
+    hass = HomeAssistant()
+    report = build_report(
+        sample_index, {"fixture_tracker": "0.1.0"}, current_version="2027.5"
+    )
+    async_sync_issue(hass, report)
+    assert (DOMAIN, "broken_now_fixture_tracker") in ir.created
+
+    asyncio.run(async_remove_entry(hass, None))
+    assert not [key for key in ir.created if key[0] == DOMAIN]
+
+
 # --------------------------------------------------------------------------- #
 # manifest / packaging
 # --------------------------------------------------------------------------- #
