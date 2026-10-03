@@ -18,10 +18,9 @@ from .const import (
     CONF_ALERT_WINDOW_DAYS,
     CONF_IGNORED_DOMAINS,
     DOMAIN,
-    ISSUE_ID,
 )
 from .coordinator import BreakageRadarCoordinator
-from .repairs import ALERT_PREFIXES, async_sync_issue
+from .repairs import async_sync_issue
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -62,17 +61,24 @@ async def _async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload a config entry."""
+    """Unload a config entry.
+
+    The repairs issues are left in place: Home Assistant keeps a user's
+    Ignore as the dismissal version on the issue registry entry, and deleting
+    the issue deletes that with it. A non-persistent issue that stops being
+    recreated leaves the panel on its own after a restart.
+    """
     unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unloaded:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
         if not hass.data.get(DOMAIN):
             hass.data.pop(DOMAIN, None)
-            ir.async_delete_issue(hass, DOMAIN, ISSUE_ID)
-            async_get = getattr(ir, "async_get", None)
-            if async_get is not None:
-                registry = async_get(hass)
-                for issue_domain, issue_id in list(getattr(registry, "issues", {})):
-                    if issue_domain == DOMAIN and issue_id.startswith(ALERT_PREFIXES):
-                        ir.async_delete_issue(hass, DOMAIN, issue_id)
     return unloaded
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Delete the repairs issues when the config entry itself is removed."""
+    registry = ir.async_get(hass)
+    for issue_domain, issue_id in list(registry.issues):
+        if issue_domain == DOMAIN:
+            ir.async_delete_issue(hass, DOMAIN, issue_id)
