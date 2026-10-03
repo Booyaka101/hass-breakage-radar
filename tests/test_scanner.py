@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 from conftest import scan_fixture_tree
 
+from tools.release import floor_from_payload
 from tools.rules_engine import (
     Rule,
     ScanStats,
@@ -25,14 +26,19 @@ from tools.scan import (
 
 @pytest.fixture(scope="module")
 def rules(request):
-    """The shipped rule set, restricted to what can actually be matched."""
+    """The shipped rule set, restricted to what can actually be matched.
+
+    Pending-ness is measured against the pending floor the way the crawler
+    measures it, not against ``core_version``: dev already carries the next
+    release two weeks before it ships, and a rule for the release in between
+    is the most urgent one the tool has (#46).
+    """
     path = request.config.rootpath / "data" / "rules.json"
     if not path.exists():
         pytest.skip("data/rules.json not built yet")
     payload = json.loads(path.read_text(encoding="utf-8"))
-    return matchable_rules(
-        load_rules(payload["rules"]), current_version=payload["core_version"]
-    )
+    floor, _source = floor_from_payload(payload)
+    return matchable_rules(load_rules(payload["rules"]), current_version=floor)
 
 
 def _scan_tree(root: Path, rules) -> list[dict]:

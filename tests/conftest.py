@@ -404,12 +404,20 @@ def shipped_rules() -> dict:
 
 @pytest.fixture(scope="session")
 def shipped_matchable_rules(shipped_rules) -> list:
-    """The shipped rules that can still fire, loaded the way the crawler does."""
+    """The shipped rules that can still fire, loaded the way the crawler does.
+
+    The crawler scans against the pending floor, not ``core_version``: dev
+    carries the release being built two weeks before it ships, and measuring
+    against it drops every rule for the release in its candidate window (#46)
+    -- the tests would then reject exactly the rule set the crawl ships.
+    """
+    from tools.release import floor_from_payload
     from tools.rules_engine import load_rules, matchable_rules
 
+    floor, _source = floor_from_payload(shipped_rules)
     return matchable_rules(
         load_rules(shipped_rules["rules"]),
-        current_version=shipped_rules["core_version"],
+        current_version=floor,
     )
 
 
