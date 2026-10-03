@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-09-30T03:34:58Z",
+  "generated_utc": "2026-10-03T04:12:18Z",
   "core_ref": "dev",
-  "core_version": "2026.10",
+  "core_version": "2026.11",
   "latest_release": "2026.9",
-  "rc_release": null,
+  "rc_release": "2026.10",
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "7932b2ee9bba936f27f24b4146b0fe9b7492c2d19d0dc0400ce0f85c324da78c",
+  "core_tarball_sha256": "965e88b94b87c8f37245cd2cef691cee271ea56816f2aa309764731a6c1a95c7",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 184,
-    "future": 133,
+    "total": 181,
+    "future": 131,
     "matchable_future": 64,
-    "core_files_scanned": 10254,
+    "core_files_scanned": 10335,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 136,
+    "from_core_ast": 133,
     "from_manual": 27,
     "from_blog": 21
   },
@@ -410,13 +410,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3107",
+      "source": "homeassistant/config_entries.py:3132",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3107"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3132"
     },
     {
       "id": "blog-area-squared-units-2025.12",
@@ -551,13 +551,13 @@
       "symbol": "deprecated_timeout_parameter",
       "message": "`telegram_bot` raises the `deprecated_timeout_parameter` repair issue, and the configuration it reports stops working in Home Assistant 2026.7.",
       "breaks_in": "2026.7",
-      "source": "homeassistant/components/telegram_bot/services.py:617",
+      "source": "homeassistant/components/telegram_bot/services.py:635",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L617"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L635"
     },
     {
       "id": "core-issue-wsdot-deprecated-yaml-2026.7",
@@ -765,32 +765,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L78"
     },
     {
-      "id": "core-issue-splunk-deprecated-yaml-2026.9",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`splunk` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.9.",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/splunk/__init__.py:131",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/splunk/__init__.py#L131"
-    },
-    {
       "id": "core-issue-telegram-bot-migrate-chat-ids-in-target-2026.9",
       "kind": "issue",
       "symbol": "migrate_chat_ids_in_target",
       "message": "`telegram_bot` raises the `migrate_chat_ids_in_target` repair issue, and the configuration it reports stops working in Home Assistant 2026.9.",
       "breaks_in": "2026.9",
-      "source": "homeassistant/components/telegram_bot/services.py:794",
+      "source": "homeassistant/components/telegram_bot/services.py:812",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L794"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L812"
     },
     {
       "id": "core-prose-passes-a-suggested-area-to-device-registry-async-update-device",
@@ -1126,34 +1112,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L470"
     },
     {
-      "id": "core-issue-html5-deprecated-dismiss-action-2026.11",
-      "kind": "issue",
-      "symbol": "deprecated_dismiss_action",
-      "message": "`html5` raises the `deprecated_dismiss_action` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/html5/issue.py:42",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L42"
-    },
-    {
-      "id": "core-issue-html5-deprecated-notify-action-2026.11",
-      "kind": "issue",
-      "symbol": "deprecated_notify_action",
-      "message": "`html5` raises the `deprecated_notify_action` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/html5/issue.py:22",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L22"
-    },
-    {
       "id": "core-issue-pjlink-deprecated-yaml-2026.11",
       "kind": "issue",
       "symbol": "deprecated_yaml",
@@ -1210,7 +1168,7 @@
       "symbol": "TargetSelectorData",
       "message": "TargetSelection",
       "breaks_in": "2026.12",
-      "source": "homeassistant/helpers/target.py:106",
+      "source": "homeassistant/helpers/target.py:109",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1222,7 +1180,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L106"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L109"
     },
     {
       "id": "core-issue-hassio-normalize-partial-options-data-2026.12",
@@ -1314,13 +1272,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3298",
+      "source": "homeassistant/config_entries.py:3323",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3298"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3323"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -1435,7 +1393,7 @@
       "symbol": "async_generate_entity_id",
       "message": "calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_registry.py:1364",
+      "source": "homeassistant/helpers/entity_registry.py:1385",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1450,7 +1408,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1364"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1385"
     },
     {
       "id": "core-call-async-render-no-api-prompt",
@@ -1537,13 +1495,13 @@
       "symbol": "deprecated_event_bus",
       "message": "`html5` raises the `deprecated_event_bus` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/html5/issue.py:62",
+      "source": "homeassistant/components/html5/issue.py:14",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L62"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/html5/issue.py#L14"
     },
     {
       "id": "core-issue-http-deprecated-yaml-2027.2",
@@ -1551,13 +1509,13 @@
       "symbol": "deprecated_yaml",
       "message": "`http` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:262",
+      "source": "homeassistant/components/http/config.py:264",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L262"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L264"
     },
     {
       "id": "core-issue-http-deprecated-yaml-import-error-2027.2",
@@ -1565,13 +1523,13 @@
       "symbol": "deprecated_yaml_import_error",
       "message": "`http` raises the `deprecated_yaml_import_error` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:251",
+      "source": "homeassistant/components/http/config.py:253",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L251"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L253"
     },
     {
       "id": "core-issue-http-yaml-still-present-after-migration-2027.2",
@@ -1579,13 +1537,13 @@
       "symbol": "yaml_still_present_after_migration",
       "message": "`http` raises the `yaml_still_present_after_migration` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:222",
+      "source": "homeassistant/components/http/config.py:224",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L222"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L224"
     },
     {
       "id": "core-issue-netatmo-deprecated-webhook-service-2027.2",
@@ -1607,13 +1565,13 @@
       "symbol": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "message": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity.py:1569",
+      "source": "homeassistant/helpers/entity.py:1595",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1569"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1595"
     },
     {
       "id": "core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit",
@@ -1621,13 +1579,13 @@
       "symbol": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entit...",
       "message": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_platform.py:964",
+      "source": "homeassistant/helpers/entity_platform.py:965",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L964"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L965"
     },
     {
       "id": "blog-labs-async-listen-deprecation-2027.3",
@@ -1698,13 +1656,13 @@
       "symbol": "deprecated_yaml",
       "message": "`remember_the_milk` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.3.",
       "breaks_in": "2027.3",
-      "source": "homeassistant/components/remember_the_milk/__init__.py:115",
+      "source": "homeassistant/components/remember_the_milk/__init__.py:116",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/__init__.py#L115"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/__init__.py#L116"
     },
     {
       "id": "core-issue-smtp-deprecated-notify-action-2027.3",
@@ -1752,13 +1710,13 @@
       "symbol": "deprecated_entity",
       "message": "`xbox` raises the `deprecated_entity` repair issue, and the configuration it reports stops working in Home Assistant 2027.4.",
       "breaks_in": "2027.4",
-      "source": "homeassistant/components/xbox/entity.py:204",
+      "source": "homeassistant/components/xbox/entity.py:210",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/xbox/entity.py#L204"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/xbox/entity.py#L210"
     },
     {
       "id": "blog-entity-id-mismatched-domain-deprecated-2027.5",
@@ -1804,13 +1762,13 @@
       "symbol": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "message": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "breaks_in": "2027.5",
-      "source": "homeassistant/helpers/entity_platform.py:980",
+      "source": "homeassistant/helpers/entity_platform.py:981",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L980"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L981"
     },
     {
       "id": "legacy-device-tracker-platform",
@@ -3292,5 +3250,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-09-30T03:35:47Z"
+  "blog_merged_utc": "2026-10-03T04:12:53Z"
 }
