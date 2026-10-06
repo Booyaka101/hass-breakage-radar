@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-05T03:41:59Z",
+  "generated_utc": "2026-10-06T03:34:15Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.9",
   "rc_release": "2026.10",
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "6147dc582a038e40c801c0399a74e5cee4d0f601bddbafdb639d7895de47846a",
+  "core_tarball_sha256": "535267d2805d9d34c7995f41f7a3ccb87f436657c26f3ecfbfcfa5171e6f2414",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 181,
     "future": 131,
     "matchable_future": 64,
-    "core_files_scanned": 10341,
+    "core_files_scanned": 10361,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -1337,13 +1337,13 @@
       "symbol": "protocol_5_migration",
       "message": "`mqtt` raises the `protocol_5_migration` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
       "breaks_in": "2027.1",
-      "source": "homeassistant/components/mqtt/__init__.py:528",
+      "source": "homeassistant/components/mqtt/__init__.py:340",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L528"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L340"
     },
     {
       "id": "core-issue-smtp-deprecated-yaml-2027.1",
@@ -3250,5 +3250,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
     }
   ],
-  "blog_merged_utc": "2026-10-05T03:42:42Z"
+  "blog_merged_utc": "2026-10-06T03:35:04Z"
 }
