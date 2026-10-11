@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-06T03:34:15Z",
+  "generated_utc": "2026-10-07T03:37:23Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.9",
   "rc_release": "2026.10",
   "pending_floor": "2026.10",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "535267d2805d9d34c7995f41f7a3ccb87f436657c26f3ecfbfcfa5171e6f2414",
+  "core_tarball_sha256": "efe7f3d2ecfa14ea03b6dfeadd41ba5a4cc0892aae4508cece7d8fc9525cb052",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 181,
+    "total": 180,
     "future": 131,
     "matchable_future": 64,
-    "core_files_scanned": 10361,
+    "core_files_scanned": 10393,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 133,
+    "from_core_ast": 132,
     "from_manual": 27,
     "from_blog": 21
   },
@@ -471,13 +471,13 @@
       "symbol": "ChatLog.async_update_llm_data",
       "message": "ChatLog.async_update_llm_data",
       "breaks_in": "2026.1",
-      "source": "homeassistant/components/conversation/chat_log.py:695",
+      "source": "homeassistant/components/conversation/chat_log.py:697",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L695"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L697"
     },
     {
       "id": "blog-service-info-2026.2",
@@ -670,20 +670,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram/notify.py#L56"
-    },
-    {
-      "id": "core-issue-waterfurnace-deprecated-yaml-2026.8",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`waterfurnace` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.8.",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/waterfurnace/__init__.py:79",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/waterfurnace/__init__.py#L79"
     },
     {
       "id": "core-call-deviceentry-suggested-area",
@@ -1393,7 +1379,7 @@
       "symbol": "async_generate_entity_id",
       "message": "calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_registry.py:1385",
+      "source": "homeassistant/helpers/entity_registry.py:1387",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1408,7 +1394,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1385"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1387"
     },
     {
       "id": "core-call-async-render-no-api-prompt",
@@ -1551,13 +1537,13 @@
       "symbol": "deprecated_webhook_service",
       "message": "`netatmo` raises the `deprecated_webhook_service` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/netatmo/services.py:27",
+      "source": "homeassistant/components/netatmo/services.py:51",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L27"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L51"
     },
     {
       "id": "core-prose-sets-a-group-attribute-on-entity-which-is-not-a-group-instance",
@@ -3241,14 +3227,14 @@
       "symbol": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to ...",
       "message": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to a ToolResult instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:611",
+      "source": "homeassistant/components/conversation/chat_log.py:613",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L611"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-06T03:35:04Z"
+  "blog_merged_utc": "2026-10-07T03:38:05Z"
 }
