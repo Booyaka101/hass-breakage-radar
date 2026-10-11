@@ -4,6 +4,29 @@ All notable changes to Breakage Radar. Versions follow
 [semver](https://semver.org/); the `custom_components/breakage_radar/manifest.json`
 and `pyproject.toml` versions always agree (enforced by a test).
 
+## Unreleased
+
+### The crawl stopped publishing because 2026.10 shipped
+
+`tests/test_service_hass_argument.py` guarded the five hand-written
+`call_hass_argument` matchers by asserting they ship as matchable rules.
+That assertion only holds while their removal is still ahead: Home Assistant
+2026.10 was released on 7 October 2026, the pending floor moved to 2026.11 on
+the next crawl, and the five rules retired in the release they name — by
+design, the same as every core rule. The fixture errored at setup instead,
+and the crawl gates on the suite, so every run since 8 October has failed
+before committing and the published index has stood at 30 September's
+numbers.
+
+The matchers are now exercised straight from `data/manual_rules.json`, which
+covers them whichever side of the rollover the floor is on, and a new test
+holds the lifecycle itself: all five ship while 2026.10 is ahead of the
+floor, none after it has passed. `shipped_matchable_rules` in `conftest.py`
+also measures pending-ness against the payload's floor the way `tools/scan.py`
+does, rather than against `core_version` — dev's own number, which on a day
+the floor degrades to a stale or dev-minus-one value would retire rules here
+that the crawler still ships.
+
 ## 1.17.1 — 2026-10-03
 
 ### An ignored repair stays ignored across a restart
