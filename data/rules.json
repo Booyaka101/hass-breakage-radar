@@ -1,27 +1,27 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-12T03:46:02Z",
+  "generated_utc": "2026-10-13T03:40:48Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "e31e11c86c04f4f199ef41d5985065e3c836c36ac9801111975d2e14bc18f8a3",
+  "core_tarball_sha256": "31022c7cd51e155967ba4283dcfc9a1cd2ebf39a588a1b9176126986598181f4",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 182,
     "future": 132,
     "matchable_future": 59,
-    "core_files_scanned": 10481,
+    "core_files_scanned": 10488,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 133,
+    "from_core_ast": 132,
     "from_manual": 27,
-    "from_blog": 22
+    "from_blog": 23
   },
   "unparsed_core_files": [],
   "discarded_markers": [
@@ -191,13 +191,13 @@
       "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
       "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
       "breaks_in": "2025.1",
-      "source": "homeassistant/config_entries.py:1555",
+      "source": "homeassistant/config_entries.py:1578",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1555"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1578"
     },
     {
       "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
@@ -398,13 +398,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3148",
+      "source": "homeassistant/config_entries.py:3176",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3148"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3176"
     },
     {
       "id": "blog-area-squared-units-2025.12",
@@ -485,13 +485,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1905",
+      "source": "homeassistant/config_entries.py:1928",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1905"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1928"
     },
     {
       "id": "blog-frontend-component-updates-2026-4-2026.5",
@@ -1035,13 +1035,13 @@
       "symbol": "deprecated_yaml",
       "message": "`pjlink` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/pjlink/media_player.py:74",
+      "source": "homeassistant/components/pjlink/media_player.py:75",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L74"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L75"
     },
     {
       "id": "core-issue-shopping-list-deprecated-yaml-2026.11",
@@ -1190,13 +1190,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3339",
+      "source": "homeassistant/config_entries.py:3367",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3339"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3367"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -1311,7 +1311,7 @@
       "symbol": "async_generate_entity_id",
       "message": "calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_registry.py:1388",
+      "source": "homeassistant/helpers/entity_registry.py:1423",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1326,7 +1326,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1388"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1423"
     },
     {
       "id": "core-call-async-render-no-api-prompt",
@@ -1427,13 +1427,13 @@
       "symbol": "deprecated_yaml",
       "message": "`http` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:264",
+      "source": "homeassistant/components/http/config.py:281",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L264"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L281"
     },
     {
       "id": "core-issue-http-deprecated-yaml-import-error-2027.2",
@@ -1441,13 +1441,13 @@
       "symbol": "deprecated_yaml_import_error",
       "message": "`http` raises the `deprecated_yaml_import_error` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:253",
+      "source": "homeassistant/components/http/config.py:270",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L253"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L270"
     },
     {
       "id": "core-issue-http-yaml-still-present-after-migration-2027.2",
@@ -1455,13 +1455,13 @@
       "symbol": "yaml_still_present_after_migration",
       "message": "`http` raises the `yaml_still_present_after_migration` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/http/config.py:224",
+      "source": "homeassistant/components/http/config.py:241",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L224"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L241"
     },
     {
       "id": "core-issue-netatmo-deprecated-webhook-service-2027.2",
@@ -1483,13 +1483,13 @@
       "symbol": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "message": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity.py:1619",
+      "source": "homeassistant/helpers/entity.py:1625",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1619"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1625"
     },
     {
       "id": "core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit",
@@ -1687,6 +1687,20 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L240"
+    },
+    {
+      "id": "core-issue-mastodon-deprecated-media-path-2027.5",
+      "kind": "issue",
+      "symbol": "deprecated_media_path",
+      "message": "`mastodon` raises the `deprecated_media_path` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/mastodon/issue.py:13",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mastodon/issue.py#L13"
     },
     {
       "id": "core-issue-nfandroidtv-deprecated-notify-action-2027.5",
@@ -3180,6 +3194,18 @@
       "expired": false
     },
     {
+      "id": "blog-new-entity-lifecycle-hooks-2027.11",
+      "kind": "prose",
+      "symbol": "new entity lifecycle hooks",
+      "message": "This backwards compatibility will be removed in Home Assistant Core 2027.11.",
+      "breaks_in": "2027.11",
+      "source": "https://developers.home-assistant.io/blog/2026/10/12/new-entity-lifecycle-hooks/",
+      "origin": "blog",
+      "confidence": "info",
+      "matchable": false,
+      "expired": false
+    },
+    {
       "id": "blog-water-heater-native-temperature-2027.11",
       "kind": "prose",
       "symbol": "water heater native temperature",
@@ -3206,46 +3232,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L306"
     },
     {
-      "id": "core-prose-is-use-climateentity-instead",
-      "kind": "prose",
-      "symbol": "is {...}, use ClimateEntity.{...} instead",
-      "message": "is {...}, use ClimateEntity.{...} instead",
-      "breaks_in": "2027.11",
-      "source": "homeassistant/components/climate/__init__.py:234",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/climate/__init__.py#L234"
-    },
-    {
-      "id": "core-prose-is-use-waterheaterentity-instead",
-      "kind": "prose",
-      "symbol": "is {...}, use WaterHeaterEntity.{...} instead",
-      "message": "is {...}, use WaterHeaterEntity.{...} instead",
-      "breaks_in": "2027.11",
-      "source": "homeassistant/components/water_heater/__init__.py:182",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/water_heater/__init__.py#L182"
-    },
-    {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
       "kind": "prose",
       "symbol": "returns a JSON object from a tool, which is deprecated; return a ToolResult inst...",
       "message": "returns a JSON object from a tool, which is deprecated; return a ToolResult instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/helpers/llm.py:262",
+      "source": "homeassistant/helpers/llm.py:269",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L262"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L269"
     },
     {
       "id": "core-prose-sets-tool-result-on-a-tool-result-delta-which-is-deprecated-set-result-to",
@@ -3262,5 +3260,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-12T03:46:32Z"
+  "blog_merged_utc": "2026-10-13T03:41:32Z"
 }
