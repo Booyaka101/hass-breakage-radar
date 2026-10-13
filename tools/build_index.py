@@ -34,6 +34,8 @@ from tools.common import (  # noqa: E402
     DOCS_DIR,
     LOGGER,
     STATE_DIR,
+    Exclusion,
+    load_excluded,
     read_json,
     setup_logging,
     utc_now_iso,
@@ -121,6 +123,7 @@ def build_payload(
     catalog_doc: dict[str, Any],
     *,
     now: str | None = None,
+    excluded: Exclusion | None = None,
 ) -> dict[str, Any]:
     generated = now or utc_now_iso()
     today = _as_of(generated)
@@ -163,6 +166,14 @@ def build_payload(
 
     for full_name in sorted(repos):
         record = repos[full_name]
+        if excluded is not None and excluded.record_for(full_name, record) is not None:
+            # scan.py purges these on sight, so this is the belt to that
+            # braces: a findings file it has not run over yet must not put a
+            # withdrawn repository back on the board.
+            LOGGER.info(
+                "leaving %s out of the index at owner request", full_name
+            )
+            continue
         catalog_entry = catalog_by_name.get(full_name, {})
         domain = record.get("domain") or catalog_entry.get("domain") or ""
         category = record.get("category") or catalog_entry.get("category") or "integration"
@@ -886,6 +897,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--catalog", type=Path, default=DATA_DIR / "catalog.json")
     parser.add_argument("--output-dir", type=Path, default=DOCS_DIR)
     parser.add_argument("--first-seen", type=Path, default=STATE_DIR / "feed.json")
+    parser.add_argument(
+        "--excluded",
+        type=Path,
+        default=DATA_DIR / "excluded.json",
+        help="owner-requested withdrawals, never published however stale the data",
+    )
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
     setup_logging(args.verbose)
@@ -910,7 +927,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 2
 
-    payload = build_payload(rules_doc, findings_doc, catalog_doc)
+    payload = build_payload(
+        rules_doc,
+        findings_doc,
+        catalog_doc,
+        excluded=Exclusion(load_excluded(args.excluded)),
+    )
 
     problems = validate_index(payload)
     if problems:

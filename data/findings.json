@@ -9324,20 +9324,6 @@
         "checked_utc": "2026-10-11T04:57:56Z"
       }
     },
-    "Kaluzaburza/Hoymiles_HIT_xxL_G3_ModBus": {
-      "domain": "hoymiles_hit_modbus",
-      "version": "v1.5.1",
-      "ref": "refs/tags/v1.5.1",
-      "status": "scanned",
-      "scanned_utc": "2026-08-14T04:00:47Z",
-      "files_scanned": 26,
-      "syntax_errors": 0,
-      "stargazers_count": 4,
-      "findings": [],
-      "domains": [
-        "hoymiles_hit_modbus"
-      ]
-    },
     "Kannix2005/ha_siedle_python": {
       "domain": "siedle",
       "category": "integration",
@@ -71077,37 +71063,6 @@
         "jellyha"
       ]
     },
-    "Kaluzaburza/hoymiles-hit-g3-ems": {
-      "domain": "hoymiles_hit_modbus",
-      "category": "integration",
-      "version": "v1.5.5",
-      "ref": "refs/tags/v1.5.5",
-      "status": "scanned",
-      "scanned_utc": "2026-09-17T01:54:26Z",
-      "files_scanned": 35,
-      "syntax_errors": 0,
-      "skipped_minified": 0,
-      "skipped_vendor": 0,
-      "stargazers_count": 4,
-      "findings": [
-        {
-          "rule_id": "device-registry-devices-mapping",
-          "breaks_in": "2027.9",
-          "file": "custom_components/hoymiles_hit_modbus/config_flow.py",
-          "line": 47,
-          "confidence": "high"
-        }
-      ],
-      "domains": [
-        "hoymiles_hit_modbus"
-      ],
-      "upstream": {
-        "archived": false,
-        "issues_enabled": true,
-        "symbol": "device_registry.devices",
-        "checked_utc": "2026-10-11T04:53:38Z"
-      }
-    },
     "slx612/WOL-Home-Assistant-And-Alexa": {
       "domain": "pc_power_free",
       "category": "integration",
@@ -85926,7 +85881,7 @@
       ]
     }
   },
-  "updated_utc": "2026-10-13T03:42:16Z",
+  "updated_utc": "2026-10-13T09:33:26Z",
   "rules_hash": "d881f9d9cae28130",
   "core_version": "2026.11"
 }

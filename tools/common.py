@@ -43,6 +43,11 @@ DOCS_DIR = REPO_ROOT / "docs"
 STATE_DIR = REPO_ROOT / "state"
 CACHE_DIR = REPO_ROOT / ".cache"
 
+#: Repositories their owners asked to have removed (issue #65). Hand-maintained
+#: like ``data/manual_rules.json``: one record per withdrawal, with the reason
+#: and a link to the request. A missing file excludes nothing.
+EXCLUDED_PATH = DATA_DIR / "excluded.json"
+
 USER_AGENT = (
     "hass-breakage-radar/1.0.0 (+https://github.com/Booyaka101/hass-breakage-radar)"
 )
@@ -179,3 +184,71 @@ def setup_logging(verbose: bool = False) -> None:
         level=logging.DEBUG if verbose else logging.INFO,
         format="%(levelname)s %(name)s: %(message)s",
     )
+
+
+def load_excluded(path: Path | None = None) -> list[dict[str, Any]]:
+    """Read ``data/excluded.json`` into a list of withdrawal records.
+
+    Kept deliberately dumb: the shape is validated by :class:`Exclusion`,
+    which is the only consumer, so a corrupt file is an empty list rather
+    than a failed crawl.
+    """
+    doc = read_json(path or EXCLUDED_PATH, default=None)
+    if not isinstance(doc, dict) or not isinstance(doc.get("repositories"), list):
+        return []
+    return [record for record in doc["repositories"] if isinstance(record, dict)]
+
+
+class Exclusion:
+    """Match catalog entries and crawl records against the withdrawal list.
+
+    A repository is matched by any name it has carried -- a rename leaves the
+    old name in ``findings.json`` and ``state/crawl.json``, as
+    ``Kaluzaburza/Hoymiles_HIT_xxL_G3_ModBus`` did -- by its numeric GitHub
+    id, and by its integration domain. The domain is what the published index
+    keys on, so it is also what a rename cannot shake off.
+    """
+
+    def __init__(self, records: list[dict[str, Any]]) -> None:
+        self.records = records
+        self._names: dict[str, dict[str, Any]] = {}
+        self._repo_ids: dict[str, dict[str, Any]] = {}
+        self._domains: dict[str, dict[str, Any]] = {}
+        for record in records:
+            for name in [record.get("full_name", ""), *(record.get("former_names") or [])]:
+                if isinstance(name, str) and name:
+                    self._names[name] = record
+            repo_id = record.get("repo_id")
+            if repo_id:
+                self._repo_ids[str(repo_id)] = record
+            domain = record.get("domain")
+            if isinstance(domain, str) and domain:
+                self._domains[domain] = record
+
+    def names(self) -> set[str]:
+        """Every name (current and former) across the records."""
+        return set(self._names)
+
+    def record_for(
+        self, full_name: str, entry: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
+        """The withdrawal record covering this repository, or ``None``.
+
+        ``entry`` is a catalog entry or a crawl record; either may carry the
+        ``repo_id`` or ``domain`` a rename left behind.
+        """
+        record = self._names.get(full_name)
+        if record is not None or entry is None:
+            return record
+        repo_id = entry.get("repo_id")
+        if repo_id:
+            record = self._repo_ids.get(str(repo_id))
+        if record is not None:
+            return record
+        domains = entry.get("domains")
+        if not isinstance(domains, list):
+            domains = [entry.get("domain")] if entry.get("domain") else []
+        for domain in domains:
+            if isinstance(domain, str) and domain in self._domains:
+                return self._domains[domain]
+        return None

@@ -6,6 +6,29 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+### A repository withdrawn at its owner's request is removed for good (#65)
+
+`Kaluzaburza/hoymiles-hit-g3-ems` (scanned earlier as
+`Kaluzaburza/Hoymiles_HIT_xxL_G3_ModBus`) was withdrawn from public
+distribution and its owner asked for it to be dropped from the catalogue, the
+published index and every cached copy. HACS's own removal was still in review,
+and its data-v2 feed kept listing the repository — so simply deleting the
+records would have had the next daily crawl re-queue it as never-scanned and
+put it back on the board as unreachable.
+
+There is now an owner-requested withdrawal list, `data/excluded.json`,
+modelled on `data/manual_rules.json`: one hand-maintained record per
+withdrawal, matched by every name the repository has carried, by its numeric
+GitHub id and by its integration domain, so a rename cannot dodge it. The
+catalogue drops the entry even while the HACS feed still lists it; the scan
+purges findings and crawl state under both names and deletes cached tag
+tarballs; and the index refuses to publish a withdrawn repository from a
+stale findings file. The board's `repos_delisted` drops by one accordingly.
+Documented under "Withdrawing a repository from the crawl" in the README,
+including the two honest limits: git history still holds the published
+indexes of the past, and a user's own installed copy is scanned on their own
+box.
+
 ### The crawl stopped publishing because 2026.10 shipped
 
 `tests/test_service_hass_argument.py` guarded the five hand-written

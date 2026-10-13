@@ -30,7 +30,9 @@ if __package__ in (None, ""):
 from tools.common import (  # noqa: E402
     DATA_DIR,
     LOGGER,
+    Exclusion,
     http_get_json,
+    load_excluded,
     setup_logging,
     utc_now_iso,
     write_json,
@@ -133,9 +135,40 @@ def fetch_catalog(
     return entries, fallback_url
 
 
+def apply_exclusions(
+    entries: list[dict[str, Any]], exclusion: Exclusion
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Drop entries whose owner asked to be removed. Returns ``(kept, dropped)``.
+
+    The data-v2 feed keeps listing a repository until HACS processes the
+    withdrawal, so the gate has to be ours: what is not in the catalogue is
+    never scanned, never counted, and never reaches the published index.
+    """
+    kept: list[dict[str, Any]] = []
+    dropped: list[str] = []
+    for entry in entries:
+        record = exclusion.record_for(entry["full_name"], entry)
+        if record is None:
+            kept.append(entry)
+        else:
+            dropped.append(entry["full_name"])
+            LOGGER.info(
+                "excluding %s at owner request (%s)",
+                entry["full_name"],
+                record.get("reference", "no reference recorded"),
+            )
+    return kept, dropped
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--output", type=Path, default=DATA_DIR / "catalog.json")
+    parser.add_argument(
+        "--excluded",
+        type=Path,
+        default=DATA_DIR / "excluded.json",
+        help="owner-requested withdrawals to leave out of the catalogue",
+    )
     parser.add_argument(
         "--force-fallback",
         action="store_true",
@@ -144,6 +177,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
     setup_logging(args.verbose)
+
+    exclusion = Exclusion(load_excluded(args.excluded))
 
     entries: list[dict[str, Any]] = []
     sources: dict[str, str] = {}
@@ -159,6 +194,7 @@ def main(argv: list[str] | None = None) -> int:
         sources[category] = source
 
     entries.sort(key=lambda e: e["full_name"].lower())
+    entries, dropped = apply_exclusions(entries, exclusion)
     by_category = {
         category: sum(1 for e in entries if e["category"] == category)
         for category in CATEGORIES
@@ -179,6 +215,18 @@ def main(argv: list[str] | None = None) -> int:
                 "with_domain": with_domain,
                 "with_last_version": with_version,
             },
+            # Stamped so a consumer can tell "HACS delisted it" (the record
+            # simply vanishes) from "the owner asked us to stop" (the record
+            # stays visible here, with its reason).
+            "excluded": [
+                {
+                    "full_name": record.get("full_name", ""),
+                    "domain": record.get("domain", ""),
+                    "reason": record.get("reason", ""),
+                    "reference": record.get("reference", ""),
+                }
+                for record in exclusion.records
+            ],
             "integrations": entries,
         },
     )

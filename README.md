@@ -819,6 +819,7 @@ For the crawler:
 | Politeness pause | `tools/scan.py --sleep 0.25` | `0` |
 | Downloads in flight | `tools/scan.py --workers 16` | `8` |
 | Tag tarball cache | `tools/scan.py --tarball-cache DIR`, `--no-tarball-cache` | `.cache/tarballs` |
+| Owner-requested withdrawals | `tools/{catalog,scan,build_index}.py --excluded FILE` | `data/excluded.json` |
 | Core branch | `tools/extract_rules.py --ref dev` | `dev` |
 | Skip the blog crawl | `tools/blog_rules.py --no-network` | off |
 | Force the catalogue fallback | `tools/catalog.py --force-fallback` | off |
@@ -985,6 +986,32 @@ fail the job — a removal scheduled for 2027.8 turning an unrelated pull reques
 how a check gets deleted from a workflow file. `fail-on: imminent` gates on what is
 close; `fail-on: any` is the strict gate. Inputs are documented in
 [the authors' guide](guides/for-integration-authors.md#in-your-ci-as-a-github-action).
+
+### Withdrawing a repository from the crawl
+
+If you are withdrawing a project from public distribution and want it out of the
+catalogue, the published index and every cached copy, open an issue saying so from the
+account that owns the repository. It gets recorded in `data/excluded.json` — one entry
+carrying the current name, any former names (the crawl's memory holds both), the
+integration domain, the reason and a link to the request — and the tools do the rest:
+
+* `tools/catalog.py` drops the entry even while the HACS feed still lists it, which is
+  the gap that matters: HACS's own removal can sit in review for days, and the daily
+  crawl would otherwise re-queue the repository as never-scanned and put it back on the
+  board as unreachable.
+* `tools/scan.py` purges its findings and crawl-state records under every name it has
+  carried, and deletes its cached tag tarballs from `.cache/tarballs/` on the machine
+  it runs on. CI keeps no tarball cache at all (`--no-tarball-cache`), so the copies
+  that exist are the ones on a maintainer's machine.
+* `tools/build_index.py` refuses to publish a withdrawn repository from a stale
+  findings file, belt to that braces.
+
+Two honest limits. Git history still contains the published indexes of the past —
+rewriting it would break every clone and fork, so it is not done; the request is
+honoured from the day it lands forward. And the Home Assistant integration still
+reports a withdrawn integration it finds installed on a user's own box from the local
+scan — that verdict is computed on that user's machine from their own copy, which is
+exactly the copy they need to remove.
 
 ---
 
