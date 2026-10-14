@@ -74,7 +74,9 @@ jobs:
           PY
 
       - name: Fetch the HACS catalogue
-        run: python tools/catalog.py
+        run: |
+          test -f data/excluded.json
+          python tools/catalog.py --excluded data/excluded.json
 
       - name: Scan a slice of the catalogue
         # The token is only used to ask whether a deprecation is already

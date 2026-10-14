@@ -189,14 +189,38 @@ def setup_logging(verbose: bool = False) -> None:
 def load_excluded(path: Path | None = None) -> list[dict[str, Any]]:
     """Read ``data/excluded.json`` into a list of withdrawal records.
 
-    Kept deliberately dumb: the shape is validated by :class:`Exclusion`,
-    which is the only consumer, so a corrupt file is an empty list rather
-    than a failed crawl.
+    Accept the UTF-8 BOM some editors write. A present but invalid file must
+    stop the crawl, never silently turn owner withdrawals into an empty list.
+    A missing file remains optional for standalone uses of the tools.
     """
-    doc = read_json(path or EXCLUDED_PATH, default=None)
-    if not isinstance(doc, dict) or not isinstance(doc.get("repositories"), list):
+    path = path or EXCLUDED_PATH
+    try:
+        with path.open(encoding="utf-8-sig") as handle:
+            doc = json.load(handle)
+    except FileNotFoundError:
         return []
-    return [record for record in doc["repositories"] if isinstance(record, dict)]
+    except (json.JSONDecodeError, UnicodeDecodeError) as err:
+        raise ValueError(f"invalid withdrawal list {path}: {err}") from err
+    if not isinstance(doc, dict) or not isinstance(doc.get("repositories"), list):
+        raise ValueError(f"invalid withdrawal list {path}: expected repositories array")
+    for record in doc["repositories"]:
+        if not isinstance(record, dict) or not isinstance(record.get("full_name"), str):
+            raise ValueError(f"invalid withdrawal record in {path}: expected full_name")
+        if len(record["full_name"].split("/")) != 2 or not all(record["full_name"].split("/")):
+            raise ValueError(f"invalid withdrawal record in {path}: expected owner/repo")
+        former_names = record.get("former_names", [])
+        if not isinstance(former_names, list) or any(
+            not isinstance(name, str) or len(name.split("/")) != 2 or not all(name.split("/"))
+            for name in former_names
+        ):
+            raise ValueError(f"invalid withdrawal record in {path}: expected former_names array of slugs")
+        if "domain" in record and not isinstance(record["domain"], str):
+            raise ValueError(f"invalid withdrawal record in {path}: expected domain string")
+        if "repo_id" in record and (
+            not isinstance(record["repo_id"], (str, int)) or isinstance(record["repo_id"], bool)
+        ):
+            raise ValueError(f"invalid withdrawal record in {path}: expected repository ID")
+    return doc["repositories"]
 
 
 class Exclusion:

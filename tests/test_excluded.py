@@ -18,13 +18,15 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from test_build_index import CATALOG_DOC, RULES_DOC
 from test_scan_cli import RULE as SCAN_RULE
 
 from tools.build_index import build_payload, validate_index
 from tools.catalog import apply_exclusions
 from tools.catalog import main as catalog_main
-from tools.common import Exclusion, load_excluded
+from tools.common import DATA_DIR, DOCS_DIR, STATE_DIR, Exclusion, load_excluded, read_json
 from tools.scan import cache_path, purge_cached_tarballs
 from tools.scan import main as scan_main
 
@@ -83,6 +85,59 @@ def test_a_missing_file_excludes_nothing(tmp_path):
     assert Exclusion([]).names() == set()
 
 
+def test_a_bom_encoded_withdrawal_list_is_honoured(tmp_path):
+    path = _excluded_file(tmp_path)
+    path.write_text(path.read_text(encoding="utf-8"), encoding="utf-8-sig")
+    assert load_excluded(path) == [WITHDRAWN]
+
+
+@pytest.mark.parametrize("content", [
+    "{broken", '[]', '{}', '{"repositories": {}}',
+    '{"repositories": [null]}', '{"repositories": [{}]}',
+    '{"repositories": [{"full_name": "not-a-slug"}]}',
+    '{"repositories": [{"full_name": "a/b", "former_names": "a/c"}]}',
+    '{"repositories": [{"full_name": "a/b", "domain": []}]}',
+    '{"repositories": [{"full_name": "a/b", "repo_id": []}]}',
+])
+def test_an_invalid_withdrawal_list_fails_closed(tmp_path, content):
+    path = tmp_path / "excluded.json"
+    path.write_text(content, encoding="utf-8")
+    with pytest.raises(ValueError, match="invalid withdrawal"):
+        load_excluded(path)
+
+
+def test_invalid_utf8_withdrawals_fail_closed(tmp_path):
+    path = tmp_path / "excluded.json"
+    path.write_bytes(b"\xff")
+    with pytest.raises(ValueError, match="invalid withdrawal"):
+        load_excluded(path)
+
+
+def test_the_checked_in_withdrawal_is_loaded():
+    records = load_excluded()
+    assert Exclusion(records).record_for(WITHDRAWN["full_name"]) is not None
+
+
+def test_published_data_and_crawl_state_honour_the_withdrawal_list():
+    """Exercise real files too: fixture-only tests missed the checked-in BOM."""
+    exclusion = Exclusion(load_excluded())
+    catalog = read_json(DATA_DIR / "catalog.json")
+    for entry in catalog["integrations"]:
+        assert exclusion.record_for(entry["full_name"], entry) is None
+    assert {r["full_name"] for r in exclusion.records} <= {
+        r["full_name"] for r in catalog["excluded"]
+    }
+    for name, record in read_json(DATA_DIR / "findings.json")["repos"].items():
+        assert exclusion.record_for(name, record) is None
+    for name, record in read_json(STATE_DIR / "crawl.json").items():
+        assert exclusion.record_for(name, record) is None
+    index = read_json(DOCS_DIR / "index.json")
+    for entry in index["integrations"]:
+        assert exclusion.record_for(entry["full_name"], entry) is None
+    for domain in index["clean_domains"] + index["unreachable_domains"]:
+        assert exclusion.record_for("", {"domain": domain}) is None
+
+
 # --------------------------------------------------------------------------- #
 # the catalogue
 # --------------------------------------------------------------------------- #
@@ -108,9 +163,11 @@ def test_the_catalogue_drops_a_withdrawn_repository(tmp_path, monkeypatch):
 
     monkeypatch.setattr(catalog_module, "http_get_json", fake_get_json)
     output = tmp_path / "catalog.json"
+    excluded_path = _excluded_file(tmp_path)
+    excluded_path.write_text(excluded_path.read_text(encoding="utf-8"), encoding="utf-8-sig")
     assert (
         catalog_main(
-            ["--output", str(output), "--excluded", str(_excluded_file(tmp_path))]
+            ["--output", str(output), "--excluded", str(excluded_path)]
         )
         == 0
     )
