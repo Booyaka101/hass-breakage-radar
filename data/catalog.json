@@ -1,26 +1,19 @@
 {
   "schema": 2,
-  "generated_utc": "2026-10-13T09:33:17Z",
+  "generated_utc": "2026-10-14T03:32:36Z",
   "source": "https://data-v2.hacs.xyz/integration/data.json",
   "sources": {
     "integration": "https://data-v2.hacs.xyz/integration/data.json",
     "plugin": "https://data-v2.hacs.xyz/plugin/data.json"
   },
   "counts": {
-    "total": 4002,
-    "integration": 3236,
+    "total": 4003,
+    "integration": 3237,
     "plugin": 766,
-    "with_domain": 3236,
-    "with_last_version": 3926
+    "with_domain": 3237,
+    "with_last_version": 3927
   },
-  "excluded": [
-    {
-      "full_name": "Kaluzaburza/hoymiles-hit-g3-ems",
-      "domain": "hoymiles_hit_modbus",
-      "reason": "Owner withdrew the integration from public distribution; the repository is private and its removal from HACS has been requested (hacs/default#10003).",
-      "reference": "https://github.com/Booyaka101/hass-breakage-radar/issues/65"
-    }
-  ],
+  "excluded": [],
   "integrations": [
     {
       "full_name": "007hacky007/car_maintenance",
@@ -68,7 +61,7 @@
       "domain": "growatt_modbus",
       "last_version": "v2.0.5",
       "stargazers_count": 67,
-      "open_issues": 21,
+      "open_issues": 22,
       "last_updated": "2026-10-10T19:55:30Z",
       "repo_id": "1065036927"
     },
@@ -109,7 +102,7 @@
       "last_version": "v0.9.6",
       "stargazers_count": 17,
       "open_issues": 0,
-      "last_updated": "2026-10-11T22:12:20Z",
+      "last_updated": "2026-10-12T23:02:09Z",
       "repo_id": "988991006"
     },
     {
@@ -147,7 +140,7 @@
       "category": "integration",
       "domain": "ha_washdata",
       "last_version": "v0.5.8",
-      "stargazers_count": 1357,
+      "stargazers_count": 1358,
       "open_issues": 10,
       "last_updated": "2026-10-08T08:42:05Z",
       "repo_id": "1111710745"
@@ -226,10 +219,10 @@
       "full_name": "62fixolab/HA-Panda-PWR",
       "category": "integration",
       "domain": "panda_pwr",
-      "last_version": "1.2.5",
+      "last_version": "1.3.0",
       "stargazers_count": 24,
       "open_issues": 0,
-      "last_updated": "2026-10-12T16:54:13Z",
+      "last_updated": "2026-10-12T23:42:09Z",
       "repo_id": "888380028"
     },
     {
@@ -498,7 +491,7 @@
       "domain": "aqara_camera_2_way_audio",
       "last_version": "v1.0.1",
       "stargazers_count": 8,
-      "open_issues": 1,
+      "open_issues": 2,
       "last_updated": "2026-10-05T12:25:59Z",
       "repo_id": "1237538082"
     },
@@ -877,9 +870,9 @@
       "category": "integration",
       "domain": "bermuda",
       "last_version": "v0.8.7",
-      "stargazers_count": 2083,
+      "stargazers_count": 2084,
       "open_issues": 144,
-      "last_updated": "2026-10-05T06:34:02Z",
+      "last_updated": "2026-10-12T20:02:24Z",
       "repo_id": "676091897"
     },
     {
@@ -917,7 +910,7 @@
       "category": "integration",
       "domain": "airversa_diffuser",
       "last_version": "v2.0.1",
-      "stargazers_count": 5,
+      "stargazers_count": 6,
       "open_issues": 1,
       "last_updated": "2026-08-22T01:39:38Z",
       "repo_id": "1262215436"
@@ -997,7 +990,7 @@
       "category": "integration",
       "domain": "xiaomi_miot",
       "last_version": "v1.1.5",
-      "stargazers_count": 6167,
+      "stargazers_count": 6168,
       "open_issues": 930,
       "last_updated": "2026-10-04T00:53:48Z",
       "repo_id": "318182014"
@@ -1079,7 +1072,7 @@
       "last_version": "v5.16.2",
       "stargazers_count": 1989,
       "open_issues": 15,
-      "last_updated": "2026-10-12T03:43:43Z",
+      "last_updated": "2026-10-13T04:14:55Z",
       "repo_id": "139664351"
     },
     {
@@ -1087,9 +1080,9 @@
       "category": "integration",
       "domain": "tesla_custom",
       "last_version": "v3.27.0",
-      "stargazers_count": 783,
+      "stargazers_count": 784,
       "open_issues": 41,
-      "last_updated": "2026-10-05T20:23:32Z",
+      "last_updated": "2026-10-12T19:31:55Z",
       "repo_id": "362700564"
     },
     {
@@ -1248,8 +1241,8 @@
       "domain": "hitachi_yutaki",
       "last_version": "v2.1.6",
       "stargazers_count": 35,
-      "open_issues": 24,
-      "last_updated": "2026-10-12T09:35:46Z",
+      "open_issues": 17,
+      "last_updated": "2026-10-12T21:33:30Z",
       "repo_id": "887580693"
     },
     {
@@ -1288,7 +1281,7 @@
       "domain": "flightradar24",
       "last_version": "v2.3.0",
       "stargazers_count": 550,
-      "open_issues": 38,
+      "open_issues": 39,
       "last_updated": "2026-10-06T18:48:22Z",
       "repo_id": "719521685"
     },
@@ -1297,7 +1290,7 @@
       "category": "integration",
       "domain": "tplink_router",
       "last_version": "v2.43.0",
-      "stargazers_count": 393,
+      "stargazers_count": 394,
       "open_issues": 124,
       "last_updated": "2026-10-06T18:55:10Z",
       "repo_id": "716704833"
@@ -1367,7 +1360,7 @@
       "category": "integration",
       "domain": "sugar_valley_neopool",
       "last_version": "v2.1.4",
-      "stargazers_count": 8,
+      "stargazers_count": 9,
       "open_issues": 0,
       "last_updated": "2026-10-03T20:59:40Z",
       "repo_id": "1115714307"
@@ -1448,7 +1441,7 @@
       "domain": "sat",
       "last_version": "4.2.1",
       "stargazers_count": 253,
-      "open_issues": 11,
+      "open_issues": 12,
       "last_updated": "2026-03-18T20:52:21Z",
       "repo_id": "573101191"
     },
@@ -1478,7 +1471,7 @@
       "domain": "webrtc",
       "last_version": "v3.6.1",
       "stargazers_count": 2187,
-      "open_issues": 219,
+      "open_issues": 221,
       "last_updated": "2026-10-06T15:11:52Z",
       "repo_id": "356778495"
     },
@@ -1488,7 +1481,7 @@
       "domain": "xiaomi_gateway3",
       "last_version": "v4.2.4",
       "stargazers_count": 2793,
-      "open_issues": 145,
+      "open_issues": 146,
       "last_updated": "2026-10-12T09:48:40Z",
       "repo_id": "291484700"
     },
@@ -1527,7 +1520,7 @@
       "category": "integration",
       "domain": "energy_hub_poland",
       "last_version": "v1.3.5",
-      "stargazers_count": 43,
+      "stargazers_count": 44,
       "open_issues": 10,
       "last_updated": "2026-10-04T07:26:29Z",
       "repo_id": "1126692891"
@@ -1878,8 +1871,8 @@
       "domain": "my_ipx800v3",
       "last_version": "v0.5.1",
       "stargazers_count": 0,
-      "open_issues": 1,
-      "last_updated": "2026-10-12T16:36:50Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-12T19:42:46Z",
       "repo_id": "1261251094"
     },
     {
@@ -2027,7 +2020,7 @@
       "category": "integration",
       "domain": "ticker",
       "last_version": "v1.8.2",
-      "stargazers_count": 175,
+      "stargazers_count": 176,
       "open_issues": 20,
       "last_updated": "2026-07-26T22:12:45Z",
       "repo_id": "1170292782"
@@ -2089,7 +2082,7 @@
       "last_version": "0.4.4",
       "stargazers_count": 15,
       "open_issues": 7,
-      "last_updated": "2026-10-05T18:24:07Z",
+      "last_updated": "2026-10-12T18:04:01Z",
       "repo_id": "731056300"
     },
     {
@@ -2127,7 +2120,7 @@
       "category": "integration",
       "domain": "dessmonitor",
       "last_version": "v2.4.0",
-      "stargazers_count": 29,
+      "stargazers_count": 30,
       "open_issues": 4,
       "last_updated": "2026-09-21T10:58:47Z",
       "repo_id": "1041373474"
@@ -2188,8 +2181,8 @@
       "domain": "melcloudhome",
       "last_version": "v2.6.1",
       "stargazers_count": 142,
-      "open_issues": 5,
-      "last_updated": "2026-10-09T14:30:02Z",
+      "open_issues": 7,
+      "last_updated": "2026-10-13T02:11:04Z",
       "repo_id": "1097503957"
     },
     {
@@ -2227,9 +2220,9 @@
       "category": "integration",
       "domain": "fake_devices",
       "last_version": "1.1.3",
-      "stargazers_count": 32,
-      "open_issues": 1,
-      "last_updated": "2026-10-06T05:52:23Z",
+      "stargazers_count": 33,
+      "open_issues": 3,
+      "last_updated": "2026-10-13T04:54:22Z",
       "repo_id": "1227496451"
     },
     {
@@ -2268,8 +2261,8 @@
       "domain": "wasp_in_a_box",
       "last_version": "1.1.2",
       "stargazers_count": 7,
-      "open_issues": 0,
-      "last_updated": "2026-10-07T19:05:07Z",
+      "open_issues": 2,
+      "last_updated": "2026-10-13T01:51:53Z",
       "repo_id": "1141362948"
     },
     {
@@ -2386,10 +2379,10 @@
       "full_name": "andybochmann/ha-virtual-battery",
       "category": "integration",
       "domain": "virtual_battery",
-      "last_version": "v1.2.0",
+      "last_version": "v1.2.1",
       "stargazers_count": 4,
-      "open_issues": 1,
-      "last_updated": "2026-10-12T17:21:57Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-12T17:45:28Z",
       "repo_id": "961543293"
     },
     {
@@ -2468,7 +2461,7 @@
       "domain": "anker_solix_official",
       "last_version": "v1.5.0",
       "stargazers_count": 256,
-      "open_issues": 29,
+      "open_issues": 27,
       "last_updated": "2026-10-12T08:34:14Z",
       "repo_id": "1167194279"
     },
@@ -2479,7 +2472,7 @@
       "last_version": "v2026.10.1",
       "stargazers_count": 42,
       "open_issues": 4,
-      "last_updated": "2026-10-12T10:11:34Z",
+      "last_updated": "2026-10-12T20:33:42Z",
       "repo_id": "729975302"
     },
     {
@@ -2566,10 +2559,10 @@
       "full_name": "Anrolosia/ha-webauthn-mfa",
       "category": "integration",
       "domain": "webauthn_mfa",
-      "last_version": "v1.5.1",
+      "last_version": "v1.5.2",
       "stargazers_count": 27,
-      "open_issues": 6,
-      "last_updated": "2026-10-11T12:27:55Z",
+      "open_issues": 5,
+      "last_updated": "2026-10-13T00:45:50Z",
       "repo_id": "1209953979"
     },
     {
@@ -3018,8 +3011,8 @@
       "domain": "sentio",
       "last_version": "v2026.10.0",
       "stargazers_count": 4,
-      "open_issues": 4,
-      "last_updated": "2026-10-08T12:46:19Z",
+      "open_issues": 6,
+      "last_updated": "2026-10-13T03:48:37Z",
       "repo_id": "232299868"
     },
     {
@@ -3029,7 +3022,7 @@
       "last_version": "v2026.9.1",
       "stargazers_count": 1,
       "open_issues": 6,
-      "last_updated": "2026-10-05T08:23:24Z",
+      "last_updated": "2026-10-13T00:35:15Z",
       "repo_id": "340419467"
     },
     {
@@ -3049,7 +3042,7 @@
       "last_version": "v2026.9.0",
       "stargazers_count": 16,
       "open_issues": 2,
-      "last_updated": "2026-10-12T10:32:58Z",
+      "last_updated": "2026-10-12T19:47:13Z",
       "repo_id": "436896679"
     },
     {
@@ -3126,10 +3119,10 @@
       "full_name": "audiconnect/audi_connect_ha",
       "category": "integration",
       "domain": "audiconnect",
-      "last_version": "v2.5.0",
+      "last_version": "v2.5.1",
       "stargazers_count": 368,
       "open_issues": 24,
-      "last_updated": "2026-10-12T14:10:38Z",
+      "last_updated": "2026-10-13T04:40:51Z",
       "repo_id": "186347733"
     },
     {
@@ -3169,7 +3162,7 @@
       "last_version": "v1.2.0",
       "stargazers_count": 5,
       "open_issues": 0,
-      "last_updated": "2026-10-12T08:51:50Z",
+      "last_updated": "2026-10-12T21:05:59Z",
       "repo_id": "750338404"
     },
     {
@@ -3336,10 +3329,10 @@
       "full_name": "azsaurr/ha_usms",
       "category": "integration",
       "domain": "ha_usms",
-      "last_version": "v1.2.2",
+      "last_version": "v1.3.0",
       "stargazers_count": 0,
       "open_issues": 7,
-      "last_updated": "2026-09-20T11:37:21Z",
+      "last_updated": "2026-10-13T04:46:20Z",
       "repo_id": "968037902"
     },
     {
@@ -3569,7 +3562,7 @@
       "last_version": "v5.1.0",
       "stargazers_count": 34,
       "open_issues": 3,
-      "last_updated": "2026-10-12T10:15:23Z",
+      "last_updated": "2026-10-13T01:50:46Z",
       "repo_id": "1052048747"
     },
     {
@@ -3637,9 +3630,9 @@
       "category": "integration",
       "domain": "adaptive_lighting",
       "last_version": "v1.32.0",
-      "stargazers_count": 3506,
-      "open_issues": 158,
-      "last_updated": "2026-10-11T01:23:53Z",
+      "stargazers_count": 3507,
+      "open_issues": 160,
+      "last_updated": "2026-10-12T19:46:29Z",
       "repo_id": "290261325"
     },
     {
@@ -3988,7 +3981,7 @@
       "domain": "frank_quarter_prices",
       "last_version": "v0.1.7",
       "stargazers_count": 2,
-      "open_issues": 1,
+      "open_issues": 2,
       "last_updated": "2026-09-09T01:10:10Z",
       "repo_id": "1268705639"
     },
@@ -4299,7 +4292,7 @@
       "last_version": "v0.5.4",
       "stargazers_count": 45,
       "open_issues": 11,
-      "last_updated": "2026-10-05T07:53:46Z",
+      "last_updated": "2026-10-12T23:07:34Z",
       "repo_id": "733708339"
     },
     {
@@ -4548,8 +4541,8 @@
       "domain": "frigate",
       "last_version": "v5.15.6",
       "stargazers_count": 1275,
-      "open_issues": 35,
-      "last_updated": "2026-10-05T12:26:12Z",
+      "open_issues": 28,
+      "last_updated": "2026-10-12T22:23:47Z",
       "repo_id": "311536795"
     },
     {
@@ -4608,7 +4601,7 @@
       "domain": "vorwerk",
       "last_version": "v2026.9.1",
       "stargazers_count": 12,
-      "open_issues": 7,
+      "open_issues": 8,
       "last_updated": "2026-09-16T14:11:36Z",
       "repo_id": "1098917626"
     },
@@ -4917,9 +4910,9 @@
       "category": "integration",
       "domain": "powercalc",
       "last_version": "v1.26.0",
-      "stargazers_count": 1605,
-      "open_issues": 21,
-      "last_updated": "2026-10-12T17:39:20Z",
+      "stargazers_count": 1607,
+      "open_issues": 23,
+      "last_updated": "2026-10-13T02:28:33Z",
       "repo_id": "373845609"
     },
     {
@@ -4947,7 +4940,7 @@
       "category": "integration",
       "domain": "idrac_power",
       "last_version": "v1.8.0",
-      "stargazers_count": 66,
+      "stargazers_count": 67,
       "open_issues": 6,
       "last_updated": "2026-10-07T14:38:12Z",
       "repo_id": "432516566"
@@ -5029,7 +5022,7 @@
       "last_version": "v2.5.2",
       "stargazers_count": 12,
       "open_issues": 59,
-      "last_updated": "2026-10-11T08:58:08Z",
+      "last_updated": "2026-10-12T17:54:22Z",
       "repo_id": "936215435"
     },
     {
@@ -5108,8 +5101,8 @@
       "domain": "pollen_dk",
       "last_version": "v1.1.5",
       "stargazers_count": 1,
-      "open_issues": 2,
-      "last_updated": "2026-10-05T07:09:55Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-12T21:24:47Z",
       "repo_id": "1222261591"
     },
     {
@@ -5228,8 +5221,8 @@
       "domain": "aegis_ajax",
       "last_version": "v1.25.0",
       "stargazers_count": 127,
-      "open_issues": 6,
-      "last_updated": "2026-10-12T15:10:58Z",
+      "open_issues": 5,
+      "last_updated": "2026-10-12T19:18:37Z",
       "repo_id": "1207991293"
     },
     {
@@ -5338,7 +5331,7 @@
       "domain": "ws_mcp_server",
       "last_version": "v0.2.0",
       "stargazers_count": 273,
-      "open_issues": 0,
+      "open_issues": 1,
       "last_updated": "2026-09-09T05:07:48Z",
       "repo_id": "988471285"
     },
@@ -5377,7 +5370,7 @@
       "category": "integration",
       "domain": "aemo_nem",
       "last_version": "2026.7.1",
-      "stargazers_count": 34,
+      "stargazers_count": 35,
       "open_issues": 0,
       "last_updated": "2026-07-09T21:06:07Z",
       "repo_id": "823407655"
@@ -5577,7 +5570,7 @@
       "category": "integration",
       "domain": "solar_cover",
       "last_version": "v0.12.0",
-      "stargazers_count": 0,
+      "stargazers_count": 1,
       "open_issues": 0,
       "last_updated": "2026-08-20T16:06:44Z",
       "repo_id": "1251630812"
@@ -5809,7 +5802,7 @@
       "last_version": "v3.2.3",
       "stargazers_count": 226,
       "open_issues": 5,
-      "last_updated": "2026-10-05T20:49:41Z",
+      "last_updated": "2026-10-12T20:00:59Z",
       "repo_id": "786470226"
     },
     {
@@ -6039,7 +6032,7 @@
       "last_version": "v1.3.1",
       "stargazers_count": 1,
       "open_issues": 3,
-      "last_updated": "2026-10-11T12:46:23Z",
+      "last_updated": "2026-10-13T01:45:31Z",
       "repo_id": "1288743536"
     },
     {
@@ -6088,8 +6081,8 @@
       "domain": "tgtg",
       "last_version": "6.1.0",
       "stargazers_count": 100,
-      "open_issues": 3,
-      "last_updated": "2026-09-28T14:29:09Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-12T21:57:20Z",
       "repo_id": "417802358"
     },
     {
@@ -6117,9 +6110,9 @@
       "category": "integration",
       "domain": "homeconnect_ws",
       "last_version": "1.0.6",
-      "stargazers_count": 481,
-      "open_issues": 85,
-      "last_updated": "2026-10-08T08:31:20Z",
+      "stargazers_count": 483,
+      "open_issues": 88,
+      "last_updated": "2026-10-13T01:07:48Z",
       "repo_id": "941653273"
     },
     {
@@ -6148,8 +6141,8 @@
       "domain": "gazdebordeaux",
       "last_version": "1.1.10",
       "stargazers_count": 12,
-      "open_issues": 11,
-      "last_updated": "2026-10-05T08:24:47Z",
+      "open_issues": 12,
+      "last_updated": "2026-10-13T00:41:59Z",
       "repo_id": "724237710"
     },
     {
@@ -6179,7 +6172,7 @@
       "last_version": "v0.3.0",
       "stargazers_count": 4,
       "open_issues": 3,
-      "last_updated": "2026-10-12T15:28:32Z",
+      "last_updated": "2026-10-13T00:31:52Z",
       "repo_id": "1221513166"
     },
     {
@@ -6267,7 +6260,7 @@
       "category": "integration",
       "domain": "circuitsetup_energy_analyzer",
       "last_version": "v0.13.17",
-      "stargazers_count": 11,
+      "stargazers_count": 12,
       "open_issues": 1,
       "last_updated": "2026-09-23T00:33:31Z",
       "repo_id": "1258349606"
@@ -6288,8 +6281,8 @@
       "domain": "myenergi",
       "last_version": "0.2.0",
       "stargazers_count": 216,
-      "open_issues": 25,
-      "last_updated": "2026-10-08T07:32:42Z",
+      "open_issues": 26,
+      "last_updated": "2026-10-12T22:30:35Z",
       "repo_id": "401145616"
     },
     {
@@ -6328,7 +6321,7 @@
       "domain": "netgear_plus",
       "last_version": "v0.7.11",
       "stargazers_count": 62,
-      "open_issues": 57,
+      "open_issues": 58,
       "last_updated": "2026-10-05T22:33:53Z",
       "repo_id": "307499856"
     },
@@ -6346,10 +6339,10 @@
       "full_name": "Clap404/ha-danfoss-eco",
       "category": "integration",
       "domain": "danfoss_eco",
-      "last_version": "1.1.0",
+      "last_version": "1.1.1",
       "stargazers_count": 0,
       "open_issues": 0,
-      "last_updated": "2026-09-09T08:24:03Z",
+      "last_updated": "2026-10-12T21:01:21Z",
       "repo_id": "1284299255"
     },
     {
@@ -6366,10 +6359,10 @@
       "full_name": "claudegel/sinope-130",
       "category": "integration",
       "domain": "neviweb130",
-      "last_version": "v4.3.1",
+      "last_version": "v4.3.2",
       "stargazers_count": 129,
-      "open_issues": 19,
-      "last_updated": "2026-10-12T17:12:08Z",
+      "open_issues": 16,
+      "last_updated": "2026-10-12T21:25:44Z",
       "repo_id": "224560492"
     },
     {
@@ -6488,8 +6481,8 @@
       "domain": "gardena_smart_local_preview",
       "last_version": "v0.3.0",
       "stargazers_count": 43,
-      "open_issues": 11,
-      "last_updated": "2026-10-07T21:42:18Z",
+      "open_issues": 12,
+      "last_updated": "2026-10-12T21:07:05Z",
       "repo_id": "1167632887"
     },
     {
@@ -6517,7 +6510,7 @@
       "category": "integration",
       "domain": "localtuya_rc",
       "last_version": "v2.0",
-      "stargazers_count": 112,
+      "stargazers_count": 113,
       "open_issues": 16,
       "last_updated": "2026-10-09T20:26:27Z",
       "repo_id": "900746471"
@@ -6548,8 +6541,8 @@
       "domain": "qss",
       "last_version": "v0.2.1",
       "stargazers_count": 10,
-      "open_issues": 3,
-      "last_updated": "2026-10-11T13:59:42Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T00:47:09Z",
       "repo_id": "581307720"
     },
     {
@@ -6587,9 +6580,9 @@
       "category": "integration",
       "domain": "hass_dyson",
       "last_version": "v0.38.0",
-      "stargazers_count": 111,
-      "open_issues": 9,
-      "last_updated": "2026-10-12T06:48:28Z",
+      "stargazers_count": 113,
+      "open_issues": 11,
+      "last_updated": "2026-10-13T03:00:52Z",
       "repo_id": "1043356454"
     },
     {
@@ -6829,7 +6822,7 @@
       "last_version": "v0.1.0",
       "stargazers_count": 0,
       "open_issues": 5,
-      "last_updated": "2026-10-09T09:07:27Z",
+      "last_updated": "2026-10-13T02:18:10Z",
       "repo_id": "1129405877"
     },
     {
@@ -6899,7 +6892,7 @@
       "last_version": "0.5.1",
       "stargazers_count": 25,
       "open_issues": 0,
-      "last_updated": "2026-10-12T17:35:41Z",
+      "last_updated": "2026-10-12T21:45:41Z",
       "repo_id": "464416924"
     },
     {
@@ -6966,10 +6959,10 @@
       "full_name": "craibo/ha-red-energy-au",
       "category": "integration",
       "domain": "red_energy",
-      "last_version": "1.22.1",
+      "last_version": "1.22.2",
       "stargazers_count": 20,
       "open_issues": 2,
-      "last_updated": "2026-10-01T06:43:32Z",
+      "last_updated": "2026-10-12T23:48:11Z",
       "repo_id": "1043070040"
     },
     {
@@ -6999,7 +6992,7 @@
       "last_version": "v0.10.0",
       "stargazers_count": 17,
       "open_issues": 14,
-      "last_updated": "2026-10-05T06:07:50Z",
+      "last_updated": "2026-10-12T18:03:42Z",
       "repo_id": "1132290909"
     },
     {
@@ -7377,8 +7370,8 @@
       "category": "integration",
       "domain": "ble_monitor",
       "last_version": "14.3.0",
-      "stargazers_count": 2249,
-      "open_issues": 121,
+      "stargazers_count": 2250,
+      "open_issues": 122,
       "last_updated": "2026-09-30T06:30:16Z",
       "repo_id": "223993584"
     },
@@ -7498,7 +7491,7 @@
       "domain": "remote_homeassistant",
       "last_version": "4.6",
       "stargazers_count": 1276,
-      "open_issues": 120,
+      "open_issues": 121,
       "last_updated": "2025-12-04T17:38:15Z",
       "repo_id": "152294445"
     },
@@ -7738,8 +7731,8 @@
       "domain": "arpscan_tracker",
       "last_version": "2.1.8",
       "stargazers_count": 40,
-      "open_issues": 4,
-      "last_updated": "2026-10-05T06:07:48Z",
+      "open_issues": 7,
+      "last_updated": "2026-10-12T18:02:41Z",
       "repo_id": "228604799"
     },
     {
@@ -7758,8 +7751,8 @@
       "domain": "hvcgroep",
       "last_version": "2.0.6",
       "stargazers_count": 22,
-      "open_issues": 4,
-      "last_updated": "2026-10-05T06:07:57Z",
+      "open_issues": 6,
+      "last_updated": "2026-10-12T18:02:55Z",
       "repo_id": "228627470"
     },
     {
@@ -7778,8 +7771,8 @@
       "domain": "toon_boilerstatus",
       "last_version": "2.0.2",
       "stargazers_count": 14,
-      "open_issues": 6,
-      "last_updated": "2026-10-05T06:07:51Z",
+      "open_issues": 9,
+      "last_updated": "2026-10-12T18:02:38Z",
       "repo_id": "228685436"
     },
     {
@@ -7788,8 +7781,8 @@
       "domain": "toon_climate",
       "last_version": "2.0.5",
       "stargazers_count": 54,
-      "open_issues": 6,
-      "last_updated": "2026-10-05T06:07:41Z",
+      "open_issues": 9,
+      "last_updated": "2026-10-12T18:01:50Z",
       "repo_id": "228662926"
     },
     {
@@ -7798,8 +7791,8 @@
       "domain": "toon_smartmeter",
       "last_version": "2.03",
       "stargazers_count": 38,
-      "open_issues": 6,
-      "last_updated": "2026-10-05T06:08:11Z",
+      "open_issues": 9,
+      "last_updated": "2026-10-12T18:05:14Z",
       "repo_id": "228678807"
     },
     {
@@ -7848,7 +7841,7 @@
       "domain": "livebox",
       "last_version": "2.6.0",
       "stargazers_count": 95,
-      "open_issues": 5,
+      "open_issues": 6,
       "last_updated": "2026-10-10T16:23:49Z",
       "repo_id": "220661494"
     },
@@ -7938,8 +7931,8 @@
       "domain": "hair",
       "last_version": "v0.17.2",
       "stargazers_count": 323,
-      "open_issues": 21,
-      "last_updated": "2026-10-11T00:54:15Z",
+      "open_issues": 22,
+      "last_updated": "2026-10-13T02:59:40Z",
       "repo_id": "1239057212"
     },
     {
@@ -8088,8 +8081,8 @@
       "domain": "robovac",
       "last_version": "v2.5.0",
       "stargazers_count": 106,
-      "open_issues": 36,
-      "last_updated": "2026-10-12T02:31:53Z",
+      "open_issues": 37,
+      "last_updated": "2026-10-13T02:04:28Z",
       "repo_id": "962480808"
     },
     {
@@ -8168,8 +8161,8 @@
       "domain": "meteogalicia",
       "last_version": "v2026.10.3",
       "stargazers_count": 21,
-      "open_issues": 0,
-      "last_updated": "2026-10-10T19:48:21Z",
+      "open_issues": 2,
+      "last_updated": "2026-10-12T20:15:35Z",
       "repo_id": "539629703"
     },
     {
@@ -8188,8 +8181,8 @@
       "domain": "measureit",
       "last_version": "v0.9.0",
       "stargazers_count": 230,
-      "open_issues": 9,
-      "last_updated": "2026-10-11T13:23:26Z",
+      "open_issues": 10,
+      "last_updated": "2026-10-13T01:45:06Z",
       "repo_id": "674163098"
     },
     {
@@ -8268,8 +8261,8 @@
       "domain": "innova",
       "last_version": "v1.5.2",
       "stargazers_count": 56,
-      "open_issues": 11,
-      "last_updated": "2026-10-10T00:18:55Z",
+      "open_issues": 12,
+      "last_updated": "2026-10-12T22:49:13Z",
       "repo_id": "456340193"
     },
     {
@@ -8478,7 +8471,7 @@
       "domain": "elkbledom",
       "last_version": "1.6.5",
       "stargazers_count": 209,
-      "open_issues": 6,
+      "open_issues": 7,
       "last_updated": "2026-08-18T09:11:03Z",
       "repo_id": "497924778"
     },
@@ -8669,7 +8662,7 @@
       "last_version": "2026.10.0",
       "stargazers_count": 345,
       "open_issues": 25,
-      "last_updated": "2026-10-06T22:32:51Z",
+      "last_updated": "2026-10-12T23:23:40Z",
       "repo_id": "319608056"
     },
     {
@@ -8679,7 +8672,7 @@
       "last_version": "2026.7.0",
       "stargazers_count": 10,
       "open_issues": 6,
-      "last_updated": "2026-10-06T11:23:08Z",
+      "last_updated": "2026-10-12T23:23:49Z",
       "repo_id": "975150499"
     },
     {
@@ -8888,7 +8881,7 @@
       "domain": "ta_cmi",
       "last_version": "v1.13.1",
       "stargazers_count": 64,
-      "open_issues": 7,
+      "open_issues": 6,
       "last_updated": "2026-09-08T21:44:18Z",
       "repo_id": "541978646"
     },
@@ -9268,8 +9261,8 @@
       "domain": "flameconnect",
       "last_version": "v0.3.3",
       "stargazers_count": 2,
-      "open_issues": 3,
-      "last_updated": "2026-10-12T06:02:12Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T02:02:23Z",
       "repo_id": "1168031924"
     },
     {
@@ -9418,8 +9411,8 @@
       "domain": "colota",
       "last_version": "v0.3.1",
       "stargazers_count": 4,
-      "open_issues": 2,
-      "last_updated": "2026-10-11T16:37:10Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-12T22:08:34Z",
       "repo_id": "1198338848"
     },
     {
@@ -9588,7 +9581,7 @@
       "domain": "xplora_watch",
       "last_version": "v1.6.0",
       "stargazers_count": 9,
-      "open_issues": 3,
+      "open_issues": 4,
       "last_updated": "2026-10-12T16:55:00Z",
       "repo_id": "1280520104"
     },
@@ -9659,7 +9652,7 @@
       "last_version": "v0.12.0",
       "stargazers_count": 1,
       "open_issues": 2,
-      "last_updated": "2026-10-11T06:39:33Z",
+      "last_updated": "2026-10-13T04:35:21Z",
       "repo_id": "1169784155"
     },
     {
@@ -9756,10 +9749,10 @@
       "full_name": "dkarv/ha-komodo",
       "category": "integration",
       "domain": "komodo",
-      "last_version": "v1.3.0",
+      "last_version": "v1.4.0",
       "stargazers_count": 42,
-      "open_issues": 2,
-      "last_updated": "2026-09-23T20:15:10Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-12T20:48:38Z",
       "repo_id": "1004329736"
     },
     {
@@ -9859,7 +9852,7 @@
       "last_version": "0.18.0",
       "stargazers_count": 0,
       "open_issues": 1,
-      "last_updated": "2026-10-12T03:05:26Z",
+      "last_updated": "2026-10-12T23:26:04Z",
       "repo_id": "965810327"
     },
     {
@@ -9987,7 +9980,7 @@
       "category": "integration",
       "domain": "thermal_comfort",
       "last_version": "2.2.6",
-      "stargazers_count": 893,
+      "stargazers_count": 892,
       "open_issues": 63,
       "last_updated": "2026-03-12T20:28:43Z",
       "repo_id": "180032210"
@@ -10537,7 +10530,7 @@
       "category": "integration",
       "domain": "dwains_dashboard",
       "last_version": "v3.10.1",
-      "stargazers_count": 2075,
+      "stargazers_count": 2077,
       "open_issues": 1,
       "last_updated": "2026-09-04T09:07:20Z",
       "repo_id": "222687548"
@@ -10736,10 +10729,10 @@
       "full_name": "EffortlessHome/EffortlessHome",
       "category": "integration",
       "domain": "effortlesshome",
-      "last_version": "2.0.18",
+      "last_version": "2.0.19",
       "stargazers_count": 0,
       "open_issues": 0,
-      "last_updated": "2026-10-10T00:43:58Z",
+      "last_updated": "2026-10-13T00:52:51Z",
       "repo_id": "1121912710"
     },
     {
@@ -10769,7 +10762,7 @@
       "last_version": "v1.9.0",
       "stargazers_count": 70,
       "open_issues": 5,
-      "last_updated": "2026-10-12T16:13:01Z",
+      "last_updated": "2026-10-12T22:30:29Z",
       "repo_id": "1066027219"
     },
     {
@@ -11308,8 +11301,8 @@
       "domain": "ge_spot",
       "last_version": "v1.8.2",
       "stargazers_count": 23,
-      "open_issues": 1,
-      "last_updated": "2026-10-10T18:23:09Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-13T04:53:08Z",
       "repo_id": "958578520"
     },
     {
@@ -11459,7 +11452,7 @@
       "last_version": "v1.5.0",
       "stargazers_count": 10,
       "open_issues": 6,
-      "last_updated": "2026-10-12T15:43:19Z",
+      "last_updated": "2026-10-13T01:48:57Z",
       "repo_id": "1124967686"
     },
     {
@@ -11586,10 +11579,10 @@
       "full_name": "EvotecIT/homeassistant-dreamelawnmower",
       "category": "integration",
       "domain": "dreame_lawn_mower",
-      "last_version": "v0.2.145",
+      "last_version": "v0.2.146",
       "stargazers_count": 28,
       "open_issues": 1,
-      "last_updated": "2026-10-12T15:49:03Z",
+      "last_updated": "2026-10-12T22:43:46Z",
       "repo_id": "970213888"
     },
     {
@@ -11688,8 +11681,8 @@
       "domain": "pollenlevels",
       "last_version": "v4.0.3",
       "stargazers_count": 40,
-      "open_issues": 6,
-      "last_updated": "2026-10-12T01:50:04Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T05:03:26Z",
       "repo_id": "984732939"
     },
     {
@@ -11748,8 +11741,8 @@
       "domain": "album_slideshow",
       "last_version": "v1.14.0",
       "stargazers_count": 43,
-      "open_issues": 10,
-      "last_updated": "2026-10-10T23:26:15Z",
+      "open_issues": 5,
+      "last_updated": "2026-10-13T03:35:23Z",
       "repo_id": "1162143395"
     },
     {
@@ -12018,8 +12011,8 @@
       "domain": "openwrt",
       "last_version": "v2.5.3",
       "stargazers_count": 119,
-      "open_issues": 9,
-      "last_updated": "2026-10-12T18:05:20Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-12T22:11:21Z",
       "repo_id": "1178083474"
     },
     {
@@ -12037,7 +12030,7 @@
       "category": "integration",
       "domain": "whatsapp",
       "last_version": "v2.1.6",
-      "stargazers_count": 52,
+      "stargazers_count": 53,
       "open_issues": 10,
       "last_updated": "2026-10-10T22:48:21Z",
       "repo_id": "1121936240"
@@ -12379,7 +12372,7 @@
       "last_version": "1.6.2",
       "stargazers_count": 67,
       "open_issues": 0,
-      "last_updated": "2026-10-08T16:38:43Z",
+      "last_updated": "2026-10-13T01:13:51Z",
       "repo_id": "728852983"
     },
     {
@@ -12556,10 +12549,10 @@
       "full_name": "florianbaethge/simple_irrigation",
       "category": "integration",
       "domain": "simple_irrigation",
-      "last_version": "v1.13.0",
+      "last_version": "v1.13.1",
       "stargazers_count": 13,
       "open_issues": 0,
-      "last_updated": "2026-10-06T18:35:45Z",
+      "last_updated": "2026-10-12T20:26:01Z",
       "repo_id": "1191497322"
     },
     {
@@ -12687,7 +12680,7 @@
       "category": "integration",
       "domain": "ics_calendar",
       "last_version": "5.2.1",
-      "stargazers_count": 200,
+      "stargazers_count": 201,
       "open_issues": 25,
       "last_updated": "2026-10-05T23:33:20Z",
       "repo_id": "200665691"
@@ -12817,9 +12810,9 @@
       "category": "integration",
       "domain": "spook",
       "last_version": "v5.11.0",
-      "stargazers_count": 1505,
-      "open_issues": 1,
-      "last_updated": "2026-10-12T14:28:28Z",
+      "stargazers_count": 1513,
+      "open_issues": 2,
+      "last_updated": "2026-10-13T01:51:46Z",
       "repo_id": "605635573"
     },
     {
@@ -12937,7 +12930,7 @@
       "category": "integration",
       "domain": "eufy_security",
       "last_version": "v8.2.5",
-      "stargazers_count": 1402,
+      "stargazers_count": 1403,
       "open_issues": 218,
       "last_updated": "2026-09-23T13:20:42Z",
       "repo_id": "380367845"
@@ -13259,7 +13252,7 @@
       "last_version": "v0.38.105",
       "stargazers_count": 286,
       "open_issues": 4,
-      "last_updated": "2026-10-06T19:10:23Z",
+      "last_updated": "2026-10-13T04:46:36Z",
       "repo_id": "1150153711"
     },
     {
@@ -13267,7 +13260,7 @@
       "category": "integration",
       "domain": "icloud3",
       "last_version": "v3.7.5",
-      "stargazers_count": 917,
+      "stargazers_count": 918,
       "open_issues": 130,
       "last_updated": "2026-09-08T20:53:22Z",
       "repo_id": "222292912"
@@ -13426,20 +13419,20 @@
       "full_name": "GeiserX/cashpilot-ha",
       "category": "integration",
       "domain": "cashpilot",
-      "last_version": "v1.1.1",
+      "last_version": "v1.1.2",
       "stargazers_count": 2,
-      "open_issues": 0,
-      "last_updated": "2026-10-06T22:51:46Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-12T23:52:56Z",
       "repo_id": "1196101771"
     },
     {
       "full_name": "GeiserX/genieacs-ha",
       "category": "integration",
       "domain": "genieacs",
-      "last_version": "v1.0.1",
+      "last_version": "v1.0.2",
       "stargazers_count": 5,
-      "open_issues": 0,
-      "last_updated": "2026-10-04T21:40:57Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-13T00:15:13Z",
       "repo_id": "1196101713"
     },
     {
@@ -13497,7 +13490,7 @@
       "category": "integration",
       "domain": "elektronny_gorod",
       "last_version": "4.1.0",
-      "stargazers_count": 39,
+      "stargazers_count": 40,
       "open_issues": 0,
       "last_updated": "2026-10-05T10:26:09Z",
       "repo_id": "729742358"
@@ -13879,7 +13872,7 @@
       "last_version": "v0.1.4",
       "stargazers_count": 2,
       "open_issues": 3,
-      "last_updated": "2026-10-12T01:36:54Z",
+      "last_updated": "2026-10-13T00:58:53Z",
       "repo_id": "1026194410"
     },
     {
@@ -13888,8 +13881,8 @@
       "domain": "kamstrup_403",
       "last_version": "v3.2.1",
       "stargazers_count": 91,
-      "open_issues": 6,
-      "last_updated": "2026-10-11T13:43:59Z",
+      "open_issues": 7,
+      "last_updated": "2026-10-13T04:31:41Z",
       "repo_id": "402156016"
     },
     {
@@ -13898,8 +13891,8 @@
       "domain": "knmi",
       "last_version": "v3.0.7",
       "stargazers_count": 162,
-      "open_issues": 8,
-      "last_updated": "2026-10-12T02:38:34Z",
+      "open_issues": 9,
+      "last_updated": "2026-10-13T04:47:42Z",
       "repo_id": "376390299"
     },
     {
@@ -13909,7 +13902,7 @@
       "last_version": "v0.1.2",
       "stargazers_count": 11,
       "open_issues": 4,
-      "last_updated": "2026-10-12T01:16:41Z",
+      "last_updated": "2026-10-13T04:49:09Z",
       "repo_id": "1037967283"
     },
     {
@@ -13937,9 +13930,9 @@
       "category": "integration",
       "domain": "home_generative_agent",
       "last_version": "v3.43.4",
-      "stargazers_count": 316,
-      "open_issues": 17,
-      "last_updated": "2026-10-12T15:49:16Z",
+      "stargazers_count": 317,
+      "open_issues": 14,
+      "last_updated": "2026-10-13T03:51:04Z",
       "repo_id": "840302332"
     },
     {
@@ -14157,7 +14150,7 @@
       "category": "integration",
       "domain": "lambda_heat_pumps",
       "last_version": "V2.8.6",
-      "stargazers_count": 61,
+      "stargazers_count": 62,
       "open_issues": 24,
       "last_updated": "2026-10-12T07:10:22Z",
       "repo_id": "988435981"
@@ -14318,7 +14311,7 @@
       "domain": "iec",
       "last_version": "0.1.8",
       "stargazers_count": 188,
-      "open_issues": 21,
+      "open_issues": 22,
       "last_updated": "2026-10-11T01:39:41Z",
       "repo_id": "759368542"
     },
@@ -14448,7 +14441,7 @@
       "domain": "ai_hub",
       "last_version": "2026.09.3",
       "stargazers_count": 43,
-      "open_issues": 0,
+      "open_issues": 1,
       "last_updated": "2026-09-27T11:07:07Z",
       "repo_id": "1086206089"
     },
@@ -14467,7 +14460,7 @@
       "category": "integration",
       "domain": "cn_im_hub",
       "last_version": "v2026.09.0",
-      "stargazers_count": 46,
+      "stargazers_count": 45,
       "open_issues": 1,
       "last_updated": "2026-09-27T16:33:53Z",
       "repo_id": "1178419115"
@@ -14487,7 +14480,7 @@
       "category": "integration",
       "domain": "dpd",
       "last_version": "2.14.0",
-      "stargazers_count": 12,
+      "stargazers_count": 13,
       "open_issues": 3,
       "last_updated": "2026-10-10T19:13:41Z",
       "repo_id": "1266481103"
@@ -14519,7 +14512,7 @@
       "last_version": "v2.4.0",
       "stargazers_count": 7,
       "open_issues": 3,
-      "last_updated": "2026-10-12T12:50:41Z",
+      "last_updated": "2026-10-13T01:16:05Z",
       "repo_id": "1035037589"
     },
     {
@@ -14567,8 +14560,8 @@
       "category": "integration",
       "domain": "hacs",
       "last_version": "2.0.5",
-      "stargazers_count": 7791,
-      "open_issues": 191,
+      "stargazers_count": 7793,
+      "open_issues": 193,
       "last_updated": "2026-10-11T08:36:05Z",
       "repo_id": "172733314"
     },
@@ -14648,7 +14641,7 @@
       "domain": "area_occupancy",
       "last_version": "2026.10.2",
       "stargazers_count": 332,
-      "open_issues": 13,
+      "open_issues": 14,
       "last_updated": "2026-10-06T16:00:04Z",
       "repo_id": "893011665"
     },
@@ -14847,9 +14840,9 @@
       "category": "integration",
       "domain": "haeo",
       "last_version": "v0.4.1",
-      "stargazers_count": 71,
-      "open_issues": 51,
-      "last_updated": "2026-10-12T03:27:07Z",
+      "stargazers_count": 72,
+      "open_issues": 52,
+      "last_updated": "2026-10-12T20:06:59Z",
       "repo_id": "1066130732"
     },
     {
@@ -15257,7 +15250,7 @@
       "category": "integration",
       "domain": "bps",
       "last_version": "v0.2.1",
-      "stargazers_count": 134,
+      "stargazers_count": 135,
       "open_issues": 11,
       "last_updated": "2026-08-12T08:34:05Z",
       "repo_id": "919907840"
@@ -15326,10 +15319,10 @@
       "full_name": "home-assistant-HomeWhiz/home-assistant-HomeWhiz",
       "category": "integration",
       "domain": "homewhiz",
-      "last_version": "v0.5.27",
+      "last_version": "0.5.28",
       "stargazers_count": 158,
       "open_issues": 10,
-      "last_updated": "2026-10-12T08:26:27Z",
+      "last_updated": "2026-10-13T03:32:01Z",
       "repo_id": "525954717"
     },
     {
@@ -15458,8 +15451,8 @@
       "domain": "aseko_local",
       "last_version": "v2.0.0",
       "stargazers_count": 10,
-      "open_issues": 9,
-      "last_updated": "2026-10-12T18:02:51Z",
+      "open_issues": 8,
+      "last_updated": "2026-10-13T00:55:02Z",
       "repo_id": "973373722"
     },
     {
@@ -15787,7 +15780,7 @@
       "category": "integration",
       "domain": "kia_uvo",
       "last_version": "v3.17.1",
-      "stargazers_count": 952,
+      "stargazers_count": 953,
       "open_issues": 38,
       "last_updated": "2026-10-12T17:52:06Z",
       "repo_id": "356385629"
@@ -15848,8 +15841,8 @@
       "domain": "renogy",
       "last_version": "v0.11.0",
       "stargazers_count": 41,
-      "open_issues": 7,
-      "last_updated": "2026-10-12T02:43:25Z",
+      "open_issues": 8,
+      "last_updated": "2026-10-13T02:38:49Z",
       "repo_id": "948065459"
     },
     {
@@ -16068,8 +16061,8 @@
       "domain": "neosmartblue",
       "last_version": "0.1.2",
       "stargazers_count": 4,
-      "open_issues": 6,
-      "last_updated": "2026-10-12T14:38:04Z",
+      "open_issues": 5,
+      "last_updated": "2026-10-13T05:26:32Z",
       "repo_id": "1008725569"
     },
     {
@@ -16168,8 +16161,8 @@
       "domain": "nest_protect",
       "last_version": "v0.4.3",
       "stargazers_count": 487,
-      "open_issues": 73,
-      "last_updated": "2026-10-11T22:43:59Z",
+      "open_issues": 74,
+      "last_updated": "2026-10-12T23:51:18Z",
       "repo_id": "448323715"
     },
     {
@@ -16366,10 +16359,10 @@
       "full_name": "iprak/sensi",
       "category": "integration",
       "domain": "sensi",
-      "last_version": "v2.2.2",
+      "last_version": "v2.2.3",
       "stargazers_count": 111,
       "open_issues": 4,
-      "last_updated": "2026-10-11T02:08:52Z",
+      "last_updated": "2026-10-12T23:15:51Z",
       "repo_id": "577080457"
     },
     {
@@ -16598,8 +16591,8 @@
       "domain": "vag_connect",
       "last_version": "v4.13.0",
       "stargazers_count": 121,
-      "open_issues": 61,
-      "last_updated": "2026-10-11T16:32:30Z",
+      "open_issues": 47,
+      "last_updated": "2026-10-12T22:59:29Z",
       "repo_id": "1207816350"
     },
     {
@@ -17028,7 +17021,7 @@
       "domain": "beny_wifi",
       "last_version": "1.3.0",
       "stargazers_count": 9,
-      "open_issues": 4,
+      "open_issues": 2,
       "last_updated": "2026-10-12T18:40:06Z",
       "repo_id": "906704104"
     },
@@ -17098,8 +17091,8 @@
       "domain": "hubitat",
       "last_version": "v0.11.0",
       "stargazers_count": 235,
-      "open_issues": 45,
-      "last_updated": "2026-10-02T04:45:36Z",
+      "open_issues": 46,
+      "last_updated": "2026-10-12T23:16:40Z",
       "repo_id": "235943258"
     },
     {
@@ -17249,7 +17242,7 @@
       "last_version": "1.4.0",
       "stargazers_count": 95,
       "open_issues": 0,
-      "last_updated": "2026-10-11T20:35:28Z",
+      "last_updated": "2026-10-12T23:28:32Z",
       "repo_id": "644033469"
     },
     {
@@ -17349,7 +17342,7 @@
       "last_version": "v1.9.1",
       "stargazers_count": 463,
       "open_issues": 34,
-      "last_updated": "2026-10-10T01:06:01Z",
+      "last_updated": "2026-10-13T01:50:29Z",
       "repo_id": "221855213"
     },
     {
@@ -17448,8 +17441,8 @@
       "domain": "dreo",
       "last_version": "v1.11.10",
       "stargazers_count": 395,
-      "open_issues": 7,
-      "last_updated": "2026-10-12T01:36:24Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-12T19:55:42Z",
       "repo_id": "656992550"
     },
     {
@@ -17548,7 +17541,7 @@
       "domain": "robovac_mqtt",
       "last_version": "v1.13.1",
       "stargazers_count": 222,
-      "open_issues": 45,
+      "open_issues": 46,
       "last_updated": "2026-08-03T17:52:42Z",
       "repo_id": "920548382"
     },
@@ -17648,8 +17641,8 @@
       "domain": "petkit",
       "last_version": "1.28.0",
       "stargazers_count": 302,
-      "open_issues": 25,
-      "last_updated": "2026-10-11T19:45:53Z",
+      "open_issues": 26,
+      "last_updated": "2026-10-12T22:13:52Z",
       "repo_id": "901002806"
     },
     {
@@ -17659,7 +17652,7 @@
       "last_version": "v2.0.2",
       "stargazers_count": 29,
       "open_issues": 32,
-      "last_updated": "2026-10-05T23:36:34Z",
+      "last_updated": "2026-10-12T22:13:36Z",
       "repo_id": "889629467"
     },
     {
@@ -17698,8 +17691,8 @@
       "domain": "thermostat_proxy",
       "last_version": "2026.10.0",
       "stargazers_count": 24,
-      "open_issues": 1,
-      "last_updated": "2026-10-12T17:53:56Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-12T20:04:09Z",
       "repo_id": "1093734108"
     },
     {
@@ -17897,9 +17890,9 @@
       "category": "integration",
       "domain": "versatile_thermostat",
       "last_version": "10.5.1",
-      "stargazers_count": 1202,
-      "open_issues": 12,
-      "last_updated": "2026-10-12T18:25:05Z",
+      "stargazers_count": 1203,
+      "open_issues": 17,
+      "last_updated": "2026-10-12T20:29:36Z",
       "repo_id": "582589896"
     },
     {
@@ -18056,10 +18049,10 @@
       "full_name": "JohanAlvedal/PumpSteer",
       "category": "integration",
       "domain": "pumpsteer",
-      "last_version": "v2.2.2",
+      "last_version": "v2.2.3",
       "stargazers_count": 40,
-      "open_issues": 3,
-      "last_updated": "2026-10-12T09:41:51Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-12T20:54:11Z",
       "repo_id": "1004846870"
     },
     {
@@ -18089,7 +18082,7 @@
       "last_version": "v1.5.0",
       "stargazers_count": 1,
       "open_issues": 5,
-      "last_updated": "2026-10-12T00:42:12Z",
+      "last_updated": "2026-10-13T02:08:01Z",
       "repo_id": "1112564331"
     },
     {
@@ -18156,10 +18149,10 @@
       "full_name": "johnbr/mlb-live-scoreboard",
       "category": "integration",
       "domain": "mlb_live_scoreboard",
-      "last_version": "v1.37.4",
+      "last_version": "v1.39.0",
       "stargazers_count": 3,
       "open_issues": 1,
-      "last_updated": "2026-10-12T01:22:42Z",
+      "last_updated": "2026-10-12T21:22:35Z",
       "repo_id": "1220485243"
     },
     {
@@ -18206,10 +18199,10 @@
       "full_name": "johnnyh1975/ha_roomba_plus",
       "category": "integration",
       "domain": "roomba_plus",
-      "last_version": "v4.4.0",
+      "last_version": "v4.4.1",
       "stargazers_count": 50,
       "open_issues": 10,
-      "last_updated": "2026-10-11T16:18:59Z",
+      "last_updated": "2026-10-13T05:02:52Z",
       "repo_id": "1241238352"
     },
     {
@@ -18388,7 +18381,7 @@
       "domain": "scribe",
       "last_version": "v4.4.1",
       "stargazers_count": 64,
-      "open_issues": 1,
+      "open_issues": 2,
       "last_updated": "2026-10-12T13:19:41Z",
       "repo_id": "1104065820"
     },
@@ -18578,8 +18571,8 @@
       "domain": "eg4_web_monitor",
       "last_version": "v3.5.0",
       "stargazers_count": 84,
-      "open_issues": 32,
-      "last_updated": "2026-10-05T01:48:34Z",
+      "open_issues": 31,
+      "last_updated": "2026-10-12T22:06:33Z",
       "repo_id": "1053781451"
     },
     {
@@ -18748,8 +18741,8 @@
       "domain": "magic_areas",
       "last_version": "4.4.2",
       "stargazers_count": 521,
-      "open_issues": 13,
-      "last_updated": "2026-09-18T08:11:14Z",
+      "open_issues": 12,
+      "last_updated": "2026-10-13T05:57:38Z",
       "repo_id": "299123388"
     },
     {
@@ -19018,8 +19011,8 @@
       "domain": "bavariandata",
       "last_version": "v0.9.17",
       "stargazers_count": 15,
-      "open_issues": 0,
-      "last_updated": "2026-10-12T11:31:26Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-13T04:01:46Z",
       "repo_id": "1291283253"
     },
     {
@@ -19059,7 +19052,7 @@
       "last_version": "v1.6.2",
       "stargazers_count": 19,
       "open_issues": 3,
-      "last_updated": "2026-10-12T02:51:33Z",
+      "last_updated": "2026-10-12T23:07:00Z",
       "repo_id": "1133017455"
     },
     {
@@ -19077,8 +19070,8 @@
       "category": "integration",
       "domain": "voice_satellite",
       "last_version": "2026.9.13",
-      "stargazers_count": 886,
-      "open_issues": 3,
+      "stargazers_count": 887,
+      "open_issues": 4,
       "last_updated": "2026-09-25T17:02:41Z",
       "repo_id": "1159616380"
     },
@@ -19243,6 +19236,16 @@
       "repo_id": "172998062"
     },
     {
+      "full_name": "Kaluzaburza/hoymiles-hit-g3-ems",
+      "category": "integration",
+      "domain": "hoymiles_hit_modbus",
+      "last_version": "v1.5.5",
+      "stargazers_count": 4,
+      "open_issues": 1,
+      "last_updated": "2026-08-15T13:37:41Z",
+      "repo_id": "1311289521"
+    },
+    {
       "full_name": "kamaradclimber/datadog-integration-ha",
       "category": "integration",
       "domain": "datadog_agentless",
@@ -19387,9 +19390,9 @@
       "category": "integration",
       "domain": "better_thermostat",
       "last_version": "1.9.3",
-      "stargazers_count": 1504,
-      "open_issues": 62,
-      "last_updated": "2026-10-11T14:01:11Z",
+      "stargazers_count": 1506,
+      "open_issues": 55,
+      "last_updated": "2026-10-12T22:32:45Z",
       "repo_id": "422931599"
     },
     {
@@ -19428,8 +19431,8 @@
       "domain": "truenas_ce",
       "last_version": "v2.11.2",
       "stargazers_count": 47,
-      "open_issues": 2,
-      "last_updated": "2026-10-12T13:26:12Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-13T05:37:26Z",
       "repo_id": "1277175375"
     },
     {
@@ -19496,10 +19499,10 @@
       "full_name": "kedube/ha-hellofresh",
       "category": "integration",
       "domain": "hellofresh",
-      "last_version": "4.07",
+      "last_version": "4.08",
       "stargazers_count": 7,
       "open_issues": 0,
-      "last_updated": "2026-10-11T20:46:49Z",
+      "last_updated": "2026-10-13T02:28:30Z",
       "repo_id": "1268831113"
     },
     {
@@ -19579,7 +19582,7 @@
       "last_version": "v1.13",
       "stargazers_count": 16,
       "open_issues": 5,
-      "last_updated": "2026-10-05T07:15:59Z",
+      "last_updated": "2026-10-12T21:55:29Z",
       "repo_id": "325635211"
     },
     {
@@ -19818,8 +19821,8 @@
       "domain": "eufy_vacuum",
       "last_version": "v2.2.5",
       "stargazers_count": 15,
-      "open_issues": 0,
-      "last_updated": "2026-10-11T16:36:54Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-13T05:28:32Z",
       "repo_id": "1226078819"
     },
     {
@@ -19978,8 +19981,8 @@
       "domain": "import_statistics",
       "last_version": "v5.3.0",
       "stargazers_count": 185,
-      "open_issues": 1,
-      "last_updated": "2026-10-05T18:18:13Z",
+      "open_issues": 2,
+      "last_updated": "2026-10-13T01:09:41Z",
       "repo_id": "756168276"
     },
     {
@@ -20497,7 +20500,7 @@
       "category": "integration",
       "domain": "adjustable_bed",
       "last_version": "v4.1.1",
-      "stargazers_count": 64,
+      "stargazers_count": 65,
       "open_issues": 39,
       "last_updated": "2026-10-09T20:45:59Z",
       "repo_id": "1130861289"
@@ -20639,7 +20642,7 @@
       "last_version": "1.3.0",
       "stargazers_count": 2,
       "open_issues": 1,
-      "last_updated": "2026-10-05T09:17:09Z",
+      "last_updated": "2026-10-13T04:25:49Z",
       "repo_id": "1245922024"
     },
     {
@@ -20797,9 +20800,9 @@
       "category": "integration",
       "domain": "govee",
       "last_version": "v2026.10.0",
-      "stargazers_count": 143,
-      "open_issues": 33,
-      "last_updated": "2026-10-12T18:36:27Z",
+      "stargazers_count": 144,
+      "open_issues": 34,
+      "last_updated": "2026-10-13T05:34:03Z",
       "repo_id": "1133923244"
     },
     {
@@ -21347,7 +21350,7 @@
       "category": "integration",
       "domain": "uix",
       "last_version": "v8.4.0",
-      "stargazers_count": 153,
+      "stargazers_count": 154,
       "open_issues": 1,
       "last_updated": "2026-10-10T00:13:51Z",
       "repo_id": "975268709"
@@ -21359,7 +21362,7 @@
       "last_version": "v1.8.0",
       "stargazers_count": 10,
       "open_issues": 0,
-      "last_updated": "2026-09-27T03:41:17Z",
+      "last_updated": "2026-10-13T04:48:14Z",
       "repo_id": "1098197288"
     },
     {
@@ -21668,7 +21671,7 @@
       "domain": "vantage",
       "last_version": "0.15.2",
       "stargazers_count": 18,
-      "open_issues": 5,
+      "open_issues": 6,
       "last_updated": "2026-10-05T23:36:41Z",
       "repo_id": "628038776"
     },
@@ -21818,8 +21821,8 @@
       "domain": "transformers_allspark_ui",
       "last_version": "v0.6.0",
       "stargazers_count": 2,
-      "open_issues": 1,
-      "last_updated": "2026-10-12T14:06:19Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-12T20:48:30Z",
       "repo_id": "1230727603"
     },
     {
@@ -21847,7 +21850,7 @@
       "category": "integration",
       "domain": "oura",
       "last_version": "v2.11.0",
-      "stargazers_count": 63,
+      "stargazers_count": 64,
       "open_issues": 0,
       "last_updated": "2026-10-12T09:37:17Z",
       "repo_id": "1081435944"
@@ -22078,8 +22081,8 @@
       "domain": "assist_canonicalizer",
       "last_version": "1.15.1",
       "stargazers_count": 54,
-      "open_issues": 0,
-      "last_updated": "2026-10-10T23:05:48Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-13T01:17:30Z",
       "repo_id": "1257324688"
     },
     {
@@ -22088,8 +22091,8 @@
       "domain": "blueprints_updater",
       "last_version": "2.16.4",
       "stargazers_count": 152,
-      "open_issues": 0,
-      "last_updated": "2026-10-12T03:54:05Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-13T00:24:42Z",
       "repo_id": "1189734364"
     },
     {
@@ -22137,7 +22140,7 @@
       "category": "integration",
       "domain": "sofabaton_x1s",
       "last_version": "0.7.0",
-      "stargazers_count": 65,
+      "stargazers_count": 66,
       "open_issues": 9,
       "last_updated": "2026-10-11T23:20:40Z",
       "repo_id": "1093369149"
@@ -22298,7 +22301,7 @@
       "domain": "ha_network_map",
       "last_version": "v5.0.21",
       "stargazers_count": 5,
-      "open_issues": 1,
+      "open_issues": 2,
       "last_updated": "2026-10-08T19:24:18Z",
       "repo_id": "1181460270"
     },
@@ -22379,7 +22382,7 @@
       "last_version": "v0.48",
       "stargazers_count": 219,
       "open_issues": 79,
-      "last_updated": "2026-06-05T10:55:33Z",
+      "last_updated": "2026-10-13T06:08:07Z",
       "repo_id": "405007807"
     },
     {
@@ -22798,8 +22801,8 @@
       "domain": "waste_collection_schedule",
       "last_version": "v2.35.0",
       "stargazers_count": 2258,
-      "open_issues": 113,
-      "last_updated": "2026-10-11T22:10:18Z",
+      "open_issues": 106,
+      "last_updated": "2026-10-12T22:43:41Z",
       "repo_id": "254347436"
     },
     {
@@ -23009,7 +23012,7 @@
       "last_version": "v1.9.10",
       "stargazers_count": 12,
       "open_issues": 6,
-      "last_updated": "2026-10-12T17:19:52Z",
+      "last_updated": "2026-10-12T19:22:09Z",
       "repo_id": "1235988875"
     },
     {
@@ -23368,7 +23371,7 @@
       "domain": "goecharger_api2",
       "last_version": "2026.10.0",
       "stargazers_count": 226,
-      "open_issues": 1,
+      "open_issues": 2,
       "last_updated": "2026-10-09T09:28:30Z",
       "repo_id": "792639181"
     },
@@ -23559,7 +23562,7 @@
       "last_version": "v1.4.0",
       "stargazers_count": 2,
       "open_issues": 4,
-      "last_updated": "2026-10-12T19:02:00Z",
+      "last_updated": "2026-10-12T20:12:26Z",
       "repo_id": "1148686466"
     },
     {
@@ -23616,10 +23619,10 @@
       "full_name": "Matbe34/veoliaHA",
       "category": "integration",
       "domain": "veolia_water",
-      "last_version": "v1.1.2",
+      "last_version": "v1.2.1",
       "stargazers_count": 2,
       "open_issues": 0,
-      "last_updated": "2026-10-05T13:45:07Z",
+      "last_updated": "2026-10-12T19:13:21Z",
       "repo_id": "1245539684"
     },
     {
@@ -23667,7 +23670,7 @@
       "category": "integration",
       "domain": "ev_charger_modbus",
       "last_version": "v.2.1.5",
-      "stargazers_count": 9,
+      "stargazers_count": 10,
       "open_issues": 0,
       "last_updated": "2026-10-12T19:02:20Z",
       "repo_id": "925228685"
@@ -23788,8 +23791,8 @@
       "domain": "midas",
       "last_version": "v1.1.1",
       "stargazers_count": 26,
-      "open_issues": 5,
-      "last_updated": "2026-09-28T19:33:38Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T00:51:46Z",
       "repo_id": "847508587"
     },
     {
@@ -23829,7 +23832,7 @@
       "last_version": "v2026.10.3",
       "stargazers_count": 3,
       "open_issues": 1,
-      "last_updated": "2026-10-12T12:34:33Z",
+      "last_updated": "2026-10-12T19:44:33Z",
       "repo_id": "1053243236"
     },
     {
@@ -23869,7 +23872,7 @@
       "last_version": "v1.80.1",
       "stargazers_count": 74,
       "open_issues": 25,
-      "last_updated": "2026-10-12T18:26:24Z",
+      "last_updated": "2026-10-13T05:56:01Z",
       "repo_id": "1290210112"
     },
     {
@@ -23909,7 +23912,7 @@
       "last_version": "v1.3.3",
       "stargazers_count": 9,
       "open_issues": 0,
-      "last_updated": "2026-10-12T05:44:27Z",
+      "last_updated": "2026-10-13T02:44:34Z",
       "repo_id": "1195077287"
     },
     {
@@ -23976,10 +23979,10 @@
       "full_name": "maximedeprince/ha-ilife",
       "category": "integration",
       "domain": "ilife",
-      "last_version": "v0.7.0",
+      "last_version": "v0.7.1",
       "stargazers_count": 4,
       "open_issues": 2,
-      "last_updated": "2026-09-29T23:04:20Z",
+      "last_updated": "2026-10-12T19:19:01Z",
       "repo_id": "1310448243"
     },
     {
@@ -24077,8 +24080,8 @@
       "category": "integration",
       "domain": "localthings",
       "last_version": "v0.34.0",
-      "stargazers_count": 510,
-      "open_issues": 50,
+      "stargazers_count": 513,
+      "open_issues": 53,
       "last_updated": "2026-10-11T22:27:14Z",
       "repo_id": "1285492676"
     },
@@ -24119,7 +24122,7 @@
       "last_version": "2.1.1",
       "stargazers_count": 47,
       "open_issues": 29,
-      "last_updated": "2026-10-05T21:16:45Z",
+      "last_updated": "2026-10-12T20:18:18Z",
       "repo_id": "282714722"
     },
     {
@@ -24127,7 +24130,7 @@
       "category": "integration",
       "domain": "grizzl_e",
       "last_version": "v1.7",
-      "stargazers_count": 33,
+      "stargazers_count": 34,
       "open_issues": 3,
       "last_updated": "2026-10-01T00:00:14Z",
       "repo_id": "1043030032"
@@ -24157,7 +24160,7 @@
       "category": "integration",
       "domain": "zha_toolkit",
       "last_version": "v1.2.2",
-      "stargazers_count": 307,
+      "stargazers_count": 308,
       "open_issues": 31,
       "last_updated": "2026-10-09T22:55:58Z",
       "repo_id": "448980525"
@@ -24289,7 +24292,7 @@
       "last_version": "v0.5.11",
       "stargazers_count": 37,
       "open_issues": 8,
-      "last_updated": "2026-09-28T10:26:27Z",
+      "last_updated": "2026-10-13T06:06:03Z",
       "repo_id": "1133325957"
     },
     {
@@ -24319,7 +24322,7 @@
       "last_version": "v1.3.1",
       "stargazers_count": 9,
       "open_issues": 7,
-      "last_updated": "2026-09-28T07:35:00Z",
+      "last_updated": "2026-10-12T22:37:11Z",
       "repo_id": "977126659"
     },
     {
@@ -24328,7 +24331,7 @@
       "domain": "beatify",
       "last_version": "v4.8.3",
       "stargazers_count": 229,
-      "open_issues": 21,
+      "open_issues": 20,
       "last_updated": "2026-10-12T18:50:41Z",
       "repo_id": "1118848394"
     },
@@ -24338,7 +24341,7 @@
       "domain": "quizify",
       "last_version": "v1.22.0",
       "stargazers_count": 18,
-      "open_issues": 0,
+      "open_issues": 3,
       "last_updated": "2026-10-12T02:30:57Z",
       "repo_id": "1195487996"
     },
@@ -25168,7 +25171,7 @@
       "domain": "mail_and_packages",
       "last_version": "0.6.8",
       "stargazers_count": 892,
-      "open_issues": 11,
+      "open_issues": 17,
       "last_updated": "2026-10-10T16:06:35Z",
       "repo_id": "188106531"
     },
@@ -25399,7 +25402,7 @@
       "last_version": "v0.1.68",
       "stargazers_count": 15,
       "open_issues": 0,
-      "last_updated": "2026-10-12T19:09:25Z",
+      "last_updated": "2026-10-13T04:42:36Z",
       "repo_id": "1169531383"
     },
     {
@@ -25418,8 +25421,8 @@
       "domain": "tibber_pulse_mqtt",
       "last_version": "v0.4.1",
       "stargazers_count": 11,
-      "open_issues": 8,
-      "last_updated": "2026-06-23T20:05:16Z",
+      "open_issues": 5,
+      "last_updated": "2026-10-12T20:37:37Z",
       "repo_id": "1169511706"
     },
     {
@@ -25527,8 +25530,8 @@
       "category": "integration",
       "domain": "vaca",
       "last_version": "v0.13.5",
-      "stargazers_count": 506,
-      "open_issues": 42,
+      "stargazers_count": 507,
+      "open_issues": 41,
       "last_updated": "2026-10-10T18:03:53Z",
       "repo_id": "1016220724"
     },
@@ -25709,7 +25712,7 @@
       "last_version": "v13.2.0",
       "stargazers_count": 12,
       "open_issues": 3,
-      "last_updated": "2026-10-12T06:44:14Z",
+      "last_updated": "2026-10-13T05:37:46Z",
       "repo_id": "337387822"
     },
     {
@@ -25849,7 +25852,7 @@
       "last_version": "1.3.1",
       "stargazers_count": 64,
       "open_issues": 3,
-      "last_updated": "2026-10-12T14:11:36Z",
+      "last_updated": "2026-10-13T01:47:56Z",
       "repo_id": "406849413"
     },
     {
@@ -26027,8 +26030,8 @@
       "category": "integration",
       "domain": "intercom_native",
       "last_version": "v2026.10.1",
-      "stargazers_count": 268,
-      "open_issues": 14,
+      "stargazers_count": 269,
+      "open_issues": 16,
       "last_updated": "2026-10-11T22:56:02Z",
       "repo_id": "1137003828"
     },
@@ -26058,7 +26061,7 @@
       "domain": "haggle",
       "last_version": "v0.4.0",
       "stargazers_count": 12,
-      "open_issues": 13,
+      "open_issues": 17,
       "last_updated": "2026-10-12T05:42:56Z",
       "repo_id": "1225382672"
     },
@@ -26106,10 +26109,10 @@
       "full_name": "natekspencer/ha-bedjet",
       "category": "integration",
       "domain": "bedjet",
-      "last_version": "2.0.2",
+      "last_version": "2.0.3",
       "stargazers_count": 84,
-      "open_issues": 2,
-      "last_updated": "2026-10-11T18:15:02Z",
+      "open_issues": 7,
+      "last_updated": "2026-10-13T05:45:15Z",
       "repo_id": "894593210"
     },
     {
@@ -26188,7 +26191,7 @@
       "domain": "foxess_modbus",
       "last_version": "v1.15.0",
       "stargazers_count": 340,
-      "open_issues": 79,
+      "open_issues": 80,
       "last_updated": "2026-09-21T16:03:15Z",
       "repo_id": "610701268"
     },
@@ -26237,7 +26240,7 @@
       "category": "integration",
       "domain": "midea_dehumidifier_lan",
       "last_version": "v0.9.7",
-      "stargazers_count": 487,
+      "stargazers_count": 488,
       "open_issues": 12,
       "last_updated": "2026-07-31T16:24:06Z",
       "repo_id": "439467929"
@@ -26718,7 +26721,7 @@
       "domain": "foxess_control",
       "last_version": "v1.0.21",
       "stargazers_count": 19,
-      "open_issues": 27,
+      "open_issues": 28,
       "last_updated": "2026-09-04T10:30:36Z",
       "repo_id": "1203380393"
     },
@@ -26779,7 +26782,7 @@
       "last_version": "v5.7.2",
       "stargazers_count": 388,
       "open_issues": 15,
-      "last_updated": "2026-10-12T18:36:46Z",
+      "last_updated": "2026-10-13T06:11:14Z",
       "repo_id": "965174896"
     },
     {
@@ -26969,7 +26972,7 @@
       "last_version": "v1.3.0",
       "stargazers_count": 378,
       "open_issues": 32,
-      "last_updated": "2026-10-06T05:29:52Z",
+      "last_updated": "2026-10-12T21:57:15Z",
       "repo_id": "646875198"
     },
     {
@@ -27169,7 +27172,7 @@
       "last_version": "v0.16.2",
       "stargazers_count": 16,
       "open_issues": 4,
-      "last_updated": "2026-10-12T12:01:47Z",
+      "last_updated": "2026-10-12T22:08:00Z",
       "repo_id": "1214146164"
     },
     {
@@ -27369,7 +27372,7 @@
       "last_version": "v3.0.0",
       "stargazers_count": 30,
       "open_issues": 2,
-      "last_updated": "2026-10-12T18:34:52Z",
+      "last_updated": "2026-10-13T06:39:23Z",
       "repo_id": "1155970500"
     },
     {
@@ -27567,7 +27570,7 @@
       "category": "integration",
       "domain": "smartthinq_sensors",
       "last_version": "v0.43.0",
-      "stargazers_count": 1324,
+      "stargazers_count": 1325,
       "open_issues": 167,
       "last_updated": "2026-05-25T22:06:39Z",
       "repo_id": "250022973"
@@ -27856,10 +27859,10 @@
       "full_name": "oyvindwe/connectlife-ha",
       "category": "integration",
       "domain": "connectlife",
-      "last_version": "v0.50.0",
+      "last_version": "v0.51.0",
       "stargazers_count": 302,
-      "open_issues": 43,
-      "last_updated": "2026-10-12T14:29:08Z",
+      "open_issues": 41,
+      "last_updated": "2026-10-12T21:37:22Z",
       "repo_id": "797068580"
     },
     {
@@ -27968,7 +27971,7 @@
       "domain": "battery_smartflow_ai",
       "last_version": "5.1.16",
       "stargazers_count": 68,
-      "open_issues": 18,
+      "open_issues": 19,
       "last_updated": "2026-10-12T09:56:46Z",
       "repo_id": "1114486113"
     },
@@ -28086,10 +28089,10 @@
       "full_name": "patman15/BMS_BLE-HA",
       "category": "integration",
       "domain": "bms_ble",
-      "last_version": "2.17.0",
-      "stargazers_count": 368,
-      "open_issues": 20,
-      "last_updated": "2026-10-12T19:24:42Z",
+      "last_version": "2.18.0",
+      "stargazers_count": 369,
+      "open_issues": 19,
+      "last_updated": "2026-10-12T19:50:40Z",
       "repo_id": "766648885"
     },
     {
@@ -28589,7 +28592,7 @@
       "last_version": "v2026.5.0",
       "stargazers_count": 1,
       "open_issues": 6,
-      "last_updated": "2026-10-12T14:52:59Z",
+      "last_updated": "2026-10-13T01:40:07Z",
       "repo_id": "1194032524"
     },
     {
@@ -28698,8 +28701,8 @@
       "domain": "luxor_living",
       "last_version": "v1.2.2",
       "stargazers_count": 4,
-      "open_issues": 13,
-      "last_updated": "2026-10-05T07:07:25Z",
+      "open_issues": 15,
+      "last_updated": "2026-10-12T21:15:05Z",
       "repo_id": "1117537413"
     },
     {
@@ -29226,10 +29229,10 @@
       "full_name": "plantlab-ai/home-assistant-plantlab",
       "category": "integration",
       "domain": "plantlab",
-      "last_version": "v0.10.0",
+      "last_version": "v0.10.1",
       "stargazers_count": 4,
       "open_issues": 2,
-      "last_updated": "2026-10-08T18:27:37Z",
+      "last_updated": "2026-10-12T20:20:53Z",
       "repo_id": "1192904756"
     },
     {
@@ -29439,7 +29442,7 @@
       "last_version": "v0.6.1",
       "stargazers_count": 1,
       "open_issues": 2,
-      "last_updated": "2026-10-05T10:25:38Z",
+      "last_updated": "2026-10-13T06:07:07Z",
       "repo_id": "1222888431"
     },
     {
@@ -29787,7 +29790,7 @@
       "category": "integration",
       "domain": "polestar_api",
       "last_version": "1.24.3",
-      "stargazers_count": 274,
+      "stargazers_count": 275,
       "open_issues": 2,
       "last_updated": "2026-09-22T04:45:16Z",
       "repo_id": "720223133"
@@ -29888,7 +29891,7 @@
       "domain": "thermostat_timeline",
       "last_version": "v3.2.4",
       "stargazers_count": 18,
-      "open_issues": 21,
+      "open_issues": 22,
       "last_updated": "2026-08-25T20:23:40Z",
       "repo_id": "1071676422"
     },
@@ -30027,7 +30030,7 @@
       "category": "integration",
       "domain": "dockhand",
       "last_version": "v1.10.2",
-      "stargazers_count": 44,
+      "stargazers_count": 45,
       "open_issues": 4,
       "last_updated": "2026-10-11T12:53:32Z",
       "repo_id": "1176213494"
@@ -30108,8 +30111,8 @@
       "domain": "lock_code_manager",
       "last_version": "6.0.1",
       "stargazers_count": 108,
-      "open_issues": 14,
-      "last_updated": "2026-10-12T19:29:42Z",
+      "open_issues": 11,
+      "last_updated": "2026-10-13T06:35:02Z",
       "repo_id": "666002360"
     },
     {
@@ -30138,7 +30141,7 @@
       "domain": "open_meteo_solar_forecast",
       "last_version": "0.1.33",
       "stargazers_count": 165,
-      "open_issues": 6,
+      "open_issues": 7,
       "last_updated": "2026-09-15T16:04:57Z",
       "repo_id": "806061552"
     },
@@ -30218,7 +30221,7 @@
       "domain": "paprika",
       "last_version": "v1.0.1",
       "stargazers_count": 10,
-      "open_issues": 4,
+      "open_issues": 5,
       "last_updated": "2026-10-05T23:53:52Z",
       "repo_id": "953384647"
     },
@@ -30488,8 +30491,8 @@
       "domain": "be_electricity_prices",
       "last_version": "v0.37.1",
       "stargazers_count": 53,
-      "open_issues": 3,
-      "last_updated": "2026-10-10T22:12:07Z",
+      "open_issues": 2,
+      "last_updated": "2026-10-13T06:03:33Z",
       "repo_id": "1224615804"
     },
     {
@@ -30586,10 +30589,10 @@
       "full_name": "rexliteai/rexlite-home-assistant",
       "category": "integration",
       "domain": "rexlite",
-      "last_version": "v0.1.28",
+      "last_version": "v0.1.29",
       "stargazers_count": 0,
       "open_issues": 0,
-      "last_updated": "2026-10-12T09:30:22Z",
+      "last_updated": "2026-10-13T06:06:50Z",
       "repo_id": "1300363883"
     },
     {
@@ -30678,7 +30681,7 @@
       "domain": "irrigation_unlimited",
       "last_version": "2025.12.0",
       "stargazers_count": 463,
-      "open_issues": 91,
+      "open_issues": 90,
       "last_updated": "2026-06-22T04:33:27Z",
       "repo_id": "332911333"
     },
@@ -30728,8 +30731,8 @@
       "domain": "remote_logger",
       "last_version": "v2.0.7",
       "stargazers_count": 13,
-      "open_issues": 0,
-      "last_updated": "2026-10-06T00:18:16Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-12T21:05:13Z",
       "repo_id": "1158699340"
     },
     {
@@ -30739,7 +30742,7 @@
       "last_version": "v2.14.0",
       "stargazers_count": 22,
       "open_issues": 6,
-      "last_updated": "2026-10-12T18:15:54Z",
+      "last_updated": "2026-10-12T22:08:21Z",
       "repo_id": "1083148129"
     },
     {
@@ -30936,10 +30939,10 @@
       "full_name": "robbinjanssen/home-assistant-ojmicroline-thermostat",
       "category": "integration",
       "domain": "ojmicroline_thermostat",
-      "last_version": "2.1.0",
+      "last_version": "2.1.1",
       "stargazers_count": 19,
       "open_issues": 2,
-      "last_updated": "2026-10-12T18:36:04Z",
+      "last_updated": "2026-10-12T20:03:27Z",
       "repo_id": "582143144"
     },
     {
@@ -30948,8 +30951,8 @@
       "domain": "omnik_inverter",
       "last_version": "4.0.1",
       "stargazers_count": 69,
-      "open_issues": 2,
-      "last_updated": "2026-10-12T08:57:16Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-13T01:52:21Z",
       "repo_id": "241427839"
     },
     {
@@ -30958,7 +30961,7 @@
       "domain": "uk_bin_collection",
       "last_version": "0.172.5",
       "stargazers_count": 351,
-      "open_issues": 24,
+      "open_issues": 25,
       "last_updated": "2026-10-12T17:46:02Z",
       "repo_id": "236071875"
     },
@@ -31007,7 +31010,7 @@
       "category": "integration",
       "domain": "petkit",
       "last_version": "0.1.14",
-      "stargazers_count": 353,
+      "stargazers_count": 354,
       "open_issues": 1,
       "last_updated": "2026-09-22T21:49:31Z",
       "repo_id": "598289640"
@@ -31019,7 +31022,7 @@
       "last_version": "4.0.12",
       "stargazers_count": 526,
       "open_issues": 40,
-      "last_updated": "2026-10-12T17:13:12Z",
+      "last_updated": "2026-10-13T00:03:11Z",
       "repo_id": "140618233"
     },
     {
@@ -31098,8 +31101,8 @@
       "domain": "homelink",
       "last_version": "v2.1.0",
       "stargazers_count": 6,
-      "open_issues": 3,
-      "last_updated": "2026-10-06T12:27:44Z",
+      "open_issues": 5,
+      "last_updated": "2026-10-12T22:15:44Z",
       "repo_id": "693589195"
     },
     {
@@ -31128,8 +31131,8 @@
       "domain": "ms365_calendar",
       "last_version": "v1.11.2",
       "stargazers_count": 94,
-      "open_issues": 2,
-      "last_updated": "2026-10-12T09:00:40Z",
+      "open_issues": 6,
+      "last_updated": "2026-10-13T06:17:55Z",
       "repo_id": "807540393"
     },
     {
@@ -31336,10 +31339,10 @@
       "full_name": "ronnnnnnnnnnnnn/etekcity_fitness_scale_ble",
       "category": "integration",
       "domain": "etekcity_fitness_scale_ble",
-      "last_version": "v0.8.3",
+      "last_version": "v0.8.4",
       "stargazers_count": 56,
-      "open_issues": 3,
-      "last_updated": "2026-10-11T20:25:03Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T02:17:27Z",
       "repo_id": "849004226"
     },
     {
@@ -31527,7 +31530,7 @@
       "category": "integration",
       "domain": "localtuya",
       "last_version": "v5.2.5",
-      "stargazers_count": 3996,
+      "stargazers_count": 3997,
       "open_issues": 1589,
       "last_updated": "2026-01-29T11:04:59Z",
       "repo_id": "249381778"
@@ -31568,8 +31571,8 @@
       "domain": "dahua",
       "last_version": "1.2.0",
       "stargazers_count": 572,
-      "open_issues": 117,
-      "last_updated": "2026-10-12T15:41:35Z",
+      "open_issues": 116,
+      "last_updated": "2026-10-12T23:02:44Z",
       "repo_id": "366911690"
     },
     {
@@ -31886,10 +31889,10 @@
       "full_name": "sam3gp8/jarvis-aio",
       "category": "integration",
       "domain": "jarvis",
-      "last_version": "9.18.1",
+      "last_version": "9.19.0",
       "stargazers_count": 26,
       "open_issues": 2,
-      "last_updated": "2026-10-12T19:19:19Z",
+      "last_updated": "2026-10-13T01:58:40Z",
       "repo_id": "1268748148"
     },
     {
@@ -32018,8 +32021,8 @@
       "domain": "stagg_ekg_plus",
       "last_version": "v0.7.7",
       "stargazers_count": 2,
-      "open_issues": 3,
-      "last_updated": "2026-10-08T05:54:14Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-12T21:05:59Z",
       "repo_id": "1272847731"
     },
     {
@@ -32277,7 +32280,7 @@
       "category": "integration",
       "domain": "ai_agent_ha",
       "last_version": "v1.42",
-      "stargazers_count": 165,
+      "stargazers_count": 166,
       "open_issues": 15,
       "last_updated": "2026-07-14T18:42:46Z",
       "repo_id": "985868486"
@@ -32408,7 +32411,7 @@
       "domain": "smart_thermostat",
       "last_version": "2026.10.1",
       "stargazers_count": 536,
-      "open_issues": 59,
+      "open_issues": 60,
       "last_updated": "2026-10-12T16:34:16Z",
       "repo_id": "417400028"
     },
@@ -32606,10 +32609,10 @@
       "full_name": "Seblin01/wolta-homeassistant",
       "category": "integration",
       "domain": "wolta",
-      "last_version": "v0.43.0",
+      "last_version": "v0.44.0",
       "stargazers_count": 1,
       "open_issues": 0,
-      "last_updated": "2026-10-12T14:52:49Z",
+      "last_updated": "2026-10-13T07:00:04Z",
       "repo_id": "1289580434"
     },
     {
@@ -32788,7 +32791,7 @@
       "domain": "cover_time_based",
       "last_version": "v4.13.0",
       "stargazers_count": 39,
-      "open_issues": 3,
+      "open_issues": 4,
       "last_updated": "2026-10-12T13:09:04Z",
       "repo_id": "698674167"
     },
@@ -32947,7 +32950,7 @@
       "category": "integration",
       "domain": "flode",
       "last_version": "3.1.2",
-      "stargazers_count": 27,
+      "stargazers_count": 28,
       "open_issues": 1,
       "last_updated": "2026-10-12T17:23:15Z",
       "repo_id": "1266275751"
@@ -33078,8 +33081,8 @@
       "domain": "leakbot",
       "last_version": "1.1.6",
       "stargazers_count": 25,
-      "open_issues": 1,
-      "last_updated": "2026-10-05T08:26:51Z",
+      "open_issues": 2,
+      "last_updated": "2026-10-13T00:40:07Z",
       "repo_id": "760282660"
     },
     {
@@ -33158,8 +33161,8 @@
       "domain": "ecoflow_energy",
       "last_version": "v1.24.0",
       "stargazers_count": 42,
-      "open_issues": 23,
-      "last_updated": "2026-10-12T18:18:56Z",
+      "open_issues": 20,
+      "last_updated": "2026-10-13T07:03:18Z",
       "repo_id": "1192927743"
     },
     {
@@ -33168,8 +33171,8 @@
       "domain": "telegram_bot_conversation",
       "last_version": "v1.2.2",
       "stargazers_count": 2,
-      "open_issues": 5,
-      "last_updated": "2026-10-09T08:33:48Z",
+      "open_issues": 6,
+      "last_updated": "2026-10-13T00:58:06Z",
       "repo_id": "1171727721"
     },
     {
@@ -33209,7 +33212,7 @@
       "last_version": "v2.2.0",
       "stargazers_count": 7,
       "open_issues": 11,
-      "last_updated": "2026-10-12T13:41:18Z",
+      "last_updated": "2026-10-13T01:51:42Z",
       "repo_id": "1158430534"
     },
     {
@@ -33327,7 +33330,7 @@
       "category": "integration",
       "domain": "automate",
       "last_version": "v1.0.1",
-      "stargazers_count": 46,
+      "stargazers_count": 47,
       "open_issues": 5,
       "last_updated": "2026-02-12T11:16:05Z",
       "repo_id": "290193894"
@@ -33509,7 +33512,7 @@
       "last_version": "v1.3.0",
       "stargazers_count": 0,
       "open_issues": 1,
-      "last_updated": "2026-09-23T09:22:46Z",
+      "last_updated": "2026-10-13T06:45:16Z",
       "repo_id": "1251251263"
     },
     {
@@ -33688,8 +33691,8 @@
       "domain": "omv",
       "last_version": "v2.9.0",
       "stargazers_count": 45,
-      "open_issues": 5,
-      "last_updated": "2026-10-10T16:11:01Z",
+      "open_issues": 8,
+      "last_updated": "2026-10-12T21:20:45Z",
       "repo_id": "1181579332"
     },
     {
@@ -33808,8 +33811,8 @@
       "domain": "scheduler",
       "last_version": "0.5.2",
       "stargazers_count": 5,
-      "open_issues": 0,
-      "last_updated": "2026-10-09T00:01:01Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T02:14:13Z",
       "repo_id": "1109477068"
     },
     {
@@ -34059,7 +34062,7 @@
       "last_version": "v3.14.1",
       "stargazers_count": 54,
       "open_issues": 6,
-      "last_updated": "2026-10-12T17:43:20Z",
+      "last_updated": "2026-10-12T22:15:24Z",
       "repo_id": "1079994733"
     },
     {
@@ -34166,10 +34169,10 @@
       "full_name": "soulripper13/hass-waviot",
       "category": "integration",
       "domain": "waviot_updater",
-      "last_version": "v1.2.0",
+      "last_version": "v1.2.1",
       "stargazers_count": 0,
       "open_issues": 0,
-      "last_updated": "2026-07-11T03:11:57Z",
+      "last_updated": "2026-10-13T00:48:44Z",
       "repo_id": "1075270747"
     },
     {
@@ -34229,7 +34232,7 @@
       "last_version": "v2.1.2",
       "stargazers_count": 49,
       "open_issues": 3,
-      "last_updated": "2026-10-10T00:30:32Z",
+      "last_updated": "2026-10-13T02:05:50Z",
       "repo_id": "553010184"
     },
     {
@@ -34489,7 +34492,7 @@
       "last_version": "v2.2.1",
       "stargazers_count": 18,
       "open_issues": 9,
-      "last_updated": "2026-10-10T00:33:51Z",
+      "last_updated": "2026-10-13T01:53:59Z",
       "repo_id": "1101031300"
     },
     {
@@ -34988,7 +34991,7 @@
       "domain": "midea_auto_cloud",
       "last_version": "v0.4.19",
       "stargazers_count": 295,
-      "open_issues": 5,
+      "open_issues": 7,
       "last_updated": "2026-09-20T16:44:33Z",
       "repo_id": "1052806732"
     },
@@ -35359,7 +35362,7 @@
       "last_version": "v2.9.7",
       "stargazers_count": 0,
       "open_issues": 0,
-      "last_updated": "2026-10-12T11:05:56Z",
+      "last_updated": "2026-10-12T23:23:28Z",
       "repo_id": "1314925359"
     },
     {
@@ -35517,8 +35520,8 @@
       "category": "integration",
       "domain": "dreame_vacuum",
       "last_version": "v2.0.2",
-      "stargazers_count": 2231,
-      "open_issues": 11,
+      "stargazers_count": 2233,
+      "open_issues": 10,
       "last_updated": "2026-10-11T16:03:48Z",
       "repo_id": "544426802"
     },
@@ -35549,7 +35552,7 @@
       "last_version": "0.3.6",
       "stargazers_count": 1,
       "open_issues": 4,
-      "last_updated": "2026-10-06T08:54:21Z",
+      "last_updated": "2026-10-13T01:30:02Z",
       "repo_id": "1023880314"
     },
     {
@@ -35616,10 +35619,10 @@
       "full_name": "teh-hippo/ha-govee-led-ble",
       "category": "integration",
       "domain": "ha_govee_led_ble",
-      "last_version": "v7.11.0",
-      "stargazers_count": 12,
-      "open_issues": 14,
-      "last_updated": "2026-10-12T13:12:59Z",
+      "last_version": "v7.12.0",
+      "stargazers_count": 13,
+      "open_issues": 7,
+      "last_updated": "2026-10-13T06:17:18Z",
       "repo_id": "1163173096"
     },
     {
@@ -35629,7 +35632,7 @@
       "last_version": "v1.10.2",
       "stargazers_count": 0,
       "open_issues": 1,
-      "last_updated": "2026-10-10T06:08:24Z",
+      "last_updated": "2026-10-13T04:40:11Z",
       "repo_id": "1155942053"
     },
     {
@@ -35667,9 +35670,9 @@
       "category": "integration",
       "domain": "taskmate",
       "last_version": "v6.2.1",
-      "stargazers_count": 40,
-      "open_issues": 3,
-      "last_updated": "2026-10-12T19:42:02Z",
+      "stargazers_count": 41,
+      "open_issues": 1,
+      "last_updated": "2026-10-12T22:05:54Z",
       "repo_id": "1187022755"
     },
     {
@@ -35808,8 +35811,8 @@
       "domain": "onewire_sysbus",
       "last_version": "2024.3.0",
       "stargazers_count": 30,
-      "open_issues": 2,
-      "last_updated": "2026-10-10T10:57:53Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-13T07:20:55Z",
       "repo_id": "496755553"
     },
     {
@@ -36187,7 +36190,7 @@
       "category": "integration",
       "domain": "browser_mod",
       "last_version": "v3.3.0",
-      "stargazers_count": 1825,
+      "stargazers_count": 1826,
       "open_issues": 1,
       "last_updated": "2026-10-07T10:02:14Z",
       "repo_id": "194140521"
@@ -36359,7 +36362,7 @@
       "last_version": "3.9.0",
       "stargazers_count": 1117,
       "open_issues": 9,
-      "last_updated": "2026-10-05T11:03:22Z",
+      "last_updated": "2026-10-13T07:06:57Z",
       "repo_id": "750336940"
     },
     {
@@ -36389,7 +36392,7 @@
       "last_version": "v1.13.4",
       "stargazers_count": 29,
       "open_issues": 1,
-      "last_updated": "2026-10-12T18:19:44Z",
+      "last_updated": "2026-10-13T06:01:36Z",
       "repo_id": "1022489529"
     },
     {
@@ -36609,7 +36612,7 @@
       "last_version": "v1.2.4",
       "stargazers_count": 15,
       "open_issues": 4,
-      "last_updated": "2026-10-12T12:31:43Z",
+      "last_updated": "2026-10-13T02:51:06Z",
       "repo_id": "1174660499"
     },
     {
@@ -36808,7 +36811,7 @@
       "domain": "e3dc_rscp_connect",
       "last_version": "v1.1.2",
       "stargazers_count": 13,
-      "open_issues": 7,
+      "open_issues": 8,
       "last_updated": "2026-10-05T21:28:07Z",
       "repo_id": "1077858116"
     },
@@ -36968,8 +36971,8 @@
       "domain": "victron_mqtt",
       "last_version": "v2026.10.0",
       "stargazers_count": 204,
-      "open_issues": 1,
-      "last_updated": "2026-10-08T13:57:53Z",
+      "open_issues": 2,
+      "last_updated": "2026-10-13T03:51:41Z",
       "repo_id": "996854813"
     },
     {
@@ -37129,7 +37132,7 @@
       "last_version": "1.3.0",
       "stargazers_count": 117,
       "open_issues": 6,
-      "last_updated": "2026-10-12T10:02:06Z",
+      "last_updated": "2026-10-13T06:41:01Z",
       "repo_id": "835428735"
     },
     {
@@ -37288,8 +37291,8 @@
       "domain": "nest_legacy",
       "last_version": "v0.8.0",
       "stargazers_count": 56,
-      "open_issues": 2,
-      "last_updated": "2026-10-12T10:50:35Z",
+      "open_issues": 3,
+      "last_updated": "2026-10-12T21:14:01Z",
       "repo_id": "1077789568"
     },
     {
@@ -37456,10 +37459,10 @@
       "full_name": "twrecked/hass-aarlo",
       "category": "integration",
       "domain": "aarlo",
-      "last_version": "v0.8.1.24",
+      "last_version": "v0.8.1.25",
       "stargazers_count": 481,
-      "open_issues": 88,
-      "last_updated": "2026-10-12T15:41:39Z",
+      "open_issues": 86,
+      "last_updated": "2026-10-12T21:33:17Z",
       "repo_id": "167885769"
     },
     {
@@ -37598,8 +37601,8 @@
       "domain": "ui_lovelace_minimalist",
       "last_version": "v1.5.8",
       "stargazers_count": 2071,
-      "open_issues": 38,
-      "last_updated": "2026-10-05T10:06:31Z",
+      "open_issues": 39,
+      "last_updated": "2026-10-13T05:11:22Z",
       "repo_id": "413798425"
     },
     {
@@ -37798,8 +37801,8 @@
       "domain": "shmu",
       "last_version": "v0.10.0",
       "stargazers_count": 5,
-      "open_issues": 2,
-      "last_updated": "2026-09-13T07:13:02Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-13T07:17:29Z",
       "repo_id": "1241333301"
     },
     {
@@ -37857,7 +37860,7 @@
       "category": "integration",
       "domain": "llmvision",
       "last_version": "v1.7.2",
-      "stargazers_count": 1499,
+      "stargazers_count": 1501,
       "open_issues": 48,
       "last_updated": "2026-09-17T06:04:46Z",
       "repo_id": "800568407"
@@ -37898,7 +37901,7 @@
       "domain": "asusrouter",
       "last_version": "0.40.1",
       "stargazers_count": 257,
-      "open_issues": 89,
+      "open_issues": 90,
       "last_updated": "2026-10-12T13:28:28Z",
       "repo_id": "484708274"
     },
@@ -37968,7 +37971,7 @@
       "domain": "nilan",
       "last_version": "1.2.28",
       "stargazers_count": 79,
-      "open_issues": 20,
+      "open_issues": 21,
       "last_updated": "2026-07-05T20:43:19Z",
       "repo_id": "487536666"
     },
@@ -37978,8 +37981,8 @@
       "domain": "hyxi_cloud",
       "last_version": "v1.7.0",
       "stargazers_count": 13,
-      "open_issues": 24,
-      "last_updated": "2026-10-11T15:43:18Z",
+      "open_issues": 25,
+      "last_updated": "2026-10-12T23:08:51Z",
       "repo_id": "1163381300"
     },
     {
@@ -38088,7 +38091,7 @@
       "domain": "aguaiot",
       "last_version": "1.2.5",
       "stargazers_count": 83,
-      "open_issues": 4,
+      "open_issues": 5,
       "last_updated": "2026-09-09T10:36:50Z",
       "repo_id": "416883534"
     },
@@ -38146,10 +38149,10 @@
       "full_name": "vinteo/hass-opensprinkler",
       "category": "integration",
       "domain": "opensprinkler",
-      "last_version": "v2.2.2",
+      "last_version": "v2.2.3",
       "stargazers_count": 264,
       "open_issues": 36,
-      "last_updated": "2026-10-12T13:58:56Z",
+      "last_updated": "2026-10-12T21:28:07Z",
       "repo_id": "120696364"
     },
     {
@@ -38267,7 +38270,7 @@
       "category": "integration",
       "domain": "vivohomebridge",
       "last_version": "v2026.09.22.1790076481",
-      "stargazers_count": 154,
+      "stargazers_count": 155,
       "open_issues": 23,
       "last_updated": "2026-09-22T12:03:20Z",
       "repo_id": "1063141556"
@@ -38369,7 +38372,7 @@
       "last_version": "v1.2.4",
       "stargazers_count": 7,
       "open_issues": 1,
-      "last_updated": "2026-10-12T15:09:35Z",
+      "last_updated": "2026-10-13T02:19:58Z",
       "repo_id": "1169391576"
     },
     {
@@ -38379,7 +38382,7 @@
       "last_version": "v1.0.0",
       "stargazers_count": 3,
       "open_issues": 2,
-      "last_updated": "2026-10-12T14:34:05Z",
+      "last_updated": "2026-10-13T01:42:07Z",
       "repo_id": "1177137098"
     },
     {
@@ -38659,7 +38662,7 @@
       "last_version": "v0.14.2",
       "stargazers_count": 110,
       "open_issues": 39,
-      "last_updated": "2026-10-12T14:41:53Z",
+      "last_updated": "2026-10-12T21:47:04Z",
       "repo_id": "334925385"
     },
     {
@@ -38669,7 +38672,7 @@
       "last_version": "v1.7.0",
       "stargazers_count": 131,
       "open_issues": 10,
-      "last_updated": "2026-10-12T03:42:50Z",
+      "last_updated": "2026-10-13T03:37:54Z",
       "repo_id": "434912125"
     },
     {
@@ -38767,7 +38770,7 @@
       "category": "integration",
       "domain": "toyota_na",
       "last_version": "v2.7.0",
-      "stargazers_count": 168,
+      "stargazers_count": 169,
       "open_issues": 52,
       "last_updated": "2026-08-02T01:40:18Z",
       "repo_id": "413680511"
@@ -38779,7 +38782,7 @@
       "last_version": "v0.2.3",
       "stargazers_count": 0,
       "open_issues": 3,
-      "last_updated": "2026-10-12T13:09:58Z",
+      "last_updated": "2026-10-13T04:30:08Z",
       "repo_id": "1131899555"
     },
     {
@@ -38796,10 +38799,10 @@
       "full_name": "WillCodeForCats/solaredge-modbus-multi",
       "category": "integration",
       "domain": "solaredge_modbus_multi",
-      "last_version": "v4.0.6",
+      "last_version": "v4.0.7",
       "stargazers_count": 331,
-      "open_issues": 19,
-      "last_updated": "2026-10-12T03:10:16Z",
+      "open_issues": 20,
+      "last_updated": "2026-10-13T05:28:20Z",
       "repo_id": "419786466"
     },
     {
@@ -38838,8 +38841,8 @@
       "domain": "solax_modbus",
       "last_version": "2026.09.4",
       "stargazers_count": 524,
-      "open_issues": 44,
-      "last_updated": "2026-10-12T08:13:29Z",
+      "open_issues": 43,
+      "last_updated": "2026-10-13T06:22:00Z",
       "repo_id": "394704821"
     },
     {
@@ -38918,8 +38921,8 @@
       "domain": "ramses_extras",
       "last_version": "0.23.1",
       "stargazers_count": 9,
-      "open_issues": 5,
-      "last_updated": "2026-10-12T15:22:14Z",
+      "open_issues": 4,
+      "last_updated": "2026-10-13T07:24:41Z",
       "repo_id": "1079349941"
     },
     {
@@ -39079,7 +39082,7 @@
       "last_version": "v2.2.0",
       "stargazers_count": 34,
       "open_issues": 2,
-      "last_updated": "2026-10-12T17:21:56Z",
+      "last_updated": "2026-10-12T23:29:08Z",
       "repo_id": "997895777"
     },
     {
@@ -39127,7 +39130,7 @@
       "category": "integration",
       "domain": "pycupra",
       "last_version": "v0.2.23",
-      "stargazers_count": 60,
+      "stargazers_count": 59,
       "open_issues": 0,
       "last_updated": "2026-06-18T15:48:16Z",
       "repo_id": "955396548"
@@ -39219,7 +39222,7 @@
       "last_version": "v0.21.2",
       "stargazers_count": 12,
       "open_issues": 1,
-      "last_updated": "2026-10-12T19:34:58Z",
+      "last_updated": "2026-10-13T06:14:55Z",
       "repo_id": "1186975042"
     },
     {
@@ -39237,8 +39240,8 @@
       "category": "integration",
       "domain": "xiaomi_home",
       "last_version": "v0.5.0",
-      "stargazers_count": 22190,
-      "open_issues": 144,
+      "stargazers_count": 22191,
+      "open_issues": 145,
       "last_updated": "2026-09-28T06:45:47Z",
       "repo_id": "854347601"
     },
@@ -39268,8 +39271,8 @@
       "domain": "afvalwijzer",
       "last_version": "2026.1021",
       "stargazers_count": 252,
-      "open_issues": 8,
-      "last_updated": "2026-10-06T06:34:47Z",
+      "open_issues": 1,
+      "last_updated": "2026-10-13T04:34:29Z",
       "repo_id": "127251446"
     },
     {
@@ -39336,10 +39339,10 @@
       "full_name": "xtimmy86x/ha-s7plc",
       "category": "integration",
       "domain": "s7plc",
-      "last_version": "7.5.1",
+      "last_version": "7.6.0",
       "stargazers_count": 43,
       "open_issues": 1,
-      "last_updated": "2026-10-12T17:07:01Z",
+      "last_updated": "2026-10-12T21:39:02Z",
       "repo_id": "1046533312"
     },
     {
@@ -39496,10 +39499,10 @@
       "full_name": "ylabonte/proconip-hass",
       "category": "integration",
       "domain": "proconip_pool_controller",
-      "last_version": "v2.2.2",
+      "last_version": "v2.2.3",
       "stargazers_count": 6,
-      "open_issues": 3,
-      "last_updated": "2026-10-12T20:13:27Z",
+      "open_issues": 0,
+      "last_updated": "2026-10-13T02:05:36Z",
       "repo_id": "625677311"
     },
     {
@@ -40029,7 +40032,7 @@
       "last_version": "v1.6.0",
       "stargazers_count": 83,
       "open_issues": 1,
-      "last_updated": "2026-10-11T18:36:07Z",
+      "last_updated": "2026-10-13T05:00:11Z",
       "repo_id": "1133739783"
     },
     {
