@@ -1,13 +1,13 @@
 {
  "schema": 1,
- "generated_utc": "2026-10-14T13:09:16Z",
+ "generated_utc": "2026-10-14T13:12:33Z",
  "index_url": "https://booyaka101.github.io/hass-breakage-radar/index.json",
  "core_version": "2026.11",
  "latest_release": "2026.10",
  "rc_release": null,
  "pending_floor": "2026.11",
  "pending_floor_source": "pypi",
- "core_tarball_sha256": "f5ae8cdfbdadcb20e6598ccfc16919e4b4cc0f81b47ea36aeb5f9945c717103b",
+ "core_tarball_sha256": "aff638f90923e9ad5292b84b93f45be9eb2100ce0a7c36680e432b1103a4a2ff",
  "catalog_source": "https://data-v2.hacs.xyz/integration/data.json",
  "coverage": {
   "catalog_total": 4002,
@@ -1474,13 +1474,13 @@
    "symbol": "has an update listener and should use it for scheduling a reload",
    "message": "has an update listener and should use it for scheduling a reload",
    "breaks_in": "2026.12",
-   "source": "homeassistant/config_entries.py:3384",
+   "source": "homeassistant/config_entries.py:3385",
    "origin": "core-ast",
    "confidence": "medium",
    "matchable": false,
    "expired": false,
    "occurrences": 2,
-   "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3384",
+   "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3385",
    "hits": 0,
    "repos_hit": 0
   },
@@ -8901,7 +8901,7 @@
     "archived": false,
     "issues_enabled": true,
     "symbol": "async_get_device",
-    "checked_utc": "2026-10-07T03:39:11Z"
+    "checked_utc": "2026-10-14T13:12:32Z"
    }
   },
   {
@@ -24619,7 +24619,7 @@
    "ref": "refs/tags/v2.0.1",
    "stargazers_count": 6,
    "repo_url": "https://github.com/PineappleEmperor/ocado-ha",
-   "scanned_utc": "2026-09-17T01:53:57Z",
+   "scanned_utc": "2026-10-14T13:12:29Z",
    "earliest_breaks_in": "2027.8",
    "release_date": "2027-08-04",
    "days_until": 294,
