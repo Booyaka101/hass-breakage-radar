@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-14T13:11:45Z",
+  "generated_utc": "2026-10-15T03:31:19Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "aff638f90923e9ad5292b84b93f45be9eb2100ce0a7c36680e432b1103a4a2ff",
+  "core_tarball_sha256": "935a21e9374f76bf80460da11667075e9696554f119e0f11b5b368bd0d95e31a",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 188,
     "future": 138,
     "matchable_future": 65,
-    "core_files_scanned": 10538,
+    "core_files_scanned": 10561,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -850,7 +850,7 @@
       "symbol": "async_add_external_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2885",
+      "source": "homeassistant/components/recorder/statistics.py:2916",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -863,6 +863,93 @@
           "homeassistant.components.recorder.statistics"
         ],
         "key": "mean_type",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2916"
+    },
+    {
+      "id": "core-call-async-add-external-statistics-metadata-without-unit-class",
+      "kind": "call",
+      "symbol": "async_add_external_statistics(metadata without unit_class)",
+      "message": "doesn't set `unit_class` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_add_external_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2922",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_arg_key",
+        "names": [
+          "async_add_external_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "key": "unit_class",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2922"
+    },
+    {
+      "id": "core-call-async-import-statistics-metadata-without-mean-type",
+      "kind": "call",
+      "symbol": "async_import_statistics(metadata without mean_type)",
+      "message": "doesn't set `mean_type` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2879",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_arg_key",
+        "names": [
+          "async_import_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "key": "mean_type",
+        "arg": "metadata",
+        "arg_index": 1,
+        "constructors": [
+          "StatisticMetaData"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2879"
+    },
+    {
+      "id": "core-call-async-import-statistics-metadata-without-unit-class",
+      "kind": "call",
+      "symbol": "async_import_statistics(metadata without unit_class)",
+      "message": "doesn't set `unit_class` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_import_statistics",
+      "breaks_in": "2026.11",
+      "source": "homeassistant/components/recorder/statistics.py:2885",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call_missing_arg_key",
+        "names": [
+          "async_import_statistics"
+        ],
+        "modules": [
+          "homeassistant.components.recorder.statistics"
+        ],
+        "key": "unit_class",
         "arg": "metadata",
         "arg_index": 1,
         "constructors": [
@@ -874,99 +961,12 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2885"
     },
     {
-      "id": "core-call-async-add-external-statistics-metadata-without-unit-class",
-      "kind": "call",
-      "symbol": "async_add_external_statistics(metadata without unit_class)",
-      "message": "doesn't set `unit_class` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_add_external_statistics",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2891",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "call_missing_arg_key",
-        "names": [
-          "async_add_external_statistics"
-        ],
-        "modules": [
-          "homeassistant.components.recorder.statistics"
-        ],
-        "key": "unit_class",
-        "arg": "metadata",
-        "arg_index": 1,
-        "constructors": [
-          "StatisticMetaData"
-        ]
-      },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2891"
-    },
-    {
-      "id": "core-call-async-import-statistics-metadata-without-mean-type",
-      "kind": "call",
-      "symbol": "async_import_statistics(metadata without mean_type)",
-      "message": "doesn't set `mean_type` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2848",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "call_missing_arg_key",
-        "names": [
-          "async_import_statistics"
-        ],
-        "modules": [
-          "homeassistant.components.recorder.statistics"
-        ],
-        "key": "mean_type",
-        "arg": "metadata",
-        "arg_index": 1,
-        "constructors": [
-          "StatisticMetaData"
-        ]
-      },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2848"
-    },
-    {
-      "id": "core-call-async-import-statistics-metadata-without-unit-class",
-      "kind": "call",
-      "symbol": "async_import_statistics(metadata without unit_class)",
-      "message": "doesn't set `unit_class` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_import_statistics",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2854",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "call_missing_arg_key",
-        "names": [
-          "async_import_statistics"
-        ],
-        "modules": [
-          "homeassistant.components.recorder.statistics"
-        ],
-        "key": "unit_class",
-        "arg": "metadata",
-        "arg_index": 1,
-        "constructors": [
-          "StatisticMetaData"
-        ]
-      },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2854"
-    },
-    {
       "id": "core-call-async-update-statistics-metadata-missing-new-unit-class",
       "kind": "call",
       "symbol": "async_update_statistics_metadata(missing new_unit_class)",
       "message": "calls `async_update_statistics_metadata` with `new_unit_of_measurement` but no `new_unit_class`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_update_statistics_metadata",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:987",
+      "source": "homeassistant/components/recorder/statistics.py:1018",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -985,7 +985,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L987"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1018"
     },
     {
       "id": "core-issue-fritz-deprecated-cleanup-button-2026.11",
@@ -1469,13 +1469,13 @@
       "symbol": "deprecated_webhook_service",
       "message": "`netatmo` raises the `deprecated_webhook_service` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/netatmo/services.py:51",
+      "source": "homeassistant/components/netatmo/services.py:50",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L51"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L50"
     },
     {
       "id": "core-prose-sets-a-group-attribute-on-entity-which-is-not-a-group-instance",
@@ -3404,5 +3404,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-14T13:12:28Z"
+  "blog_merged_utc": "2026-10-15T03:31:44Z"
 }
