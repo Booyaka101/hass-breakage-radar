@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-15T03:31:19Z",
+  "generated_utc": "2026-10-16T03:31:33Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "935a21e9374f76bf80460da11667075e9696554f119e0f11b5b368bd0d95e31a",
+  "core_tarball_sha256": "c81f8fcb1754d15415d873c3c330e8ce88c48060588cd92120862579598b95a2",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 188,
     "future": 138,
     "matchable_future": 65,
-    "core_files_scanned": 10561,
+    "core_files_scanned": 10566,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -398,13 +398,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3194",
+      "source": "homeassistant/config_entries.py:3196",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3194"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3196"
     },
     {
       "id": "blog-area-squared-units-2025.12",
@@ -549,7 +549,7 @@
       "symbol": "LightEntity.max_color_temp_kelvin",
       "message": "defines `max_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:422",
+      "source": "homeassistant/components/light/__init__.py:495",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -564,7 +564,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L422"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L495"
     },
     {
       "id": "core-attr-lightentity-min-color-temp-kelvin",
@@ -572,7 +572,7 @@
       "symbol": "LightEntity.min_color_temp_kelvin",
       "message": "defines `min_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:402",
+      "source": "homeassistant/components/light/__init__.py:475",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -587,7 +587,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L402"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L475"
     },
     {
       "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
@@ -1190,13 +1190,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3385",
+      "source": "homeassistant/config_entries.py:3387",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3385"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3387"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -3203,7 +3203,7 @@
       "symbol": "is_closed",
       "message": "hass.states.is_state(entity_id, 'closed')",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/cover/__init__.py:95",
+      "source": "homeassistant/components/cover/__init__.py:105",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -3218,7 +3218,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L95"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L105"
     },
     {
       "id": "device-entry-config-entries",
@@ -3404,5 +3404,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-15T03:31:44Z"
+  "blog_merged_utc": "2026-10-16T03:32:03Z"
 }
