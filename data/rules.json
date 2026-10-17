@@ -1,27 +1,27 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-16T03:31:33Z",
+  "generated_utc": "2026-10-17T03:29:14Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "c81f8fcb1754d15415d873c3c330e8ce88c48060588cd92120862579598b95a2",
+  "core_tarball_sha256": "22f3468a9b717fbc27c481caa4430d818ab96b981a35eedd107b580807b75eab",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 188,
-    "future": 138,
+    "total": 165,
+    "future": 122,
     "matchable_future": 65,
-    "core_files_scanned": 10566,
+    "core_files_scanned": 10622,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
     "from_core_ast": 138,
     "from_manual": 27,
-    "from_blog": 23
+    "from_blog": 0
   },
   "unparsed_core_files": [],
   "discarded_markers": [
@@ -217,7 +217,7 @@
       "id": "core-call-async-add-job",
       "kind": "call",
       "symbol": "async_add_job",
-      "message": "calls `async_add_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
+      "message": "calls `async_add_job`, which should be reviewed against https://contributors.home-assistant.io/blog/2024/03/13/deprecate_add_run_job/ for replacement options",
       "breaks_in": "2025.4",
       "source": "homeassistant/core.py:653",
       "origin": "core-ast",
@@ -240,7 +240,7 @@
       "id": "core-call-async-run-job",
       "kind": "call",
       "symbol": "async_run_job",
-      "message": "calls `async_run_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/03/13/deprecate_add_run_job for replacement options",
+      "message": "calls `async_run_job`, which should be reviewed against https://contributors.home-assistant.io/blog/2024/03/13/deprecate_add_run_job/ for replacement options",
       "breaks_in": "2025.4",
       "source": "homeassistant/core.py:983",
       "origin": "core-ast",
@@ -319,7 +319,7 @@
       "id": "core-call-async-add-hass-job",
       "kind": "call",
       "symbol": "async_add_hass_job",
-      "message": "calls `async_add_hass_job`, which should be reviewed against https://developers.home-assistant.io/blog/2024/04/07/deprecate_add_hass_job for replacement options",
+      "message": "calls `async_add_hass_job`, which should be reviewed against https://contributors.home-assistant.io/blog/2024/04/07/deprecate_add_hass_job/ for replacement options",
       "breaks_in": "2025.5",
       "source": "homeassistant/core.py:709",
       "origin": "core-ast",
@@ -381,18 +381,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/backup/http.py#L70"
     },
     {
-      "id": "blog-recorder-statistics-api-changes-2025.11",
-      "kind": "prose",
-      "symbol": "recorder statistics api changes",
-      "message": "Not specifying the new_unit_class is deprecated and will stop working in Home Assistant Core 2025.11.",
-      "breaks_in": "2025.11",
-      "source": "https://developers.home-assistant.io/blog/2025/10/16/recorder-statistics-api-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
-    },
-    {
       "id": "core-issue-homeassistant-config-entries-py-configentries-async-update-issues-2025.11",
       "kind": "issue",
       "symbol": "ConfigEntries.async_update_issues",
@@ -405,18 +393,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3196"
-    },
-    {
-      "id": "blog-area-squared-units-2025.12",
-      "kind": "prose",
-      "symbol": "area squared units",
-      "message": "The AREA_SQUARE_METERS constant has been deprecated and will be removed in Home Assistant 2025.12.",
-      "breaks_in": "2025.12",
-      "source": "https://developers.home-assistant.io/blog/2024/12/26/area-squared-units/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
     },
     {
       "id": "core-call-async-get-or-create",
@@ -442,18 +418,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2763"
     },
     {
-      "id": "blog-dt-util-utc-to-timestamp-deprecation-2026.1",
-      "kind": "prose",
-      "symbol": "dt util utc to timestamp deprecation",
-      "message": "The utility function homeassistant.util.dt.utc_to_timestamp is deprecated and will be removed in Home Assistant Core 2026.1, custom integrations which call it should instead call the stdlib method datetime.datetime.timestamp()",
-      "breaks_in": "2026.1",
-      "source": "https://developers.home-assistant.io/blog/2024/11/28/dt-util-utc-to-timestamp-deprecation/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
-    },
-    {
       "id": "core-prose-chatlog-async-update-llm-data",
       "kind": "prose",
       "symbol": "ChatLog.async_update_llm_data",
@@ -466,18 +430,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L697"
-    },
-    {
-      "id": "blog-service-info-2026.2",
-      "kind": "prose",
-      "symbol": "service info",
-      "message": "The old import locations are deprecated and will be removed in Home Assistant 2026.2.",
-      "breaks_in": "2026.2",
-      "source": "https://developers.home-assistant.io/blog/2025/01/15/service-info/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
     },
     {
       "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
@@ -494,18 +446,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1933"
     },
     {
-      "id": "blog-frontend-component-updates-2026-4-2026.5",
-      "kind": "prose",
-      "symbol": "frontend component updates 2026.4",
-      "message": "ha-textfield API stays but the component is migrated to use ha-input internally and will be removed in 2026.5",
-      "breaks_in": "2026.5",
-      "source": "https://developers.home-assistant.io/blog/2026/03/25/frontend-component-updates-2026.4/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
-    },
-    {
       "id": "core-issue-telegram-bot-deprecated-timeout-parameter-2026.7",
       "kind": "issue",
       "symbol": "deprecated_timeout_parameter",
@@ -520,36 +460,12 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram_bot/services.py#L635"
     },
     {
-      "id": "blog-media-player-standby-state-deprecated-2026.8",
-      "kind": "prose",
-      "symbol": "media player standby state deprecated",
-      "message": "The media player state MediaPlayerState.STANDBY has been deprecated as decided in home-assistant/architecture#799 and will be removed in Home Assistant Core 2026.8.",
-      "breaks_in": "2026.8",
-      "source": "https://developers.home-assistant.io/blog/2025/07/16/media-player-standby-state-deprecated/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
-    },
-    {
-      "id": "blog-updated-pattern-for-helpers-linking-to-devices-2026.8",
-      "kind": "prose",
-      "symbol": "updated pattern for helpers linking to devices",
-      "message": "Adding the helper config entry to another integration's device is no longer supported and will stop working in Home Assistant Core 2026.8.",
-      "breaks_in": "2026.8",
-      "source": "https://developers.home-assistant.io/blog/2025/07/18/updated-pattern-for-helpers-linking-to-devices/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": true
-    },
-    {
       "id": "core-attr-lightentity-max-color-temp-kelvin",
       "kind": "attr",
       "symbol": "LightEntity.max_color_temp_kelvin",
       "message": "defines `max_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:495",
+      "source": "homeassistant/components/light/entity.py:169",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -564,7 +480,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L495"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/entity.py#L169"
     },
     {
       "id": "core-attr-lightentity-min-color-temp-kelvin",
@@ -572,7 +488,7 @@
       "symbol": "LightEntity.min_color_temp_kelvin",
       "message": "defines `min_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/__init__.py:475",
+      "source": "homeassistant/components/light/entity.py:149",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -587,7 +503,7 @@
       },
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/__init__.py#L475"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/entity.py#L149"
     },
     {
       "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
@@ -831,18 +747,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L77"
-    },
-    {
-      "id": "blog-recorder-statistics-api-changes-2026.11",
-      "kind": "prose",
-      "symbol": "recorder statistics api changes",
-      "message": "Not specifying the unit_class is deprecated and will stop working in Home Assistant Core 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "https://developers.home-assistant.io/blog/2025/10/16/recorder-statistics-api-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
     },
     {
       "id": "core-call-async-add-external-statistics-metadata-without-mean-type",
@@ -1311,7 +1215,7 @@
       "symbol": "async_generate_entity_id",
       "message": "calls `entity_registry.async_generate_entity_id`, which is deprecated and will be removed in Home Assistant 2027.2; use `entity_registry.async_get_available_entity_id` instead",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_registry.py:1424",
+      "source": "homeassistant/helpers/entity_registry.py:1421",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1326,7 +1230,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1424"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_registry.py#L1421"
     },
     {
       "id": "core-call-async-render-no-api-prompt",
@@ -1506,18 +1410,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L967"
     },
     {
-      "id": "blog-labs-async-listen-deprecation-2027.3",
-      "kind": "prose",
-      "symbol": "labs async listen deprecation",
-      "message": "async_listen will be removed in Home Assistant 2027.3.",
-      "breaks_in": "2027.3",
-      "source": "https://developers.home-assistant.io/blog/2026/02/16/labs-async-listen-deprecation/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-call-async-listen",
       "kind": "call",
       "symbol": "async_listen",
@@ -1611,18 +1503,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/volkszaehler/sensor.py#L126"
     },
     {
-      "id": "blog-doorbell-standard-event-type-2027.4",
-      "kind": "prose",
-      "symbol": "doorbell standard event type",
-      "message": "Doorbell entities that do not include DoorbellEventType.RING will log a deprecation warning and will stop working in Home Assistant 2027.4.",
-      "breaks_in": "2027.4",
-      "source": "https://developers.home-assistant.io/blog/2026/04/15/doorbell-standard-event-type/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-issue-keyboard-remote-deprecated-yaml-2027.4",
       "kind": "issue",
       "symbol": "deprecated_yaml",
@@ -1649,30 +1529,6 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/xbox/entity.py#L213"
-    },
-    {
-      "id": "blog-entity-id-mismatched-domain-deprecated-2027.5",
-      "kind": "prose",
-      "symbol": "entity id mismatched domain deprecated",
-      "message": "Setting an entity ID with the wrong domain will log a deprecation warning and will stop working in Home Assistant 2027.5.",
-      "breaks_in": "2027.5",
-      "source": "https://developers.home-assistant.io/blog/2026/04/07/entity-id-mismatched-domain-deprecated/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-legacy-device-tracker-deprecation-2027.5",
-      "kind": "prose",
-      "symbol": "legacy device tracker deprecation",
-      "message": "The legacy (non-config-entry) device tracker platform API is deprecated and will be removed in the Home Assistant 2027.5 release.",
-      "breaks_in": "2027.5",
-      "source": "https://developers.home-assistant.io/blog/2026/04/20/legacy-device-tracker-deprecation/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
     },
     {
       "id": "core-import-config-entries-conn-class-assumed",
@@ -2127,18 +1983,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L199"
     },
     {
-      "id": "blog-device-tracker-changes-2027.7",
-      "kind": "prose",
-      "symbol": "device tracker changes",
-      "message": "The battery_level property has been deprecated in all device tracker base classes, and will stop working in Home Assistant Core 2027.7.",
-      "breaks_in": "2027.7",
-      "source": "https://developers.home-assistant.io/blog/2026/06/15/device-tracker-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-call-get-astral-location",
       "kind": "call",
       "symbol": "get_astral_location",
@@ -2254,54 +2098,6 @@
         ]
       },
       "matchable": true,
-      "expired": false
-    },
-    {
-      "id": "blog-async-initialize-triggers-home-assistant-start-deprecated-2027.8",
-      "kind": "prose",
-      "symbol": "async initialize triggers home assistant start deprecated",
-      "message": "The dedicated home_assistant_start flag of async_initialize_triggers is deprecated and will be removed in Home Assistant Core 2027.8.",
-      "breaks_in": "2027.8",
-      "source": "https://developers.home-assistant.io/blog/2026/06/30/async-initialize-triggers-home-assistant-start-deprecated/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-device-registry-follow-up-changes-2027.8",
-      "kind": "prose",
-      "symbol": "device registry follow up changes",
-      "message": "Unless noted otherwise, deprecated functionality logs a warning at runtime and remains supported until Home Assistant Core 2027.8.",
-      "breaks_in": "2027.8",
-      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-device-registry-single-config-entry-2027.8",
-      "kind": "prose",
-      "symbol": "device registry single config entry",
-      "message": "Unless noted otherwise, deprecated functionality remains supported until Home Assistant Core 2027.8.",
-      "breaks_in": "2027.8",
-      "source": "https://developers.home-assistant.io/blog/2026/07/21/device-registry-single-config-entry/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-device-registry-websocket-api-changes-2027.8",
-      "kind": "prose",
-      "symbol": "device registry websocket api changes",
-      "message": "The old fields are kept for backwards compatibility and are deprecated; they are scheduled for removal in Home Assistant Core 2027.8.",
-      "breaks_in": "2027.8",
-      "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
       "expired": false
     },
     {
@@ -2902,30 +2698,6 @@
       "expired": false
     },
     {
-      "id": "blog-device-registry-follow-up-changes-2027.9",
-      "kind": "prose",
-      "symbol": "device registry follow up changes",
-      "message": "It is removed in Home Assistant Core 2027.9.",
-      "breaks_in": "2027.9",
-      "source": "https://developers.home-assistant.io/blog/2026/08/24/device-registry-follow-up-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-device-registry-websocket-api-changes-2027.9",
-      "kind": "prose",
-      "symbol": "device registry websocket api changes",
-      "message": "That command still works but is deprecated: it logs a warning and will be removed in Home Assistant Core 2027.9.",
-      "breaks_in": "2027.9",
-      "source": "https://developers.home-assistant.io/blog/2026/08/19/device-registry-websocket-api-changes/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-call-async-is-composite-device-id",
       "kind": "call",
       "symbol": "async_is_composite_device_id",
@@ -3186,24 +2958,12 @@
       "expired": false
     },
     {
-      "id": "blog-deprecate-configurator-2027.10",
-      "kind": "prose",
-      "symbol": "deprecate configurator",
-      "message": "The Configurator integration has been deprecated and will be removed in Home Assistant 2027.10.",
-      "breaks_in": "2027.10",
-      "source": "https://developers.home-assistant.io/blog/2026/08/31/deprecate-configurator/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-call-is-closed",
       "kind": "call",
       "symbol": "is_closed",
       "message": "hass.states.is_state(entity_id, 'closed')",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/cover/__init__.py:105",
+      "source": "homeassistant/components/cover/__init__.py:99",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -3218,7 +2978,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L105"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L99"
     },
     {
       "id": "device-entry-config-entries",
@@ -3326,42 +3086,6 @@
       "expired": false
     },
     {
-      "id": "blog-climate-native-temperature-2027.11",
-      "kind": "prose",
-      "symbol": "climate native temperature",
-      "message": "Support for the old names will be removed in Home Assistant Core 2027.11.",
-      "breaks_in": "2027.11",
-      "source": "https://developers.home-assistant.io/blog/2026/10/08/climate-native-temperature/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-new-entity-lifecycle-hooks-2027.11",
-      "kind": "prose",
-      "symbol": "new entity lifecycle hooks",
-      "message": "This backwards compatibility will be removed in Home Assistant Core 2027.11.",
-      "breaks_in": "2027.11",
-      "source": "https://developers.home-assistant.io/blog/2026/10/12/new-entity-lifecycle-hooks/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
-      "id": "blog-water-heater-native-temperature-2027.11",
-      "kind": "prose",
-      "symbol": "water heater native temperature",
-      "message": "Support for the old names will be removed in Home Assistant Core 2027.11.",
-      "breaks_in": "2027.11",
-      "source": "https://developers.home-assistant.io/blog/2026/10/08/water-heater-native-temperature/",
-      "origin": "blog",
-      "confidence": "info",
-      "matchable": false,
-      "expired": false
-    },
-    {
       "id": "core-prose-accesses-toolresultcontent-tool-result-which-is-deprecated-use-toolresultco",
       "kind": "prose",
       "symbol": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultCo...",
@@ -3404,5 +3128,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-16T03:32:03Z"
+  "blog_merged_utc": "2026-10-17T03:29:14Z"
 }
