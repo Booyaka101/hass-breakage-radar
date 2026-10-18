@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-17T03:29:14Z",
+  "generated_utc": "2026-10-18T03:30:38Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "22f3468a9b717fbc27c481caa4430d818ab96b981a35eedd107b580807b75eab",
+  "core_tarball_sha256": "a875c91767e1937c9ebc7a0d98edcc6264821d171dada700d09c9027441f2c57",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 165,
     "future": 122,
     "matchable_future": 65,
-    "core_files_scanned": 10622,
+    "core_files_scanned": 10624,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -205,13 +205,13 @@
       "symbol": "does not use FlowResultType enum for data entry flow result type",
       "message": "does not use FlowResultType enum for data entry flow result type",
       "breaks_in": "2025.1",
-      "source": "homeassistant/data_entry_flow.py:523",
+      "source": "homeassistant/data_entry_flow.py:537",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L523"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L537"
     },
     {
       "id": "core-call-async-add-job",
@@ -1797,7 +1797,7 @@
       "symbol": "FlowHandler.show_advanced_options",
       "message": "a user friendly way to present additional options in the UI, for example a section",
       "breaks_in": "2027.6",
-      "source": "homeassistant/data_entry_flow.py:656",
+      "source": "homeassistant/data_entry_flow.py:686",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1812,7 +1812,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L656"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L686"
     },
     {
       "id": "core-classbase-infraredentitydescription",
@@ -3128,5 +3128,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-17T03:29:14Z"
+  "blog_merged_utc": "2026-10-18T03:30:39Z"
 }
