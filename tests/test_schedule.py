@@ -474,6 +474,39 @@ def test_an_open_report_is_offered_for_a_reaction(sample_index):
     assert "issues?q=" not in text          # no need to send them searching
 
 
+@pytest.mark.parametrize("state", ["open", "closed"])
+@pytest.mark.parametrize(("title", "escaped"), [
+    (
+        "async_get_device](https://phish.example) [x",
+        r"async\_get\_device\]\(https://phish.example\) \[x",
+    ),
+    (
+        r"\ [ ] ( ) * _ ` < >",
+        r"\\ \[ \] \( \) \* \_ \` \< \>",
+    ),
+    (
+        r"path\](https://phish.example)",
+        r"path\\\]\(https://phish.example\)",
+    ),
+    ("trailing\\", r"trailing\\"),
+    ("Plain issue title", "Plain issue title"),
+    ("", ""),
+])
+def test_report_titles_are_escaped_in_repairs_markdown(sample_index, state, title, escaped):
+    from custom_components.breakage_radar.repairs import describe_links
+
+    url = "https://github.com/example/x/issues/41"
+    link = _links(sample_index, {
+        "archived": False, "issues_enabled": True,
+        "report": {"number": 41, "state": state, "url": url, "title": title},
+    })
+    text = describe_links(link)
+    assert f"[#41 {escaped}]({url})" in text
+    assert "](https://phish.example)" not in text
+    assert link["report"]["title"] == title
+    assert describe_links(link) == text  # Rendering must not double-escape stored data.
+
+
 def test_a_closed_report_points_at_a_probable_fix(sample_index):
     from custom_components.breakage_radar.repairs import describe_links
 
@@ -484,6 +517,35 @@ def test_a_closed_report_points_at_a_probable_fix(sample_index):
     }))
     assert "reported and closed" in text
     assert "a fix may already have shipped" in text
+
+
+@pytest.mark.parametrize("state", ["open", "closed"])
+@pytest.mark.parametrize(("bucket", "prefix", "entry"), [
+    ("broken_now", "broken_now_", "2027.5"),
+    ("imminent", "imminent_", {"release": "2027.5", "days": 10}),
+])
+def test_repairs_placeholders_receive_escaped_report_titles(sample_index, state, bucket, prefix, entry):
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar.repairs import _async_sync_alert_issues
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own harness")
+
+    ir.created.clear()
+    url = "https://github.com/example/x/issues/41"
+    link = _links(sample_index, {
+        "report": {"number": 41, "state": state, "url": url,
+                   "title": "async_get_device](https://phish.example) [x"},
+    })
+    _async_sync_alert_issues(None, {
+        bucket: {"fixture_tracker": entry},
+        "links": {"fixture_tracker": link},
+    })
+    placeholders = ir.created[(DOMAIN, f"{prefix}fixture_tracker")]["translation_placeholders"]
+    assert r"async\_get\_device\]\(https://phish.example\) \[x" in placeholders["where"]
+    assert "](https://phish.example)" not in placeholders["where"]
+    assert f"]({url})" in placeholders["where"]
 
 
 def test_an_archived_repository_says_so_instead_of_sending_people_there(sample_index):

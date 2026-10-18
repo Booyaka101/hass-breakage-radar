@@ -6,6 +6,15 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.17.2 - 2026-10-19
+
+### Upstream issue titles cannot inject Markdown into Repairs notices
+
+Issue titles are escaped before being included in Repairs Markdown links, for
+both open and closed reports. A crafted upstream title can no longer insert
+an arbitrary link or formatting into the notice. Regression tests cover the
+reported link-injection payload and all escaped Markdown control characters.
+
 ### A repository withdrawn at its owner's request is removed for good (#65)
 
 `Kaluzaburza/hoymiles-hit-g3-ems` (scanned earlier as
