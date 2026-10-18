@@ -30,6 +30,9 @@ ALERT_PREFIXES = (BROKEN_ISSUE_PREFIX, IMMINENT_ISSUE_PREFIX)
 MAX_SCHEDULE_LINES = 8
 MAX_DOMAINS_PER_LINE = 6
 
+# Issue titles are untrusted text inside Markdown link labels, not markup.
+_MARKDOWN_ESCAPES = str.maketrans({char: f"\\{char}" for char in "\\[]()*_`<>"})
+
 
 def format_schedule(schedule: list[dict], only: set[str] | None = None) -> str:
     """A dated timeline of what breaks when, as a markdown list.
@@ -80,6 +83,7 @@ def describe_links(link: dict | None) -> str:
     symbol = link.get("symbol") or ""
     learn_more = link.get("learn_more") or ""
     report = link.get("report") or {}
+    title = (report.get("title") or "").translate(_MARKDOWN_ESCAPES)
 
     parts: list[str] = []
     if not repo_url:
@@ -100,13 +104,13 @@ def describe_links(link: dict | None) -> str:
         if report and report.get("state") == "open":
             parts.append(
                 f"It is already reported: [#{report['number']} "
-                f"{report['title']}]({report['url']}). Add a reaction there "
+                f"{title}]({report['url']}). Add a reaction there "
                 "rather than opening another one."
             )
         elif report:
             parts.append(
                 f"It was reported and closed: [#{report['number']} "
-                f"{report['title']}]({report['url']}), so a fix may already "
+                f"{title}]({report['url']}), so a fix may already "
                 "have shipped."
             )
         elif link.get("issues_enabled") is False:

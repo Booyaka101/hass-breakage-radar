@@ -474,6 +474,29 @@ def test_an_open_report_is_offered_for_a_reaction(sample_index):
     assert "issues?q=" not in text          # no need to send them searching
 
 
+@pytest.mark.parametrize("state", ["open", "closed"])
+@pytest.mark.parametrize(("title", "escaped"), [
+    (
+        "async_get_device](https://phish.example) [x",
+        r"async\_get\_device\]\(https://phish.example\) \[x",
+    ),
+    (
+        r"\ [ ] ( ) * _ ` < >",
+        r"\\ \[ \] \( \) \* \_ \` \< \>",
+    ),
+])
+def test_report_titles_are_escaped_in_repairs_markdown(sample_index, state, title, escaped):
+    from custom_components.breakage_radar.repairs import describe_links
+
+    url = "https://github.com/example/x/issues/41"
+    text = describe_links(_links(sample_index, {
+        "archived": False, "issues_enabled": True,
+        "report": {"number": 41, "state": state, "url": url, "title": title},
+    }))
+    assert f"[#41 {escaped}]({url})" in text
+    assert "](https://phish.example)" not in text
+
+
 def test_a_closed_report_points_at_a_probable_fix(sample_index):
     from custom_components.breakage_radar.repairs import describe_links
 
