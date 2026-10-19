@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-18T03:30:38Z",
+  "generated_utc": "2026-10-19T03:34:43Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "a875c91767e1937c9ebc7a0d98edcc6264821d171dada700d09c9027441f2c57",
+  "core_tarball_sha256": "5eca3e22c3c8539601b474071cf8e50e2e1ac0a16eae46d165a56fc586173d32",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 165,
-    "future": 122,
+    "total": 160,
+    "future": 121,
     "matchable_future": 65,
-    "core_files_scanned": 10624,
+    "core_files_scanned": 10632,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 138,
+    "from_core_ast": 133,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -339,20 +339,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L709"
     },
     {
-      "id": "core-issue-heos-sign-in-out-deprecated-2025.8",
-      "kind": "issue",
-      "symbol": "sign_in_out_deprecated",
-      "message": "`heos` raises the `sign_in_out_deprecated` repair issue, and the configuration it reports stops working in Home Assistant 2025.8.",
-      "breaks_in": "2025.8",
-      "source": "homeassistant/components/heos/services.py:136",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/heos/services.py#L136"
-    },
-    {
       "id": "core-issue-hue-deprecated-effect-none-2025.10",
       "kind": "issue",
       "symbol": "deprecated_effect_none",
@@ -511,13 +497,13 @@
       "symbol": "yaml_mode_deprecated",
       "message": "`lovelace` raises the `yaml_mode_deprecated` repair issue, and the configuration it reports stops working in Home Assistant 2026.8.",
       "breaks_in": "2026.8",
-      "source": "homeassistant/components/lovelace/__init__.py:421",
+      "source": "homeassistant/components/lovelace/__init__.py:431",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lovelace/__init__.py#L421"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lovelace/__init__.py#L431"
     },
     {
       "id": "core-issue-telegram-migrate-notify-2026.8",
@@ -569,34 +555,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/influxdb/issue.py#L21"
-    },
-    {
-      "id": "core-issue-orvibo-yaml-deprecation-2026.9",
-      "kind": "issue",
-      "symbol": "yaml_deprecation",
-      "message": "`orvibo` raises the `yaml_deprecation` repair issue, and the configuration it reports stops working in Home Assistant 2026.9.",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/orvibo/switch.py:97",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L97"
-    },
-    {
-      "id": "core-issue-orvibo-yaml-deprecation-import-issue-2026.9",
-      "kind": "issue",
-      "symbol": "yaml_deprecation_import_issue",
-      "message": "`orvibo` raises the `yaml_deprecation_import_issue` repair issue, and the configuration it reports stops working in Home Assistant 2026.9.",
-      "breaks_in": "2026.9",
-      "source": "homeassistant/components/orvibo/switch.py:78",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/orvibo/switch.py#L78"
     },
     {
       "id": "core-issue-telegram-bot-migrate-chat-ids-in-target-2026.9",
@@ -733,20 +691,6 @@
       },
       "matchable": true,
       "expired": true
-    },
-    {
-      "id": "core-issue-decora-wifi-deprecated-yaml-2026.10",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`decora_wifi` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.10.",
-      "breaks_in": "2026.10",
-      "source": "homeassistant/components/decora_wifi/light.py:77",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/decora_wifi/light.py#L77"
     },
     {
       "id": "core-call-async-add-external-statistics-metadata-without-mean-type",
@@ -925,13 +869,13 @@
       "symbol": "unsupported_local_deps",
       "message": "`homeassistant` raises the `unsupported_local_deps` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/homeassistant/__init__.py:104",
+      "source": "homeassistant/components/homeassistant/__init__.py:116",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L104"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L116"
     },
     {
       "id": "core-issue-pjlink-deprecated-yaml-2026.11",
@@ -946,20 +890,6 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L75"
-    },
-    {
-      "id": "core-issue-shopping-list-deprecated-yaml-2026.11",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`shopping_list` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/shopping_list/__init__.py:50",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/shopping_list/__init__.py#L50"
     },
     {
       "id": "core-call-temperatureconverter-convert-interval",
@@ -1122,7 +1052,7 @@
       "symbol": "async_register_info",
       "message": "calls system_health.async_register_info, which is deprecated; add a system_health platform instead",
       "breaks_in": "2027.1",
-      "source": "homeassistant/components/system_health/__init__.py:55",
+      "source": "homeassistant/components/system_health/__init__.py:62",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1137,7 +1067,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/system_health/__init__.py#L55"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/system_health/__init__.py#L62"
     },
     {
       "id": "core-issue-homeassistant-helpers-trigger-entity-trigger-py-deprecated-trigger-behavior-202",
@@ -1145,13 +1075,13 @@
       "symbol": "deprecated_trigger_behavior",
       "message": "Home Assistant raises the `deprecated_trigger_behavior` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
       "breaks_in": "2027.1",
-      "source": "homeassistant/helpers/trigger/entity_trigger.py:73",
+      "source": "homeassistant/helpers/trigger/entity_trigger.py:70",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger/entity_trigger.py#L73"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger/entity_trigger.py#L70"
     },
     {
       "id": "core-issue-mqtt-protocol-5-migration-2027.1",
@@ -3128,5 +3058,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-18T03:30:39Z"
+  "blog_merged_utc": "2026-10-19T03:34:44Z"
 }
