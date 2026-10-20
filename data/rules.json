@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-19T03:34:43Z",
+  "generated_utc": "2026-10-20T03:31:57Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "5eca3e22c3c8539601b474071cf8e50e2e1ac0a16eae46d165a56fc586173d32",
+  "core_tarball_sha256": "56e253d5c3915c84a4c723434e585c4986370589d0fc535668650fdb4032c29b",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 160,
     "future": 121,
     "matchable_future": 65,
-    "core_files_scanned": 10632,
+    "core_files_scanned": 10696,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -1331,13 +1331,13 @@
       "symbol": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entit...",
       "message": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_platform.py:967",
+      "source": "homeassistant/helpers/entity_platform.py:1007",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L967"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L1007"
     },
     {
       "id": "core-call-async-listen",
@@ -1666,13 +1666,13 @@
       "symbol": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "message": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "breaks_in": "2027.5",
-      "source": "homeassistant/helpers/entity_platform.py:983",
+      "source": "homeassistant/helpers/entity_platform.py:1023",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L983"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L1023"
     },
     {
       "id": "legacy-device-tracker-platform",
@@ -2377,13 +2377,13 @@
       "symbol": "attempts to attach a device to an entity {...}",
       "message": "attempts to attach a device to an entity {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/entity_platform.py:847",
+      "source": "homeassistant/helpers/entity_platform.py:887",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L847"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L887"
     },
     {
       "id": "core-prose-calls-device-registry-async-get-or-create-with-a-via-device-referencing-the",
@@ -3058,5 +3058,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-19T03:34:44Z"
+  "blog_merged_utc": "2026-10-20T03:31:58Z"
 }
