@@ -20,6 +20,7 @@ from tools.rules_engine import (
 from tools.scan import (
     candidate_refs,
     iter_component_python,
+    iter_javascript,
     iter_manifest_domains,
 )
 
@@ -224,6 +225,47 @@ def test_repo_without_custom_components_yields_nothing(tmp_path):
     body = _make_tarball(tmp_path, {"README.md": "hi", "setup.py": "pass\n"})
     assert list(iter_component_python(body)) == []
     assert iter_manifest_domains(body) == []
+
+
+@pytest.mark.parametrize(
+    "directory", ["tests", "test", "testing", "fixtures", "__tests__", "__fixtures__"]
+)
+def test_tarball_readers_exclude_test_trees_before_normalising(tmp_path, directory):
+    files = {
+        "src/custom_components/demo/__init__.py": "X = 1\n",
+        "src/custom_components/demo/card.js": "const x = 1;\n",
+        "src/custom_components/demo/manifest.json": '{"domain": "demo"}',
+        f"{directory}/custom_components/fake/__init__.py": "X = 2\n",
+        f"{directory}/custom_components/fake/card.js": "const x = 2;\n",
+        f"{directory}/custom_components/fake/manifest.json": '{"domain": "fake"}',
+        f"custom_components/demo/{directory}/fixture.py": "X = 3\n",
+        f"custom_components/demo/{directory}/fixture.js": "const x = 3;\n",
+    }
+    body = _make_tarball(tmp_path, files)
+    assert [path for path, _ in iter_component_python(body)] == [
+        "custom_components/demo/__init__.py"
+    ]
+    assert iter_manifest_domains(body) == ["demo"]
+    for whole_repo in (False, True):
+        skipped = {"skipped_vendor": 0, "skipped_minified": 0}
+        expected = (
+            "src/custom_components/demo/card.js"
+            if whole_repo else "custom_components/demo/card.js"
+        )
+        assert [
+            path for path, _ in iter_javascript(body, skipped, whole_repo=whole_repo)
+        ] == [expected]
+
+
+def test_tarball_readers_require_a_custom_components_path_segment(tmp_path):
+    body = _make_tarball(tmp_path, {
+        "not_custom_components/fake/__init__.py": "X = 1\n",
+        "not_custom_components/fake/card.js": "const x = 1;\n",
+        "not_custom_components/fake/manifest.json": '{"domain": "fake"}',
+    })
+    assert list(iter_component_python(body)) == []
+    assert iter_manifest_domains(body) == []
+    assert list(iter_javascript(body, {}, whole_repo=False)) == []
 
 
 def _service_hass_rule(symbol: str) -> Rule:

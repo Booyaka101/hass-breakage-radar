@@ -93,6 +93,28 @@ MAX_TARBALL_BYTES = 80 * 1024 * 1024
 #: paths are filtered by substring, so the shared name list becomes markers.
 VENDOR_MARKERS = tuple(f"/{name}/" for name in sorted(VENDOR_DIRECTORIES))
 
+#: Archive selection changes invalidate crawler results independently of matchers.
+SCAN_VERSION = 1
+TEST_DIRECTORIES = frozenset(
+    {"test", "tests", "testing", "fixtures", "__tests__", "__fixtures__"}
+)
+
+
+def _is_test_path(relative: str) -> bool:
+    return bool(TEST_DIRECTORIES.intersection(relative.split("/")[:-1]))
+
+
+def _component_path(relative: str) -> str | None:
+    # Check before trimming: tests/fixtures/custom_components is not installed code.
+    if _is_test_path(relative):
+        return None
+    parts = relative.split("/")
+    try:
+        index = parts.index("custom_components")
+    except ValueError:
+        return None
+    return "/".join(parts[index:])
+
 
 def candidate_refs(last_version: str) -> list[str]:
     """Git refs to try, most specific first."""
@@ -215,10 +237,9 @@ def iter_component_python(body: bytes) -> Iterator[tuple[str, bytes]]:
             _, _, relative = member.name.partition("/")
             if not relative.endswith(".py"):
                 continue
-            index = relative.find("custom_components/")
-            if index == -1:
+            path = _component_path(relative)
+            if path is None:
                 continue
-            path = relative[index:]
             if any(marker in "/" + path for marker in VENDOR_MARKERS):
                 continue
             handle = archive.extractfile(member)
@@ -244,13 +265,14 @@ def iter_javascript(
             if not member.isfile() or member.size > 4 * 1024 * 1024:
                 continue
             _, _, relative = member.name.partition("/")
+            if _is_test_path(relative):
+                continue
             if whole_repo:
                 path = relative
             else:
-                index = relative.find("custom_components/")
-                if index == -1:
+                path = _component_path(relative)
+                if path is None:
                     continue
-                path = relative[index:]
             if not path.endswith(JS_SUFFIXES) or path.endswith(".d.ts"):
                 continue
             if any(marker in "/" + path for marker in VENDOR_MARKERS):
@@ -274,8 +296,12 @@ def iter_manifest_domains(body: bytes) -> list[str]:
             if not member.isfile() or member.size > 512 * 1024:
                 continue
             _, _, relative = member.name.partition("/")
-            index = relative.find("custom_components/")
-            if index == -1 or not relative.endswith("/manifest.json"):
+            path = _component_path(relative)
+            if (
+                path is None
+                or len(path.split("/")) != 3
+                or not path.endswith("/manifest.json")
+            ):
                 continue
             handle = archive.extractfile(member)
             if handle is None:
@@ -329,10 +355,10 @@ def findings_hash(findings: list[dict[str, Any]]) -> str:
 
 
 def rules_hash(rules: list[Rule]) -> str:
-    """Identity of "what a scan would produce": rules *and* engine semantics."""
+    """Identity of a scan: rules, matcher semantics and archive selection."""
     blob = json.dumps(
         [
-            {"engine": ENGINE_VERSION},
+            {"engine": ENGINE_VERSION, "scan": SCAN_VERSION},
             *[
                 {"id": r.id, "breaks_in": r.breaks_in, "match": r.match}
                 for r in sorted(rules, key=lambda r: r.id)

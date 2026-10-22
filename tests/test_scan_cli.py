@@ -88,6 +88,12 @@ def test_rules_hash_changes_with_the_engine_version(monkeypatch):
     assert rules_hash([RULE]) != before
 
 
+def test_rules_hash_changes_with_tarball_selection_semantics(monkeypatch):
+    before = rules_hash([RULE])
+    monkeypatch.setattr(scan_module, "SCAN_VERSION", 999)
+    assert rules_hash([RULE]) != before
+
+
 def test_a_rule_breaking_in_the_dev_release_stays_active():
     # dev carries the release being built, so 2027.5 there means nobody is
     # running it yet and the rule is at its most urgent, not expired.
