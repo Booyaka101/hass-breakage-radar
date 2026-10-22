@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-21T03:32:12Z",
+  "generated_utc": "2026-10-22T03:32:16Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "5efb8d5b1f2993832b591e05de7412c8035d66bdd171ca9f434fd4b848d64157",
+  "core_tarball_sha256": "c6645c636398d223ad08eb84b3f0251dd3c0709b9d2252eb7910143d2ee675f7",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 160,
-    "future": 121,
+    "total": 161,
+    "future": 122,
     "matchable_future": 65,
-    "core_files_scanned": 10712,
+    "core_files_scanned": 10732,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 133,
+    "from_core_ast": 134,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -205,13 +205,13 @@
       "symbol": "does not use FlowResultType enum for data entry flow result type",
       "message": "does not use FlowResultType enum for data entry flow result type",
       "breaks_in": "2025.1",
-      "source": "homeassistant/data_entry_flow.py:523",
+      "source": "homeassistant/data_entry_flow.py:566",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L523"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L566"
     },
     {
       "id": "core-call-async-add-job",
@@ -1331,13 +1331,13 @@
       "symbol": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entit...",
       "message": "sets an invalid entity ID: '{...}'. In most cases, entities should not set entity_id, but if they do, it should be a valid entity ID",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity_platform.py:1017",
+      "source": "homeassistant/helpers/entity_platform.py:1018",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L1017"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L1018"
     },
     {
       "id": "core-call-async-listen",
@@ -1368,13 +1368,13 @@
       "symbol": "deprecated_yaml_no_import",
       "message": "`flexit` raises the `deprecated_yaml_no_import` repair issue, and the configuration it reports stops working in Home Assistant 2027.3.",
       "breaks_in": "2027.3",
-      "source": "homeassistant/components/flexit/climate.py:90",
+      "source": "homeassistant/components/flexit/climate.py:89",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/flexit/climate.py#L90"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/flexit/climate.py#L89"
     },
     {
       "id": "core-issue-netio-deprecated-yaml-2027.3",
@@ -1647,6 +1647,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/nfandroidtv/issue.py#L12"
     },
     {
+      "id": "core-issue-overkiz-async-check-deprecated-low-speed-cover-2027.5",
+      "kind": "issue",
+      "symbol": "_async_check_deprecated_low_speed_cover",
+      "message": "`overkiz` raises a repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/overkiz/cover.py:665",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/overkiz/cover.py#L665"
+    },
+    {
       "id": "core-issue-remember-the-milk-deprecated-action-2027.5",
       "kind": "issue",
       "symbol": "deprecated_action",
@@ -1666,13 +1680,13 @@
       "symbol": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "message": "sets an entity ID with wrong domain: '{...}'. Expected domain is '{...}'",
       "breaks_in": "2027.5",
-      "source": "homeassistant/helpers/entity_platform.py:1033",
+      "source": "homeassistant/helpers/entity_platform.py:1034",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L1033"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L1034"
     },
     {
       "id": "legacy-device-tracker-platform",
@@ -1727,7 +1741,7 @@
       "symbol": "FlowHandler.show_advanced_options",
       "message": "a user friendly way to present additional options in the UI, for example a section",
       "breaks_in": "2027.6",
-      "source": "homeassistant/data_entry_flow.py:656",
+      "source": "homeassistant/data_entry_flow.py:699",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1742,7 +1756,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L656"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L699"
     },
     {
       "id": "core-classbase-infraredentitydescription",
@@ -2377,13 +2391,13 @@
       "symbol": "attempts to attach a device to an entity {...}",
       "message": "attempts to attach a device to an entity {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/entity_platform.py:897",
+      "source": "homeassistant/helpers/entity_platform.py:898",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L897"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity_platform.py#L898"
     },
     {
       "id": "core-prose-calls-device-registry-async-get-or-create-with-a-via-device-referencing-the",
@@ -2893,7 +2907,7 @@
       "symbol": "is_closed",
       "message": "hass.states.is_state(entity_id, 'closed')",
       "breaks_in": "2027.10",
-      "source": "homeassistant/components/cover/__init__.py:99",
+      "source": "homeassistant/components/cover/__init__.py:100",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2908,7 +2922,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L99"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cover/__init__.py#L100"
     },
     {
       "id": "device-entry-config-entries",
@@ -3058,5 +3072,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
     }
   ],
-  "blog_merged_utc": "2026-10-21T03:32:13Z"
+  "blog_merged_utc": "2026-10-22T03:32:16Z"
 }
