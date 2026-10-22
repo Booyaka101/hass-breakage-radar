@@ -310,6 +310,12 @@ automation:
 
 ## Run the crawler yourself
 
+Repository scans exclude directories named `test`, `tests`, `testing`, `fixtures`,
+`__tests__` or `__fixtures__` before normalising `custom_components/` paths.
+This keeps example test integrations out of both findings and manifest discovery,
+while still supporting production layouts such as `src/custom_components/`.
+Card repository JavaScript uses the same test-directory exclusions.
+
 Python 3.12+ (3.14 strongly recommended — see *Which Python* below). No dependencies.
 
 ```bash

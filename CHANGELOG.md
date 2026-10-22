@@ -6,6 +6,15 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+### Test fixtures no longer count as installed integrations (#67)
+
+The crawler excludes test and fixture directories before normalising archive
+paths, for Python, integration manifests and JavaScript (including cards).
+Previously, Breakage Radar's deliberately broken test integrations were counted
+as its own code, producing a false Home Assistant 2026.11 warning. Real nested
+integration layouts remain supported. Archive-selection changes now invalidate
+cached crawl results so unchanged releases are queued for another scan.
+
 ## 1.17.2 - 2026-10-19
 
 ### Upstream issue titles cannot inject Markdown into Repairs notices
