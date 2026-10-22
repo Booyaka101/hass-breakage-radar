@@ -6,6 +6,8 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.17.3 - 2026-10-22
+
 ### Test fixtures no longer count as installed integrations (#67)
 
 The crawler excludes test and fixture directories before normalising archive
