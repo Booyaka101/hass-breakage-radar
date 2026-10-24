@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-23T03:32:40Z",
+  "generated_utc": "2026-10-24T03:31:00Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "29f177616e1cdbe7e9ff5e358d39b16efbfbd3fd1fb548dae939bb11ccaf64d3",
+  "core_tarball_sha256": "fa6381ffb86cc4c8065e36fa4cbad7ff72ea35c3281ec44c80af141e1cc3e1ad",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 162,
+    "total": 161,
     "future": 125,
     "matchable_future": 65,
-    "core_files_scanned": 10752,
+    "core_files_scanned": 10757,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 135,
+    "from_core_ast": 134,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -191,13 +191,13 @@
       "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
       "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
       "breaks_in": "2025.1",
-      "source": "homeassistant/config_entries.py:1584",
+      "source": "homeassistant/config_entries.py:1588",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1584"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1588"
     },
     {
       "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
@@ -344,13 +344,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3189",
+      "source": "homeassistant/config_entries.py:3193",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3189"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3193"
     },
     {
       "id": "core-call-async-get-or-create",
@@ -381,13 +381,13 @@
       "symbol": "ChatLog.async_update_llm_data",
       "message": "ChatLog.async_update_llm_data",
       "breaks_in": "2026.1",
-      "source": "homeassistant/components/conversation/chat_log.py:697",
+      "source": "homeassistant/components/conversation/chat_log.py:736",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L697"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L736"
     },
     {
       "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
@@ -395,13 +395,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1934",
+      "source": "homeassistant/config_entries.py:1938",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1934"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1938"
     },
     {
       "id": "core-issue-telegram-bot-deprecated-timeout-parameter-2026.7",
@@ -476,20 +476,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lovelace/__init__.py#L430"
-    },
-    {
-      "id": "core-issue-telegram-migrate-notify-2026.8",
-      "kind": "issue",
-      "symbol": "migrate_notify",
-      "message": "`telegram` raises the `migrate_notify` repair issue, and the configuration it reports stops working in Home Assistant 2026.8.",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/telegram/notify.py:56",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/telegram/notify.py#L56"
     },
     {
       "id": "core-call-deviceentry-suggested-area",
@@ -996,13 +982,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3377",
+      "source": "homeassistant/config_entries.py:3381",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3377"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3381"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -3049,13 +3035,13 @@
       "symbol": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultCo...",
       "message": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultContent.result` instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:306",
+      "source": "homeassistant/components/conversation/chat_log.py:345",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L306"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L345"
     },
     {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
@@ -3077,14 +3063,14 @@
       "symbol": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to ...",
       "message": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to a ToolResult instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:613",
+      "source": "homeassistant/components/conversation/chat_log.py:652",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L613"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L652"
     }
   ],
-  "blog_merged_utc": "2026-10-23T03:32:41Z"
+  "blog_merged_utc": "2026-10-24T03:31:01Z"
 }
