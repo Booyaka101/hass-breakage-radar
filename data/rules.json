@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-25T03:33:21Z",
+  "generated_utc": "2026-10-26T03:37:05Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "ff517289e7d9d22fec7dd11737801846cd9806bd691642436d5d720d5e5f601f",
+  "core_tarball_sha256": "bc52a2bb2802dd48e465d21758fbf33fd7a59fa32b4db14992bb01e55eac2d18",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 161,
-    "future": 125,
-    "matchable_future": 65,
-    "core_files_scanned": 10770,
+    "future": 126,
+    "matchable_future": 66,
+    "core_files_scanned": 10774,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
@@ -260,20 +260,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L1037"
     },
     {
-      "id": "core-issue-ring-siren-2025.4",
-      "kind": "issue",
-      "symbol": "siren",
-      "message": "`ring` moves these entities to `siren`, and the ones on the old platform stop working in Home Assistant 2025.4.",
-      "breaks_in": "2025.4",
-      "source": "homeassistant/components/ring/switch.py:97",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ring/switch.py#L97"
-    },
-    {
       "id": "core-issue-tplink-siren-2025.4",
       "kind": "issue",
       "symbol": "siren",
@@ -381,13 +367,13 @@
       "symbol": "ChatLog.async_update_llm_data",
       "message": "ChatLog.async_update_llm_data",
       "breaks_in": "2026.1",
-      "source": "homeassistant/components/conversation/chat_log.py:736",
+      "source": "homeassistant/components/conversation/chat_log.py:698",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L736"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L698"
     },
     {
       "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
@@ -1417,6 +1403,29 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/xbox/entity.py#L218"
+    },
+    {
+      "id": "core-call-async-get-chat-session",
+      "kind": "call",
+      "symbol": "async_get_chat_session",
+      "message": "calls async_get_chat_session without a context",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/helpers/chat_session.py:134",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": true,
+      "match": {
+        "type": "call",
+        "names": [
+          "async_get_chat_session"
+        ],
+        "modules": [
+          "homeassistant.helpers.chat_session"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/chat_session.py#L134"
     },
     {
       "id": "core-import-config-entries-conn-class-assumed",
@@ -3035,13 +3044,13 @@
       "symbol": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultCo...",
       "message": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultContent.result` instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:345",
+      "source": "homeassistant/components/conversation/chat_log.py:307",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L345"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L307"
     },
     {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
@@ -3063,14 +3072,14 @@
       "symbol": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to ...",
       "message": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to a ToolResult instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:652",
+      "source": "homeassistant/components/conversation/chat_log.py:614",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L652"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L614"
     }
   ],
-  "blog_merged_utc": "2026-10-25T03:33:21Z"
+  "blog_merged_utc": "2026-10-26T03:37:06Z"
 }
