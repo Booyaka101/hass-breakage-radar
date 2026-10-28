@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-27T03:34:10Z",
+  "generated_utc": "2026-10-28T03:24:43Z",
   "core_ref": "dev",
   "core_version": "2026.11",
   "latest_release": "2026.10",
   "rc_release": null,
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "68737077e03336fe9d1a01b8f52554d2e7dcfe46d02ae4136debed8fc29d0b64",
+  "core_tarball_sha256": "a8d611849b6dd0bd37e7bed0522cb2fb74d391ea2bade42422f45ed456e8db38",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 158,
-    "future": 126,
+    "total": 159,
+    "future": 129,
     "matchable_future": 66,
-    "core_files_scanned": 10778,
+    "core_files_scanned": 10837,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 131,
+    "from_core_ast": 132,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -144,20 +144,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L592"
     },
     {
-      "id": "core-prose-calls-for-integration-with-title-and-entry-id-during",
-      "kind": "prose",
-      "symbol": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during ...",
-      "message": "calls {...} for integration {...} with title: {...} and entry_id: {...}, during setup without awaiting {...}, which can cause the setup lock to be released before the setup is done",
-      "breaks_in": "2025.1",
-      "source": "homeassistant/config_entries.py:1588",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1588"
-    },
-    {
       "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
       "kind": "prose",
       "symbol": "does not use FlowResultType enum for data entry flow result type",
@@ -255,20 +241,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L763"
     },
     {
-      "id": "core-issue-hue-deprecated-effect-none-2025.10",
-      "kind": "issue",
-      "symbol": "deprecated_effect_none",
-      "message": "`hue` raises the `deprecated_effect_none` repair issue, and the configuration it reports stops working in Home Assistant 2025.10.",
-      "breaks_in": "2025.10",
-      "source": "homeassistant/components/hue/v2/light.py:265",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hue/v2/light.py#L265"
-    },
-    {
       "id": "core-prose-returns-none-from-backupagent-async-get-backup",
       "kind": "prose",
       "symbol": "returns None from BackupAgent.async_get_backup",
@@ -288,13 +260,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3193",
+      "source": "homeassistant/config_entries.py:3181",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3193"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3181"
     },
     {
       "id": "core-call-async-get-or-create",
@@ -325,13 +297,13 @@
       "symbol": "ChatLog.async_update_llm_data",
       "message": "ChatLog.async_update_llm_data",
       "breaks_in": "2026.1",
-      "source": "homeassistant/components/conversation/chat_log.py:699",
+      "source": "homeassistant/components/conversation/chat_log.py:757",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L699"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L757"
     },
     {
       "id": "core-prose-creates-a-config-entry-when-another-entry-with-the-same-unique-id-exists",
@@ -339,13 +311,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1938",
+      "source": "homeassistant/config_entries.py:1925",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1938"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1925"
     },
     {
       "id": "core-issue-telegram-bot-deprecated-timeout-parameter-2026.7",
@@ -926,13 +898,13 @@
       "symbol": "has an update listener and should use it for scheduling a reload",
       "message": "has an update listener and should use it for scheduling a reload",
       "breaks_in": "2026.12",
-      "source": "homeassistant/config_entries.py:3381",
+      "source": "homeassistant/config_entries.py:3369",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3381"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3369"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -1335,6 +1307,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/volkszaehler/sensor.py#L126"
     },
     {
+      "id": "core-issue-geonetnz-quakes-deprecated-yaml-2027.4",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`geonetnz_quakes` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.4.",
+      "breaks_in": "2027.4",
+      "source": "homeassistant/components/geonetnz_quakes/__init__.py:71",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/geonetnz_quakes/__init__.py#L71"
+    },
+    {
       "id": "core-issue-keyboard-remote-deprecated-yaml-2027.4",
       "kind": "issue",
       "symbol": "deprecated_yaml",
@@ -1572,6 +1558,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/nfandroidtv/issue.py#L12"
     },
     {
+      "id": "core-issue-nx584-deprecated-yaml-2027.5",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`nx584` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/nx584/__init__.py:108",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/nx584/__init__.py#L108"
+    },
+    {
       "id": "core-issue-overkiz-async-check-deprecated-low-speed-cover-2027.5",
       "kind": "issue",
       "symbol": "_async_check_deprecated_low_speed_cover",
@@ -1586,18 +1586,32 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/overkiz/cover.py#L665"
     },
     {
-      "id": "core-issue-prowl-deprecated-yaml-2027.5",
+      "id": "core-issue-prowl-deprecated-notify-action-2027.5",
       "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`prowl` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "symbol": "deprecated_notify_action",
+      "message": "`prowl` raises the `deprecated_notify_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/prowl/__init__.py:79",
+      "source": "homeassistant/components/prowl/issue.py:12",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/prowl/__init__.py#L79"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/prowl/issue.py#L12"
+    },
+    {
+      "id": "core-issue-prowl-deprecated-yaml-2027.5",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`prowl` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/prowl/__init__.py:81",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/prowl/__init__.py#L81"
     },
     {
       "id": "core-issue-remember-the-milk-deprecated-action-2027.5",
@@ -1885,13 +1899,13 @@
       "symbol": "that calls the MQTT publish API with `None` for qos or retain. The `qos` argumen...",
       "message": "that calls the MQTT publish API with `None` for qos or retain. The `qos` argument must be an `int`, and the `retain` argument must be a `bool`",
       "breaks_in": "2027.6",
-      "source": "homeassistant/components/mqtt/client.py:199",
+      "source": "homeassistant/components/mqtt/client.py:200",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L199"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L200"
     },
     {
       "id": "core-call-get-astral-location",
@@ -3002,13 +3016,13 @@
       "symbol": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultCo...",
       "message": "accesses `ToolResultContent.tool_result`, which is deprecated; use `ToolResultContent.result` instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:307",
+      "source": "homeassistant/components/conversation/chat_log.py:320",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L307"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L320"
     },
     {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
@@ -3030,14 +3044,14 @@
       "symbol": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to ...",
       "message": "sets `tool_result` on a tool result delta, which is deprecated; set `result` to a ToolResult instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/conversation/chat_log.py:615",
+      "source": "homeassistant/components/conversation/chat_log.py:673",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L615"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L673"
     }
   ],
-  "blog_merged_utc": "2026-10-27T03:34:10Z"
+  "blog_merged_utc": "2026-10-28T03:24:43Z"
 }
