@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-29T03:25:24Z",
+  "generated_utc": "2026-10-30T03:25:04Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.10",
   "rc_release": "2026.11",
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "9176f7323eba2f27b7f9aa539d074e167edd2cf5f7858ef054c125e7f9976afb",
+  "core_tarball_sha256": "3e82f6204c26f4c77f2d1193b5b28bf54555194d828f37ddae41c08dfcba1403",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 157,
-    "future": 130,
+    "total": 158,
+    "future": 131,
     "matchable_future": 66,
-    "core_files_scanned": 10912,
+    "core_files_scanned": 10922,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 3,
     "retained": 0,
-    "from_core_ast": 130,
+    "from_core_ast": 131,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -912,13 +912,13 @@
       "symbol": "protocol_5_migration",
       "message": "`mqtt` raises the `protocol_5_migration` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
       "breaks_in": "2027.1",
-      "source": "homeassistant/components/mqtt/__init__.py:339",
+      "source": "homeassistant/components/mqtt/__init__.py:343",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L339"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L343"
     },
     {
       "id": "core-issue-smtp-deprecated-yaml-2027.1",
@@ -1827,6 +1827,20 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/config_entry.py#L31"
+    },
+    {
+      "id": "core-issue-geonetnz-volcano-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`geonetnz_volcano` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/geonetnz_volcano/__init__.py:62",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/geonetnz_volcano/__init__.py#L62"
     },
     {
       "id": "core-prose-infraredentity",
@@ -3016,5 +3030,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L617"
     }
   ],
-  "blog_merged_utc": "2026-10-29T03:25:24Z"
+  "blog_merged_utc": "2026-10-30T03:25:04Z"
 }
