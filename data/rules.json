@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-10-31T03:20:35Z",
+  "generated_utc": "2026-11-01T03:23:25Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.10",
   "rc_release": "2026.11",
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "bd7efd833b46d9775861353a47f09c2bb0a5490a7c7b9fe4190ab63cda16c1c6",
+  "core_tarball_sha256": "0bd1059391c38485c86cc431d6c48be8679378a31c27a9ebb47b1e1e86cf89e9",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 161,
     "future": 134,
     "matchable_future": 68,
-    "core_files_scanned": 10926,
+    "core_files_scanned": 10936,
     "core_files_unparsed": 0,
     "markers_discarded": 4,
     "markers_discarded_pending": 4,
@@ -1533,13 +1533,13 @@
       "symbol": "deprecated_yaml",
       "message": "`nx584` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/nx584/__init__.py:108",
+      "source": "homeassistant/components/nx584/__init__.py:110",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/nx584/__init__.py#L108"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/nx584/__init__.py#L110"
     },
     {
       "id": "core-issue-overkiz-async-check-deprecated-low-speed-cover-2027.5",
@@ -1547,13 +1547,13 @@
       "symbol": "_async_check_deprecated_low_speed_cover",
       "message": "`overkiz` raises a repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/overkiz/cover.py:663",
+      "source": "homeassistant/components/overkiz/cover.py:675",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/overkiz/cover.py#L663"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/overkiz/cover.py#L675"
     },
     {
       "id": "core-issue-prowl-deprecated-notify-action-2027.5",
@@ -3099,5 +3099,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L617"
     }
   ],
-  "blog_merged_utc": "2026-10-31T03:20:36Z"
+  "blog_merged_utc": "2026-11-01T03:23:25Z"
 }
