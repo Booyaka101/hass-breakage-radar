@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-01T03:23:25Z",
+  "generated_utc": "2026-11-02T03:23:25Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.10",
   "rc_release": "2026.11",
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "0bd1059391c38485c86cc431d6c48be8679378a31c27a9ebb47b1e1e86cf89e9",
+  "core_tarball_sha256": "2b482b9dad544e403136890a2d178ffb742bf5a990d5f1fae0af0f2f99920db4",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 161,
-    "future": 134,
+    "total": 169,
+    "future": 142,
     "matchable_future": 68,
-    "core_files_scanned": 10936,
+    "core_files_scanned": 10940,
     "core_files_unparsed": 0,
     "markers_discarded": 4,
     "markers_discarded_pending": 4,
     "retained": 1,
-    "from_core_ast": 134,
+    "from_core_ast": 142,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -29,7 +29,7 @@
       "symbol": "async_update_statistics_metadata",
       "reason": "unreadable_guard",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1029"
+      "source": "homeassistant/components/recorder/statistics.py:1030"
     },
     {
       "symbol": "InfraredEntity",
@@ -527,7 +527,7 @@
       "symbol": "async_add_external_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2895",
+      "source": "homeassistant/components/recorder/statistics.py:2896",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -548,7 +548,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2895"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2896"
     },
     {
       "id": "core-call-async-add-external-statistics-metadata-without-unit-class",
@@ -556,7 +556,7 @@
       "symbol": "async_add_external_statistics(metadata without unit_class)",
       "message": "doesn't set `unit_class` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2901",
+      "source": "homeassistant/components/recorder/statistics.py:2902",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -577,7 +577,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2901"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2902"
     },
     {
       "id": "core-call-async-import-statistics-metadata-without-mean-type",
@@ -585,7 +585,7 @@
       "symbol": "async_import_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2858",
+      "source": "homeassistant/components/recorder/statistics.py:2859",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -606,7 +606,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2858"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2859"
     },
     {
       "id": "core-call-async-import-statistics-metadata-without-unit-class",
@@ -614,7 +614,7 @@
       "symbol": "async_import_statistics(metadata without unit_class)",
       "message": "doesn't set `unit_class` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2864",
+      "source": "homeassistant/components/recorder/statistics.py:2865",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -635,7 +635,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2864"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2865"
     },
     {
       "id": "core-call-async-update-statistics-metadata-missing-new-unit-class",
@@ -699,13 +699,13 @@
       "symbol": "unsupported_local_deps",
       "message": "`homeassistant` raises the `unsupported_local_deps` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/homeassistant/__init__.py:125",
+      "source": "homeassistant/components/homeassistant/__init__.py:126",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L125"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L126"
     },
     {
       "id": "core-issue-pjlink-deprecated-yaml-2026.11",
@@ -727,13 +727,13 @@
       "symbol": "doesn't specify unit_class when calling async_update_statistics_metadata",
       "message": "doesn't specify unit_class when calling async_update_statistics_metadata",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1029",
+      "source": "homeassistant/components/recorder/statistics.py:1030",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1029"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1030"
     },
     {
       "id": "core-call-temperatureconverter-convert-interval",
@@ -942,6 +942,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L343"
     },
     {
+      "id": "core-issue-saj-deprecated-yaml-2027.1",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`saj` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/saj/sensor.py:112",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/saj/sensor.py#L112"
+    },
+    {
       "id": "core-issue-smtp-deprecated-yaml-2027.1",
       "kind": "issue",
       "symbol": "deprecated_yaml",
@@ -982,6 +996,34 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/swisscom/device_tracker.py#L35"
+    },
+    {
+      "id": "core-issue-unifi-direct-deprecated-yaml-2027.1",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`unifi_direct` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/unifi_direct/device_tracker.py:71",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/unifi_direct/device_tracker.py#L71"
+    },
+    {
+      "id": "core-issue-unifi-direct-yaml-import-cannot-connect-2027.1",
+      "kind": "issue",
+      "symbol": "yaml_import_cannot_connect",
+      "message": "`unifi_direct` raises the `yaml_import_cannot_connect` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
+      "breaks_in": "2027.1",
+      "source": "homeassistant/components/unifi_direct/device_tracker.py:58",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/unifi_direct/device_tracker.py#L58"
     },
     {
       "id": "core-call-async-generate-entity-id",
@@ -1140,6 +1182,20 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/http/config.py#L241"
+    },
+    {
+      "id": "core-issue-luci-deprecated-yaml-2027.2",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`luci` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
+      "breaks_in": "2027.2",
+      "source": "homeassistant/components/luci/device_tracker.py:84",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/luci/device_tracker.py#L84"
     },
     {
       "id": "core-issue-netatmo-deprecated-webhook-service-2027.2",
@@ -1596,6 +1652,34 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/remember_the_milk/entity.py#L40"
+    },
+    {
+      "id": "core-issue-sky-hub-deprecated-yaml-2027.5",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`sky_hub` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/sky_hub/device_tracker.py:67",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/sky_hub/device_tracker.py#L67"
+    },
+    {
+      "id": "core-issue-sky-hub-yaml-import-cannot-connect-2027.5",
+      "kind": "issue",
+      "symbol": "yaml_import_cannot_connect",
+      "message": "`sky_hub` raises the `yaml_import_cannot_connect` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/sky_hub/device_tracker.py:53",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/sky_hub/device_tracker.py#L53"
     },
     {
       "id": "core-issue-ubus-deprecated-yaml-2027.5",
@@ -3085,6 +3169,34 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/typing.py#L37"
     },
     {
+      "id": "core-prose-initiates-a-repair-flow-by-passing-issue-id-via-data-rather-than-context",
+      "kind": "prose",
+      "symbol": "initiates a repair flow by passing `issue_id` via `data` rather than `context`",
+      "message": "initiates a repair flow by passing `issue_id` via `data` rather than `context`",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/components/repairs/issue_handler.py:64",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/issue_handler.py#L64"
+    },
+    {
+      "id": "core-prose-sets-issue-id-directly-in-a-repairsflow-which-is-unnecessary",
+      "kind": "prose",
+      "symbol": "sets `issue_id` directly in a `RepairsFlow` which is unnecessary",
+      "message": "sets `issue_id` directly in a `RepairsFlow` which is unnecessary",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/components/repairs/models.py:65",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L65"
+    },
+    {
       "id": "core-prose-does-not-provide-device-info-for-its-scannerentity-device-tracker-it-should-pro",
       "kind": "prose",
       "symbol": "does not provide device info for its ScannerEntity device tracker, it should pro...",
@@ -3099,5 +3211,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L617"
     }
   ],
-  "blog_merged_utc": "2026-11-01T03:23:25Z"
+  "blog_merged_utc": "2026-11-02T03:23:25Z"
 }
