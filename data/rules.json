@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-02T03:23:25Z",
+  "generated_utc": "2026-11-03T03:21:33Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.10",
   "rc_release": "2026.11",
   "pending_floor": "2026.11",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "2b482b9dad544e403136890a2d178ffb742bf5a990d5f1fae0af0f2f99920db4",
+  "core_tarball_sha256": "ebe6d01e010a05ad39368d48196013fc2d5129cc8d0e7ea74620004512ba91eb",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 169,
-    "future": 142,
-    "matchable_future": 68,
-    "core_files_scanned": 10940,
+    "total": 166,
+    "future": 145,
+    "matchable_future": 69,
+    "core_files_scanned": 10954,
     "core_files_unparsed": 0,
     "markers_discarded": 4,
     "markers_discarded_pending": 4,
-    "retained": 1,
-    "from_core_ast": 142,
+    "retained": 3,
+    "from_core_ast": 139,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -29,7 +29,7 @@
       "symbol": "async_update_statistics_metadata",
       "reason": "unreadable_guard",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1030"
+      "source": "homeassistant/components/recorder/statistics.py:1045"
     },
     {
       "symbol": "InfraredEntity",
@@ -108,60 +108,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/kitchen_sink/__init__.py#L191"
     },
     {
-      "id": "core-issue-cloud-deprecated-voice-2024.8",
-      "kind": "issue",
-      "symbol": "deprecated_voice",
-      "message": "`cloud` raises the `deprecated_voice` repair issue, and the configuration it reports stops working in Home Assistant 2024.8.",
-      "breaks_in": "2024.8",
-      "source": "homeassistant/components/cloud/tts.py:623",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L623"
-    },
-    {
       "id": "core-issue-cloud-deprecated-tts-platform-config-2024.9",
       "kind": "issue",
       "symbol": "deprecated_tts_platform_config",
       "message": "`cloud` raises the `deprecated_tts_platform_config` repair issue, and the configuration it reports stops working in Home Assistant 2024.9.",
       "breaks_in": "2024.9",
-      "source": "homeassistant/components/cloud/tts.py:246",
+      "source": "homeassistant/components/cloud/tts.py:241",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L246"
-    },
-    {
-      "id": "core-issue-cloud-deprecated-gender-2024.10",
-      "kind": "issue",
-      "symbol": "deprecated_gender",
-      "message": "`cloud` raises the `deprecated_gender` repair issue, and the configuration it reports stops working in Home Assistant 2024.10.",
-      "breaks_in": "2024.10",
-      "source": "homeassistant/components/cloud/tts.py:592",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L592"
-    },
-    {
-      "id": "core-prose-does-not-use-flowresulttype-enum-for-data-entry-flow-result-type",
-      "kind": "prose",
-      "symbol": "does not use FlowResultType enum for data entry flow result type",
-      "message": "does not use FlowResultType enum for data entry flow result type",
-      "breaks_in": "2025.1",
-      "source": "homeassistant/data_entry_flow.py:566",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L566"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/cloud/tts.py#L241"
     },
     {
       "id": "core-call-async-add-job",
@@ -247,20 +205,6 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/core.py#L767"
     },
     {
-      "id": "core-prose-returns-none-from-backupagent-async-get-backup",
-      "kind": "prose",
-      "symbol": "returns None from BackupAgent.async_get_backup",
-      "message": "returns None from BackupAgent.async_get_backup",
-      "breaks_in": "2025.10",
-      "source": "homeassistant/components/backup/http.py:74",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 4,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/backup/http.py#L74"
-    },
-    {
       "id": "core-issue-homeassistant-config-entries-py-configentries-async-update-issues-2025.11",
       "kind": "issue",
       "symbol": "ConfigEntries.async_update_issues",
@@ -324,52 +268,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1919"
-    },
-    {
-      "id": "core-attr-lightentity-max-color-temp-kelvin",
-      "kind": "attr",
-      "symbol": "LightEntity.max_color_temp_kelvin",
-      "message": "defines `max_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_max_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MAX_KELVIN ",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/entity.py:168",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "attr",
-        "names": [
-          "max_color_temp_kelvin"
-        ],
-        "in_class_base": [
-          "LightEntity"
-        ]
-      },
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/entity.py#L168"
-    },
-    {
-      "id": "core-attr-lightentity-min-color-temp-kelvin",
-      "kind": "attr",
-      "symbol": "LightEntity.min_color_temp_kelvin",
-      "message": "defines `min_color_temp_kelvin` on a subclass of `LightEntity`, which is deprecated and removed in Home Assistant 2026.8. Home Assistant logs it as: is explicitly setting `_attr_min_color_temp_kelvin` to `None`, when it should be setting a valid integer, possibly DEFAULT_MIN_KELVIN ",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/light/entity.py:148",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "attr",
-        "names": [
-          "min_color_temp_kelvin"
-        ],
-        "in_class_base": [
-          "LightEntity"
-        ]
-      },
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/light/entity.py#L148"
     },
     {
       "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
@@ -527,7 +425,7 @@
       "symbol": "async_add_external_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2896",
+      "source": "homeassistant/components/recorder/statistics.py:2914",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -548,7 +446,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2896"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2914"
     },
     {
       "id": "core-call-async-add-external-statistics-metadata-without-unit-class",
@@ -556,7 +454,7 @@
       "symbol": "async_add_external_statistics(metadata without unit_class)",
       "message": "doesn't set `unit_class` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2902",
+      "source": "homeassistant/components/recorder/statistics.py:2920",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -577,7 +475,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2902"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2920"
     },
     {
       "id": "core-call-async-import-statistics-metadata-without-mean-type",
@@ -585,7 +483,7 @@
       "symbol": "async_import_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2859",
+      "source": "homeassistant/components/recorder/statistics.py:2877",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -606,7 +504,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2859"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2877"
     },
     {
       "id": "core-call-async-import-statistics-metadata-without-unit-class",
@@ -614,7 +512,7 @@
       "symbol": "async_import_statistics(metadata without unit_class)",
       "message": "doesn't set `unit_class` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2865",
+      "source": "homeassistant/components/recorder/statistics.py:2883",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -635,7 +533,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2865"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2883"
     },
     {
       "id": "core-call-async-update-statistics-metadata-missing-new-unit-class",
@@ -666,34 +564,6 @@
       "retained_since": "2026.12"
     },
     {
-      "id": "core-issue-fritz-deprecated-cleanup-button-2026.11",
-      "kind": "issue",
-      "symbol": "deprecated_cleanup_button",
-      "message": "`fritz` raises the `deprecated_cleanup_button` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/fritz/button.py:82",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L82"
-    },
-    {
-      "id": "core-issue-fritz-deprecated-firmware-update-button-2026.11",
-      "kind": "issue",
-      "symbol": "deprecated_firmware_update_button",
-      "message": "`fritz` raises the `deprecated_firmware_update_button` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/fritz/button.py:109",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/fritz/button.py#L109"
-    },
-    {
       "id": "core-issue-homeassistant-unsupported-local-deps-2026.11",
       "kind": "issue",
       "symbol": "unsupported_local_deps",
@@ -708,32 +578,18 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L126"
     },
     {
-      "id": "core-issue-pjlink-deprecated-yaml-2026.11",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`pjlink` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.11.",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/pjlink/media_player.py:75",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/pjlink/media_player.py#L75"
-    },
-    {
       "id": "core-prose-doesn-t-specify-unit-class-when-calling-async-update-statistics-metadata",
       "kind": "prose",
       "symbol": "doesn't specify unit_class when calling async_update_statistics_metadata",
       "message": "doesn't specify unit_class when calling async_update_statistics_metadata",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1030",
+      "source": "homeassistant/components/recorder/statistics.py:1045",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1030"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1045"
     },
     {
       "id": "core-call-temperatureconverter-convert-interval",
@@ -756,7 +612,8 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L876"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/util/unit_conversion.py#L876",
+      "retained_since": "2026.12"
     },
     {
       "id": "core-classbase-targetselectordata",
@@ -776,7 +633,8 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L129"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L129",
+      "retained_since": "2026.12"
     },
     {
       "id": "core-issue-hassio-normalize-partial-options-data-2026.12",
@@ -784,13 +642,13 @@
       "symbol": "_normalize_partial_options_data",
       "message": "`hassio` raises a repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
       "breaks_in": "2026.12",
-      "source": "homeassistant/components/hassio/services.py:96",
+      "source": "homeassistant/components/hassio/services.py:104",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hassio/services.py#L96"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hassio/services.py#L104"
     },
     {
       "id": "core-issue-lg-thinq-check-deprecated-fan-speed-entity-2026.12",
@@ -805,62 +663,6 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lg_thinq/number.py#L194"
-    },
-    {
-      "id": "core-issue-opnsense-deprecated-yaml-2026.12",
-      "kind": "issue",
-      "symbol": "deprecated_yaml",
-      "message": "`opnsense` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/components/opnsense/config_flow.py:221",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L221"
-    },
-    {
-      "id": "core-issue-opnsense-import-failed-missing-interfaces-2026.12",
-      "kind": "issue",
-      "symbol": "import_failed_missing_interfaces",
-      "message": "`opnsense` raises the `import_failed_missing_interfaces` repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/components/opnsense/config_flow.py:262",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L262"
-    },
-    {
-      "id": "core-issue-opnsense-opnsenseconfigflow-abort-import-2026.12",
-      "kind": "issue",
-      "symbol": "OPNsenseConfigFlow._abort_import",
-      "message": "`opnsense` raises a repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/components/opnsense/config_flow.py:298",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/opnsense/config_flow.py#L298"
-    },
-    {
-      "id": "core-issue-rflink-yaml-migration-2026.12",
-      "kind": "issue",
-      "symbol": "yaml_migration",
-      "message": "`rflink` raises the `yaml_migration` repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/components/rflink/utils.py:33",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/rflink/utils.py#L33"
     },
     {
       "id": "core-prose-has-an-update-listener-and-should-use-it-for-scheduling-a-reload",
@@ -989,13 +791,13 @@
       "symbol": "deprecated_yaml_import_issue_credentials_required",
       "message": "`swisscom` raises the `deprecated_yaml_import_issue_credentials_required` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
       "breaks_in": "2027.1",
-      "source": "homeassistant/components/swisscom/device_tracker.py:35",
+      "source": "homeassistant/components/swisscom/device_tracker.py:41",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/swisscom/device_tracker.py#L35"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/swisscom/device_tracker.py#L41"
     },
     {
       "id": "core-issue-unifi-direct-deprecated-yaml-2027.1",
@@ -1361,6 +1163,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/keyboard_remote/__init__.py#L155"
     },
     {
+      "id": "core-issue-rejseplanen-yaml-deprecated-2027.4",
+      "kind": "issue",
+      "symbol": "yaml_deprecated",
+      "message": "`rejseplanen` raises the `yaml_deprecated` repair issue, and the configuration it reports stops working in Home Assistant 2027.4.",
+      "breaks_in": "2027.4",
+      "source": "homeassistant/components/rejseplanen/sensor.py:210",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/rejseplanen/sensor.py#L210"
+    },
+    {
       "id": "core-issue-xbox-deprecated-entity-2027.4",
       "kind": "issue",
       "symbol": "deprecated_entity",
@@ -1542,6 +1358,30 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L252"
     },
     {
+      "id": "core-import-const-attr-multi-press-count",
+      "kind": "import",
+      "symbol": "ATTR_MULTI_PRESS_COUNT",
+      "message": "ATTR_MULTI_PRESS_COUNT imported from homeassistant.components.event.const is deprecated and is removed in Home Assistant 2027.5. Import it from multi_press_count instead.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/event/const.py:20",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "multi_press_count",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.components.event.const"
+        ],
+        "names": [
+          "ATTR_MULTI_PRESS_COUNT"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/event/const.py#L20"
+    },
+    {
       "id": "core-issue-device-tracker-deprecated-see-action-2027.5",
       "kind": "issue",
       "symbol": "deprecated_see_action",
@@ -1687,13 +1527,13 @@
       "symbol": "deprecated_yaml",
       "message": "`ubus` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/ubus/device_tracker.py:73",
+      "source": "homeassistant/components/ubus/device_tracker.py:78",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ubus/device_tracker.py#L73"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ubus/device_tracker.py#L78"
     },
     {
       "id": "core-prose-calls-without-passing-a-step-id",
@@ -1946,6 +1786,118 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/geonetnz_volcano/__init__.py#L62"
+    },
+    {
+      "id": "core-issue-hlk-sw16-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`hlk_sw16` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/hlk_sw16/__init__.py:120",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hlk_sw16/__init__.py#L120"
+    },
+    {
+      "id": "core-issue-lutron-caseta-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`lutron_caseta` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/lutron_caseta/__init__.py:175",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lutron_caseta/__init__.py#L175"
+    },
+    {
+      "id": "core-issue-octoprint-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`octoprint` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/octoprint/__init__.py:202",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/octoprint/__init__.py#L202"
+    },
+    {
+      "id": "core-issue-sleepiq-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`sleepiq` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/sleepiq/__init__.py:97",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/sleepiq/__init__.py#L97"
+    },
+    {
+      "id": "core-issue-soma-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`soma` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/soma/__init__.py:81",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/soma/__init__.py#L81"
+    },
+    {
+      "id": "core-issue-songpal-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`songpal` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/songpal/__init__.py:89",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/songpal/__init__.py#L89"
+    },
+    {
+      "id": "core-issue-velux-veluxcover-velocity-from-speed-2027.6",
+      "kind": "issue",
+      "symbol": "VeluxCover._velocity_from_speed",
+      "message": "`velux` raises a repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/velux/cover.py:135",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/velux/cover.py#L135"
+    },
+    {
+      "id": "core-issue-venstar-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`venstar` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/venstar/climate.py:130",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/venstar/climate.py#L130"
     },
     {
       "id": "core-prose-infraredentity",
@@ -2264,7 +2216,7 @@
       "symbol": "CONCENTRATION_GRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_GRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:811",
+      "source": "homeassistant/const.py:819",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2279,7 +2231,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L811"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L819"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-foot",
@@ -2287,7 +2239,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:820",
+      "source": "homeassistant/const.py:828",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2302,7 +2254,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L820"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L828"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-meter",
@@ -2310,7 +2262,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:817",
+      "source": "homeassistant/const.py:825",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2325,7 +2277,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L817"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L825"
     },
     {
       "id": "core-import-const-concentration-milligrams-per-cubic-meter",
@@ -2333,7 +2285,7 @@
       "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:814",
+      "source": "homeassistant/const.py:822",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2348,7 +2300,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L814"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L822"
     },
     {
       "id": "core-import-const-concentration-parts-per-billion",
@@ -2356,7 +2308,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_BILLION",
       "message": "CONCENTRATION_PARTS_PER_BILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:829",
+      "source": "homeassistant/const.py:837",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2371,7 +2323,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L829"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L837"
     },
     {
       "id": "core-import-const-concentration-parts-per-cubic-meter",
@@ -2379,7 +2331,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_CUBIC_METER",
       "message": "CONCENTRATION_PARTS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from p/m³ instead.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:823",
+      "source": "homeassistant/const.py:831",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2395,7 +2347,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L823"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L831"
     },
     {
       "id": "core-import-const-concentration-parts-per-million",
@@ -2403,7 +2355,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_MILLION",
       "message": "CONCENTRATION_PARTS_PER_MILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:826",
+      "source": "homeassistant/const.py:834",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2418,7 +2370,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L826"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L834"
     },
     {
       "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
@@ -3093,6 +3045,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L326"
     },
     {
+      "id": "core-prose-does-not-provide-device-info-for-its-scannerentity-device-tracker-it-should-pro",
+      "kind": "prose",
+      "symbol": "does not provide device info for its ScannerEntity device tracker, it should pro...",
+      "message": "does not provide device info for its ScannerEntity device tracker, it should provide device info with the MAC address of the tracked device in its connections, or an empty DeviceInfo() if the tracker should not have a device",
+      "breaks_in": "2027.11",
+      "source": "homeassistant/components/device_tracker/entity.py:617",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L617"
+    },
+    {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
       "kind": "prose",
       "symbol": "returns a JSON object from a tool, which is deprecated; return a ToolResult inst...",
@@ -3195,21 +3161,7 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L65"
-    },
-    {
-      "id": "core-prose-does-not-provide-device-info-for-its-scannerentity-device-tracker-it-should-pro",
-      "kind": "prose",
-      "symbol": "does not provide device info for its ScannerEntity device tracker, it should pro...",
-      "message": "does not provide device info for its ScannerEntity device tracker, it should provide device info with the MAC address of the tracked device in its connections, or an empty DeviceInfo() if the tracker should not have a device",
-      "breaks_in": "2028.11",
-      "source": "homeassistant/components/device_tracker/entity.py:617",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L617"
     }
   ],
-  "blog_merged_utc": "2026-11-02T03:23:25Z"
+  "blog_merged_utc": "2026-11-03T03:21:34Z"
 }
