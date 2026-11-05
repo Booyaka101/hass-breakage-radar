@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-04T03:21:50Z",
+  "generated_utc": "2026-11-05T03:22:17Z",
   "core_ref": "dev",
   "core_version": "2026.12",
-  "latest_release": "2026.10",
-  "rc_release": "2026.11",
-  "pending_floor": "2026.11",
+  "latest_release": "2026.11",
+  "rc_release": null,
+  "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "ebd1cbf87d5c07a276545916cce6d77c8f7a05d7a7b78a7425914507c7621538",
+  "core_tarball_sha256": "8a360accfa39ed3110630ae32b6783aa0ef5f5cd4d492fd9a2dc7971b2171d2f",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 160,
-    "future": 143,
-    "matchable_future": 69,
-    "core_files_scanned": 10956,
+    "total": 159,
+    "future": 136,
+    "matchable_future": 64,
+    "core_files_scanned": 10958,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
-    "markers_discarded_pending": 3,
-    "retained": 3,
-    "from_core_ast": 133,
+    "markers_discarded_pending": 2,
+    "retained": 2,
+    "from_core_ast": 132,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -29,7 +29,7 @@
       "symbol": "async_update_statistics_metadata",
       "reason": "unreadable_guard",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1045"
+      "source": "homeassistant/components/recorder/statistics.py:1044"
     },
     {
       "symbol": "InfraredEntity",
@@ -190,13 +190,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3175",
+      "source": "homeassistant/config_entries.py:3177",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3175"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3177"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -354,7 +354,7 @@
       "symbol": "async_add_external_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2914",
+      "source": "homeassistant/components/recorder/statistics.py:2902",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -373,9 +373,9 @@
           "StatisticMetaData"
         ]
       },
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2914"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2902"
     },
     {
       "id": "core-call-async-add-external-statistics-metadata-without-unit-class",
@@ -383,7 +383,7 @@
       "symbol": "async_add_external_statistics(metadata without unit_class)",
       "message": "doesn't set `unit_class` in the `metadata` passed to `async_add_external_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_add_external_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2920",
+      "source": "homeassistant/components/recorder/statistics.py:2908",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -402,9 +402,9 @@
           "StatisticMetaData"
         ]
       },
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2920"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2908"
     },
     {
       "id": "core-call-async-import-statistics-metadata-without-mean-type",
@@ -412,7 +412,7 @@
       "symbol": "async_import_statistics(metadata without mean_type)",
       "message": "doesn't set `mean_type` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify mean_type when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2877",
+      "source": "homeassistant/components/recorder/statistics.py:2865",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -431,9 +431,9 @@
           "StatisticMetaData"
         ]
       },
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2877"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2865"
     },
     {
       "id": "core-call-async-import-statistics-metadata-without-unit-class",
@@ -441,7 +441,7 @@
       "symbol": "async_import_statistics(metadata without unit_class)",
       "message": "doesn't set `unit_class` in the `metadata` passed to `async_import_statistics`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_import_statistics",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:2883",
+      "source": "homeassistant/components/recorder/statistics.py:2871",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -460,37 +460,9 @@
           "StatisticMetaData"
         ]
       },
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2883"
-    },
-    {
-      "id": "core-call-async-update-statistics-metadata-missing-new-unit-class",
-      "kind": "call",
-      "symbol": "async_update_statistics_metadata(missing new_unit_class)",
-      "message": "calls `async_update_statistics_metadata` with `new_unit_of_measurement` but no `new_unit_class`, which is required from Home Assistant 2026.11. Home Assistant logs it as: doesn't specify unit_class when calling async_update_statistics_metadata",
-      "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1029",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": true,
-      "match": {
-        "type": "call_missing_kwarg",
-        "names": [
-          "async_update_statistics_metadata"
-        ],
-        "modules": [
-          "homeassistant.components.recorder.statistics"
-        ],
-        "kwarg": "new_unit_class",
-        "requires": [
-          "new_unit_of_measurement"
-        ]
-      },
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1029",
-      "retained_since": "2026.12"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L2871"
     },
     {
       "id": "core-issue-homeassistant-unsupported-local-deps-2026.11",
@@ -502,7 +474,7 @@
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homeassistant/__init__.py#L126"
     },
@@ -512,13 +484,13 @@
       "symbol": "doesn't specify unit_class when calling async_update_statistics_metadata",
       "message": "doesn't specify unit_class when calling async_update_statistics_metadata",
       "breaks_in": "2026.11",
-      "source": "homeassistant/components/recorder/statistics.py:1045",
+      "source": "homeassistant/components/recorder/statistics.py:1044",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
-      "expired": false,
+      "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1045"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/recorder/statistics.py#L1044"
     },
     {
       "id": "core-call-temperatureconverter-convert-interval",
@@ -3064,5 +3036,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L65"
     }
   ],
-  "blog_merged_utc": "2026-11-04T03:21:50Z"
+  "blog_merged_utc": "2026-11-05T03:22:18Z"
 }
