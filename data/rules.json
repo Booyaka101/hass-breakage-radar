@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-05T03:22:17Z",
+  "generated_utc": "2026-11-06T03:21:27Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "8a360accfa39ed3110630ae32b6783aa0ef5f5cd4d492fd9a2dc7971b2171d2f",
+  "core_tarball_sha256": "04c02186b0f7e82b77676f1e9485980117c5f8c73480c31ab124c989646538ac",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 159,
     "future": 136,
     "matchable_future": 64,
-    "core_files_scanned": 10958,
+    "core_files_scanned": 10965,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
@@ -190,13 +190,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3177",
+      "source": "homeassistant/config_entries.py:3173",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3177"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3173"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -218,13 +218,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1919",
+      "source": "homeassistant/config_entries.py:1915",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1919"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1915"
     },
     {
       "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
@@ -1984,7 +1984,7 @@
       "symbol": "async_handle_source_entity_changes(add_helper_config_entry_to_device=...)",
       "message": "calls async_handle_source_entity_changes with add_helper_config_entry_to_device, which no longer has any effect",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/helper_integration.py:51",
+      "source": "homeassistant/helpers/helper_integration.py:52",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2002,7 +2002,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/helper_integration.py#L51"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/helper_integration.py#L52"
     },
     {
       "id": "core-call-async-remove-helper-config-entry-from-source-device",
@@ -2010,7 +2010,7 @@
       "symbol": "async_remove_helper_config_entry_from_source_device",
       "message": "homeassistant.helpers.helper_integration.async_remove_helper_devices",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/helper_integration.py:302",
+      "source": "homeassistant/helpers/helper_integration.py:309",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2025,7 +2025,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/helper_integration.py#L302"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/helper_integration.py#L309"
     },
     {
       "id": "core-call-async-remove-stale-devices-links-keep-current-device",
@@ -3013,13 +3013,13 @@
       "symbol": "initiates a repair flow by passing `issue_id` via `data` rather than `context`",
       "message": "initiates a repair flow by passing `issue_id` via `data` rather than `context`",
       "breaks_in": "2027.12",
-      "source": "homeassistant/components/repairs/issue_handler.py:64",
+      "source": "homeassistant/components/repairs/issue_handler.py:70",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/issue_handler.py#L64"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/issue_handler.py#L70"
     },
     {
       "id": "core-prose-sets-issue-id-directly-in-a-repairsflow-which-is-unnecessary",
@@ -3027,14 +3027,14 @@
       "symbol": "sets `issue_id` directly in a `RepairsFlow` which is unnecessary",
       "message": "sets `issue_id` directly in a `RepairsFlow` which is unnecessary",
       "breaks_in": "2027.12",
-      "source": "homeassistant/components/repairs/models.py:65",
+      "source": "homeassistant/components/repairs/models.py:70",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L65"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-05T03:22:18Z"
+  "blog_merged_utc": "2026-11-06T03:21:28Z"
 }
