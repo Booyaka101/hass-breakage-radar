@@ -83,6 +83,12 @@ def _scan_coverage(
     names = sorted(names)
     return {
         "rules_matchable": (scan or {}).get("rules_matchable") if names else 0,
+        "completed_utc": (scan or {}).get("completed_utc") if names else None,
+        "index_generated_utc": (scan or {}).get("index_generated_utc") if names else None,
+        "discovered_versions": {
+            name: (scan or {}).get("discovered_versions", {}).get(name)
+            for name in names
+        } if key == "domains" else None,
         "components": {
             name: {
                 field: results.get(name, {}).get(field)
@@ -266,6 +272,15 @@ def build_report(
                     },
                 )
             rule = rules.get(finding.get("rule_id"), {})
+            installed_version = installed.get(domain, "") if kind == "integration" else ""
+            scanned_version = (entry or {}).get("version", "")
+            if source == "local":
+                # Discovery may have changed while the background scan ran.
+                # Cards have no discovered version, even if a domain shares their name.
+                scanned_version = (
+                    (local_scan or {}).get("discovered_versions", {}).get(domain, installed_version)
+                    if kind == "integration" else ""
+                )
             detail = {
                 "domain": domain,
                 "kind": kind,
@@ -279,14 +294,8 @@ def build_report(
                 "days_until": days,
                 "due": describe_when(release, days),
                 "repository": (entry or {}).get("full_name", ""),
-                # A local finding matched the installed bytes, so the
-                # scanned version is the installed one.
-                "scanned_version": (
-                    installed.get(domain, "")
-                    if source == "local"
-                    else (entry or {}).get("version", "")
-                ),
-                "installed_version": installed.get(domain, ""),
+                "scanned_version": scanned_version,
+                "installed_version": installed_version,
                 "message": clip(rule.get("message") or "", 300),
                 "learn_more": rule.get("source", ""),
             }
@@ -427,6 +436,7 @@ def build_report(
             "integrations": _scan_coverage(local_scan, "domains", installed),
             "cards": _scan_coverage(local_card_scan, "cards", installed_cards),
         },
+        "installed_versions": installed,
         "local_scan_enabled": local_scan is not None,
         "index_generated_utc": index.get("generated_utc", ""),
         "index_core_version": index.get("core_version", ""),

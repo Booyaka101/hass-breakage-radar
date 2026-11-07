@@ -54,6 +54,7 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.alert_window_days = alert_window_days
         self.ignored_domains = tuple(ignored_domains)
         self.last_error: str | None = None
+        self.scan_errors: dict[str, str | None] = {"integrations": None, "cards": None}
         self._index: dict[str, Any] | None = None
         #: ``domain -> (signature, result)``; lets the 12-hourly refresh skip
         #: re-parsing any integration whose files and rules have not changed.
@@ -192,12 +193,14 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             current_version = getattr(ha_const, "__version__", "") or index.get(
                 "core_version", ""
             )
+            discovered_versions = dict(self._installed)
             scan = await self.hass.async_add_executor_job(
                 self._scan_local,
                 self.hass.config.path("custom_components"),
                 index,
                 current_version,
             )
+            scan_completed = datetime.now(UTC).isoformat()
             card_scan = await self.hass.async_add_executor_job(
                 self._scan_local_cards,
                 self.hass.config.path("www/community"),
@@ -205,13 +208,24 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 current_version,
             )
             if card_scan is not None:
-                self._card_scan = card_scan
+                self._card_scan = {
+                    **card_scan,
+                    "completed_utc": datetime.now(UTC).isoformat(),
+                    "index_generated_utc": index.get("generated_utc"),
+                }
             if scan is None and card_scan is None:
                 return  # failures already logged; keep the previous results
             if scan is not None:
-                self._local_scan = scan
+                self._local_scan = {
+                    **scan,
+                    "completed_utc": scan_completed,
+                    "index_generated_utc": index.get("generated_utc"),
+                    "discovered_versions": discovered_versions,
+                }
             self.async_set_updated_data(
-                self._compose(index, self._installed, self._local_scan)
+                # A refresh can fetch a newer index while the executor runs.
+                # Keep its scan context, but never roll the report back to it.
+                self._compose(self._index or index, self._installed, self._local_scan)
             )
 
     def _scan_local(
@@ -223,13 +237,16 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         that degrades to index-only matching rather than losing the report.
         """
         try:
-            return scan_installed(
+            result = scan_installed(
                 components_dir,
                 index.get("rules", []),
                 current_version=current_version,
                 cache=self._scan_cache,
             )
+            self.scan_errors["integrations"] = None
+            return result
         except Exception:  # noqa: BLE001 - a scan bug must never kill the sensor
+            self.scan_errors["integrations"] = "The latest integration scan failed; results may be retained from an earlier scan."
             _LOGGER.exception(
                 "Local source scan failed; falling back to index-only matching"
             )
@@ -240,13 +257,16 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     ) -> dict[str, Any] | None:
         """Scan HACS-installed cards. Blocking -- called from the executor."""
         try:
-            return scan_cards(
+            result = scan_cards(
                 community_dir,
                 index.get("rules", []),
                 current_version=current_version,
                 cache=self._scan_cache,
             )
+            self.scan_errors["cards"] = None
+            return result
         except Exception:  # noqa: BLE001 - a scan bug must never kill the sensor
+            self.scan_errors["cards"] = "The latest card scan failed; results may be retained from an earlier scan."
             _LOGGER.exception(
                 "Card scan failed; falling back to index-only matching"
             )

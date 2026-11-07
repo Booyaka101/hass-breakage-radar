@@ -23,6 +23,8 @@ async def async_get_config_entry_diagnostics(
     """Return the full breakage report for this system."""
     coordinator: BreakageRadarCoordinator = hass.data[DOMAIN][entry.entry_id]
     report = coordinator.data or {}
+    scan_errors = getattr(coordinator, "scan_errors", None)
+    scan_lock = getattr(coordinator, "_scan_lock", None)
 
     return {
         "index": {
@@ -46,8 +48,15 @@ async def async_get_config_entry_diagnostics(
             "skipped_minified_files": report.get("skipped_minified_files"),
         },
         "coverage": report.get("scan_coverage"),
+        "health": {
+            "index_update_success": getattr(coordinator, "last_update_success", None),
+            "index_error": getattr(coordinator, "last_error", None),
+            "scan_errors": dict(scan_errors) if isinstance(scan_errors, dict) else None,
+            "local_scan_in_progress": scan_lock.locked() if scan_lock is not None else None,
+        },
         "summary": {
             "installed": report.get("installed_count"),
+            "installed_versions": report.get("installed_versions"),
             "affected": report.get("affected_count"),
             "broken_now": report.get("broken_now"),
             "imminent": report.get("imminent"),

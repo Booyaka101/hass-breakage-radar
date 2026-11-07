@@ -23,6 +23,16 @@ comparing exports, and treats previous-export gaps as incomplete comparisons.
 Invalid previous exports and duplicate JSON keys are rejected. Terminal output
 escapes control characters and works with ASCII-only console encodings.
 
+Scan completion times, index-generation context, scan-time discovered versions,
+and live coordinator health are included in diagnostics. The helper checks local
+scan age separately (one day by default) and detects inconsistent metadata.
+Historical baselines are not considered incomplete solely due to age. Duplicate
+comparisons now match unchanged locations before allowing line moves.
+
+A background scan no longer rolls back a newer fetched index when they overlap.
+Retained findings keep their scan-time discovered version, and cards no longer
+inherit versions from same-named integrations. Alert thresholds are unchanged.
+
 ## 1.17.3 - 2026-10-22
 
 ### Test fixtures no longer count as installed integrations (#67)

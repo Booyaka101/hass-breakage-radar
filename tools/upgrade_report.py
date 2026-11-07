@@ -49,6 +49,16 @@ def _diagnostics(payload: Any) -> dict[str, Any]:
         count = data[section].get("installed")
         if type(count) is not int or count < 0:
             raise ValueError(f"invalid diagnostics count: {section}.installed")
+        if len(data[section]["not_analysed"]) > count:
+            raise ValueError(f"not_analysed exceeds installed count: {section}")
+    installed = data["summary"].get("installed_versions")
+    if installed is not None and (
+        not isinstance(installed, dict) or not all(
+            isinstance(name, str) and name and isinstance(version, str)
+            for name, version in installed.items()
+        )
+    ):
+        raise ValueError("invalid installed integration versions")
     if not isinstance(data.get("findings"), list):
         raise ValueError("missing diagnostics findings")
     if type(data.get("findings_truncated")) is not bool:
@@ -67,6 +77,18 @@ def _diagnostics(payload: Any) -> dict[str, Any]:
             raise ValueError("invalid diagnostics finding kind")
         if finding["source"] not in ("local", "index"):
             raise ValueError("invalid diagnostics finding source")
+        if "line" in finding and (type(finding["line"]) is not int or finding["line"] < 0):
+            raise ValueError("invalid diagnostics finding line")
+    affected = data["summary"].get("affected", 0)
+    affected_cards = data["cards"].get("affected", [])
+    if type(affected) is not int or not 0 <= affected <= data["summary"]["installed"]:
+        raise ValueError("invalid affected integration count")
+    if not isinstance(affected_cards, list) or len(affected_cards) > data["cards"]["installed"] or not all(
+        isinstance(name, str) and name for name in affected_cards
+    ):
+        raise ValueError("invalid affected cards")
+    if data["total_findings"] == 0 and (affected or affected_cards):
+        raise ValueError("affected components reported without findings")
     return data
 
 
@@ -84,9 +106,21 @@ def _identity(finding: dict[str, Any]) -> tuple[str, ...]:
 
 
 def _unmatched(findings: list[dict], baseline: list[dict]) -> list[dict]:
-    remaining = Counter(_identity(f) for f in baseline)
-    unmatched = []
+    # Match unchanged locations first. Only then allow a match to have moved,
+    # otherwise removing line 1 while retaining line 10 can report line 10 gone.
+    exact = Counter((_identity(f), str(f.get("line", ""))) for f in baseline)
+    pending = []
     for finding in findings:
+        key = (_identity(finding), str(finding.get("line", "")))
+        if exact[key]:
+            exact[key] -= 1
+        else:
+            pending.append(finding)
+    remaining = Counter()
+    for (identity, _line), count in exact.items():
+        remaining[identity] += count
+    unmatched = []
+    for finding in pending:
         identity = _identity(finding)
         if remaining[identity]:
             remaining[identity] -= 1
@@ -99,20 +133,42 @@ def _utcnow() -> datetime:
     return datetime.now(UTC)
 
 
-def _coverage_gaps(data: dict[str, Any], max_index_age_days: int) -> list[str]:
+def _timestamp(value: Any) -> datetime:
+    timestamp = datetime.fromisoformat(value)
+    if timestamp.tzinfo is None:
+        raise ValueError("timezone missing")
+    return timestamp
+
+
+def _timestamp_gaps(value: Any, label: str, max_age_days: int | None) -> list[str]:
     gaps = []
     try:
-        generated = datetime.fromisoformat(data["index"].get("generated_utc", ""))
-        if generated.tzinfo is None:
-            raise ValueError("timezone missing")
+        generated = _timestamp(value)
     except (TypeError, ValueError):
-        gaps.append("The index timestamp is unknown or invalid; freshness cannot be checked.")
+        gaps.append(f"The {label} timestamp is unknown or invalid; freshness cannot be checked.")
     else:
         age = _utcnow() - generated
         if age < -timedelta(minutes=5):
-            gaps.append("The index timestamp is in the future; check the export and system clock.")
-        elif age / timedelta(days=1) > max_index_age_days:
-            gaps.append(f"The index is older than {max_index_age_days} days; refresh before upgrading.")
+            gaps.append(f"The {label} timestamp is in the future; check the export and system clock.")
+        elif max_age_days is not None and age / timedelta(days=1) > max_age_days:
+            gaps.append(f"The {label} is older than {max_age_days} days; refresh before upgrading.")
+    return gaps
+
+
+def _coverage_gaps(
+    data: dict[str, Any], max_index_age_days: int, max_scan_age_days: int,
+    *, historical: bool = False,
+) -> list[str]:
+    # A baseline is intentionally historical. Age alone does not make its
+    # observations incomplete; missing metadata and failed/partial scans still do.
+    gaps = _timestamp_gaps(data["index"].get("generated_utc"), "index", None if historical else max_index_age_days)
+    health = data.get("health")
+    if not isinstance(health, dict) or health.get("index_update_success") is not True:
+        gaps.append("The latest index update is unsuccessful or its health is unknown.")
+    if isinstance(health, dict) and health.get("index_error"):
+        gaps.append("The coordinator reports an index error; the export may contain retained results.")
+    if isinstance(health, dict) and health.get("local_scan_in_progress"):
+        gaps.append("A local scan was still in progress when diagnostics were exported.")
     if data["findings_truncated"] or data["total_findings"] != len(data["findings"]):
         gaps.append("The export omits findings; target counts are lower bounds.")
     for section, label in (("summary", "integrations"), ("cards", "cards")):
@@ -134,12 +190,38 @@ def _coverage_gaps(data: dict[str, Any], max_index_age_days: int) -> list[str]:
         if not data[section]["installed"]:
             continue
         group = coverage.get(label) if isinstance(coverage, dict) else None
+        errors = health.get("scan_errors") if isinstance(health, dict) else None
+        if not isinstance(errors, dict) or label not in errors or errors[label] is not None:
+            gaps.append(f"The latest local scan health is failed or unknown for {label}.")
         components = group.get("components") if isinstance(group, dict) else None
         if not isinstance(components, dict) or len(components) != data[section]["installed"]:
             gaps.append(f"Per-component local scan coverage is unavailable or incomplete for {label}.")
             continue
         if type(group.get("rules_matchable")) is not int or group["rules_matchable"] <= 0:
             gaps.append(f"No local matchable rules are established for {label}.")
+        gaps.extend(_timestamp_gaps(group.get("completed_utc"), f"{label} local scan", None if historical else max_scan_age_days))
+        try:
+            same_index = _timestamp(group.get("index_generated_utc")) == _timestamp(data["index"].get("generated_utc"))
+        except (TypeError, ValueError):
+            same_index = False
+        if not same_index:
+            gaps.append(f"The {label} local scan was not established against this index snapshot.")
+        try:
+            impossible_order = _timestamp(group.get("completed_utc")) - _timestamp(group.get("index_generated_utc")) < -timedelta(minutes=5)
+        except (TypeError, ValueError):
+            impossible_order = False
+        if impossible_order:
+            gaps.append(f"The {label} local scan predates its recorded index context; chronology is inconsistent.")
+        if label == "integrations":
+            installed = data["summary"].get("installed_versions")
+            discovered = group.get("discovered_versions")
+            if not isinstance(installed, dict) or set(installed) != set(components):
+                gaps.append("Installed integration identities or versions are missing or inconsistent with local coverage.")
+            elif not isinstance(discovered, dict) or discovered != installed:
+                gaps.append("Discovered integration versions changed since the local scan or their scan-time versions are unknown.")
+        known = {f["domain"] for f in data["findings"] if f.get("kind", "integration") == ("card" if label == "cards" else "integration")}
+        if not known <= components.keys():
+            gaps.append(f"Finding identities disagree with the local coverage for {label}.")
         for name, component in components.items():
             if not isinstance(component, dict) or component.get("status") not in ("clean", "affected"):
                 gaps.append(f"Local scan did not establish coverage for {label}: {name}.")
@@ -167,12 +249,14 @@ def _coverage_gaps(data: dict[str, Any], max_index_age_days: int) -> list[str]:
 
 def build_upgrade_report(
     payload: Any, target_version: str, *, previous: Any = None,
-    max_index_age_days: int = 7,
+    max_index_age_days: int = 7, max_scan_age_days: int = 1,
 ) -> dict[str, Any]:
     """Partition the saved findings without changing sensor alert semantics."""
     target = release_key(target_version)
     if type(max_index_age_days) is not int or max_index_age_days < 0:
         raise ValueError("max_index_age_days must be a nonnegative integer")
+    if type(max_scan_age_days) is not int or max_scan_age_days < 0:
+        raise ValueError("max_scan_age_days must be a nonnegative integer")
     data = _diagnostics(payload)
     due, later, undated = [], [], []
     for finding in data["findings"]:
@@ -183,7 +267,7 @@ def build_upgrade_report(
         else:
             (due if deadline <= target else later).append(finding)
 
-    gaps = _coverage_gaps(data, max_index_age_days)
+    gaps = _coverage_gaps(data, max_index_age_days, max_scan_age_days)
 
     result = {
         "target_version": target_version,
@@ -193,6 +277,9 @@ def build_upgrade_report(
         "scan": data["scan"],
         "coverage": data.get("coverage"),
         "max_index_age_days": max_index_age_days,
+        "max_scan_age_days": max_scan_age_days,
+        "health": data.get("health"),
+        "installed_versions": data["summary"].get("installed_versions"),
         "due_by_target": due,
         "after_target": later,
         "unknown_deadline": undated,
@@ -213,10 +300,12 @@ def build_upgrade_report(
     }
     if previous is not None:
         old = _diagnostics(previous)
-        previous_gaps = _coverage_gaps(old, max_index_age_days)
+        previous_gaps = _coverage_gaps(old, max_index_age_days, max_scan_age_days, historical=True)
         if previous_gaps:
             gaps.append("The previous export has coverage gaps; the comparison is incomplete.")
         result["changes"] = {
+            "comparison_complete": not bool(gaps),
+            "previous_index": old["index"],
             "newly_observed": _unmatched(data["findings"], old["findings"]),
             "no_longer_observed": _unmatched(old["findings"], data["findings"]),
             "previous_coverage_gaps": previous_gaps,
@@ -309,6 +398,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--previous", type=Path, help="earlier diagnostics export for observed changes")
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("--max-index-age-days", type=int, default=7, help="freshness limit (default: 7 days)")
+    parser.add_argument("--max-scan-age-days", type=int, default=1, help="local scan freshness limit (default: 1 day)")
     args = parser.parse_args(argv)
     try:
         payload = _load_diagnostics(args.diagnostics)
@@ -318,6 +408,7 @@ def main(argv: list[str] | None = None) -> int:
         report = build_upgrade_report(
             payload, args.target_version, previous=previous,
             max_index_age_days=args.max_index_age_days,
+            max_scan_age_days=args.max_scan_age_days,
         )
     except (OSError, ValueError, RecursionError) as err:
         print(_terminal_text(f"Could not build upgrade report: {err}"), file=sys.stderr)

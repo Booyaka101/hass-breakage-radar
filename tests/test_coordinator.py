@@ -145,3 +145,60 @@ def test_next_refresh_reuses_the_last_scan_without_waiting(coordinator, monkeypa
     report = asyncio.run(run())
     assert report["details"][0]["source"] == "local"
     assert report["local_scan_enabled"] is True
+
+
+def test_scan_context_is_retained_when_index_and_discovery_change(coordinator):
+    async def run():
+        await coordinator._async_update_data()
+        for task in coordinator.hass.background_tasks:
+            await task
+
+    asyncio.run(run())
+    first = coordinator.data["scan_coverage"]["integrations"]
+    assert first["completed_utc"]
+    assert first["discovered_versions"] == {"fixture_tracker": "0.1.0"}
+    index = {**coordinator._index, "generated_utc": "2027-01-01T00:00:00Z"}
+    report = coordinator._compose(index, {"fixture_tracker": "0.2.0"}, coordinator._local_scan)
+    assert report["index_generated_utc"] != first["index_generated_utc"]
+    assert report["scan_coverage"]["integrations"] == first
+    assert report["installed_versions"] == {"fixture_tracker": "0.2.0"}
+    assert report["details"][0]["scanned_version"] == "0.1.0"
+    assert report["details"][0]["installed_version"] == "0.2.0"
+
+
+@pytest.mark.parametrize("kind,method,scanner", [
+    ("integrations", "_scan_local", "scan_installed"),
+    ("cards", "_scan_local_cards", "scan_cards"),
+])
+def test_scan_failure_health_clears_only_after_a_success(coordinator, monkeypatch, kind, method, scanner):
+    def fail(*args, **kwargs):
+        raise OSError("source inaccessible")
+
+    monkeypatch.setattr(f"custom_components.breakage_radar.coordinator.{scanner}", fail)
+    run_scan = getattr(coordinator, method)
+    assert run_scan("unused", {}, "2026.11") is None
+    assert coordinator.scan_errors[kind]
+    monkeypatch.setattr(f"custom_components.breakage_radar.coordinator.{scanner}", lambda *args, **kwargs: {})
+    assert run_scan("unused", {}, "2026.11") == {}
+    assert coordinator.scan_errors[kind] is None
+
+
+def test_background_scan_cannot_roll_back_a_newer_index(coordinator, monkeypatch):
+    async def run():
+        await coordinator._async_update_data()
+        first_index = coordinator._index
+        latest_index = {**first_index, "generated_utc": "2027-01-01T00:00:00Z"}
+        real_scan = coordinator._scan_local
+
+        def scan_and_refresh(*args):
+            result = real_scan(*args)
+            coordinator._index = latest_index
+            return result
+
+        monkeypatch.setattr(coordinator, "_scan_local", scan_and_refresh)
+        for task in coordinator.hass.background_tasks:
+            await task
+        assert coordinator.data["index_generated_utc"] == latest_index["generated_utc"]
+        assert coordinator.data["scan_coverage"]["integrations"]["index_generated_utc"] == first_index["generated_utc"]
+
+    asyncio.run(run())

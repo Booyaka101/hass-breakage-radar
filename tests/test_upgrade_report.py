@@ -26,17 +26,24 @@ def diagnostics():
             "skipped_minified_files": 0,
             "card_unparsed_files": 0, "card_skipped_files": 0,
         },
-        "summary": {"installed": 1, "not_analysed": []},
+        "summary": {"installed": 1, "installed_versions": {"example": "1.0"}, "not_analysed": []},
         "cards": {"installed": 0, "not_analysed": []},
+        "health": {"index_update_success": True, "index_error": None,
+                   "scan_errors": {"integrations": None, "cards": None}},
         "coverage": {
             "integrations": {
                 "rules_matchable": 1,
+                "completed_utc": "2026-11-07T00:00:00Z",
+                "index_generated_utc": "2026-11-07T00:00:00Z",
+                "discovered_versions": {"example": "1.0"},
                 "components": {"example": {
                     "status": "clean", "files_scanned": 1, "unparsed_files": 0,
                     "skipped_files": 0, "unreadable_directories": 0,
                 }},
             },
-            "cards": {"rules_matchable": 1, "components": {}},
+            "cards": {"rules_matchable": 1, "components": {},
+                      "completed_utc": "2026-11-07T00:00:00Z",
+                      "index_generated_utc": "2026-11-07T00:00:00Z"},
         },
         "findings": [], "findings_truncated": False, "total_findings": 0,
     }
@@ -104,6 +111,8 @@ def test_invalid_target_rejected(version):
 ])
 def test_gaps_never_read_as_clean(diagnostics, section, key, value):
     diagnostics[section][key] = value
+    if section == "cards" and key == "not_analysed":
+        diagnostics["cards"]["installed"] = len(value)
     report = build_upgrade_report(diagnostics, "2026.12")
     assert report["status"] == "incomplete"
     assert report["coverage_gaps"]
@@ -195,6 +204,9 @@ def test_consumes_actual_integration_diagnostics():
         "generated_utc": "2026-11-07T00:00:00Z",
     }
     local = {
+        "completed_utc": "2026-11-07T00:00:00Z",
+        "index_generated_utc": "2026-11-07T00:00:00Z",
+        "discovered_versions": {"example": "1.0"},
         "domains": {"example": {
             "status": "affected", "findings": [finding("2026.12")], "files_scanned": 1,
             "unparsed_files": 0, "skipped_files": 0, "unreadable_directories": 0,
@@ -204,6 +216,8 @@ def test_consumes_actual_integration_diagnostics():
     coordinator = SimpleNamespace(
         data=build_report(index, {"example": "1.0"}, local),
         index_url="https://example.org/index.json", alert_window_days=30,
+        last_update_success=True, last_error=None,
+        scan_errors={"integrations": None, "cards": None},
     )
     hass = SimpleNamespace(data={DOMAIN: {"test": coordinator}})
     export = asyncio.run(async_get_config_entry_diagnostics(hass, SimpleNamespace(entry_id="test")))
@@ -231,6 +245,8 @@ def test_invalid_or_timezone_free_index_timestamp_is_a_gap(diagnostics, generate
 ])
 def test_freshness_boundaries(diagnostics, generated, age, has_gap):
     diagnostics["index"]["generated_utc"] = generated
+    diagnostics["coverage"]["integrations"]["index_generated_utc"] = generated
+    diagnostics["coverage"]["integrations"]["completed_utc"] = "2026-11-07T12:00:00Z"
     assert build_upgrade_report(
         diagnostics, "2026.12", max_index_age_days=age,
     )["has_coverage_gaps"] is has_gap
@@ -347,13 +363,18 @@ def test_actual_diagnostics_preserve_card_scan_gaps(card_problem):
         "skipped_files": 0, "skipped_minified": 0, "unreadable_directories": 0,
     }
     card[card_problem] = 1
-    scan = {"cards": {"example-card": card}, "rules_matchable": 1, card_problem: 1}
+    scan = {
+        "cards": {"example-card": card}, "rules_matchable": 1, card_problem: 1,
+        "completed_utc": "2026-11-07T00:00:00Z",
+        "index_generated_utc": "2026-11-07T00:00:00Z",
+    }
     report = build_report(
         {"generated_utc": "2026-11-07T00:00:00Z"}, {}, cards=["example-card"], local_card_scan=scan,
     )
     coordinator = SimpleNamespace(
         data=report, index_url="https://example.org/index.json", alert_window_days=30,
         last_error=None,
+        last_update_success=True, scan_errors={"integrations": None, "cards": None},
     )
     hass = SimpleNamespace(data={DOMAIN: {"test": coordinator}})
     export = asyncio.run(async_get_config_entry_diagnostics(hass, SimpleNamespace(entry_id="test")))
@@ -409,6 +430,7 @@ def test_cli_age_override_and_valid_previous_are_offline(tmp_path, diagnostics, 
 
     monkeypatch.setattr(socket, "socket", no_network)
     diagnostics["index"]["generated_utc"] = "2026-10-30T12:00:00Z"
+    diagnostics["coverage"]["integrations"]["index_generated_utc"] = diagnostics["index"]["generated_utc"]
     path = tmp_path / "current.json"
     path.write_text(json.dumps(diagnostics), encoding="utf-8")
     assert main([
@@ -419,3 +441,143 @@ def test_cli_age_override_and_valid_previous_are_offline(tmp_path, diagnostics, 
     assert report["max_index_age_days"] == 10
     assert not report["changes"]["newly_observed"]
     assert not report["changes"]["no_longer_observed"]
+
+
+@pytest.mark.parametrize("change", ["timestamp", "index", "version", "identity", "health", "pending"])
+def test_snapshot_provenance_gaps_are_not_clean(diagnostics, change):
+    group = diagnostics["coverage"]["integrations"]
+    if change == "timestamp":
+        group["completed_utc"] = "2026-11-05T00:00:00Z"
+    elif change == "index":
+        group["index_generated_utc"] = "2026-11-06T00:00:00Z"
+    elif change == "version":
+        group["discovered_versions"]["example"] = "0.9"
+    elif change == "identity":
+        group["components"]["other"] = group["components"].pop("example")
+    elif change == "health":
+        diagnostics["health"]["scan_errors"]["integrations"] = "scan failed"
+    else:
+        diagnostics["health"]["local_scan_in_progress"] = True
+    report = build_upgrade_report(diagnostics, "2026.12")
+    assert report["status"] == "incomplete"
+    assert report["has_coverage_gaps"]
+
+
+def test_historical_baseline_does_not_need_to_be_fresh_today(diagnostics):
+    old = copy.deepcopy(diagnostics)
+    old["index"]["generated_utc"] = "2025-01-01T00:00:00Z"
+    group = old["coverage"]["integrations"]
+    group["index_generated_utc"] = "2025-01-01T00:00:00Z"
+    group["completed_utc"] = "2025-01-01T12:00:00Z"
+    report = build_upgrade_report(diagnostics, "2026.12", previous=old)
+    assert report["changes"]["comparison_complete"]
+    assert report["changes"]["previous_index"] == old["index"]
+    assert report["status"] == "no_known_findings"
+
+
+def test_duplicate_comparison_retains_exact_unchanged_location(diagnostics):
+    old = populate(copy.deepcopy(diagnostics), [finding("2026.12", line=1), finding("2026.12", line=10)])
+    populate(diagnostics, [finding("2026.12", line=10)])
+    changes = build_upgrade_report(diagnostics, "2026.12", previous=old)["changes"]
+    assert [f["line"] for f in changes["no_longer_observed"]] == [1]
+    assert not changes["newly_observed"]
+
+
+@pytest.mark.parametrize("metadata,value", [("index_update_success", False), ("index_error", "refresh failed")])
+def test_failed_index_health_is_not_overridden_by_recent_scan(diagnostics, metadata, value):
+    diagnostics["health"][metadata] = value
+    assert build_upgrade_report(diagnostics, "2026.12")["status"] == "incomplete"
+
+
+@pytest.mark.parametrize("age,has_gap", [(0, True), (1, False), (10**100, False)])
+def test_scan_age_limit_is_independent(diagnostics, age, has_gap):
+    assert build_upgrade_report(diagnostics, "2026.12", max_scan_age_days=age)["has_coverage_gaps"] is has_gap
+
+
+@pytest.mark.parametrize("age", [-1, True, 1.5])
+def test_invalid_scan_age_limit(diagnostics, age):
+    with pytest.raises(ValueError, match="max_scan_age_days"):
+        build_upgrade_report(diagnostics, "2026.12", max_scan_age_days=age)
+
+
+@pytest.mark.parametrize("section,key,value", [
+    ("summary", "affected", 1), ("summary", "affected", -1),
+    ("summary", "installed_versions", {"example": 1}),
+    ("summary", "not_analysed", ["a", "b"]),
+    ("cards", "affected", ["card"]),
+])
+def test_inconsistent_metadata_does_not_claim_clean(diagnostics, section, key, value):
+    diagnostics[section][key] = value
+    with pytest.raises(ValueError):
+        build_upgrade_report(diagnostics, "2026.12")
+
+
+@pytest.mark.parametrize("line", [True, -1, 1.5, "10"])
+def test_malformed_finding_line_is_rejected(diagnostics, line):
+    populate(diagnostics, [finding("2026.12", line=line)])
+    with pytest.raises(ValueError, match="finding line"):
+        build_upgrade_report(diagnostics, "2026.12")
+
+
+def test_ignore_filters_scan_time_versions_from_diagnostics():
+    from custom_components.breakage_radar.report import build_report
+
+    local = {"domains": {}, "discovered_versions": {"private_ignored": "1.0"}}
+    report = build_report({}, {"private_ignored": "1.0"}, local, ignored_domains=["private_ignored"])
+    assert report["installed_versions"] == {}
+    assert report["scan_coverage"]["integrations"]["discovered_versions"] == {}
+
+
+def test_scan_chronology_and_extreme_dates_do_not_overflow(diagnostics):
+    group = diagnostics["coverage"]["integrations"]
+    group["completed_utc"] = "2026-11-06T23:00:00Z"
+    report = build_upgrade_report(diagnostics, "2026.12")
+    assert any("chronology is inconsistent" in gap for gap in report["coverage_gaps"])
+    for key in ("completed_utc", "index_generated_utc"):
+        group[key] = "0001-01-01T00:00:00Z"
+    diagnostics["index"]["generated_utc"] = group["index_generated_utc"]
+    assert build_upgrade_report(
+        diagnostics, "2026.12", max_index_age_days=10**100, max_scan_age_days=10**100,
+    )["status"] == "no_known_findings"
+
+
+def test_card_does_not_inherit_same_named_integration_version():
+    from custom_components.breakage_radar.report import build_report
+
+    local_card = {"cards": {"example": {"status": "affected", "findings": [finding("2026.12")]}}}
+    report = build_report(
+        {}, {"example": "9.9"}, {"discovered_versions": {"example": "8.8"}},
+        cards=["example"], local_card_scan=local_card,
+    )
+    card = next(f for f in report["details"] if f["kind"] == "card")
+    assert card["installed_version"] == card["scanned_version"] == ""
+
+
+def test_cli_scan_freshness_override(tmp_path, diagnostics, capsys):
+    diagnostics["coverage"]["integrations"]["completed_utc"] = "2026-11-05T12:00:00Z"
+    diagnostics["index"]["generated_utc"] = "2026-11-05T00:00:00Z"
+    diagnostics["coverage"]["integrations"]["index_generated_utc"] = diagnostics["index"]["generated_utc"]
+    path = tmp_path / "current.json"
+    path.write_text(json.dumps(diagnostics), encoding="utf-8")
+    args = [str(path), "--target-version", "2026.12", "--format", "json"]
+    assert main(args) == 2
+    assert main(args + ["--max-scan-age-days", "2"]) == 0
+    capsys.readouterr()
+
+
+def test_export_preserves_live_coordinator_health_without_aliasing():
+    from custom_components.breakage_radar.const import DOMAIN
+    from custom_components.breakage_radar.diagnostics import async_get_config_entry_diagnostics
+
+    coordinator = SimpleNamespace(
+        data={}, index_url="https://example.org/index.json", alert_window_days=30,
+        last_update_success=False, last_error="index failed", _scan_lock=SimpleNamespace(locked=lambda: True),
+        scan_errors={"integrations": "scan failed", "cards": None},
+    )
+    hass = SimpleNamespace(data={DOMAIN: {"test": coordinator}})
+    export = asyncio.run(async_get_config_entry_diagnostics(hass, SimpleNamespace(entry_id="test")))
+    assert export["health"]["index_update_success"] is False
+    assert export["health"]["index_error"] == "index failed"
+    assert export["health"]["local_scan_in_progress"] is True
+    coordinator.scan_errors["integrations"] = None
+    assert export["health"]["scan_errors"]["integrations"] == "scan failed"

@@ -179,12 +179,21 @@ fix**: rules, coverage, and installed code may have changed. The comparison igno
 line-number moves but distinguishes rule, file, component kind, and deadline.
 Repeated matches in a file are counted; unmatched locations are representative
 when line numbers have moved, not proven added or removed lines. Coverage gaps
-in either export make the comparison incomplete.
+in either export make the comparison incomplete. Unchanged locations are matched
+first. A historical baseline is not rejected solely for being old; its missing
+metadata, failed scans, or partial coverage still make the comparison incomplete.
 
 The index must have a valid timezone-aware timestamp and be no more than seven
 days old. Use `--max-index-age-days N` to choose another age limit. Future-dated
 indexes (beyond five minutes of clock skew) are flagged too. This checks the index
 date, not when your installed files were last scanned.
+
+Local scans have a separate one-day limit (`--max-scan-age-days N`). Their
+completion times and index-generation context are exported, along with discovered
+integration versions at scan time. Missing context, a changed index generation,
+changed discovered versions, failed coordinator updates, or an in-progress scan
+make coverage incomplete. These are scan/discovery labels, not cryptographic
+proof of the installed bytes. Card versions are not established by discovery.
 
 Exit codes: **0** means no known findings due by the target, **1** means findings
 are due, and **2** means incomplete coverage or invalid input. Coverage gaps take
@@ -205,6 +214,9 @@ scan of known static rules, not your current installation. Check the index date
 and re-scan before upgrading. These diagnostics do not establish fixed integration
 releases. Keep exports private: they contain component names, versions, and paths.
 The helper does not change Home Assistant, its alerts, or your installed files.
+The integration also preserves the newer index if a refresh overlaps a background
+scan, and keeps the scan-time version label on retained findings. Alert thresholds
+and settings are unchanged.
 
 ### What you get
 
