@@ -6,6 +6,8 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.18.0 - 2026-11-07
+
 ### Offline target-release upgrade report
 
 `python -m tools.upgrade_report <diagnostics.json> --target-version 2026.12`
