@@ -75,6 +75,34 @@ def _index_by_card(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return mapping
 
 
+def _scan_coverage(
+    scan: dict[str, Any] | None, key: str, names: Iterable[str]
+) -> dict[str, Any]:
+    """Export local coverage without copying findings or installed source."""
+    results = (scan or {}).get(key, {})
+    names = sorted(names)
+    return {
+        "rules_matchable": (scan or {}).get("rules_matchable") if names else 0,
+        "completed_utc": (scan or {}).get("completed_utc") if names else None,
+        "index_generated_utc": (scan or {}).get("index_generated_utc") if names else None,
+        "discovered_versions": {
+            name: (scan or {}).get("discovered_versions", {}).get(name)
+            for name in names
+        } if key == "domains" else None,
+        "components": {
+            name: {
+                field: results.get(name, {}).get(field)
+                for field in (
+                    "status", "reason", "files_scanned", "unparsed_files",
+                    "skipped_files", "skipped_minified",
+                    "unreadable_directories",
+                )
+            }
+            for name in names
+        },
+    }
+
+
 def build_report(
     index: dict[str, Any],
     installed: dict[str, str],
@@ -244,6 +272,15 @@ def build_report(
                     },
                 )
             rule = rules.get(finding.get("rule_id"), {})
+            installed_version = installed.get(domain, "") if kind == "integration" else ""
+            scanned_version = (entry or {}).get("version", "")
+            if source == "local":
+                # Discovery may have changed while the background scan ran.
+                # Cards have no discovered version, even if a domain shares their name.
+                scanned_version = (
+                    (local_scan or {}).get("discovered_versions", {}).get(domain, installed_version)
+                    if kind == "integration" else ""
+                )
             detail = {
                 "domain": domain,
                 "kind": kind,
@@ -257,14 +294,8 @@ def build_report(
                 "days_until": days,
                 "due": describe_when(release, days),
                 "repository": (entry or {}).get("full_name", ""),
-                # A local finding matched the installed bytes, so the
-                # scanned version is the installed one.
-                "scanned_version": (
-                    installed.get(domain, "")
-                    if source == "local"
-                    else (entry or {}).get("version", "")
-                ),
-                "installed_version": installed.get(domain, ""),
+                "scanned_version": scanned_version,
+                "installed_version": installed_version,
                 "message": clip(rule.get("message") or "", 300),
                 "learn_more": rule.get("source", ""),
             }
@@ -398,7 +429,14 @@ def build_report(
         "unparsed_files": (local_scan or {}).get("unparsed_files", 0),
         "skipped_files": (local_scan or {}).get("skipped_files", 0),
         "card_files_scanned": (local_card_scan or {}).get("files_scanned", 0),
+        "card_unparsed_files": (local_card_scan or {}).get("unparsed_files", 0),
+        "card_skipped_files": (local_card_scan or {}).get("skipped_files", 0),
         "skipped_minified_files": (local_card_scan or {}).get("skipped_minified", 0),
+        "scan_coverage": {
+            "integrations": _scan_coverage(local_scan, "domains", installed),
+            "cards": _scan_coverage(local_card_scan, "cards", installed_cards),
+        },
+        "installed_versions": installed,
         "local_scan_enabled": local_scan is not None,
         "index_generated_utc": index.get("generated_utc", ""),
         "index_core_version": index.get("core_version", ""),

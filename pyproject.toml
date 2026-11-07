@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hass-breakage-radar"
-version = "1.17.3"
+version = "1.18.0"
 description = "Find out which of your Home Assistant custom integrations stop working, and in which future release."
 readme = "README.md"
 license = { text = "MIT" }
@@ -47,6 +47,7 @@ breakage-radar-extract-rules = "tools.extract_rules:main"
 breakage-radar-catalog = "tools.catalog:main"
 breakage-radar-scan = "tools.scan:main"
 breakage-radar-check = "tools.check_local:main"
+breakage-radar-upgrade-report = "tools.upgrade_report:main"
 breakage-radar-build-index = "tools.build_index:main"
 
 [tool.setuptools]
