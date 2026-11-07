@@ -6,6 +6,15 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+### Offline target-release upgrade report
+
+`python -m tools.upgrade_report <diagnostics.json> --target-version 2026.12`
+groups saved findings by a target Home Assistant release, including already
+overdue findings. Text and JSON outputs preserve source and version evidence,
+identify coverage gaps, and optionally compare observations with `--previous`.
+Missing findings are not claimed as fixes, and no known findings is not a
+compatibility guarantee. This helper makes no network requests or changes to HA.
+
 ## 1.17.3 - 2026-10-22
 
 ### Test fixtures no longer count as installed integrations (#67)

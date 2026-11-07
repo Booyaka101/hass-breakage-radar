@@ -159,6 +159,37 @@ The config flow has a single confirmation step. Two settings are available after
 under **Configure**: how far ahead a deadline gets its own notification, and any
 integrations you want left out of the report entirely.
 
+### Plan an upgrade from diagnostics
+
+Download fresh diagnostics from **Settings → Devices & Services → Breakage Radar**,
+then run this offline helper from a checkout of this repository (Python 3.12+):
+
+```sh
+python -m tools.upgrade_report breakage_radar.json --target-version 2026.12
+```
+
+It separates findings due **on or before** the target release from later findings
+and unknown deadlines. Existing overdue findings are included. Both the Home
+Assistant download envelope and its inner `data` object are accepted. No files
+are uploaded and no network requests are made.
+
+Use `--format json` for the full evidence and `--previous earlier.json` to compare
+observations with an earlier export. A disappeared finding is **not a confirmed
+fix**: rules, coverage, and installed code may have changed. The comparison ignores
+line-number moves but distinguishes rule, file, component kind, and deadline.
+
+Exit codes: **0** means no known findings due by the target, **1** means findings
+are due, and **2** means incomplete coverage or invalid input. Coverage gaps take
+precedence over exit 1, but known findings are still shown. Truncated exports,
+unknown components, ignored components, skipped files, and index-only evidence
+are called out rather than treated as clean.
+
+**No known findings is not a guarantee of compatibility.** This reads a saved
+scan of known static rules, not your current installation. Check the index date
+and re-scan before upgrading. These diagnostics do not establish fixed integration
+releases. Keep exports private: they contain component names, versions, and paths.
+The helper does not change Home Assistant, its alerts, or your installed files.
+
 ### What you get
 
 `sensor.breakage_radar_affected` — the number of installed custom integrations with at
