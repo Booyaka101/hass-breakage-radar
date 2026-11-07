@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-06T03:21:27Z",
+  "generated_utc": "2026-11-07T03:20:35Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "04c02186b0f7e82b77676f1e9485980117c5f8c73480c31ab124c989646538ac",
+  "core_tarball_sha256": "88d97a7c69bc84d7cfe0e7798801cc3f75ab656ef957933ac1bc61ff9fe1f88f",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 159,
-    "future": 136,
-    "matchable_future": 64,
-    "core_files_scanned": 10965,
+    "total": 170,
+    "future": 147,
+    "matchable_future": 75,
+    "core_files_scanned": 10964,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 132,
+    "from_core_ast": 143,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -79,13 +79,13 @@
       "symbol": "out_of_blinker_fluid",
       "message": "`kitchen_sink` raises the `out_of_blinker_fluid` repair issue, and the configuration it reports stops working in Home Assistant 2023.1.",
       "breaks_in": "2023.1",
-      "source": "homeassistant/components/kitchen_sink/__init__.py:202",
+      "source": "homeassistant/components/kitchen_sink/__init__.py:203",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/kitchen_sink/__init__.py#L202"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/kitchen_sink/__init__.py#L203"
     },
     {
       "id": "core-issue-kitchen-sink-transmogrifier-deprecated-2023.1",
@@ -2079,7 +2079,7 @@
       "symbol": "ATTR_VIA_DEVICE",
       "message": "ATTR_VIA_DEVICE imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from via_device instead.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:400",
+      "source": "homeassistant/const.py:401",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2095,7 +2095,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L400"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L401"
     },
     {
       "id": "core-import-const-concentration-grams-per-cubic-meter",
@@ -2103,7 +2103,7 @@
       "symbol": "CONCENTRATION_GRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_GRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:819",
+      "source": "homeassistant/const.py:820",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2118,7 +2118,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L819"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L820"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-foot",
@@ -2126,7 +2126,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:828",
+      "source": "homeassistant/const.py:829",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2141,7 +2141,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L828"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L829"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-meter",
@@ -2149,7 +2149,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:825",
+      "source": "homeassistant/const.py:826",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2164,7 +2164,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L825"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L826"
     },
     {
       "id": "core-import-const-concentration-milligrams-per-cubic-meter",
@@ -2172,7 +2172,7 @@
       "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:822",
+      "source": "homeassistant/const.py:823",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2187,7 +2187,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L822"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L823"
     },
     {
       "id": "core-import-const-concentration-parts-per-billion",
@@ -2195,7 +2195,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_BILLION",
       "message": "CONCENTRATION_PARTS_PER_BILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:837",
+      "source": "homeassistant/const.py:838",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2210,7 +2210,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L837"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L838"
     },
     {
       "id": "core-import-const-concentration-parts-per-cubic-meter",
@@ -2218,7 +2218,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_CUBIC_METER",
       "message": "CONCENTRATION_PARTS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from p/m³ instead.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:831",
+      "source": "homeassistant/const.py:832",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2234,7 +2234,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L831"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L832"
     },
     {
       "id": "core-import-const-concentration-parts-per-million",
@@ -2242,7 +2242,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_MILLION",
       "message": "CONCENTRATION_PARTS_PER_MILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:834",
+      "source": "homeassistant/const.py:835",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2257,7 +2257,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L834"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L835"
     },
     {
       "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
@@ -2960,6 +2960,270 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/chat_log.py#L682"
     },
     {
+      "id": "core-import-const-attr-configuration-url",
+      "kind": "import",
+      "symbol": "ATTR_CONFIGURATION_URL",
+      "message": "ATTR_CONFIGURATION_URL imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from configuration_url instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:388",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "configuration_url",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_CONFIGURATION_URL"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L388"
+    },
+    {
+      "id": "core-import-const-attr-connections",
+      "kind": "import",
+      "symbol": "ATTR_CONNECTIONS",
+      "message": "ATTR_CONNECTIONS imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from connections instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:391",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "connections",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_CONNECTIONS"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L391"
+    },
+    {
+      "id": "core-import-const-attr-default-name",
+      "kind": "import",
+      "symbol": "ATTR_DEFAULT_NAME",
+      "message": "ATTR_DEFAULT_NAME imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from default_name instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:392",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "default_name",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_DEFAULT_NAME"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L392"
+    },
+    {
+      "id": "core-import-const-attr-hw-version",
+      "kind": "import",
+      "symbol": "ATTR_HW_VERSION",
+      "message": "ATTR_HW_VERSION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from hw_version instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:393",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "hw_version",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_HW_VERSION"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L393"
+    },
+    {
+      "id": "core-import-const-attr-identifiers",
+      "kind": "import",
+      "symbol": "ATTR_IDENTIFIERS",
+      "message": "ATTR_IDENTIFIERS imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from identifiers instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:394",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "identifiers",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_IDENTIFIERS"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L394"
+    },
+    {
+      "id": "core-import-const-attr-manufacturer",
+      "kind": "import",
+      "symbol": "ATTR_MANUFACTURER",
+      "message": "ATTR_MANUFACTURER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from manufacturer instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:395",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "manufacturer",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_MANUFACTURER"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L395"
+    },
+    {
+      "id": "core-import-const-attr-model",
+      "kind": "import",
+      "symbol": "ATTR_MODEL",
+      "message": "ATTR_MODEL imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from model instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:396",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "model",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_MODEL"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L396"
+    },
+    {
+      "id": "core-import-const-attr-model-id",
+      "kind": "import",
+      "symbol": "ATTR_MODEL_ID",
+      "message": "ATTR_MODEL_ID imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from model_id instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:397",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "model_id",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_MODEL_ID"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L397"
+    },
+    {
+      "id": "core-import-const-attr-serial-number",
+      "kind": "import",
+      "symbol": "ATTR_SERIAL_NUMBER",
+      "message": "ATTR_SERIAL_NUMBER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from serial_number instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:398",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "serial_number",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_SERIAL_NUMBER"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L398"
+    },
+    {
+      "id": "core-import-const-attr-suggested-area",
+      "kind": "import",
+      "symbol": "ATTR_SUGGESTED_AREA",
+      "message": "ATTR_SUGGESTED_AREA imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from suggested_area instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:399",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "suggested_area",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_SUGGESTED_AREA"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L399"
+    },
+    {
+      "id": "core-import-const-attr-sw-version",
+      "kind": "import",
+      "symbol": "ATTR_SW_VERSION",
+      "message": "ATTR_SW_VERSION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.12. Import it from sw_version instead.",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/const.py:400",
+      "origin": "core-ast",
+      "confidence": "high",
+      "matchable": true,
+      "replacement": "sw_version",
+      "match": {
+        "type": "import_from",
+        "modules": [
+          "homeassistant.const"
+        ],
+        "names": [
+          "ATTR_SW_VERSION"
+        ]
+      },
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L400"
+    },
+    {
       "id": "core-import-typing-undefined",
       "kind": "import",
       "symbol": "UNDEFINED",
@@ -3036,5 +3300,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-06T03:21:28Z"
+  "blog_merged_utc": "2026-11-07T03:20:36Z"
 }
