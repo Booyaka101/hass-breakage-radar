@@ -177,6 +177,8 @@ Use `--format json` for the full evidence and `--previous earlier.json` to compa
 observations with an earlier export. A disappeared finding is **not a confirmed
 fix**: rules, coverage, and installed code may have changed. The comparison ignores
 line-number moves but distinguishes rule, file, component kind, and deadline.
+Text and JSON comparisons include newly and no-longer-observed findings with
+locations. Text output explicitly labels incomplete comparisons.
 Repeated matches in a file are counted; unmatched locations are representative
 when line numbers have moved, not proven added or removed lines. Coverage gaps
 in either export make the comparison incomplete. Unchanged locations are matched

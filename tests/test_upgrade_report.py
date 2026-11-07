@@ -168,6 +168,17 @@ def test_comparison_ignores_line_moves_and_never_claims_fixes(diagnostics):
     assert "not confirmed fixes" in changes["note"]
 
 
+def test_text_comparison_shows_missing_locations_and_incomplete_state(diagnostics):
+    old = populate(copy.deepcopy(diagnostics), [finding("2026.12", line=73)])
+    diagnostics["scan"]["skipped_files"] = 1
+    report = build_upgrade_report(diagnostics, "2026.12", previous=old)
+    text = render_text(report)
+    assert "Comparison incomplete" in text
+    assert "No longer observed: 1" in text
+    assert f"{old['findings'][0]['file']}:73" in text
+    assert old["findings"][0]["rule_id"] in text
+
+
 @pytest.mark.parametrize("payload", [{}, [], {"data": {}}, {"findings": []}])
 def test_unrelated_json_is_not_a_clean_report(payload):
     with pytest.raises(ValueError):

@@ -202,3 +202,38 @@ def test_background_scan_cannot_roll_back_a_newer_index(coordinator, monkeypatch
         assert coordinator.data["scan_coverage"]["integrations"]["index_generated_utc"] == first_index["generated_utc"]
 
     asyncio.run(run())
+
+
+def test_background_scan_cannot_clear_a_failed_index_refresh(coordinator, monkeypatch):
+    from homeassistant.helpers.update_coordinator import UpdateFailed
+
+    async def run():
+        initial = await coordinator._async_update_data()
+        coordinator.data = initial
+
+        async def fail_fetch():
+            raise UpdateFailed("index unavailable")
+
+        monkeypatch.setattr(coordinator, "_fetch_index", fail_fetch)
+        with pytest.raises(UpdateFailed):
+            await coordinator._async_update_data()
+        # Home Assistant sets this when its refresh wrapper catches UpdateFailed.
+        coordinator.last_update_success = False
+        for task in coordinator.hass.background_tasks:
+            await task
+        assert coordinator.last_update_success is False
+        assert coordinator.last_error == "index unavailable"
+        assert coordinator.data is initial
+        assert coordinator._local_scan is not None
+
+        async def recover_fetch():
+            return coordinator._index
+
+        monkeypatch.setattr(coordinator, "_fetch_index", recover_fetch)
+        recovered = await coordinator._async_update_data()
+        assert recovered["local_scan_enabled"] is True
+        assert coordinator.last_error is None
+        await coordinator.hass.background_tasks[-1]
+        assert coordinator.last_update_success is True
+
+    asyncio.run(run())

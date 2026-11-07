@@ -33,6 +33,10 @@ A background scan no longer rolls back a newer fetched index when they overlap.
 Retained findings keep their scan-time discovered version, and cards no longer
 inherit versions from same-named integrations. Alert thresholds are unchanged.
 
+Background scan completion also preserves a failed index-refresh state until a
+fetch succeeds. Text comparisons list newly and no-longer-observed findings with
+locations and explicitly label incomplete comparisons, rather than only counts.
+
 ## 1.17.3 - 2026-10-22
 
 ### Test fixtures no longer count as installed integrations (#67)

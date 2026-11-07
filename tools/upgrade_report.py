@@ -325,6 +325,21 @@ def build_upgrade_report(
     return result
 
 
+def _finding_lines(finding: dict[str, Any]) -> list[str]:
+    lines = [
+        f"  {finding['domain']} [{finding.get('kind', 'integration')}] "
+        f"{finding['rule_id']} -> {finding['breaks_in'] or 'unknown'} "
+        f"({finding['source']}, {finding['file']}:{finding.get('line', 0)})",
+        f"    Installed: {finding.get('installed_version') or 'unknown'}; "
+        f"scanned: {finding.get('scanned_version') or 'unknown'}; "
+        f"repository: {finding.get('repository') or 'unknown'}",
+    ]
+    for field in ("message", "learn_more"):
+        if finding.get(field):
+            lines.append(f"    {finding[field]}")
+    return lines
+
+
 def render_text(report: dict[str, Any]) -> str:
     lines = [f"Home Assistant {report['target_version']}: {report['status']}"]
     lines.append(f"Index generated: {report['index'].get('generated_utc') or 'unknown'}")
@@ -335,19 +350,7 @@ def render_text(report: dict[str, Any]) -> str:
     ):
         lines.extend(["", f"{title}: {len(report[key])}"])
         for finding in report[key]:
-            lines.append(
-                f"  {finding['domain']} [{finding.get('kind', 'integration')}] "
-                f"{finding['rule_id']} -> {finding['breaks_in'] or 'unknown'} "
-                f"({finding['source']}, {finding['file']}:{finding.get('line', 0)})"
-            )
-            lines.append(
-                f"    Installed: {finding.get('installed_version') or 'unknown'}; "
-                f"scanned: {finding.get('scanned_version') or 'unknown'}; "
-                f"repository: {finding.get('repository') or 'unknown'}"
-            )
-            for field in ("message", "learn_more"):
-                if finding.get(field):
-                    lines.append(f"    {finding[field]}")
+            lines.extend(_finding_lines(finding))
     for name, values in report["not_analysed"].items():
         if values:
             lines.append(f"{name}: {json.dumps(values, ensure_ascii=True)}")
@@ -360,6 +363,12 @@ def render_text(report: dict[str, Any]) -> str:
             f"{len(changes['no_longer_observed'])} no longer observed."
         )
         lines.append(changes["note"])
+        if not changes["comparison_complete"]:
+            lines.append("Comparison incomplete: coverage gaps prevent a complete comparison.")
+        for key, title in (("newly_observed", "Newly observed"), ("no_longer_observed", "No longer observed")):
+            lines.append(f"{title}: {len(changes[key])}")
+            for finding in changes[key]:
+                lines.extend(_finding_lines(finding))
         for gap in changes["previous_coverage_gaps"]:
             lines.append(f"Previous export: {gap}")
         if changes["exports_truncated"]:

@@ -222,6 +222,10 @@ class BreakageRadarCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                     "index_generated_utc": index.get("generated_utc"),
                     "discovered_versions": discovered_versions,
                 }
+            # Publishing scan results marks the coordinator healthy in HA.
+            # Retain the scan, but only a successful fetch may clear this failure.
+            if self.last_error is not None:
+                return
             self.async_set_updated_data(
                 # A refresh can fetch a newer index while the executor runs.
                 # Keep its scan context, but never roll the report back to it.
