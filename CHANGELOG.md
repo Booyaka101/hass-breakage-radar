@@ -15,6 +15,14 @@ identify coverage gaps, and optionally compare observations with `--previous`.
 Missing findings are not claimed as fixes, and no known findings is not a
 compatibility guarantee. This helper makes no network requests or changes to HA.
 
+Coverage diagnostics now retain per-component local scan status and unreadable
+directory counts, plus card parse and size-cap skips. Older exports with missing
+coverage are treated as incomplete. The helper checks timezone-aware index dates
+against a configurable seven-day freshness limit, counts repeated matches when
+comparing exports, and treats previous-export gaps as incomplete comparisons.
+Invalid previous exports and duplicate JSON keys are rejected. Terminal output
+escapes control characters and works with ASCII-only console encodings.
+
 ## 1.17.3 - 2026-10-22
 
 ### Test fixtures no longer count as installed integrations (#67)

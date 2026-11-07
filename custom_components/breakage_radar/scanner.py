@@ -226,6 +226,7 @@ def _scan_domain(
         "findings": findings,
         "files_scanned": stats.files_scanned,
         "unparsed_files": unparsed,
+        "unreadable_directories": unreadable_dirs,
         "skipped_files": skipped_files,
         "cached": False,
     }
@@ -386,6 +387,7 @@ def _scan_card(
         "findings": findings,
         "files_scanned": stats.files_scanned,
         "unparsed_files": unparsed,
+        "unreadable_directories": unreadable_dirs,
         "skipped_files": skipped_files,
         "skipped_minified": skipped_minified,
         "cached": False,

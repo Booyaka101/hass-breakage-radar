@@ -75,6 +75,28 @@ def _index_by_card(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return mapping
 
 
+def _scan_coverage(
+    scan: dict[str, Any] | None, key: str, names: Iterable[str]
+) -> dict[str, Any]:
+    """Export local coverage without copying findings or installed source."""
+    results = (scan or {}).get(key, {})
+    names = sorted(names)
+    return {
+        "rules_matchable": (scan or {}).get("rules_matchable") if names else 0,
+        "components": {
+            name: {
+                field: results.get(name, {}).get(field)
+                for field in (
+                    "status", "reason", "files_scanned", "unparsed_files",
+                    "skipped_files", "skipped_minified",
+                    "unreadable_directories",
+                )
+            }
+            for name in names
+        },
+    }
+
+
 def build_report(
     index: dict[str, Any],
     installed: dict[str, str],
@@ -398,7 +420,13 @@ def build_report(
         "unparsed_files": (local_scan or {}).get("unparsed_files", 0),
         "skipped_files": (local_scan or {}).get("skipped_files", 0),
         "card_files_scanned": (local_card_scan or {}).get("files_scanned", 0),
+        "card_unparsed_files": (local_card_scan or {}).get("unparsed_files", 0),
+        "card_skipped_files": (local_card_scan or {}).get("skipped_files", 0),
         "skipped_minified_files": (local_card_scan or {}).get("skipped_minified", 0),
+        "scan_coverage": {
+            "integrations": _scan_coverage(local_scan, "domains", installed),
+            "cards": _scan_coverage(local_card_scan, "cards", installed_cards),
+        },
         "local_scan_enabled": local_scan is not None,
         "index_generated_utc": index.get("generated_utc", ""),
         "index_core_version": index.get("core_version", ""),

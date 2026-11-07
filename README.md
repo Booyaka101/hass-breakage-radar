@@ -177,12 +177,28 @@ Use `--format json` for the full evidence and `--previous earlier.json` to compa
 observations with an earlier export. A disappeared finding is **not a confirmed
 fix**: rules, coverage, and installed code may have changed. The comparison ignores
 line-number moves but distinguishes rule, file, component kind, and deadline.
+Repeated matches in a file are counted; unmatched locations are representative
+when line numbers have moved, not proven added or removed lines. Coverage gaps
+in either export make the comparison incomplete.
+
+The index must have a valid timezone-aware timestamp and be no more than seven
+days old. Use `--max-index-age-days N` to choose another age limit. Future-dated
+indexes (beyond five minutes of clock skew) are flagged too. This checks the index
+date, not when your installed files were last scanned.
 
 Exit codes: **0** means no known findings due by the target, **1** means findings
 are due, and **2** means incomplete coverage or invalid input. Coverage gaps take
 precedence over exit 1, but known findings are still shown. Truncated exports,
 unknown components, ignored components, skipped files, and index-only evidence
 are called out rather than treated as clean.
+
+Diagnostics from the updated integration include local per-component coverage,
+including card parse errors, size-cap skips, and unreadable directories. Older
+exports remain readable, but missing coverage is flagged as incomplete. Update
+the integration and download fresh diagnostics to obtain these fields. Detailed
+coverage is not added to sensor attributes or the recorder. Text output escapes
+terminal controls and non-ASCII characters; JSON preserves evidence as escaped
+strings.
 
 **No known findings is not a guarantee of compatibility.** This reads a saved
 scan of known static rules, not your current installation. Check the index date

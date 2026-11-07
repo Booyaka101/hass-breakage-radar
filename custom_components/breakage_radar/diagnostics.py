@@ -41,8 +41,11 @@ async def async_get_config_entry_diagnostics(
             "unparsed_files": report.get("unparsed_files"),
             "skipped_files": report.get("skipped_files"),
             "card_files_scanned": report.get("card_files_scanned"),
+            "card_unparsed_files": report.get("card_unparsed_files"),
+            "card_skipped_files": report.get("card_skipped_files"),
             "skipped_minified_files": report.get("skipped_minified_files"),
         },
+        "coverage": report.get("scan_coverage"),
         "summary": {
             "installed": report.get("installed_count"),
             "affected": report.get("affected_count"),
