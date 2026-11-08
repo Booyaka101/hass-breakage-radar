@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-07T03:20:35Z",
+  "generated_utc": "2026-11-08T03:22:01Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "88d97a7c69bc84d7cfe0e7798801cc3f75ab656ef957933ac1bc61ff9fe1f88f",
+  "core_tarball_sha256": "d7a969d9b7a563e5c73152488153ce73495c5e4f325282ca1d314c9d0fd97547",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 170,
-    "future": 147,
+    "total": 171,
+    "future": 148,
     "matchable_future": 75,
-    "core_files_scanned": 10964,
+    "core_files_scanned": 10968,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 143,
+    "from_core_ast": 144,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -51,13 +51,13 @@
       "symbol": "manual_migration",
       "message": "`bayesian` raises the `manual_migration` repair issue, and the configuration it reports stops working in Home Assistant 2022.10.",
       "breaks_in": "2022.10",
-      "source": "homeassistant/components/bayesian/issues.py:17",
+      "source": "homeassistant/components/bayesian/issues.py:18",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L17"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L18"
     },
     {
       "id": "core-issue-bayesian-no-prob-given-false-2022.10",
@@ -65,13 +65,13 @@
       "symbol": "no_prob_given_false",
       "message": "`bayesian` raises the `no_prob_given_false` repair issue, and the configuration it reports stops working in Home Assistant 2022.10.",
       "breaks_in": "2022.10",
-      "source": "homeassistant/components/bayesian/issues.py:34",
+      "source": "homeassistant/components/bayesian/issues.py:57",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L34"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L57"
     },
     {
       "id": "core-issue-kitchen-sink-out-of-blinker-fluid-2023.1",
@@ -1689,6 +1689,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hlk_sw16/__init__.py#L120"
     },
     {
+      "id": "core-issue-izone-deprecated-airflow-action-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_airflow_action",
+      "message": "`izone` raises the `deprecated_airflow_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/izone/services.py:43",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/izone/services.py#L43"
+    },
+    {
       "id": "core-issue-lutron-caseta-deprecated-yaml-2027.6",
       "kind": "issue",
       "symbol": "deprecated_yaml",
@@ -2923,13 +2937,13 @@
       "symbol": "does not provide device info for its ScannerEntity device tracker, it should pro...",
       "message": "does not provide device info for its ScannerEntity device tracker, it should provide device info with the MAC address of the tracked device in its connections, or an empty DeviceInfo() if the tracker should not have a device",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/device_tracker/entity.py:617",
+      "source": "homeassistant/components/device_tracker/entity.py:610",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L617"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L610"
     },
     {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
@@ -3300,5 +3314,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-07T03:20:36Z"
+  "blog_merged_utc": "2026-11-08T03:22:01Z"
 }
