@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-08T03:22:01Z",
+  "generated_utc": "2026-11-09T03:23:56Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "d7a969d9b7a563e5c73152488153ce73495c5e4f325282ca1d314c9d0fd97547",
+  "core_tarball_sha256": "a826293440233a8d5d6d53d296dad74af37612ed39082a9b904c197676ad9a12",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 171,
     "future": 148,
     "matchable_future": 75,
-    "core_files_scanned": 10968,
+    "core_files_scanned": 10966,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
@@ -190,13 +190,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3173",
+      "source": "homeassistant/config_entries.py:3175",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3173"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3175"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -1274,13 +1274,13 @@
       "symbol": "deprecated_see_action",
       "message": "`device_tracker` raises the `deprecated_see_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/device_tracker/legacy.py:240",
+      "source": "homeassistant/components/device_tracker/legacy.py:238",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L240"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/legacy.py#L238"
     },
     {
       "id": "core-issue-mastodon-deprecated-media-path-2027.5",
@@ -3314,5 +3314,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-08T03:22:01Z"
+  "blog_merged_utc": "2026-11-09T03:23:56Z"
 }
