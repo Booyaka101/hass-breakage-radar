@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-09T03:23:56Z",
+  "generated_utc": "2026-11-10T03:21:19Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "a826293440233a8d5d6d53d296dad74af37612ed39082a9b904c197676ad9a12",
+  "core_tarball_sha256": "de8f833fe866e0a93fa8d621ba9be76845f22acf313a644eaefe545b54a965ed",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 171,
-    "future": 148,
+    "total": 173,
+    "future": 150,
     "matchable_future": 75,
-    "core_files_scanned": 10966,
+    "core_files_scanned": 10971,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 144,
+    "from_core_ast": 146,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -190,13 +190,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3175",
+      "source": "homeassistant/config_entries.py:3199",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3175"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3199"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -218,13 +218,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1915",
+      "source": "homeassistant/config_entries.py:1936",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1915"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1936"
     },
     {
       "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
@@ -1801,6 +1801,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/venstar/climate.py#L130"
     },
     {
+      "id": "core-issue-zwave-js-deprecated-ping-action-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_ping_action",
+      "message": "`zwave_js` raises the `deprecated_ping_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/zwave_js/services.py:895",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/zwave_js/services.py#L895"
+    },
+    {
       "id": "core-prose-infraredentity",
       "kind": "prose",
       "symbol": "InfraredEntity",
@@ -3300,6 +3314,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/issue_handler.py#L70"
     },
     {
+      "id": "core-prose-passes-a-plain-dict-as-a-device-info-in-a-passivebluetoothdataupdate-instead-of",
+      "kind": "prose",
+      "symbol": "passes a plain dict as a device info in a PassiveBluetoothDataUpdate instead of ...",
+      "message": "passes a plain dict as a device info in a PassiveBluetoothDataUpdate instead of a DeviceInfo",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/components/bluetooth/passive_update_processor.py:659",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluetooth/passive_update_processor.py#L659"
+    },
+    {
       "id": "core-prose-sets-issue-id-directly-in-a-repairsflow-which-is-unnecessary",
       "kind": "prose",
       "symbol": "sets `issue_id` directly in a `RepairsFlow` which is unnecessary",
@@ -3314,5 +3342,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-09T03:23:56Z"
+  "blog_merged_utc": "2026-11-10T03:21:20Z"
 }
