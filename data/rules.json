@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-10T03:21:19Z",
+  "generated_utc": "2026-11-11T03:21:57Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "de8f833fe866e0a93fa8d621ba9be76845f22acf313a644eaefe545b54a965ed",
+  "core_tarball_sha256": "30a5f7e6e1a424270add4037436e6da970c2b42e1eee30b0457f21c52c3fc04f",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 173,
-    "future": 150,
+    "total": 175,
+    "future": 152,
     "matchable_future": 75,
-    "core_files_scanned": 10971,
+    "core_files_scanned": 10978,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 146,
+    "from_core_ast": 148,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -190,13 +190,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3199",
+      "source": "homeassistant/config_entries.py:3197",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3199"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3197"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -218,13 +218,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1936",
+      "source": "homeassistant/config_entries.py:1934",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1936"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1934"
     },
     {
       "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
@@ -1771,6 +1771,34 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/songpal/__init__.py#L89"
+    },
+    {
+      "id": "core-issue-synology-dsm-deprecated-action-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_action",
+      "message": "`synology_dsm` raises the `deprecated_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/synology_dsm/services.py:58",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/synology_dsm/services.py#L58"
+    },
+    {
+      "id": "core-issue-system-bridge-deprecated-notify-action-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_notify_action",
+      "message": "`system_bridge` raises the `deprecated_notify_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/system_bridge/issue.py:12",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/system_bridge/issue.py#L12"
     },
     {
       "id": "core-issue-velux-veluxcover-velocity-from-speed-2027.6",
@@ -3342,5 +3370,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-10T03:21:20Z"
+  "blog_merged_utc": "2026-11-11T03:21:58Z"
 }
