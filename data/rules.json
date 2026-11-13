@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-12T03:22:03Z",
+  "generated_utc": "2026-11-13T03:21:54Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "8f7b108894df6654593d3d0be745adf6f82eecbbdc7da8eea4d64b3e7e27f53e",
+  "core_tarball_sha256": "60eba8e754a670ea11d436c4008084f55da3b69fcb50a9630be25f429711a3d9",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 175,
-    "future": 152,
+    "total": 171,
+    "future": 150,
     "matchable_future": 75,
-    "core_files_scanned": 10980,
+    "core_files_scanned": 10979,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 148,
+    "from_core_ast": 144,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -58,20 +58,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L18"
-    },
-    {
-      "id": "core-issue-bayesian-no-prob-given-false-2022.10",
-      "kind": "issue",
-      "symbol": "no_prob_given_false",
-      "message": "`bayesian` raises the `no_prob_given_false` repair issue, and the configuration it reports stops working in Home Assistant 2022.10.",
-      "breaks_in": "2022.10",
-      "source": "homeassistant/components/bayesian/issues.py:57",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L57"
     },
     {
       "id": "core-issue-kitchen-sink-out-of-blinker-fluid-2023.1",
@@ -225,20 +211,6 @@
       "expired": true,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1934"
-    },
-    {
-      "id": "core-issue-lovelace-yaml-mode-deprecated-2026.8",
-      "kind": "issue",
-      "symbol": "yaml_mode_deprecated",
-      "message": "`lovelace` raises the `yaml_mode_deprecated` repair issue, and the configuration it reports stops working in Home Assistant 2026.8.",
-      "breaks_in": "2026.8",
-      "source": "homeassistant/components/lovelace/__init__.py:432",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lovelace/__init__.py#L432"
     },
     {
       "id": "core-call-async-extract-config-entry-ids",
@@ -536,34 +508,6 @@
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/target.py#L129",
       "retained_since": "2026.12"
-    },
-    {
-      "id": "core-issue-hassio-normalize-partial-options-data-2026.12",
-      "kind": "issue",
-      "symbol": "_normalize_partial_options_data",
-      "message": "`hassio` raises a repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/components/hassio/services.py:104",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hassio/services.py#L104"
-    },
-    {
-      "id": "core-issue-lg-thinq-check-deprecated-fan-speed-entity-2026.12",
-      "kind": "issue",
-      "symbol": "_check_deprecated_fan_speed_entity",
-      "message": "`lg_thinq` raises a repair issue, and the configuration it reports stops working in Home Assistant 2026.12.",
-      "breaks_in": "2026.12",
-      "source": "homeassistant/components/lg_thinq/number.py:194",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": false,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/lg_thinq/number.py#L194"
     },
     {
       "id": "core-prose-passes-a-non-string-value-of-type-as-to-the-device-registry",
@@ -892,13 +836,13 @@
       "symbol": "deprecated_webhook_service",
       "message": "`netatmo` raises the `deprecated_webhook_service` repair issue, and the configuration it reports stops working in Home Assistant 2027.2.",
       "breaks_in": "2027.2",
-      "source": "homeassistant/components/netatmo/services.py:50",
+      "source": "homeassistant/components/netatmo/services.py:29",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L50"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/netatmo/services.py#L29"
     },
     {
       "id": "core-prose-sets-a-group-attribute-on-entity-which-is-not-a-group-instance",
@@ -1041,13 +985,13 @@
       "symbol": "deprecated_yaml",
       "message": "`keyboard_remote` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.4.",
       "breaks_in": "2027.4",
-      "source": "homeassistant/components/keyboard_remote/__init__.py:155",
+      "source": "homeassistant/components/keyboard_remote/__init__.py:157",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/keyboard_remote/__init__.py#L155"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/keyboard_remote/__init__.py#L157"
     },
     {
       "id": "core-issue-rejseplanen-yaml-deprecated-2027.4",
@@ -1778,13 +1722,13 @@
       "symbol": "deprecated_action",
       "message": "`synology_dsm` raises the `deprecated_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
       "breaks_in": "2027.6",
-      "source": "homeassistant/components/synology_dsm/services.py:58",
+      "source": "homeassistant/components/synology_dsm/services.py:72",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/synology_dsm/services.py#L58"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/synology_dsm/services.py#L72"
     },
     {
       "id": "core-issue-system-bridge-deprecated-notify-action-2027.6",
@@ -1834,13 +1778,13 @@
       "symbol": "deprecated_ping_action",
       "message": "`zwave_js` raises the `deprecated_ping_action` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
       "breaks_in": "2027.6",
-      "source": "homeassistant/components/zwave_js/services.py:895",
+      "source": "homeassistant/components/zwave_js/services.py:954",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/zwave_js/services.py#L895"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/zwave_js/services.py#L954"
     },
     {
       "id": "core-prose-infraredentity",
@@ -3347,13 +3291,13 @@
       "symbol": "passes a plain dict as a device info in a PassiveBluetoothDataUpdate instead of ...",
       "message": "passes a plain dict as a device info in a PassiveBluetoothDataUpdate instead of a DeviceInfo",
       "breaks_in": "2027.12",
-      "source": "homeassistant/components/bluetooth/passive_update_processor.py:659",
+      "source": "homeassistant/components/bluetooth/passive_update_processor.py:660",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluetooth/passive_update_processor.py#L659"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bluetooth/passive_update_processor.py#L660"
     },
     {
       "id": "core-prose-sets-issue-id-directly-in-a-repairsflow-which-is-unnecessary",
@@ -3370,5 +3314,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-12T03:22:03Z"
+  "blog_merged_utc": "2026-11-13T03:21:55Z"
 }
