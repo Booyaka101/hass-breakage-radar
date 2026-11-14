@@ -6,6 +6,19 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+### Local scan cache notices individual file changes
+
+The integration and card scan cache now keys on each file's path and metadata,
+not only total size and the newest timestamp. Same-size edits to older files
+and renamed files or integration directories could previously reuse stale
+findings, including outdated file paths. Unchanged source still uses the cache.
+
+### JSON reports for the author-facing checker
+
+`breakage-radar-check --format json` emits a schema-versioned report for scripts
+and CI, including findings, blocking decisions, scan counts and an explicit
+`complete` flag. Logs remain on stderr and exit policies are unchanged.
+
 ## 1.18.0 - 2026-11-07
 
 ### Offline target-release upgrade report

@@ -29,6 +29,7 @@ around exactly that.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from collections.abc import Iterator
@@ -227,6 +228,39 @@ def render_text(findings: list[Finding], rules: dict[str, Rule], today: date) ->
     print(f"{len(findings)} finding(s).")
 
 
+def render_json(
+    findings: list[Finding],
+    rules: dict[str, Rule],
+    stats: ScanStats,
+    skipped: dict[str, int],
+    blocking: set[int],
+    exit_code: int,
+) -> None:
+    """One machine-readable result; logs stay on stderr, not in the JSON."""
+    payload = {
+        "schema": 1,
+        "exit_code": exit_code,
+        "complete": (
+            bool(stats.files_scanned) and not stats.syntax_errors and not any(skipped.values())
+        ),
+        "files_scanned": stats.files_scanned,
+        "unparsed_files": len(stats.syntax_errors),
+        "syntax_errors": stats.syntax_errors,
+        "skipped": skipped,
+        "blocking_count": len(blocking),
+        "findings": [
+            {
+                **finding.to_dict(),
+                "message": rules[finding.rule_id].message,
+                "source": rules[finding.rule_id].source,
+                "blocking": index in blocking,
+            }
+            for index, finding in enumerate(findings)
+        ],
+    }
+    print(json.dumps(payload, indent=2))
+
+
 def render_github(
     findings: list[Finding],
     rules: dict[str, Rule],
@@ -351,9 +385,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--format",
-        choices=("text", "github"),
+        choices=("text", "github", "json"),
         default="text",
-        help="github emits workflow annotations and a job summary",
+        help="github emits workflow annotations; json emits a machine-readable report",
     )
     parser.add_argument(
         "--fail-on",
@@ -425,6 +459,19 @@ def main(argv: list[str] | None = None) -> int:
     for problem in stats.syntax_errors:
         LOGGER.warning("could not parse %s", problem)
 
+    findings.sort(key=lambda f: (parse_version(f.breaks_in), f.file, f.line))
+    messages = {rule.id: rule for rule in all_rules}
+    today = date.today()
+    blocking = {
+        index
+        for index, finding in enumerate(findings)
+        if is_blocking(finding, args.fail_on, args.window_days, today)
+    }
+    if args.format == "json":
+        exit_code = 2 if stats.files_scanned == 0 else (1 if blocking else 0)
+        render_json(findings, messages, stats, skipped, blocking, exit_code)
+        return exit_code
+
     if stats.files_scanned == 0:
         # Nothing was read, so nothing was proved. Reporting this as clean is
         # the one failure mode this tool exists to avoid.
@@ -440,15 +487,6 @@ def main(argv: list[str] | None = None) -> int:
         # anything fancier.
         print("OK - no scheduled removals found in this checkout.")
         return 0
-
-    findings.sort(key=lambda f: (parse_version(f.breaks_in), f.file, f.line))
-    messages = {rule.id: rule for rule in load_rules(rules_payload)}
-    today = date.today()
-    blocking = {
-        index
-        for index, finding in enumerate(findings)
-        if is_blocking(finding, args.fail_on, args.window_days, today)
-    }
 
     if args.format == "github":
         render_github(findings, messages, today, blocking)

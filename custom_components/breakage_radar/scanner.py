@@ -99,19 +99,21 @@ def _signature(
     max_bytes: int,
 ) -> tuple[Any, ...]:
     """What a cached result stays valid for: the same files, rules and caps."""
-    newest_mtime = 0
-    total_size = 0
-    for absolute, _relative in files:
+    stamps = []
+    for absolute, relative in files:
         try:
             stat = os.stat(absolute)
         except OSError:
+            stamps.append((absolute, relative, None))
             continue
-        newest_mtime = max(newest_mtime, stat.st_mtime_ns)
-        total_size += stat.st_size
+        # Aggregate size and newest mtime miss same-size edits to older files
+        # and renames. Paths also matter because findings contain file names.
+        stamps.append(
+            (absolute, relative, stat.st_mtime_ns, stat.st_ctime_ns,
+             stat.st_size, stat.st_mode, stat.st_ino)
+        )
     return (
-        len(files),
-        newest_mtime,
-        total_size,
+        tuple(stamps),
         unreadable_dirs,
         fingerprint,
         max_files,
@@ -250,7 +252,7 @@ def scan_installed(
 
     A symlinked component directory is followed (the dev-checkout pattern),
     its symlinked subdirectories are not. ``cache`` maps domain to
-    (signature, result), keyed on file count, newest mtime, size and the rules
+    (signature, result), keyed on each file's path and metadata plus the rules
     fingerprint, so a refresh re-parses only what changed.
     """
     fingerprint = _rules_fingerprint(rules_payload, current_version)

@@ -299,6 +299,86 @@ def test_an_imminent_finding_fails_the_job_end_to_end(fixtures_dir, tmp_path, ca
 
 
 # --------------------------------------------------------------------------- #
+# --format json
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.parametrize("policy, expected_code", [("any", 1), ("never", 0)])
+def test_json_findings_preserve_exit_policy(fixtures_dir, local_rules, capsys, policy, expected_code):
+    code = main([
+        str(fixtures_dir / "true_positive"), "--rules", str(local_rules),
+        "--format", "json", "--fail-on", policy,
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == expected_code
+    assert report["schema"] == 1
+    assert report["complete"] is True
+    assert report["blocking_count"] == expected_code
+    finding, = report["findings"]
+    assert finding["file"] == "custom_components/fixture_tracker/device_tracker.py"
+    assert finding["line"] == 12
+    assert finding["message"] == "Implements the legacy device tracker platform API."
+    assert finding["source"].startswith("https://")
+    assert finding["blocking"] is (policy == "any")
+
+
+def test_json_clean_report_is_valid_json(fixtures_dir, local_rules, capsys):
+    code = main([
+        str(fixtures_dir / "false_positive"), "--rules", str(local_rules), "--format", "json",
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 0
+    assert report["complete"] is True
+    assert report["findings"] == []
+    assert report["files_scanned"] > 0
+
+
+def test_json_nothing_scannable_is_not_clean(fixtures_dir, card_rules, capsys):
+    code = main([
+        str(fixtures_dir / "plugins" / "minified_card"),
+        "--rules", str(card_rules), "--format", "json",
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 2
+    assert report["complete"] is False
+    assert report["skipped"]["minified"] > 0
+
+
+def test_json_partial_scan_exposes_parse_failures(tmp_path, local_rules, capsys):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "good.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (component / "bad.py").write_text("def broken(:\n", encoding="utf-8")
+    code = main([str(tmp_path), "--rules", str(local_rules), "--format", "json"])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 0
+    assert report["complete"] is False
+    assert report["unparsed_files"] == 1
+    assert "bad.py" in report["syntax_errors"][0]
+
+
+@pytest.mark.parametrize("limit, expected", [("MAX_FILES", "capped"), ("MAX_BYTES", "too_big")])
+def test_json_exposes_size_caps(tmp_path, local_rules, capsys, monkeypatch, limit, expected):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "a.py").write_text("X = 1\n", encoding="utf-8")
+    (component / "b.py").write_text("LONG_NAME = 1\n", encoding="utf-8")
+    monkeypatch.setattr(f"tools.check_local.{limit}", 1 if limit == "MAX_FILES" else 10)
+    code = main([str(tmp_path), "--rules", str(local_rules), "--format", "json"])
+    report = json.loads(capsys.readouterr().out)
+    assert code == 0
+    assert report["complete"] is False
+    assert report["files_scanned"] == 1
+    assert report["skipped"][expected] == 1
+
+
+def test_json_pre_scan_errors_have_no_stdout(tmp_path, local_rules, capsys):
+    code = main([str(tmp_path / "missing"), "--rules", str(local_rules), "--format", "json"])
+    assert code == 2
+    assert capsys.readouterr().out == ""
+
+
+# --------------------------------------------------------------------------- #
 # --format github
 # --------------------------------------------------------------------------- #
 

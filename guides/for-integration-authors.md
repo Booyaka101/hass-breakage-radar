@@ -109,7 +109,18 @@ Useful flags:
 python tools/check_local.py . --ha-version 2027.5   # only removals still ahead of 2027.5
 python tools/check_local.py . --rules data/rules.json   # offline, no index fetch
 python tools/check_local.py . --fail-on imminent    # only fail on what is close
+python tools/check_local.py . --format json > report.json   # scripts and CI
 ```
+
+`--format json` writes one JSON object to stdout, with logs on stderr. Schema 1
+includes `findings` (file, line, rule, release, confidence, message, source and
+whether the finding is `blocking`), `blocking_count`, `exit_code`, scan counts,
+`syntax_errors` and per-reason `skipped` counts. `complete` is false if nothing
+was scanned, a file could not be parsed, or any source was skipped. A zero exit
+code only means the failure policy passed, not that the scan was complete.
+Errors before scanning, such as an unreachable index, exit 2 with a stderr
+diagnostic and no JSON output. The normal exit codes and `--fail-on` policy
+are unchanged.
 
 > **Use Python 3.12 or newer, ideally 3.14.** The checker parses your code with
 > the interpreter it runs on. On an older interpreter, a file using newer syntax
