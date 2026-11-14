@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-13T03:21:54Z",
+  "generated_utc": "2026-11-14T03:20:49Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "60eba8e754a670ea11d436c4008084f55da3b69fcb50a9630be25f429711a3d9",
+  "core_tarball_sha256": "638bd3baee83c6eb286ff9af5aa78c12fca73b83d903f457072d5c21693d4999",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 171,
     "future": 150,
     "matchable_future": 75,
-    "core_files_scanned": 10979,
+    "core_files_scanned": 10985,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
@@ -2307,13 +2307,13 @@
       "symbol": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecate...",
       "message": "passes `home_assistant_start` to `async_initialize_triggers`, which is deprecated and will be removed in Home Assistant 2027.8; the parameter no longer has any effect",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/trigger/__init__.py:692",
+      "source": "homeassistant/helpers/trigger/__init__.py:699",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger/__init__.py#L692"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/trigger/__init__.py#L699"
     },
     {
       "id": "core-prose-passes-the-id-of-a-pre-migration-composite-device-as-via-device-id-pass",
@@ -3314,5 +3314,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-13T03:21:55Z"
+  "blog_merged_utc": "2026-11-14T03:20:50Z"
 }
