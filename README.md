@@ -276,8 +276,8 @@ A domain that is nowhere in the index but parses clean locally lands in
 the clean count; only a domain **neither** side could analyse stays in
 `not_analysed`. `files_scanned`, `unparsed_files` and
 `skipped_files` make a truncated scan visible — it is never silently reported
-as clean. The scan runs in an executor and is cached on each integration's file
-count, newest mtime, total size and the rules fingerprint, so the 12-hourly
+as clean. The scan runs in an executor and is cached on each file's path and
+metadata plus the rules fingerprint, so the 12-hourly
 refresh re-parses nothing that has not changed.
 
 ### Three levels, so a year-out deadline is not shouted at you

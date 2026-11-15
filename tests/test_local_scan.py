@@ -12,12 +12,13 @@ import os
 import shutil
 
 import pytest
+from conftest import FakeCoordinator
+from conftest import install_component as _install
+from conftest import scan_components as _scan
 
-from conftest import FakeCoordinator, install_component as _install, scan_components as _scan
 from custom_components.breakage_radar.report import build_report
-from custom_components.breakage_radar.scanner import scan_installed
+from custom_components.breakage_radar.scanner import scan_cards, scan_installed
 from custom_components.breakage_radar.sensor import BreakageRadarSensor
-
 
 # --------------------------------------------------------------------------- #
 # the vendored engine
@@ -118,6 +119,22 @@ def test_missing_custom_components_directory_is_an_empty_scan(
     assert local["files_scanned"] == 0
 
 
+@pytest.mark.parametrize("kind", ["integration", "card"])
+def test_a_component_without_source_is_unknown(tmp_path, kind):
+    (tmp_path / "empty").mkdir()
+    rule = {"id": "test", "breaks_in": "2027.5"}
+    if kind == "integration":
+        scan, key = scan_installed, "domains"
+        rule["match"] = {"type": "moduledef", "names": ["setup_scanner"]}
+    else:
+        scan, key = scan_cards, "cards"
+        rule["match"] = {"type": "js", "token": "config_entries"}
+    result = scan(str(tmp_path), [rule], current_version="2026.9")[key]["empty"]
+    assert result["status"] == "unknown"
+    assert result["files_scanned"] == 0
+    assert "no " in result["reason"] and "source files found" in result["reason"]
+
+
 # --------------------------------------------------------------------------- #
 # what the scan never looks at
 # --------------------------------------------------------------------------- #
@@ -204,6 +221,86 @@ def test_cache_is_invalidated_by_a_rules_change(
     assert (
         changed["domains"]["fixture_tracker"]["findings"][0]["breaks_in"] == "2027.6"
     )
+
+
+def test_cache_retries_a_transient_read_failure(
+    tmp_path, fixtures_dir, index_without_fixture_tracker, monkeypatch
+):
+    components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
+    tracker = components / "fixture_tracker" / "device_tracker.py"
+    real_open = open
+    fail_once = True
+
+    def flaky_open(path, *args, **kwargs):
+        nonlocal fail_once
+        if str(path) == str(tracker) and fail_once:
+            fail_once = False
+            raise PermissionError("temporary read failure")
+        return real_open(path, *args, **kwargs)
+
+    monkeypatch.setattr("builtins.open", flaky_open)
+    cache = {}
+    first = _scan(components, index_without_fixture_tracker, cache=cache)
+    assert first["domains"]["fixture_tracker"]["unparsed_files"] == 1
+    recovered = _scan(components, index_without_fixture_tracker, cache=cache)
+    assert recovered["cached_domains"] == 0
+    assert recovered["domains"]["fixture_tracker"]["status"] == "affected"
+    assert recovered["domains"]["fixture_tracker"]["unparsed_files"] == 0
+    assert _scan(components, index_without_fixture_tracker, cache=cache)["cached_domains"] == 1
+
+
+@pytest.mark.parametrize("kind", ["integration", "card"])
+@pytest.mark.parametrize("change", ["edit", "rename", "relocate"])
+def test_cache_tracks_each_files_metadata_and_path(tmp_path, kind, change):
+    directory = tmp_path / "example"
+    directory.mkdir()
+    if kind == "integration":
+        source = "def setup_scanner():\n    pass\n"
+        clean = "def other_scanner():\n    pass\n"
+        suffix = ".py"
+        match = {"type": "moduledef", "names": ["setup_scanner"]}
+        scan, result_key = scan_installed, "domains"
+        (directory / "manifest.json").write_text('{"domain": "example"}', encoding="utf-8")
+    else:
+        context = 'const devices = hass.callWS({type: "config/device_registry/list"});\n'
+        source = context + "const entries = device.config_entries;\n"
+        clean = context + "const entries = device.active_entries;\n"
+        suffix = ".js"
+        match = {"type": "js", "token": "config_entries"}
+        scan, result_key = scan_cards, "cards"
+    path = directory / ("source" + suffix)
+    path.write_text(source, encoding="utf-8")
+    newer = directory / ("newer" + suffix)
+    newer.write_text("// newer\n" if kind == "card" else "# newer\n", encoding="utf-8")
+    # Even after editing the source, the newest mtime and total size stay fixed.
+    old_time = 1_700_000_000_000_000_000
+    os.utime(path, ns=(old_time, old_time))
+    os.utime(newer, ns=(old_time, old_time + 10_000_000_000))
+    rules = [{"id": "test", "breaks_in": "2027.5", "match": match}]
+    cache = {}
+
+    def run():
+        return scan(str(tmp_path), rules, current_version="2026.9", cache=cache)
+
+    first = run()
+    assert first[result_key]["example"]["status"] == "affected"
+    assert run()[result_key]["example"]["cached"] is True
+    if change == "edit":
+        assert len(source) == len(clean)
+        path.write_text(clean, encoding="utf-8")
+        os.utime(path, ns=(old_time, old_time + 1_000_000_000))
+    elif change == "rename":
+        path.rename(directory / ("renamed" + suffix))
+    else:
+        directory.rename(tmp_path / "relocated")
+
+    changed = run()
+    key = "relocated" if change == "relocate" and kind == "card" else "example"
+    result = changed[result_key][key]
+    assert result["cached"] is False
+    assert result["status"] == ("clean" if change == "edit" else "affected")
+    if change != "edit":
+        assert ("renamed" if change == "rename" else "relocated") in result["findings"][0]["file"]
 
 
 # --------------------------------------------------------------------------- #

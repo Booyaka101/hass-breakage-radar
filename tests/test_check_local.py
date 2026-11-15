@@ -8,6 +8,9 @@ must never be reported as clean.
 from __future__ import annotations
 
 import json
+import os
+import subprocess
+import sys
 from datetime import date, timedelta
 
 import pytest
@@ -299,6 +302,261 @@ def test_an_imminent_finding_fails_the_job_end_to_end(fixtures_dir, tmp_path, ca
 
 
 # --------------------------------------------------------------------------- #
+# --format json
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.parametrize("policy, expected_code", [("any", 1), ("never", 0)])
+def test_json_findings_preserve_exit_policy(fixtures_dir, local_rules, capsys, policy, expected_code):
+    code = main([
+        str(fixtures_dir / "true_positive"), "--rules", str(local_rules),
+        "--format", "json", "--fail-on", policy,
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == expected_code
+    assert report["schema"] == 1
+    assert report["complete"] is True
+    assert report["blocking_count"] == expected_code
+    finding, = report["findings"]
+    assert finding["file"] == "custom_components/fixture_tracker/device_tracker.py"
+    assert finding["line"] == 12
+    assert finding["message"] == "Implements the legacy device tracker platform API."
+    assert finding["source"].startswith("https://")
+    assert finding["blocking"] is (policy == "any")
+
+
+def test_json_clean_report_is_valid_json(fixtures_dir, local_rules, capsys):
+    code = main([
+        str(fixtures_dir / "false_positive"), "--rules", str(local_rules), "--format", "json",
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 0
+    assert report["complete"] is True
+    assert report["findings"] == []
+    assert report["files_scanned"] > 0
+
+
+def test_json_nothing_scannable_is_not_clean(fixtures_dir, card_rules, capsys):
+    code = main([
+        str(fixtures_dir / "plugins" / "minified_card"),
+        "--rules", str(card_rules), "--format", "json",
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 2
+    assert report["complete"] is False
+    assert report["skipped"]["minified"] > 0
+
+
+def test_json_partial_scan_exposes_parse_failures(tmp_path, local_rules, capsys):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "good.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (component / "bad.py").write_text("def broken(:\n", encoding="utf-8")
+    code = main([str(tmp_path), "--rules", str(local_rules), "--format", "json"])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 0
+    assert report["complete"] is False
+    assert report["unparsed_files"] == 1
+    assert "bad.py" in report["syntax_errors"][0]
+
+
+@pytest.mark.parametrize("limit, expected", [("MAX_FILES", "capped"), ("MAX_BYTES", "too_big")])
+@pytest.mark.parametrize("require_complete", [False, True])
+def test_json_exposes_size_caps(
+    tmp_path, local_rules, capsys, monkeypatch, limit, expected, require_complete
+):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "a.py").write_text("X = 1\n", encoding="utf-8")
+    (component / "b.py").write_text("LONG_NAME = 1\n", encoding="utf-8")
+    monkeypatch.setattr(f"tools.check_local.{limit}", 1 if limit == "MAX_FILES" else 10)
+    code = main([
+        str(tmp_path), "--rules", str(local_rules), "--format", "json",
+        *(["--require-complete"] if require_complete else []),
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == (2 if require_complete else 0)
+    assert report["complete"] is False
+    assert report["files_scanned"] == 1
+    assert report["skipped"][expected] == 1
+
+
+def test_json_pre_scan_errors_have_no_stdout(tmp_path, local_rules, capsys):
+    code = main([str(tmp_path / "missing"), "--rules", str(local_rules), "--format", "json"])
+    assert code == 2
+    assert capsys.readouterr().out == ""
+
+
+def test_json_does_not_hide_unreadable_directories(tmp_path, local_rules, capsys, monkeypatch):
+    component = tmp_path / "custom_components" / "example"
+    blocked = component / "blocked"
+    blocked.mkdir(parents=True)
+    (component / "good.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (blocked / "hidden.py").write_text("VALUE = 2\n", encoding="utf-8")
+    real_scandir = os.scandir
+
+    def scandir(path):
+        if str(path) == str(blocked):
+            raise PermissionError("test directory is unreadable", str(path))
+        return real_scandir(path)
+
+    monkeypatch.setattr(os, "scandir", scandir)
+    assert main([str(tmp_path), "--rules", str(local_rules), "--format", "json"]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["complete"] is False
+    assert report["skipped"]["unreadable_directories"] > 0
+
+
+def test_card_json_does_not_hide_unreadable_directories(tmp_path, card_rules, capsys, monkeypatch):
+    blocked = tmp_path / "blocked"
+    blocked.mkdir()
+    (tmp_path / "good.js").write_text("const value = 1;\n", encoding="utf-8")
+    real_scandir = os.scandir
+
+    def scandir(path):
+        if str(path) == str(blocked):
+            raise PermissionError("test directory is unreadable", str(path))
+        return real_scandir(path)
+
+    monkeypatch.setattr(os, "scandir", scandir)
+    assert main([
+        str(tmp_path), "--rules", str(card_rules), "--format", "json", "--require-complete",
+    ]) == 2
+    report = json.loads(capsys.readouterr().out)
+    assert report["complete"] is False
+    assert report["skipped"]["unreadable_directories"] == 1
+
+
+@pytest.mark.parametrize("payload", [
+    None, 3, "invalid", {"rules": None}, {"rules": {}}, {"rules": [None]},
+    {"rules": [{"id": "missing-release"}]},
+    {"rules": [{"id": "bad-match", "breaks_in": "2027.5", "match": "invalid"}]},
+    {"rules": [{"id": "bad-release", "breaks_in": 2027}]},
+    {"rules": [{"id": "bad-message", "breaks_in": "2027.5", "message": []}]},
+])
+def test_malformed_rules_exit_2_without_a_traceback(tmp_path, fixtures_dir, payload):
+    rules = tmp_path / "malformed.json"
+    rules.write_text(json.dumps(payload), encoding="utf-8")
+    assert main([
+        str(fixtures_dir / "true_positive"), "--rules", str(rules), "--format", "json",
+    ]) == 2
+
+
+def test_duplicate_rule_ids_are_rejected(fixtures_dir, local_rules):
+    payload = json.loads(local_rules.read_text(encoding="utf-8"))
+    payload["rules"].append(payload["rules"][0])
+    local_rules.write_text(json.dumps(payload), encoding="utf-8")
+    assert main([
+        str(fixtures_dir / "true_positive"), "--rules", str(local_rules), "--format", "json",
+    ]) == 2
+
+
+def test_non_object_index_is_rejected(fixtures_dir, monkeypatch):
+    monkeypatch.setattr("tools.check_local.http_get_json", lambda _url: [])
+    assert main([str(fixtures_dir / "true_positive"), "--format", "json"]) == 2
+
+
+def test_a_rules_directory_is_an_input_error(fixtures_dir, tmp_path):
+    assert main([str(fixtures_dir / "true_positive"), "--rules", str(tmp_path)]) == 2
+
+
+def test_bare_rules_array_still_works(fixtures_dir, local_rules, capsys):
+    payload = json.loads(local_rules.read_text(encoding="utf-8"))
+    local_rules.write_text(json.dumps(payload["rules"]), encoding="utf-8")
+    assert main([
+        str(fixtures_dir / "true_positive"), "--rules", str(local_rules), "--format", "json",
+    ]) == 1
+    assert len(json.loads(capsys.readouterr().out)["findings"]) == 1
+
+
+def test_json_script_keeps_logs_on_stderr(repo_root, fixtures_dir, local_rules):
+    result = subprocess.run([
+        sys.executable, str(repo_root / "tools" / "check_local.py"),
+        str(fixtures_dir / "true_positive"), "--rules", str(local_rules),
+        "--format", "json", "--require-complete",
+    ], capture_output=True, text=True, check=False, timeout=20)
+    report = json.loads(result.stdout)
+    assert result.returncode == report["exit_code"] == 1
+    assert report["complete"] is True
+    assert "matchable rule(s)" in result.stderr
+
+
+@pytest.mark.parametrize("output_format", ["text", "github", "json"])
+@pytest.mark.parametrize("policy", ["any", "never"])
+def test_require_complete_rejects_partial_scans(
+    tmp_path, local_rules, capsys, output_format, policy
+):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "good.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (component / "bad.py").write_text("def broken(:\n", encoding="utf-8")
+    code = main([
+        str(tmp_path), "--rules", str(local_rules), "--format", output_format,
+        "--fail-on", policy, "--require-complete",
+    ])
+    out = capsys.readouterr().out
+    assert code == 2
+    assert "OK" not in out
+    if output_format == "json":
+        report = json.loads(out)
+        assert report["exit_code"] == 2
+        assert report["complete"] is False
+
+
+@pytest.mark.parametrize("policy, expected", [("any", 1), ("never", 0), ("imminent", 0)])
+def test_require_complete_preserves_finding_policy(
+    fixtures_dir, local_rules, capsys, policy, expected
+):
+    future = date.today() + timedelta(days=400)
+    payload = json.loads(local_rules.read_text(encoding="utf-8"))
+    payload["rules"][0]["breaks_in"] = f"{future.year}.{future.month}"
+    local_rules.write_text(json.dumps(payload), encoding="utf-8")
+    code = main([
+        str(fixtures_dir / "true_positive"), "--rules", str(local_rules),
+        "--format", "json", "--fail-on", policy, "--window-days", "0", "--require-complete",
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == expected
+    assert report["complete"] is True
+
+
+def test_partial_default_text_does_not_claim_ok(tmp_path, local_rules, capsys):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "good.py").write_text("VALUE = 1\n", encoding="utf-8")
+    (component / "bad.py").write_text("def broken(:\n", encoding="utf-8")
+    assert main([str(tmp_path), "--rules", str(local_rules)]) == 0
+    out = capsys.readouterr().out
+    assert "scan incomplete" in out
+    assert "OK" not in out
+
+
+@pytest.mark.parametrize("policy", ["any", "never"])
+def test_incomplete_gate_preserves_findings(tmp_path, local_rules, capsys, policy):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "device_tracker.py").write_text(
+        "def setup_scanner(hass, config, see):\n    return True\n", encoding="utf-8"
+    )
+    (component / "bad.py").write_text("def broken(:\n", encoding="utf-8")
+    code = main([
+        str(tmp_path), "--rules", str(local_rules), "--format", "json",
+        "--require-complete", "--fail-on", policy,
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 2
+    assert report["complete"] is False
+    assert len(report["findings"]) == 1
+    assert report["blocking_count"] == (1 if policy == "any" else 0)
+
+
+def test_negative_window_is_rejected_before_scanning():
+    with pytest.raises(SystemExit) as error:
+        main(["--window-days", "-1"])
+    assert error.value.code == 2
+
+
+# --------------------------------------------------------------------------- #
 # --format github
 # --------------------------------------------------------------------------- #
 
@@ -381,6 +639,16 @@ def test_github_format_survives_no_summary_file(fixtures_dir, local_rules, monke
         )
         == 1
     )
+
+
+def test_clean_github_check_writes_a_summary(fixtures_dir, local_rules, tmp_path, monkeypatch):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    assert main([
+        str(fixtures_dir / "false_positive"), "--rules", str(local_rules),
+        "--format", "github", "--require-complete",
+    ]) == 0
+    assert "0 finding(s) in this checkout." in summary.read_text(encoding="utf-8")
 
 
 @pytest.fixture

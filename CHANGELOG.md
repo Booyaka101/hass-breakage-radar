@@ -6,6 +6,34 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.19.0 - 2026-11-15
+
+### Local scan cache notices individual file changes
+
+The integration and card scan cache now keys on each file's path and metadata,
+not only total size and the newest timestamp. Same-size edits to older files
+and renamed files or integration directories could previously reuse stale
+findings, including outdated file paths. Unchanged source still uses the cache.
+Results with file read/parse failures or unreadable directories are retried rather
+than cached, so restored access does not require a source edit to take effect.
+An installed integration or card with no source files is unknown, never clean.
+
+### JSON reports for the author-facing checker
+
+`breakage-radar-check --format json` emits a schema-versioned report for scripts
+and CI, including findings, blocking decisions, scan counts and an explicit
+`complete` flag. Logs remain on stderr and exit policies are unchanged.
+
+### Opt-in complete-scan gate and reliable coverage reporting
+
+`--require-complete` exits 2 for partial source scans, regardless of `--fail-on`,
+while preserving any findings in the report. Default finding policies are unchanged.
+The checker counts unreadable directory visits instead of silently treating them
+as complete, prunes vendor and hidden directories before walking, and labels
+partial text results incomplete rather than "OK". Malformed rule payloads, duplicate
+rule ids and invalid negative windows fail with an input diagnostic instead of a
+traceback or misleading verdict. Clean GitHub checks now also write a job summary.
+
 ## 1.18.0 - 2026-11-07
 
 ### Offline target-release upgrade report
