@@ -6,6 +6,8 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.19.0 - 2026-11-15
+
 ### Local scan cache notices individual file changes
 
 The integration and card scan cache now keys on each file's path and metadata,
