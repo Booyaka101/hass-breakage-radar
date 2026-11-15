@@ -92,7 +92,7 @@ Exit codes make it usable as a release gate in your own CI:
 |---|---|
 | `0` | nothing found, or nothing that `--fail-on` says is worth failing over |
 | `1` | at least one finding, and `--fail-on` counts it |
-| `2` | **could not check** — nothing scannable, unreachable index, or no rules left |
+| `2` | **could not check**: nothing scannable, unusable rules/index, or a partial scan with `--require-complete` |
 
 Exit 2 is deliberately not exit 0. A check that could not run has proved
 nothing, and must never be mistaken for a clean result. A card repository
@@ -110,6 +110,7 @@ python tools/check_local.py . --ha-version 2027.5   # only removals still ahead 
 python tools/check_local.py . --rules data/rules.json   # offline, no index fetch
 python tools/check_local.py . --fail-on imminent    # only fail on what is close
 python tools/check_local.py . --format json > report.json   # scripts and CI
+python tools/check_local.py . --require-complete   # reject partial source scans
 ```
 
 `--format json` writes one JSON object to stdout, with logs on stderr. Schema 1
@@ -118,9 +119,19 @@ whether the finding is `blocking`), `blocking_count`, `exit_code`, scan counts,
 `syntax_errors` and per-reason `skipped` counts. `complete` is false if nothing
 was scanned, a file could not be parsed, or any source was skipped. A zero exit
 code only means the failure policy passed, not that the scan was complete.
-Errors before scanning, such as an unreachable index, exit 2 with a stderr
-diagnostic and no JSON output. The normal exit codes and `--fail-on` policy
-are unchanged.
+Fatal input or scan errors, such as an unreachable index or malformed rule
+record, exit 2 with a stderr diagnostic and no JSON output. Directory read
+failures appear under `skipped.unreadable_directories` (failed directory visits,
+including retries across Python and JavaScript scans). Excluded vendor and
+hidden directories are pruned before walking, not visited and then filtered.
+
+`--require-complete` is opt-in. It exits 2 when any selected source is unreadable,
+unparseable or skipped, even with `--fail-on never`. Findings are still reported;
+exit 2 takes precedence over the finding policy's exit 1. Without it, partial
+scans retain the existing exit policy, but text output labels them incomplete
+rather than saying "OK". `complete` describes source coverage against the loaded
+detectors, not exhaustive coverage of Home Assistant's announced removals or a
+compatibility guarantee. This flag is available in the CLI, not as an action input.
 
 > **Use Python 3.12 or newer, ideally 3.14.** The checker parses your code with
 > the interpreter it runs on. On an older interpreter, a file using newer syntax

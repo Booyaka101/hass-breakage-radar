@@ -23,7 +23,8 @@ Exit codes are the contract, because this runs in an author's own CI:
 ``--fail-on`` defaults to ``any``, so the default is the release gate it has
 always been. ``--format github`` turns the findings into workflow annotations
 and a job summary; ``action.yml`` in the repository root is a thin wrapper
-around exactly that.
+around exactly that. ``--require-complete`` additionally exits 2 for a partial
+source scan, regardless of the findings policy.
 """
 
 from __future__ import annotations
@@ -79,27 +80,37 @@ def find_components_dir(target: Path) -> Path | None:
     return None
 
 
-def _walkable(relative: Path) -> bool:
-    """Neither vendored nor hidden. A finding in ``node_modules`` is not the
-    repository's to fix, and ``.git`` is not source.
+def _source_files(
+    root: Path, suffixes: tuple[str, ...], skipped: dict[str, int] | None = None
+) -> list[tuple[Path, str]]:
+    """Prune excluded directories and surface walk errors, unlike Path.rglob.
 
-    Only the directories are judged, not the filename. A dotted *file* like
-    ``.generated.py`` still runs on the user's box, and the crawler reads it
-    too, so skipping it here would make a local check disagree with the index
-    about the same repository.
+    Dotted files remain source. Symlinked subdirectories are not followed, but
+    a symlinked root still works for development checkouts.
     """
-    return not any(
-        part in _SKIP_DIRECTORIES or part.startswith(".") for part in relative.parts[:-1]
-    )
+    def on_error(err: OSError) -> None:
+        LOGGER.warning("could not walk %s: %s", root, err)
+        if skipped is not None:
+            skipped["unreadable_directories"] += 1
+
+    files = []
+    for directory, dirnames, filenames in os.walk(root, onerror=on_error, followlinks=False):
+        dirnames[:] = sorted(
+            name for name in dirnames
+            if name not in _SKIP_DIRECTORIES and not name.startswith(".")
+        )
+        for name in filenames:
+            if name.endswith(suffixes):
+                path = Path(directory) / name
+                files.append((path, path.relative_to(root).as_posix()))
+    return sorted(files)
 
 
-def iter_python_files(domain_dir: Path) -> list[tuple[Path, str]]:
+def iter_python_files(
+    domain_dir: Path, skipped: dict[str, int] | None = None
+) -> list[tuple[Path, str]]:
     """``[(path, posix path relative to the component directory)]``."""
-    return [
-        (path, path.relative_to(domain_dir).as_posix())
-        for path in sorted(domain_dir.rglob("*.py"))
-        if _walkable(path.relative_to(domain_dir))
-    ]
+    return _source_files(domain_dir, (".py",), skipped)
 
 
 def read_python(
@@ -107,7 +118,7 @@ def read_python(
 ) -> Iterator[tuple[str, bytes]]:
     """``(custom_components/... path, source)`` for every component on disk."""
     for domain_dir in _component_dirs(components):
-        files = iter_python_files(domain_dir)
+        files = iter_python_files(domain_dir, skipped)
         for position, (path, relative) in enumerate(files):
             if position >= MAX_FILES:
                 skipped["capped"] += len(files) - position
@@ -125,14 +136,8 @@ def read_javascript(root: Path, skipped: dict[str, int]) -> Iterator[tuple[str, 
     reads as *not analysed* instead of clean.
     """
     prefix = "custom_components/" if root.name == "custom_components" else ""
-    for path in sorted(root.rglob("*")):
-        if not path.is_file():
-            continue
-        relative = path.relative_to(root)
-        if not _walkable(relative):
-            continue
-        name = relative.as_posix()
-        if not name.endswith(JS_SUFFIXES) or name.endswith(".d.ts"):
+    for path, name in _source_files(root, JS_SUFFIXES, skipped):
+        if name.endswith(".d.ts"):
             continue
         source = _read_bytes(path, skipped)
         if source is None:
@@ -240,9 +245,7 @@ def render_json(
     payload = {
         "schema": 1,
         "exit_code": exit_code,
-        "complete": (
-            bool(stats.files_scanned) and not stats.syntax_errors and not any(skipped.values())
-        ),
+        "complete": is_complete(stats, skipped),
         "files_scanned": stats.files_scanned,
         "unparsed_files": len(stats.syntax_errors),
         "syntax_errors": stats.syntax_errors,
@@ -259,6 +262,11 @@ def render_json(
         ],
     }
     print(json.dumps(payload, indent=2))
+
+
+def is_complete(stats: ScanStats, skipped: dict[str, int]) -> bool:
+    """Source coverage, not a claim that every announced removal has a rule."""
+    return bool(stats.files_scanned) and not stats.syntax_errors and not any(skipped.values())
 
 
 def render_github(
@@ -326,7 +334,7 @@ def _load_rules_payload(args: argparse.Namespace) -> tuple[dict, str] | None:
     if args.rules:
         payload = read_json(args.rules, default=None)
         if payload is None:
-            LOGGER.error("%s not found", args.rules)
+            LOGGER.error("could not load valid JSON from %s", args.rules)
             return None
         return (payload if isinstance(payload, dict) else {"rules": payload}), str(args.rules)
     try:
@@ -358,6 +366,31 @@ def coverage_note(payload: dict, rules: list[Rule]) -> str:
     if discarded:
         note += f"; {discarded} marker(s) too vague to match"
     return note
+
+
+def _validate_rules_payload(payload: dict) -> None:
+    """Reject malformed rule records before a partial set can look clean."""
+    if not isinstance(payload, dict) or not isinstance(payload.get("rules"), list):
+        raise ValueError("rules payload must contain a rules array")
+    seen = set()
+    for item in payload["rules"]:
+        if not isinstance(item, dict):
+            raise ValueError("each rule must be an object")
+        for key in ("id", "breaks_in"):
+            if not isinstance(item.get(key), str) or not item[key].strip():
+                raise ValueError(f"rule {key} must be a nonempty string")
+        if item["id"] in seen:
+            raise ValueError(f"duplicate rule id: {item['id']}")
+        seen.add(item["id"])
+        for key in ("kind", "symbol", "message", "source", "origin", "confidence"):
+            if key in item and not isinstance(item[key], str):
+                raise ValueError(f"rule {item['id']}: {key} must be a string")
+        matcher = item.get("match")
+        if matcher is not None and (
+            not isinstance(matcher, dict)
+            or (bool(matcher) and not isinstance(matcher.get("type"), str))
+        ):
+            raise ValueError(f"rule {item['id']}: match must be an object with a type")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -401,14 +434,29 @@ def build_parser() -> argparse.ArgumentParser:
         default=WINDOW_DAYS,
         help=f"how far ahead --fail-on imminent reaches (default {WINDOW_DAYS})",
     )
+    parser.add_argument(
+        "--require-complete",
+        action="store_true",
+        help="exit 2 if any source could not be scanned, regardless of --fail-on",
+    )
     parser.add_argument("-v", "--verbose", action="store_true")
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.window_days < 0:
+        parser.error("--window-days must be zero or greater")
     setup_logging(args.verbose)
+    try:
+        return _check(args)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as err:
+        LOGGER.error("could not check: %s", err)
+        return 2
 
+
+def _check(args: argparse.Namespace) -> int:
     target = args.target.expanduser().resolve()
     if not target.is_dir():
         LOGGER.error("%s is not a directory", args.target)
@@ -418,6 +466,7 @@ def main(argv: list[str] | None = None) -> int:
     if rules_source is None:
         return 2
     payload, source_label = rules_source
+    _validate_rules_payload(payload)
     rules_payload = payload.get("rules", [])
 
     all_rules = load_rules(rules_payload)
@@ -431,7 +480,10 @@ def main(argv: list[str] | None = None) -> int:
     LOGGER.info("%s", coverage_note(payload, all_rules))
 
     components = find_components_dir(target)
-    skipped = {"capped": 0, "too_big": 0, "unreadable": 0, "minified": 0}
+    skipped = {
+        "capped": 0, "too_big": 0, "unreadable": 0, "minified": 0,
+        "unreadable_directories": 0,
+    }
     stats = ScanStats()
 
     if components is None:
@@ -467,8 +519,11 @@ def main(argv: list[str] | None = None) -> int:
         for index, finding in enumerate(findings)
         if is_blocking(finding, args.fail_on, args.window_days, today)
     }
+    incomplete = stats.files_scanned == 0 or (
+        args.require_complete and not is_complete(stats, skipped)
+    )
+    exit_code = 2 if incomplete else (1 if blocking else 0)
     if args.format == "json":
-        exit_code = 2 if stats.files_scanned == 0 else (1 if blocking else 0)
         render_json(findings, messages, stats, skipped, blocking, exit_code)
         return exit_code
 
@@ -476,31 +531,38 @@ def main(argv: list[str] | None = None) -> int:
         # Nothing was read, so nothing was proved. Reporting this as clean is
         # the one failure mode this tool exists to avoid.
         LOGGER.error(
-            "no scannable source in %s (%d file(s) skipped) -- nothing was checked",
+            "no scannable source in %s (%d source item(s) skipped) -- nothing was checked",
             target,
             sum(skipped.values()),
         )
         return 2
 
-    if not findings:
+    if args.require_complete and incomplete:
+        LOGGER.error("source scan is incomplete; --require-complete requires exit 2")
+        if args.format == "github":
+            print("::error::Source scan is incomplete (--require-complete). See the scan logs.")
+
+    if not findings and args.format == "text":
         # Plain ASCII: a Windows console defaults to cp1252 and raises on
         # anything fancier.
-        print("OK - no scheduled removals found in this checkout.")
-        return 0
+        if is_complete(stats, skipped):
+            print("OK - no scheduled removals found in this checkout.")
+        else:
+            print("No scheduled removals found in the scanned source; scan incomplete.")
+        return exit_code
 
     if args.format == "github":
         render_github(findings, messages, today, blocking)
     else:
         render_text(findings, messages, today)
 
-    if not blocking:
+    if not blocking and findings:
         LOGGER.info(
             "%d finding(s), none of them fatal under --fail-on %s",
             len(findings),
             args.fail_on,
         )
-        return 0
-    return 1
+    return exit_code
 
 
 if __name__ == "__main__":  # pragma: no cover

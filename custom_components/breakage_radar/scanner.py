@@ -134,7 +134,12 @@ def _cached(
         return result, True
     result = compute()
     if cache is not None:
-        cache[key] = (signature, dict(result))
+        # Read failures can recover without a metadata change. Retry rather
+        # than persisting a partial result under an otherwise valid signature.
+        if result.get("unparsed_files") or result.get("unreadable_directories"):
+            cache.pop(key, None)
+        else:
+            cache[key] = (signature, dict(result))
     return result, False
 
 
@@ -219,6 +224,9 @@ def _scan_domain(
             f"scan truncated: {skipped_files} of {len(files)} Python file(s) "
             "skipped by the size caps"
         )
+    elif stats.files_scanned == 0:
+        status = "unknown"
+        reason = "no Python source files found"
     else:
         status = "clean"
 
@@ -380,6 +388,9 @@ def _scan_card(
             f"scan truncated: {' and '.join(skipped)} of {len(files)} "
             "card file(s) skipped"
         )
+    elif stats.files_scanned == 0:
+        status = "unknown"
+        reason = "no card source files found"
     else:
         status = "clean"
 

@@ -119,6 +119,22 @@ def test_missing_custom_components_directory_is_an_empty_scan(
     assert local["files_scanned"] == 0
 
 
+@pytest.mark.parametrize("kind", ["integration", "card"])
+def test_a_component_without_source_is_unknown(tmp_path, kind):
+    (tmp_path / "empty").mkdir()
+    rule = {"id": "test", "breaks_in": "2027.5"}
+    if kind == "integration":
+        scan, key = scan_installed, "domains"
+        rule["match"] = {"type": "moduledef", "names": ["setup_scanner"]}
+    else:
+        scan, key = scan_cards, "cards"
+        rule["match"] = {"type": "js", "token": "config_entries"}
+    result = scan(str(tmp_path), [rule], current_version="2026.9")[key]["empty"]
+    assert result["status"] == "unknown"
+    assert result["files_scanned"] == 0
+    assert "no " in result["reason"] and "source files found" in result["reason"]
+
+
 # --------------------------------------------------------------------------- #
 # what the scan never looks at
 # --------------------------------------------------------------------------- #
@@ -205,6 +221,32 @@ def test_cache_is_invalidated_by_a_rules_change(
     assert (
         changed["domains"]["fixture_tracker"]["findings"][0]["breaks_in"] == "2027.6"
     )
+
+
+def test_cache_retries_a_transient_read_failure(
+    tmp_path, fixtures_dir, index_without_fixture_tracker, monkeypatch
+):
+    components = _install(tmp_path, fixtures_dir, "true_positive", "fixture_tracker")
+    tracker = components / "fixture_tracker" / "device_tracker.py"
+    real_open = open
+    fail_once = True
+
+    def flaky_open(path, *args, **kwargs):
+        nonlocal fail_once
+        if str(path) == str(tracker) and fail_once:
+            fail_once = False
+            raise PermissionError("temporary read failure")
+        return real_open(path, *args, **kwargs)
+
+    monkeypatch.setattr("builtins.open", flaky_open)
+    cache = {}
+    first = _scan(components, index_without_fixture_tracker, cache=cache)
+    assert first["domains"]["fixture_tracker"]["unparsed_files"] == 1
+    recovered = _scan(components, index_without_fixture_tracker, cache=cache)
+    assert recovered["cached_domains"] == 0
+    assert recovered["domains"]["fixture_tracker"]["status"] == "affected"
+    assert recovered["domains"]["fixture_tracker"]["unparsed_files"] == 0
+    assert _scan(components, index_without_fixture_tracker, cache=cache)["cached_domains"] == 1
 
 
 @pytest.mark.parametrize("kind", ["integration", "card"])
