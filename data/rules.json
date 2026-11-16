@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-15T03:22:36Z",
+  "generated_utc": "2026-11-16T03:26:08Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "d3aa781707dddc18f14f3bd1011e6374c716c4f899f046c1f703b42248f904ad",
+  "core_tarball_sha256": "5b9b01cae852f15d35b0ebf7c342d3f2b0b4a7cc7603f19859f24ad8d58b6a22",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 171,
     "future": 150,
     "matchable_future": 75,
-    "core_files_scanned": 10987,
+    "core_files_scanned": 10998,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
@@ -1358,13 +1358,13 @@
       "symbol": "deprecated_yaml",
       "message": "`ubus` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/ubus/device_tracker.py:78",
+      "source": "homeassistant/components/ubus/device_tracker.py:95",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ubus/device_tracker.py#L78"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ubus/device_tracker.py#L95"
     },
     {
       "id": "core-prose-calls-without-passing-a-step-id",
@@ -3314,5 +3314,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
     }
   ],
-  "blog_merged_utc": "2026-11-15T03:22:36Z"
+  "blog_merged_utc": "2026-11-16T03:26:08Z"
 }
