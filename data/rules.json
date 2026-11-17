@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-16T03:26:08Z",
+  "generated_utc": "2026-11-17T03:22:25Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "5b9b01cae852f15d35b0ebf7c342d3f2b0b4a7cc7603f19859f24ad8d58b6a22",
+  "core_tarball_sha256": "b66ee664a5c37cda7802eeabcc1a63e892144deadb4577dcdd4bf1a652948ce2",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 171,
-    "future": 150,
+    "total": 173,
+    "future": 152,
     "matchable_future": 75,
-    "core_files_scanned": 10998,
+    "core_files_scanned": 11015,
     "core_files_unparsed": 0,
     "markers_discarded": 3,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 144,
+    "from_core_ast": 146,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -41,7 +41,7 @@
       "symbol": "one",
       "reason": "not_a_keyword",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:4050"
+      "source": "homeassistant/helpers/device_registry.py:4118"
     }
   ],
   "rules": [
@@ -515,13 +515,13 @@
       "symbol": "passes a non-string value of type {...} as {...} to the device registry",
       "message": "passes a non-string value of type {...} as {...} to the device registry",
       "breaks_in": "2026.12",
-      "source": "homeassistant/helpers/device_registry.py:468",
+      "source": "homeassistant/helpers/device_registry.py:536",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L468"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L536"
     },
     {
       "id": "core-call-async-register-info",
@@ -1861,6 +1861,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/sun.py#L60"
     },
     {
+      "id": "core-issue-ephember-deprecated-yaml-2027.7",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`ephember` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.7.",
+      "breaks_in": "2027.7",
+      "source": "homeassistant/components/ephember/climate.py:119",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ephember/climate.py#L119"
+    },
+    {
       "id": "device-tracker-battery-level",
       "kind": "attr",
       "symbol": "battery_level",
@@ -2103,7 +2117,7 @@
       "symbol": "CONCENTRATION_GRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_GRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:820",
+      "source": "homeassistant/const.py:830",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2118,7 +2132,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L820"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L830"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-foot",
@@ -2126,7 +2140,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_FOOT imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:829",
+      "source": "homeassistant/const.py:839",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2141,7 +2155,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L829"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L839"
     },
     {
       "id": "core-import-const-concentration-micrograms-per-cubic-meter",
@@ -2149,7 +2163,7 @@
       "symbol": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MICROGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:826",
+      "source": "homeassistant/const.py:836",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2164,7 +2178,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L826"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L836"
     },
     {
       "id": "core-import-const-concentration-milligrams-per-cubic-meter",
@@ -2172,7 +2186,7 @@
       "symbol": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER",
       "message": "CONCENTRATION_MILLIGRAMS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:823",
+      "source": "homeassistant/const.py:833",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2187,7 +2201,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L823"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L833"
     },
     {
       "id": "core-import-const-concentration-parts-per-billion",
@@ -2195,7 +2209,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_BILLION",
       "message": "CONCENTRATION_PARTS_PER_BILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:838",
+      "source": "homeassistant/const.py:848",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2210,7 +2224,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L838"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L848"
     },
     {
       "id": "core-import-const-concentration-parts-per-cubic-meter",
@@ -2218,7 +2232,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_CUBIC_METER",
       "message": "CONCENTRATION_PARTS_PER_CUBIC_METER imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8. Import it from p/m³ instead.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:832",
+      "source": "homeassistant/const.py:842",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2234,7 +2248,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L832"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L842"
     },
     {
       "id": "core-import-const-concentration-parts-per-million",
@@ -2242,7 +2256,7 @@
       "symbol": "CONCENTRATION_PARTS_PER_MILLION",
       "message": "CONCENTRATION_PARTS_PER_MILLION imported from homeassistant.const is deprecated and is removed in Home Assistant 2027.8.",
       "breaks_in": "2027.8",
-      "source": "homeassistant/const.py:835",
+      "source": "homeassistant/const.py:845",
       "origin": "core-ast",
       "confidence": "high",
       "matchable": true,
@@ -2257,7 +2271,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L835"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/const.py#L845"
     },
     {
       "id": "core-prose-assigns-an-existing-device-to-a-different-config-subentry-by-calling-async-get",
@@ -2265,13 +2279,13 @@
       "symbol": "assigns an existing device to a different config subentry, by calling `async_get...",
       "message": "assigns an existing device to a different config subentry, by calling `async_get_or_create` or by adding entities from several subentries that share a device; this silently moves the device. A device belongs to one subentry - keep a shared device in a single subentry, or move it with `async_update_device`",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:2754",
+      "source": "homeassistant/helpers/device_registry.py:2822",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2754"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2822"
     },
     {
       "id": "core-prose-attempts-to-attach-a-device-to-an-entity",
@@ -2293,13 +2307,13 @@
       "symbol": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `...",
       "message": "calls `device_registry.async_update_device` with one of `add_config_entry_id`, `add_config_subentry_id`, `remove_config_entry_id` or `remove_config_subentry_id`; a device now belongs to a single config entry and subentry. Move a device with `new_config_entry_id` and/or `new_config_subentry_id`, or remove it with `async_remove_device`",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:4050",
+      "source": "homeassistant/helpers/device_registry.py:4118",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L4050"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L4118"
     },
     {
       "id": "core-prose-passes-home-assistant-start-to-async-initialize-triggers-which-is-deprecate",
@@ -2321,13 +2335,13 @@
       "symbol": "passes the id of a pre-migration composite device {...} as `via_device_id`; pass...",
       "message": "passes the id of a pre-migration composite device {...} as `via_device_id`; pass the id of a single device instead, e.g. one returned by async_get_device_by_identifier",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:2396",
+      "source": "homeassistant/helpers/device_registry.py:2464",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2396"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2464"
     },
     {
       "id": "core-prose-sets-disabled-by-to-deviceentrydisabler-config-entry-the-enabled-config-en",
@@ -2335,13 +2349,13 @@
       "symbol": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config en...",
       "message": "sets disabled_by to DeviceEntryDisabler.CONFIG_ENTRY {...} the enabled config entry {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3664",
+      "source": "homeassistant/helpers/device_registry.py:3732",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3664"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3732"
     },
     {
       "id": "core-prose-sets-disabled-by-to-deviceentrydisabler-device-enabled",
@@ -2349,13 +2363,13 @@
       "symbol": "sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled",
       "message": "sets disabled_by to DeviceEntryDisabler.DEVICE {...} enabled",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3865",
+      "source": "homeassistant/helpers/device_registry.py:3933",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3865"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3933"
     },
     {
       "id": "core-prose-sets-disabled-by-to-none-disabled",
@@ -2363,13 +2377,13 @@
       "symbol": "sets disabled_by to None {...} disabled",
       "message": "sets disabled_by to None {...} disabled",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3878",
+      "source": "homeassistant/helpers/device_registry.py:3946",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3878"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3946"
     },
     {
       "id": "core-prose-sets-disabled-by-to-none-the-disabled-config-entry",
@@ -2377,13 +2391,13 @@
       "symbol": "sets disabled_by to None {...} the disabled config entry {...}",
       "message": "sets disabled_by to None {...} the disabled config entry {...}",
       "breaks_in": "2027.8",
-      "source": "homeassistant/helpers/device_registry.py:3653",
+      "source": "homeassistant/helpers/device_registry.py:3721",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 2,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3653"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L3721"
     },
     {
       "id": "device-info-via-device",
@@ -2521,7 +2535,7 @@
       "symbol": "async_is_composite_device_id",
       "message": "calls `device_registry.async_is_composite_device_id`, which is deprecated; use `async_get` with `include_composite_devices=False` instead - a composite device id resolves with `async_get(device_id)` but not with `async_get(device_id, include_composite_devices=False)`",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:2367",
+      "source": "homeassistant/helpers/device_registry.py:2435",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2536,7 +2550,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2367"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L2435"
     },
     {
       "id": "core-call-async-update-device-merge-connections",
@@ -2544,7 +2558,7 @@
       "symbol": "async_update_device(merge_connections=...)",
       "message": "calls `device_registry.async_update_device` with `merge_connections` or `merge_identifiers`; these only add to the device's existing connections or identifiers. Pass the full set as `new_connections` or `new_identifiers` instead",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:4062",
+      "source": "homeassistant/helpers/device_registry.py:4130",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -2562,7 +2576,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L4062"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L4130"
     },
     {
       "id": "core-prose-accesses-childdeviceentry-which-does-not-exist-on-child-devices",
@@ -2570,13 +2584,13 @@
       "symbol": "accesses ChildDeviceEntry.{...}, which does not exist on child devices",
       "message": "accesses ChildDeviceEntry.{...}, which does not exist on child devices",
       "breaks_in": "2027.9",
-      "source": "homeassistant/helpers/device_registry.py:874",
+      "source": "homeassistant/helpers/device_registry.py:942",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L874"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L942"
     },
     {
       "id": "device-info-created-at",
@@ -3312,7 +3326,21 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/repairs/models.py#L70"
+    },
+    {
+      "id": "core-prose-what",
+      "kind": "prose",
+      "symbol": "what",
+      "message": "what",
+      "breaks_in": "2027.12",
+      "source": "homeassistant/helpers/device_registry.py:160",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L160"
     }
   ],
-  "blog_merged_utc": "2026-11-16T03:26:08Z"
+  "blog_merged_utc": "2026-11-17T03:22:25Z"
 }
