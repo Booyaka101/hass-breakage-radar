@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-19T03:22:32Z",
+  "generated_utc": "2026-11-20T03:22:46Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "d5821cf40f7f0f0773fb1d3adfe0588621c74c49b7faacfa70acf8731d7541cc",
+  "core_tarball_sha256": "b4b2ce1081ec718f2ff2f833a990cff21efae01dbc34df3f8b9a697f6cee614c",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 168,
-    "future": 152,
+    "total": 169,
+    "future": 153,
     "matchable_future": 75,
-    "core_files_scanned": 11026,
+    "core_files_scanned": 11069,
     "core_files_unparsed": 0,
     "markers_discarded": 2,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 141,
+    "from_core_ast": 142,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -1236,13 +1236,13 @@
       "symbol": "calls {...} without passing a step_id",
       "message": "calls {...} without passing a step_id",
       "breaks_in": "2027.5",
-      "source": "homeassistant/data_entry_flow.py:665",
+      "source": "homeassistant/data_entry_flow.py:663",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L665"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L663"
     },
     {
       "id": "core-prose-sets-an-entity-id-with-wrong-domain-expected-domain-is",
@@ -1311,7 +1311,7 @@
       "symbol": "FlowHandler.show_advanced_options",
       "message": "a user friendly way to present additional options in the UI, for example a section",
       "breaks_in": "2027.6",
-      "source": "homeassistant/data_entry_flow.py:708",
+      "source": "homeassistant/data_entry_flow.py:706",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1326,7 +1326,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L708"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L706"
     },
     {
       "id": "core-classbase-infraredentitydescription",
@@ -1663,6 +1663,20 @@
       "expired": false,
       "occurrences": 1,
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/infrared/entity.py#L189"
+    },
+    {
+      "id": "core-prose-sets-a-conversation-agent-that-is-not-a-conversation-entity-convert-the-convers",
+      "kind": "prose",
+      "symbol": "sets a conversation agent that is not a conversation entity. Convert the convers...",
+      "message": "sets a conversation agent that is not a conversation entity. Convert the conversation platform to use ConversationEntity",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/conversation/__init__.py:112",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/conversation/__init__.py#L112"
     },
     {
       "id": "core-prose-that-calls-the-mqtt-publish-api-with-none-for-qos-or-retain-the-qos-argumen",
@@ -3206,5 +3220,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L160"
     }
   ],
-  "blog_merged_utc": "2026-11-19T03:22:32Z"
+  "blog_merged_utc": "2026-11-20T03:22:47Z"
 }
