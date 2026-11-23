@@ -347,6 +347,48 @@ def test_json_nothing_scannable_is_not_clean(fixtures_dir, card_rules, capsys):
     assert report["skipped"]["minified"] > 0
 
 
+@pytest.mark.parametrize(
+    "target, rules_fixture",
+    [("true_positive", "card_rules"), ("plugins/config_entries_card", "local_rules")],
+)
+def test_no_matchers_for_source_language_is_not_clean(
+    fixtures_dir, target, rules_fixture, request, capsys
+):
+    rules = request.getfixturevalue(rules_fixture)
+    code = main([str(fixtures_dir / target), "--rules", str(rules), "--format", "json"])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 2
+    assert report["complete"] is False
+    assert report["files_scanned"] == 0
+    assert report["skipped"]["no_matchers"] > 0
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_language_coverage_uses_rules_after_version_filter(tmp_path, local_rules, card_rules, capsys, strict):
+    rules = json.loads(local_rules.read_text(encoding="utf-8"))
+    rules["rules"].extend(json.loads(card_rules.read_text(encoding="utf-8"))["rules"])
+    local_rules.write_text(json.dumps(rules), encoding="utf-8")
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "device_tracker.py").write_text("def setup_scanner():\n    pass\n", encoding="utf-8")
+    (component / "card.js").write_text(
+        'hass.callWS({type: "config/device_registry/list"});\nconsole.log(device.config_entries);\n',
+        encoding="utf-8",
+    )
+    args = [
+        str(tmp_path), "--rules", str(local_rules), "--ha-version", "2027.5", "--format", "json",
+        *(["--require-complete"] if strict else []),
+    ]
+    code = main(args)
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == (2 if strict else 1)
+    assert report["complete"] is False
+    assert report["files_scanned"] == 1
+    assert report["skipped"]["no_matchers"] == 1
+    assert report["blocking_count"] == 1
+    assert report["findings"][0]["file"].endswith("/card.js")
+
+
 def test_json_partial_scan_exposes_parse_failures(tmp_path, local_rules, capsys):
     component = tmp_path / "custom_components" / "example"
     component.mkdir(parents=True)

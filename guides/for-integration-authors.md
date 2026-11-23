@@ -124,6 +124,9 @@ record, exit 2 with a stderr diagnostic and no JSON output. Directory read
 failures appear under `skipped.unreadable_directories` (failed directory visits,
 including retries across Python and JavaScript scans). Excluded vendor and
 hidden directories are pruned before walking, not visited and then filtered.
+Source files without matchers for their language in the selected rules are
+counted separately under `skipped.no_matchers`. If no source can be checked
+with the selected rules, the checker exits 2 even without `--require-complete`.
 
 `--require-complete` is opt-in. It exits 2 when any selected source is unreadable,
 unparseable or skipped, even with `--fail-on never`. Findings are still reported;

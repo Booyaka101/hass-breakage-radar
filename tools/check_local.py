@@ -114,11 +114,14 @@ def iter_python_files(
 
 
 def read_python(
-    components: Path, skipped: dict[str, int]
+    components: Path, skipped: dict[str, int], *, has_matchers: bool
 ) -> Iterator[tuple[str, bytes]]:
     """``(custom_components/... path, source)`` for every component on disk."""
     for domain_dir in _component_dirs(components):
         files = iter_python_files(domain_dir, skipped)
+        if not has_matchers:
+            skipped["no_matchers"] += len(files)
+            continue
         for position, (path, relative) in enumerate(files):
             if position >= MAX_FILES:
                 skipped["capped"] += len(files) - position
@@ -128,7 +131,9 @@ def read_python(
                 yield f"custom_components/{domain_dir.name}/{relative}", source
 
 
-def read_javascript(root: Path, skipped: dict[str, int]) -> Iterator[tuple[str, str]]:
+def read_javascript(
+    root: Path, skipped: dict[str, int], *, has_matchers: bool
+) -> Iterator[tuple[str, str]]:
     """``(path, text)`` for every scannable frontend file below ``root``.
 
     A ``.d.ts`` declares the API rather than calling it, and a bundle is never
@@ -138,6 +143,9 @@ def read_javascript(root: Path, skipped: dict[str, int]) -> Iterator[tuple[str, 
     prefix = "custom_components/" if root.name == "custom_components" else ""
     for path, name in _source_files(root, JS_SUFFIXES, skipped):
         if name.endswith(".d.ts"):
+            continue
+        if not has_matchers:
+            skipped["no_matchers"] += 1
             continue
         source = _read_bytes(path, skipped)
         if source is None:
@@ -482,34 +490,44 @@ def _check(args: argparse.Namespace) -> int:
     components = find_components_dir(target)
     skipped = {
         "capped": 0, "too_big": 0, "unreadable": 0, "minified": 0,
-        "unreadable_directories": 0,
+        "unreadable_directories": 0, "no_matchers": 0,
     }
     stats = ScanStats()
+    matcher_types = {rule.match["type"] for rule in rules if rule.match}
 
     if components is None:
         # No custom_components: read it as a Lovelace card repository, whose
         # card can live anywhere in the tree.
         LOGGER.info("no custom_components/ in %s; scanning as a card repository", target)
-        findings = scan_sources((), read_javascript(target, skipped), rules, stats)
+        python_sources = ()
     elif not _component_dirs(components):
         LOGGER.error("%s contains no component directories", components)
         return 2
     else:
-        findings = scan_sources(
-            read_python(components, skipped),
-            read_javascript(components, skipped),
-            rules,
-            stats,
+        python_sources = read_python(
+            components, skipped, has_matchers=bool(matcher_types - {"js"}),
         )
 
+    findings = scan_sources(
+        python_sources,
+        read_javascript(components or target, skipped, has_matchers="js" in matcher_types),
+        rules,
+        stats,
+    )
     LOGGER.info(
-        "scanned %d file(s); %d unparseable, %d skipped",
+        "scanned %d file(s); %d unparseable, %d source item(s) skipped",
         stats.files_scanned,
         len(stats.syntax_errors),
         sum(skipped.values()),
     )
     for problem in stats.syntax_errors:
         LOGGER.warning("could not parse %s", problem)
+    if skipped["no_matchers"]:
+        LOGGER.warning(
+            "skipped %d source file(s): no applicable %s matchers in the selected rules",
+            skipped["no_matchers"],
+            "Python" if "js" in matcher_types else "JavaScript/TypeScript",
+        )
 
     findings.sort(key=lambda f: (parse_version(f.breaks_in), f.file, f.line))
     messages = {rule.id: rule for rule in all_rules}
