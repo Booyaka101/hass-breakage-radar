@@ -693,6 +693,39 @@ def test_clean_github_check_writes_a_summary(fixtures_dir, local_rules, tmp_path
     assert "0 finding(s) in this checkout." in summary.read_text(encoding="utf-8")
 
 
+@pytest.mark.parametrize("strict", [False, True])
+def test_invalid_utf8_card_source_is_not_counted_as_scanned(tmp_path, card_rules, capsys, strict):
+    (tmp_path / "good.js").write_text("const value = 1;\n", encoding="utf-8")
+    (tmp_path / "bad.js").write_bytes(b"const value = '\xff';")
+    args = [
+        str(tmp_path), "--rules", str(card_rules), "--format", "json",
+        *(["--require-complete"] if strict else []),
+    ]
+    code = main(args)
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == (2 if strict else 0)
+    assert report["files_scanned"] == 1
+    assert report["complete"] is False
+    assert report["skipped"]["undecodable"] == 1
+
+
+@pytest.mark.parametrize("scanned, expected_code", [(False, 2), (True, 0)])
+def test_github_summary_shows_missing_language_coverage(
+    tmp_path, local_rules, monkeypatch, scanned, expected_code
+):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "card.js").write_text("const value = 1;\n", encoding="utf-8")
+    if scanned:
+        (component / "sensor.py").write_text("VALUE = 1\n", encoding="utf-8")
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    assert main([str(tmp_path), "--rules", str(local_rules), "--format", "github"]) == expected_code
+    written = summary.read_text(encoding="utf-8")
+    assert "Scan incomplete" in written
+    assert "no applicable matchers: 1" in written
+
+
 @pytest.fixture
 def vacuum_rules(tmp_path):
     """The scoped rule ``tools/extract_rules.py`` derives from core 2026.8."""

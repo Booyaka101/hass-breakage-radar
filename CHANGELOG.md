@@ -11,6 +11,10 @@ have no matchers for their language. JSON reports these files under
 `skipped.no_matchers`, and `--require-complete` rejects the resulting partial
 scan without hiding findings from the language that was checked.
 
+JavaScript and TypeScript files that are not valid UTF-8 are reported as skipped
+instead of scanned. GitHub job summaries show coverage gaps, and the action's
+new `require-complete` input makes partial scans fail when explicitly enabled.
+
 ## 1.19.0 - 2026-11-15
 
 ### Local scan cache notices individual file changes
