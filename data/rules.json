@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-22T03:22:28Z",
+  "generated_utc": "2026-11-23T03:24:54Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "cd0d9044037c6b884339bcc3104390408abb34a5ccf6863865acc0c430186cb8",
+  "core_tarball_sha256": "a659ede32918a2b33a41f75134fe976b43cfad9b6957c35d2d7bb464b229164e",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 169,
-    "future": 153,
+    "future": 154,
     "matchable_future": 75,
-    "core_files_scanned": 11077,
+    "core_files_scanned": 11096,
     "core_files_unparsed": 0,
     "markers_discarded": 2,
     "markers_discarded_pending": 2,
@@ -39,20 +39,6 @@
     }
   ],
   "rules": [
-    {
-      "id": "core-issue-bayesian-manual-migration-2022.10",
-      "kind": "issue",
-      "symbol": "manual_migration",
-      "message": "`bayesian` raises the `manual_migration` repair issue, and the configuration it reports stops working in Home Assistant 2022.10.",
-      "breaks_in": "2022.10",
-      "source": "homeassistant/components/bayesian/issues.py:18",
-      "origin": "core-ast",
-      "confidence": "medium",
-      "matchable": false,
-      "expired": true,
-      "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/bayesian/issues.py#L18"
-    },
     {
       "id": "core-issue-kitchen-sink-out-of-blinker-fluid-2023.1",
       "kind": "issue",
@@ -1497,6 +1483,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/hlk_sw16/__init__.py#L120"
     },
     {
+      "id": "core-issue-homematicip-cloud-deprecated-yaml-2027.6",
+      "kind": "issue",
+      "symbol": "deprecated_yaml",
+      "message": "`homematicip_cloud` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
+      "breaks_in": "2027.6",
+      "source": "homeassistant/components/homematicip_cloud/__init__.py:91",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/homematicip_cloud/__init__.py#L91"
+    },
+    {
       "id": "core-issue-izone-deprecated-airflow-action-2027.6",
       "kind": "issue",
       "symbol": "deprecated_airflow_action",
@@ -1744,13 +1744,13 @@
       "symbol": "deprecated_yaml",
       "message": "`ephember` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.7.",
       "breaks_in": "2027.7",
-      "source": "homeassistant/components/ephember/climate.py:119",
+      "source": "homeassistant/components/ephember/climate.py:120",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ephember/climate.py#L119"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/ephember/climate.py#L120"
     },
     {
       "id": "device-tracker-battery-level",
@@ -3220,5 +3220,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L160"
     }
   ],
-  "blog_merged_utc": "2026-11-22T03:22:28Z"
+  "blog_merged_utc": "2026-11-23T03:24:54Z"
 }
