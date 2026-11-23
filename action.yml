@@ -26,6 +26,10 @@ inputs:
     description: "How far ahead fail-on: imminent reaches."
     required: false
     default: "90"
+  require-complete:
+    description: "Set to true to fail if any selected source could not be scanned."
+    required: false
+    default: "false"
   rules:
     description: >-
       pinned uses the rule set shipped with the version of this action you
@@ -58,6 +62,7 @@ runs:
         RADAR_PATH: ${{ inputs.path }}
         RADAR_FAIL_ON: ${{ inputs.fail-on }}
         RADAR_WINDOW_DAYS: ${{ inputs.window-days }}
+        RADAR_REQUIRE_COMPLETE: ${{ inputs.require-complete }}
         RADAR_RULES: ${{ inputs.rules }}
         RADAR_HA_VERSION: ${{ inputs.ha-version }}
         RADAR_ACTION_PATH: ${{ github.action_path }}
@@ -77,4 +82,9 @@ runs:
         if [ -n "$RADAR_HA_VERSION" ]; then
           args+=(--ha-version "$RADAR_HA_VERSION")
         fi
+        case "$RADAR_REQUIRE_COMPLETE" in
+          true) args+=(--require-complete) ;;
+          false) ;;
+          *) echo "::error::require-complete must be true or false"; exit 2 ;;
+        esac
         python "$RADAR_ACTION_PATH/tools/check_local.py" "${args[@]}"

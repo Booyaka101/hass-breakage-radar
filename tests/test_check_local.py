@@ -347,6 +347,48 @@ def test_json_nothing_scannable_is_not_clean(fixtures_dir, card_rules, capsys):
     assert report["skipped"]["minified"] > 0
 
 
+@pytest.mark.parametrize(
+    "target, rules_fixture",
+    [("true_positive", "card_rules"), ("plugins/config_entries_card", "local_rules")],
+)
+def test_no_matchers_for_source_language_is_not_clean(
+    fixtures_dir, target, rules_fixture, request, capsys
+):
+    rules = request.getfixturevalue(rules_fixture)
+    code = main([str(fixtures_dir / target), "--rules", str(rules), "--format", "json"])
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == 2
+    assert report["complete"] is False
+    assert report["files_scanned"] == 0
+    assert report["skipped"]["no_matchers"] > 0
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_language_coverage_uses_rules_after_version_filter(tmp_path, local_rules, card_rules, capsys, strict):
+    rules = json.loads(local_rules.read_text(encoding="utf-8"))
+    rules["rules"].extend(json.loads(card_rules.read_text(encoding="utf-8"))["rules"])
+    local_rules.write_text(json.dumps(rules), encoding="utf-8")
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "device_tracker.py").write_text("def setup_scanner():\n    pass\n", encoding="utf-8")
+    (component / "card.js").write_text(
+        'hass.callWS({type: "config/device_registry/list"});\nconsole.log(device.config_entries);\n',
+        encoding="utf-8",
+    )
+    args = [
+        str(tmp_path), "--rules", str(local_rules), "--ha-version", "2027.5", "--format", "json",
+        *(["--require-complete"] if strict else []),
+    ]
+    code = main(args)
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == (2 if strict else 1)
+    assert report["complete"] is False
+    assert report["files_scanned"] == 1
+    assert report["skipped"]["no_matchers"] == 1
+    assert report["blocking_count"] == 1
+    assert report["findings"][0]["file"].endswith("/card.js")
+
+
 def test_json_partial_scan_exposes_parse_failures(tmp_path, local_rules, capsys):
     component = tmp_path / "custom_components" / "example"
     component.mkdir(parents=True)
@@ -649,6 +691,39 @@ def test_clean_github_check_writes_a_summary(fixtures_dir, local_rules, tmp_path
         "--format", "github", "--require-complete",
     ]) == 0
     assert "0 finding(s) in this checkout." in summary.read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_invalid_utf8_card_source_is_not_counted_as_scanned(tmp_path, card_rules, capsys, strict):
+    (tmp_path / "good.js").write_text("const value = 1;\n", encoding="utf-8")
+    (tmp_path / "bad.js").write_bytes(b"const value = '\xff';")
+    args = [
+        str(tmp_path), "--rules", str(card_rules), "--format", "json",
+        *(["--require-complete"] if strict else []),
+    ]
+    code = main(args)
+    report = json.loads(capsys.readouterr().out)
+    assert code == report["exit_code"] == (2 if strict else 0)
+    assert report["files_scanned"] == 1
+    assert report["complete"] is False
+    assert report["skipped"]["undecodable"] == 1
+
+
+@pytest.mark.parametrize("scanned, expected_code", [(False, 2), (True, 0)])
+def test_github_summary_shows_missing_language_coverage(
+    tmp_path, local_rules, monkeypatch, scanned, expected_code
+):
+    component = tmp_path / "custom_components" / "example"
+    component.mkdir(parents=True)
+    (component / "card.js").write_text("const value = 1;\n", encoding="utf-8")
+    if scanned:
+        (component / "sensor.py").write_text("VALUE = 1\n", encoding="utf-8")
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    assert main([str(tmp_path), "--rules", str(local_rules), "--format", "github"]) == expected_code
+    written = summary.read_text(encoding="utf-8")
+    assert "Scan incomplete" in written
+    assert "no applicable matchers: 1" in written
 
 
 @pytest.fixture

@@ -76,6 +76,31 @@ jobs:
           echo "::error::a repository of one minified bundle reported as clean"
           exit 1
 
+      - name: Create a partially scannable card checkout
+        run: |
+          mkdir -p "$RUNNER_TEMP/radar-partial"
+          printf 'const value = 1;\n' > "$RUNNER_TEMP/radar-partial/good.js"
+          printf '\377' > "$RUNNER_TEMP/radar-partial/bad.js"
+
+      - name: A partial scan passes by default
+        uses: ./
+        with:
+          path: ${{ runner.temp }}/radar-partial
+
+      - name: require-complete rejects the same partial scan
+        id: completeness
+        continue-on-error: true
+        uses: ./
+        with:
+          path: ${{ runner.temp }}/radar-partial
+          require-complete: "true"
+
+      - name: The completeness check must have failed
+        if: steps.completeness.outcome != 'failure'
+        run: |
+          echo "::error::require-complete did not reject the partial scan"
+          exit 1
+
   hassfest:
     name: hassfest
     runs-on: ubuntu-latest

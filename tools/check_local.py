@@ -114,11 +114,14 @@ def iter_python_files(
 
 
 def read_python(
-    components: Path, skipped: dict[str, int]
+    components: Path, skipped: dict[str, int], *, has_matchers: bool
 ) -> Iterator[tuple[str, bytes]]:
     """``(custom_components/... path, source)`` for every component on disk."""
     for domain_dir in _component_dirs(components):
         files = iter_python_files(domain_dir, skipped)
+        if not has_matchers:
+            skipped["no_matchers"] += len(files)
+            continue
         for position, (path, relative) in enumerate(files):
             if position >= MAX_FILES:
                 skipped["capped"] += len(files) - position
@@ -128,7 +131,9 @@ def read_python(
                 yield f"custom_components/{domain_dir.name}/{relative}", source
 
 
-def read_javascript(root: Path, skipped: dict[str, int]) -> Iterator[tuple[str, str]]:
+def read_javascript(
+    root: Path, skipped: dict[str, int], *, has_matchers: bool
+) -> Iterator[tuple[str, str]]:
     """``(path, text)`` for every scannable frontend file below ``root``.
 
     A ``.d.ts`` declares the API rather than calling it, and a bundle is never
@@ -139,10 +144,18 @@ def read_javascript(root: Path, skipped: dict[str, int]) -> Iterator[tuple[str, 
     for path, name in _source_files(root, JS_SUFFIXES, skipped):
         if name.endswith(".d.ts"):
             continue
+        if not has_matchers:
+            skipped["no_matchers"] += 1
+            continue
         source = _read_bytes(path, skipped)
         if source is None:
             continue
-        text = source.decode("utf-8", "replace")
+        try:
+            text = source.decode("utf-8")
+        except UnicodeDecodeError:
+            LOGGER.warning("could not decode %s as UTF-8", path)
+            skipped["undecodable"] += 1
+            continue
         if looks_minified_js(name, text):
             skipped["minified"] += 1
             continue
@@ -274,6 +287,8 @@ def render_github(
     rules: dict[str, Rule],
     today: date,
     blocking: set[int],
+    stats: ScanStats,
+    skipped: dict[str, int],
 ) -> None:
     """Workflow annotations, plus the whole list as a job summary.
 
@@ -296,11 +311,36 @@ def render_github(
     lines = [
         "## Home Assistant Breakage Radar",
         "",
-        f"{len(findings)} finding(s) in this checkout.",
-        "",
-        "| Breaks in | When | File | Rule | Confidence |",
-        "| --- | --- | --- | --- | --- |",
     ]
+    if is_complete(stats, skipped):
+        lines.append(f"{len(findings)} finding(s) in this checkout.")
+    else:
+        lines.append(
+            f"**Scan incomplete:** {stats.files_scanned} file(s) scanned, "
+            f"{len(findings)} finding(s) in the scanned source."
+        )
+        labels = {
+            "capped": "over file limit",
+            "too_big": "over size limit",
+            "unreadable": "unreadable files",
+            "undecodable": "invalid UTF-8",
+            "minified": "minified files",
+            "unreadable_directories": "unreadable directories",
+            "no_matchers": "no applicable matchers",
+        }
+        reasons = [
+            f"{labels[key]}: {count}" for key, count in skipped.items() if count
+        ]
+        if stats.syntax_errors:
+            reasons.append(f"unparseable files: {len(stats.syntax_errors)}")
+        if reasons:
+            lines.extend(["", "Coverage gaps: " + "; ".join(reasons) + "."])
+    if findings:
+        lines.extend([
+            "",
+            "| Breaks in | When | File | Rule | Confidence |",
+            "| --- | --- | --- | --- | --- |",
+        ])
     for finding in findings:
         rule = rules.get(finding.rule_id)
         when = describe_when(finding.breaks_in, days_until(finding.breaks_in, today))
@@ -482,34 +522,44 @@ def _check(args: argparse.Namespace) -> int:
     components = find_components_dir(target)
     skipped = {
         "capped": 0, "too_big": 0, "unreadable": 0, "minified": 0,
-        "unreadable_directories": 0,
+        "unreadable_directories": 0, "no_matchers": 0, "undecodable": 0,
     }
     stats = ScanStats()
+    matcher_types = {rule.match["type"] for rule in rules if rule.match}
 
     if components is None:
         # No custom_components: read it as a Lovelace card repository, whose
         # card can live anywhere in the tree.
         LOGGER.info("no custom_components/ in %s; scanning as a card repository", target)
-        findings = scan_sources((), read_javascript(target, skipped), rules, stats)
+        python_sources = ()
     elif not _component_dirs(components):
         LOGGER.error("%s contains no component directories", components)
         return 2
     else:
-        findings = scan_sources(
-            read_python(components, skipped),
-            read_javascript(components, skipped),
-            rules,
-            stats,
+        python_sources = read_python(
+            components, skipped, has_matchers=bool(matcher_types - {"js"}),
         )
 
+    findings = scan_sources(
+        python_sources,
+        read_javascript(components or target, skipped, has_matchers="js" in matcher_types),
+        rules,
+        stats,
+    )
     LOGGER.info(
-        "scanned %d file(s); %d unparseable, %d skipped",
+        "scanned %d file(s); %d unparseable, %d source item(s) skipped",
         stats.files_scanned,
         len(stats.syntax_errors),
         sum(skipped.values()),
     )
     for problem in stats.syntax_errors:
         LOGGER.warning("could not parse %s", problem)
+    if skipped["no_matchers"]:
+        LOGGER.warning(
+            "skipped %d source file(s): no applicable %s matchers in the selected rules",
+            skipped["no_matchers"],
+            "Python" if "js" in matcher_types else "JavaScript/TypeScript",
+        )
 
     findings.sort(key=lambda f: (parse_version(f.breaks_in), f.file, f.line))
     messages = {rule.id: rule for rule in all_rules}
@@ -535,24 +585,22 @@ def _check(args: argparse.Namespace) -> int:
             target,
             sum(skipped.values()),
         )
-        return 2
-
-    if args.require_complete and incomplete:
+    elif args.require_complete and incomplete:
         LOGGER.error("source scan is incomplete; --require-complete requires exit 2")
         if args.format == "github":
             print("::error::Source scan is incomplete (--require-complete). See the scan logs.")
 
-    if not findings and args.format == "text":
+    if args.format == "github":
+        render_github(findings, messages, today, blocking, stats, skipped)
+    elif not stats.files_scanned:
+        return exit_code
+    elif not findings:
         # Plain ASCII: a Windows console defaults to cp1252 and raises on
         # anything fancier.
         if is_complete(stats, skipped):
             print("OK - no scheduled removals found in this checkout.")
         else:
             print("No scheduled removals found in the scanned source; scan incomplete.")
-        return exit_code
-
-    if args.format == "github":
-        render_github(findings, messages, today, blocking)
     else:
         render_text(findings, messages, today)
 

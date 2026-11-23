@@ -124,6 +124,11 @@ record, exit 2 with a stderr diagnostic and no JSON output. Directory read
 failures appear under `skipped.unreadable_directories` (failed directory visits,
 including retries across Python and JavaScript scans). Excluded vendor and
 hidden directories are pruned before walking, not visited and then filtered.
+Source files without matchers for their language in the selected rules are
+counted separately under `skipped.no_matchers`. If no source can be checked
+with the selected rules, the checker exits 2 even without `--require-complete`.
+JavaScript and TypeScript files that are not valid UTF-8 are counted under
+`skipped.undecodable`.
 
 `--require-complete` is opt-in. It exits 2 when any selected source is unreadable,
 unparseable or skipped, even with `--fail-on never`. Findings are still reported;
@@ -131,7 +136,7 @@ exit 2 takes precedence over the finding policy's exit 1. Without it, partial
 scans retain the existing exit policy, but text output labels them incomplete
 rather than saying "OK". `complete` describes source coverage against the loaded
 detectors, not exhaustive coverage of Home Assistant's announced removals or a
-compatibility guarantee. This flag is available in the CLI, not as an action input.
+compatibility guarantee.
 
 > **Use Python 3.12 or newer, ideally 3.14.** The checker parses your code with
 > the interpreter it runs on. On an older interpreter, a file using newer syntax
@@ -160,7 +165,7 @@ jobs:
 
 That is the whole thing. It works unchanged on a card repository.
 
-By default it **annotates and does not fail**. A removal scheduled for 2027.8
+By default **findings annotate and do not fail the job**. A removal scheduled for 2027.8
 turning an unrelated pull request red is how a check gets deleted from a
 workflow file, and then it is not there to warn you about the one landing next
 month either. When you want a gate, ask for one:
@@ -177,6 +182,7 @@ month either. When you want a gate, ask for one:
 | `path` | `.` | checkout root, or a `custom_components` directory |
 | `fail-on` | `never` | `never`, `imminent`, or `any` |
 | `window-days` | `90` | how far ahead `imminent` reaches |
+| `require-complete` | `false` | set to `"true"` to fail on a partial source scan, independently of `fail-on` (available since v1.20.0) |
 | `rules` | `pinned` | `pinned` uses the rules committed at the tag you pinned, with no network call. `index` fetches the published index instead |
 | `ha-version` | *(empty)* | only report removals still ahead of this release |
 | `python-version` | `3.13` | the interpreter that parses your source |
@@ -184,7 +190,8 @@ month either. When you want a gate, ask for one:
 Findings come out as annotations on the exact line, **and** as a job summary
 table. Both, because GitHub only displays 10 annotations per level per step and
 50 per job — with the summary, thirty findings read as thirty rather than as
-ten.
+ten. The summary also marks incomplete scans and lists the coverage gaps. If
+nothing can be checked, the action fails even without `require-complete`.
 
 Pin an exact tag rather than a moving major. `data/rules.json` is rewritten by
 the daily crawl, so a floating ref would quietly change what your CI checks
