@@ -6,6 +6,8 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.20.0 - 2026-11-24
+
 The local checker no longer counts files as scanned when the selected rules
 have no matchers for their language. JSON reports these files under
 `skipped.no_matchers`, and `--require-complete` rejects the resulting partial

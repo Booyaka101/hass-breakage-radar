@@ -182,7 +182,7 @@ month either. When you want a gate, ask for one:
 | `path` | `.` | checkout root, or a `custom_components` directory |
 | `fail-on` | `never` | `never`, `imminent`, or `any` |
 | `window-days` | `90` | how far ahead `imminent` reaches |
-| `require-complete` | `false` | set to `"true"` to fail on a partial source scan, independently of `fail-on` (available after v1.19.0) |
+| `require-complete` | `false` | set to `"true"` to fail on a partial source scan, independently of `fail-on` (available since v1.20.0) |
 | `rules` | `pinned` | `pinned` uses the rules committed at the tag you pinned, with no network call. `index` fetches the published index instead |
 | `ha-version` | *(empty)* | only report removals still ahead of this release |
 | `python-version` | `3.13` | the interpreter that parses your source |
