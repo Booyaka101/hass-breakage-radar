@@ -1,20 +1,20 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-23T03:24:54Z",
+  "generated_utc": "2026-11-24T03:23:31Z",
   "core_ref": "dev",
   "core_version": "2026.12",
   "latest_release": "2026.11",
   "rc_release": null,
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "a659ede32918a2b33a41f75134fe976b43cfad9b6957c35d2d7bb464b229164e",
+  "core_tarball_sha256": "190a8ecb9600fb9a68d5d8516208c6902602c903bed3629c22c4a2202f60733b",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
     "total": 169,
     "future": 154,
     "matchable_future": 75,
-    "core_files_scanned": 11096,
+    "core_files_scanned": 11108,
     "core_files_unparsed": 0,
     "markers_discarded": 2,
     "markers_discarded_pending": 2,
@@ -537,7 +537,7 @@
       "symbol": "async_render_no_api_prompt",
       "message": "an empty string",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/llm.py:59",
+      "source": "homeassistant/helpers/llm.py:60",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -552,7 +552,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L59"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L60"
     },
     {
       "id": "core-issue-aqualogic-deprecated-yaml-2027.2",
@@ -2829,13 +2829,13 @@
       "symbol": "returns a JSON object from a tool, which is deprecated; return a ToolResult inst...",
       "message": "returns a JSON object from a tool, which is deprecated; return a ToolResult instead",
       "breaks_in": "2027.11",
-      "source": "homeassistant/helpers/llm.py:276",
+      "source": "homeassistant/helpers/llm.py:277",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L276"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/llm.py#L277"
     },
     {
       "id": "core-prose-sets-tool-result-on-a-tool-result-delta-which-is-deprecated-set-result-to",
@@ -3220,5 +3220,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L160"
     }
   ],
-  "blog_merged_utc": "2026-11-23T03:24:54Z"
+  "blog_merged_utc": "2026-11-24T03:23:32Z"
 }
