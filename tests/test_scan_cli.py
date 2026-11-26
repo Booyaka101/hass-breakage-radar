@@ -12,6 +12,7 @@ import pytest
 
 from custom_components.breakage_radar.repairs import describe_links
 from custom_components.breakage_radar.report import build_report
+from custom_components.breakage_radar.scanner import rules_fingerprint
 from tools import scan as scan_module
 from tools.build_index import build_payload, validate_index
 from tools.common import NotFound, RateLimited
@@ -445,6 +446,7 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     "clean", "branch", "unparsed", "still_affected", "different_finding", "js_only", "oversized",
     "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
     "same_version", "unknown_version", "prerelease", "scan_version_changed", "stale_local_rules",
+    "new_index_same_rules",
 ])
 def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_path, monkeypatch, case):
     version = "v1.0.0-beta.1" if case == "prerelease" else "v1.0.0"
@@ -499,13 +501,19 @@ def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_pat
     local_findings = SAME_FINDING
     if case == "different_finding":
         local_findings = [{**SAME_FINDING[0], "rule_id": other.id}, *SAME_FINDING]
+    previous_rules = [
+        {**rule, "hits": 99, "repos_hit": 7} for rule in payload["rules"]
+    ]
+    if case == "stale_local_rules":
+        previous_rules[0] = {**previous_rules[0], "match": {**RULE.match, "names": ["old_search"]}}
     report = build_report(
         payload,
         {"one": installed},
         {
             "domains": {"one": {"status": "affected", "findings": local_findings}},
             "discovered_versions": {"one": "0.8.0" if case == "scan_version_changed" else installed},
-            "index_generated_utc": "earlier" if case == "stale_local_rules" else payload["generated_utc"],
+            "index_generated_utc": "earlier" if case == "new_index_same_rules" else payload["generated_utc"],
+            "rules_fingerprint": rules_fingerprint(previous_rules, "2027.5"),
         },
         current_version="2027.5",
     )
@@ -516,10 +524,12 @@ def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_pat
         assert "/a/one/tree/v1.0.0" in where
         assert {detail["rule_id"] for detail in report["details"] if "release_hint" in detail} == {RULE.id}
         return
-    if case == "clean":
+    if case in ("clean", "new_index_same_rules"):
         assert "/a/one/tree/v1.0.0" in where
+        assert r"the finding for setup\_scanner" in where
         assert "still applies to your installed copy" in where
         assert report["details"][0]["release_hint"]["version"] == "1.0.0"
+        assert report["details"][0]["repository"] == "a/one"
         updated = build_report(
             payload, {"one": "1.0.0"},
             {"domains": {"one": {"status": "clean"}}, "rules_matchable": 1},

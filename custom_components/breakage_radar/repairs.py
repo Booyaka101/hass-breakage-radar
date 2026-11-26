@@ -72,6 +72,12 @@ def _release_label(hint: dict) -> str:
     return f"[tag {hint['tag']}]({hint['url']}) (integration version {hint['version']})"
 
 
+def _release_evidence(hint: dict) -> str:
+    symbol = (hint.get("symbol") or "").translate(_MARKDOWN_ESCAPES)
+    finding = f"the finding for {symbol}" if symbol else "one flagged finding"
+    return f"Radar did not detect {finding} in the source for {_release_label(hint)}."
+
+
 def _closed_issue(report: dict) -> str:
     title = (report.get("title") or "").translate(_MARKDOWN_ESCAPES)
     reason = report.get("state_reason")
@@ -96,7 +102,7 @@ def _summary_resolutions(report: dict, integrations: set[str], cards: set[str]) 
         hint = detail.get("release_hint")
         issue = detail.get("upstream_report") or {}
         if hint:
-            text = f"Radar did not detect one flagged finding in the source for {_release_label(hint)}."
+            text = _release_evidence(hint)
         elif issue.get("state") == "closed":
             text = _closed_issue(issue)
         else:
@@ -137,7 +143,7 @@ def describe_links(link: dict | None) -> str:
     parts: list[str] = []
     if release_hint:
         parts.append(
-            f"Radar did not detect one flagged finding in the source for {_release_label(release_hint)}. "
+            f"{_release_evidence(release_hint)} "
             "Check that version in HACS. The warning still applies to your installed copy."
         )
     if not repo_url and not release_hint:
@@ -151,10 +157,10 @@ def describe_links(link: dict | None) -> str:
             "Plan to replace this integration."
         )
     elif repo_url:
-        parts.append(
-            f"First check [{repository} releases]({repo_url}/releases) for a "
-            "version that fixes it."
-        )
+        if not release_hint:
+            parts.append(
+                f"First check [{repository} releases]({repo_url}/releases) for a version that fixes it."
+            )
         if report and report.get("state") == "open":
             parts.append(
                 f"It is already reported: [#{report['number']} "
@@ -171,14 +177,14 @@ def describe_links(link: dict | None) -> str:
         elif symbol:
             query = quote_plus(f"is:issue {symbol}")
             parts.append(
-                f"If there isn't one, [see whether it is already "
+                f"Before filing, [see whether it is already "
                 f"reported]({repo_url}/issues?q={query}). Adding a reaction to "
                 "an existing report helps the maintainer more than another "
                 "copy of it does."
             )
         else:
             parts.append(
-                f"If there isn't one, check [the issue tracker]({repo_url}/issues) "
+                f"Check [the issue tracker]({repo_url}/issues) "
                 "before reporting it, so the maintainer does not get duplicates."
             )
     if learn_more.startswith("http"):

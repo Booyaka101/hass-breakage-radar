@@ -399,12 +399,9 @@ def _search_found_nothing(monkeypatch, issue):
     _searched(monkeypatch, issue)
 
 
-def _search_errored(monkeypatch, slept):
+def _search_errored(monkeypatch, slept, issue=None):
+    _searched(monkeypatch, issue if issue is not None else _http_error(502, {}))
     monkeypatch.setattr("tools.upstream.time.sleep", slept.append)
-    monkeypatch.setattr(
-        "tools.upstream.repo_facts",
-        lambda *a, **k: {"archived": False, "issues_enabled": True},
-    )
 
     def failing_search(*args, **kwargs):
         raise _http_error(502, {})
@@ -432,6 +429,14 @@ def test_a_search_that_fails_keeps_what_the_repository_itself_answered(monkeypat
     assert facts["archived"] is False
     assert facts["issues_enabled"] is True
     assert facts["report"] == ON_FILE
+
+
+def test_issue_state_can_update_during_a_search_outage(monkeypatch):
+    _search_errored(monkeypatch, [], _still_served(state="closed", state_reason="completed"))
+    facts = _look_up()
+    assert facts["searched"] is False
+    assert facts["report"]["state"] == "closed"
+    assert facts["report"]["state_reason"] == "completed"
 
 
 def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):

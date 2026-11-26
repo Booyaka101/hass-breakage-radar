@@ -26,6 +26,7 @@ from .rules_engine import (
     reports_before_removal,
     rule_search_term,
 )
+from .scanner import rules_fingerprint
 
 # describe_when and release_estimated_date are re-exported: the repairs card
 # and the tests reach them through this module.
@@ -90,6 +91,7 @@ def _release_hint(
     ):
         return {}
     return {
+        "repository": repository,
         "tag": tag,
         "version": version,
         "url": f"https://github.com/{repository}/tree/{tag}",
@@ -239,6 +241,14 @@ def build_report(
     link_ranks: dict[tuple[str, str], tuple[tuple[int, ...], int]] = {}
     local_versions = (local_scan or {}).get("discovered_versions") or {}
     scanned_index = (local_scan or {}).get("index_generated_utc")
+    scanned_rules = (local_scan or {}).get("rules_fingerprint")
+    # Today's index need not have different rules from yesterday's. Compare
+    # the scan input, not just the timestamp, when the scanner provides it.
+    comparable_scan = bool(release_scans and local_versions) and (
+        scanned_rules == rules_fingerprint(index.get("rules", []), current_version)
+        if scanned_rules
+        else not scanned_index or scanned_index == index.get("generated_utc")
+    )
 
     def _days_until(release: str) -> int | None:
         if today is None:
@@ -275,8 +285,8 @@ def build_report(
         if (
             kind == "integration"
             and source == "local"
+            and comparable_scan
             and local_versions.get(domain) == installed_version
-            and (not scanned_index or scanned_index == index.get("generated_utc"))
         ):
             candidate = _release_hint(
                 release_scans.get(domain), installed_version, entry, clean=domain in clean_domains
@@ -308,8 +318,9 @@ def build_report(
                     local_versions.get(domain, installed_version)
                     if kind == "integration" else ""
                 )
-            release_hint = candidate if (
-                rule.get("matchable")
+            release_hint = {**candidate, "symbol": rule.get("symbol") or symbol or ""} if (
+                candidate
+                and rule.get("matchable")
                 and (rule.get("match") or {}).get("type") in PYTHON_MATCHER_TYPES
                 and finding.get("rule_id") not in tagged_hits
             ) else {}
@@ -357,7 +368,7 @@ def build_report(
                 "when": when,
                 "days_until": days,
                 "due": describe_when(release, days),
-                "repository": (entry or {}).get("full_name", ""),
+                "repository": (entry or {}).get("full_name") or release_hint.get("repository", ""),
                 "scanned_version": scanned_version,
                 "installed_version": installed_version,
                 "message": clip(rule.get("message") or "", 300),

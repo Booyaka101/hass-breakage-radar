@@ -861,10 +861,10 @@ The fact records `checked_utc`, and a crawl re-asks every affected repository wh
 fact is more than a week old, up to a few hundred a run. Facts found under a term
 their rule no longer asks for go first, then the oldest. A repository
 that never cuts another release is never rescanned, so without that its issue link
-would stay published for good, however wrong it had gone. After a successful
-search, the report already on file is fetched by number unless there is a
-better candidate: a search can miss a report or lag a closure or reopening,
-but a 404 means it is gone. What
+would stay published for good, however wrong it had gone. The report already
+on file is fetched by number unless search finds a better candidate. Searching
+can fail, miss a report, or lag a closure or reopening. A 404 on direct lookup
+means the report is gone. What
 survives a 404 is only what says not to file there, that the repository was archived
 or had issues turned off. The report link goes with the tracker it pointed into.
 

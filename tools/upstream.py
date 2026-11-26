@@ -289,7 +289,7 @@ def look_up(
             # waits its turn like the rest rather than sorting to the front of
             # every run for good.
             LOGGER.debug("search failed for %s: %s", full_name, err)
-            report = known
+            report = None
             # Not part of the fact that gets stored; :func:`annotate` takes it
             # out again, the same way the canonical name is taken out above.
             facts["searched"] = False
@@ -300,16 +300,12 @@ def look_up(
             # the whole budget of them back to back.
             time.sleep(SEARCH_INTERVAL)
         found = _rank(report, term, current_version=current_version)
-        if (
-            known and report and report.get("number") == known.get("number")
-            and facts.get("searched", True)
-        ):
-            # The search index can lag a closure or a reopen. Read the issue
-            # directly even when the search still has the same number.
+        if known and (not report or report.get("number") == known.get("number")):
+            # A failed search does not stop the issue endpoint from reporting
+            # a closure or reopen, and search can lag even when it succeeds.
             report = refresh(known)
         elif (
             known
-            and (report or {}).get("number") != known.get("number")
             and _rank(known, term, current_version=current_version) >= found
         ):
             current = refresh(known)
