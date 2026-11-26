@@ -241,6 +241,50 @@ def test_the_summary_card_shows_the_schedule(many_releases):
     assert placeholders["count"] == "8"
 
 
+@pytest.mark.parametrize("evidence", ["tag", "closure", "none"])
+def test_future_findings_explain_available_evidence_in_summary(sample_index, evidence):
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar.repairs import async_sync_issue
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own harness")
+
+    domain = "fixture_tracker"
+    entry = sample_index["integrations"][0]
+    local = None
+    if evidence == "tag":
+        sample_index["integrations"] = []
+        sample_index["clean_domains"].append(domain)
+        sample_index["release_scans"] = {domain: [entry["full_name"], "v0.2.0", "0.2.0"]}
+        local = {
+            "discovered_versions": {domain: "0.1.0"},
+            "domains": {domain: {"status": "affected", "findings": entry["findings"]}},
+        }
+    elif evidence == "closure":
+        entry["upstream"] = {
+            "symbol": "setup_scanner",
+            "report": {"number": 1, "state": "closed", "state_reason": "not_planned",
+                       "url": "https://github.com/example/fixture-tracker/issues/1", "title": "Report"},
+        }
+    report = build_report(
+        sample_index, {domain: "0.1.0"}, local, current_version="2026.9", today=date(2026, 9, 1),
+    )
+    assert report["summarised_domains"] == [domain]
+    ir.created.clear()
+    async_sync_issue(None, report)
+    summary = ir.created[(DOMAIN, ISSUE_ID)]["translation_placeholders"]["resolution_summary"]
+    if evidence == "tag":
+        assert "/tree/v0.2.0" in summary
+    elif evidence == "closure":
+        assert "/issues/1" in summary
+        assert "not planned" in summary
+    else:
+        assert summary == ""
+    if evidence != "none":
+        assert "warnings still apply to the installed copies" in summary
+
+
 # --------------------------------------------------------------------------- #
 # the configurable window
 # --------------------------------------------------------------------------- #
@@ -507,16 +551,31 @@ def test_report_titles_are_escaped_in_repairs_markdown(sample_index, state, titl
     assert describe_links(link) == text  # Rendering must not double-escape stored data.
 
 
-def test_a_closed_report_points_at_a_probable_fix(sample_index):
+@pytest.mark.parametrize(("reason", "expected"), [
+    (None, "Closure alone does not confirm a fix"),
+    ("completed", "does not confirm a release contains a fix"),
+    ("not_planned", "marks it not planned"),
+    ("duplicate", "marks it as a duplicate"),
+])
+def test_a_closed_report_does_not_promise_a_fix(sample_index, reason, expected):
     from custom_components.breakage_radar.repairs import describe_links
 
     text = describe_links(_links(sample_index, {
         "archived": False, "issues_enabled": True,
         "report": {"number": 320, "state": "closed", "url": "https://github.com/example/x/issues/320",
-                   "title": "Remove deprecated argument (2026.10)"},
+                   "title": "Remove deprecated argument (2026.10)", "state_reason": reason},
     }))
     assert "reported and closed" in text
-    assert "a fix may already have shipped" in text
+    assert expected in text
+    assert "Add a reaction" not in text
+
+
+def test_unrelated_issue_closure_is_not_attached_to_the_finding(sample_index):
+    link = _links(sample_index, {
+        "symbol": "another_symbol",
+        "report": {"number": 41, "state": "closed", "url": "https://github.com/example/x/issues/41"},
+    })
+    assert link["report"] == {}
 
 
 @pytest.mark.parametrize("state", ["open", "closed"])

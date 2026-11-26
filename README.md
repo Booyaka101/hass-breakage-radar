@@ -3,9 +3,9 @@
 **Which of my custom integrations stop working, and in which Home Assistant release?**
 
 Home Assistant announces API removals a year ahead on the developer blog and marks
-them in code with `breaks_in_ha_version=`. Core integrations get migrated. Custom
-integrations mostly do not — and the author of the integration you installed from HACS
-two years ago may not be reading the developer blog at all.
+them in code with `breaks_in_ha_version=`. Core integrations get migrated.
+Custom integrations don't get those migrations. The maintainer of a community
+integration you installed two years ago may not be reading the developer blog.
 
 Worse, the warning never reaches *you*. In `homeassistant/helpers/frame.py`:
 
@@ -61,7 +61,7 @@ when Radar cannot check for them.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/schedule-summary.png"
-       alt="A Home Assistant repair notification listing which custom integrations break in which release, with dates"
+       alt="A Repairs summary showing a future deadline and a newer tag where Radar did not detect the finding"
        width="760">
 </p>
 
@@ -131,16 +131,23 @@ Assistant install.
 
 ## Install (Home Assistant side)
 
-### Via HACS (custom repository)
+### Via Marketplace (Home Assistant 2026.11 and newer)
 
-[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Booyaka101&repository=hass-breakage-radar&category=integration)
+1. Go to **Settings → Marketplace** and search for **Breakage Radar**.
+2. Open the listing and select **Install**. Follow any restart prompt in **Repairs**.
+3. If setup doesn't open automatically, go to **Settings → Devices & services → Add integration** and select **Breakage Radar**.
 
-Or by hand:
+Breakage Radar is in the default catalog, so you don't need to add the repository
+manually or connect a GitHub account. If you already installed it through HACS,
+Home Assistant [migrates your installation automatically](https://www.home-assistant.io/integrations/marketplace/#coming-from-hacs).
 
-1. HACS → ⋮ → **Custom repositories**
-2. URL `https://github.com/Booyaka101/hass-breakage-radar`, category **Integration**
-3. Install **Breakage Radar**, restart Home Assistant
-4. **Settings → Devices & Services → Add Integration → Breakage Radar** → Submit
+### Via HACS (Home Assistant older than 2026.11)
+
+[![Open Breakage Radar in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Booyaka101&repository=hass-breakage-radar&category=integration)
+
+1. Open **HACS** and search for **Breakage Radar**.
+2. Download it and restart Home Assistant.
+3. Go to **Settings → Devices & services → Add integration** and select **Breakage Radar**.
 
 ### Manually
 
@@ -296,13 +303,14 @@ The summary tells you which integration breaks when, not just how many:
        width="760">
 </p>
 
-Each per-integration notification links to that integration's releases page and to a
-search for an existing report of the same deprecation, so you can add a reaction
-instead of filing a duplicate:
+When Radar knows the upstream repository, an individual notification links to
+releases and to the related issue or an issue search. In this example, GitHub
+marks the issue completed, but that doesn't tell you whether a fix shipped.
+Both Repairs dialogs shown here use test integrations.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/integration-notification.png"
-       alt="A notification for a single integration, linking to its releases, to existing reports and to the Home Assistant change"
+       alt="An individual Repairs warning linking to a closed upstream issue without saying that a fix shipped"
        width="760">
 </p>
 
@@ -788,10 +796,10 @@ only file was skipped reads as *not analysed*, never as clean. A TypeScript
 card that ships both its source and its bundle is deduplicated to one finding
 per rule, pointing at the source file.
 
-On your own box the integration scans `www/community/**`, where HACS installs
-cards, with the same rules, and raises the same Repairs issues with the card
-name in the title. A card installed only as a minified bundle falls back to
-the index's verdict on its source repository.
+On your own box the integration scans `www/community/**`, where Marketplace
+and HACS install cards. It uses the same rules and raises Repairs issues with
+the card name in the title. A card installed only as a minified bundle falls
+back to the index's verdict on its source repository.
 
 ---
 
@@ -837,7 +845,19 @@ An affected integration may also carry `upstream`, recording what its own
 repository says: whether it is archived, whether it accepts issues, and the most
 relevant existing report if there is one. That is what lets a notification say
 "already reported, add a reaction there" instead of sending everybody to open
-the same issue. It is optional, so an older index simply lacks it.
+the same issue. A closed issue can include GitHub's closure reason, but even
+“completed” is not evidence that a fix shipped. This metadata is optional.
+
+If a local scan still finds a problem in an installed integration, Repairs can
+point to a newer HACS catalog tag whose source Radar scanned without detecting
+the finding. Evidence is specific to that Python finding: other findings can
+still be present in the tag. It appears in individual alerts or in the summary
+for later deadlines. The optional `release_scans` index field maps a domain to
+`[repository, tag, manifest_version]`. Radar does not use branch fallbacks,
+prerelease version strings, incomplete Python scans, or outdated rules as
+upgrade evidence. Check the tag in Marketplace (or HACS on older versions).
+It is not a compatibility guarantee or a reason to clear the warning for the
+installed copy. Tags appear as the normal crawler revisits repositories.
 
 A search hit only becomes that report if its **title** says so, by naming the
 deprecated symbol, by using a word like "deprecated" or "removed", or by naming a
@@ -849,9 +869,10 @@ The fact records `checked_utc`, and a crawl re-asks every affected repository wh
 fact is more than a week old, up to a few hundred a run. Facts found under a term
 their rule no longer asks for go first, then the oldest. A repository
 that never cuts another release is never rescanned, so without that its issue link
-would stay published for good, however wrong it had gone. When the search does not
-come back with the report already on file, that issue is fetched by number: an issue
-drops out of a ten-hit search on its own, but a 404 means it is really gone. What
+would stay published for good, however wrong it had gone. The report already
+on file is fetched by number unless search finds a better candidate. Searching
+can fail, miss a report, or lag a closure or reopening. A 404 on direct lookup
+means the report is gone. What
 survives a 404 is only what says not to file there, that the repository was archived
 or had issues turned off. The report link goes with the tracker it pointed into.
 

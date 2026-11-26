@@ -10,7 +10,11 @@ import tarfile
 
 import pytest
 
+from custom_components.breakage_radar.repairs import describe_links
+from custom_components.breakage_radar.report import build_report
+from custom_components.breakage_radar.scanner import rules_fingerprint
 from tools import scan as scan_module
+from tools.build_index import build_payload, validate_index
 from tools.common import NotFound, RateLimited
 from tools.rules_engine import Rule, matchable_rules
 from tools.scan import (
@@ -436,6 +440,108 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     assert "upstream" not in _rescan_one(
         tmp_path, monkeypatch, SAME_FINDING, upstream=other
     )
+
+
+@pytest.mark.parametrize("case", [
+    "clean", "branch", "unparsed", "still_affected", "different_finding", "js_only", "oversized",
+    "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
+    "same_version", "unknown_version", "prerelease", "scan_version_changed", "stale_local_rules",
+    "new_index_same_rules", "only_other_component_has_python",
+])
+def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_path, monkeypatch, case):
+    version = "v1.0.0-beta.1" if case == "prerelease" else "v1.0.0"
+    entry = {**CATALOG[0], "last_version": version}
+    other = dataclasses.replace(RULE, id="other-rule", match={**RULE.match, "names": ["get_scanner"]})
+    rules_path, catalog_path = _write_inputs(tmp_path, catalog=[entry], rules=(RULE, other))
+    files = {"custom_components/one/manifest.json": '{"domain": "one", "version": "1.0.0"}'}
+    if case == "js_only":
+        files["custom_components/one/ui.js"] = "const flag = true;\n"
+    elif case == "only_other_component_has_python":
+        files["custom_components/other/__init__.py"] = "VALUE = 1\n"
+    else:
+        files["custom_components/one/device_tracker.py"] = {
+            "unparsed": "def broken(\n",
+            "still_affected": TRACKER_SOURCE,
+            "different_finding": TRACKER_SOURCE.replace("setup_scanner", "get_scanner"),
+        }.get(case, "VALUE = 1\n")
+    if case == "oversized":
+        files["custom_components/one/skipped.py"] = "#" * (4 * 1024 * 1024 + 1)
+    body = _tarball_bytes(files)
+
+    def http_get(url, **kwargs):
+        if case == "branch" and "/refs/tags/" in url:
+            raise NotFound(url)
+        return body
+
+    monkeypatch.setattr(scan_module, "http_get", http_get)
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--no-upstream", "--no-tarball-cache")) == 0
+    findings_doc = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    rules_doc = json.loads(rules_path.read_text(encoding="utf-8"))
+    if case == "stale_tag":
+        entry["last_version"] = "v2.0.0"
+    if case == "changed_rules":
+        rules_doc["rules"][0]["match"]["names"].append("different_matcher")
+    if case == "ambiguous_domain":
+        findings_doc["repos"]["other/fork"] = {"domain": "one", "status": "unreachable"}
+    if case == "old_index":
+        findings_doc["repos"]["a/one"].pop("release_scan")
+    catalog = [entry]
+    if case == "uncrawled_duplicate":
+        catalog.append({**entry, "full_name": "other/fork"})
+    payload = build_payload(rules_doc, findings_doc, {"integrations": catalog})
+    assert validate_index(payload) == []
+    if case == "clean":
+        assert payload["integrations"] == []
+        assert payload["release_scans"] == {"one": ["a/one", "v1.0.0", "1.0.0"]}
+    elif case in {
+        "branch", "unparsed", "js_only", "oversized", "only_other_component_has_python",
+        "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
+    }:
+        assert "release_scans" not in payload
+
+    installed = {"same_version": "1.0", "unknown_version": ""}.get(case, "0.9.0")
+    local_findings = SAME_FINDING
+    if case == "different_finding":
+        local_findings = [{**SAME_FINDING[0], "rule_id": other.id}, *SAME_FINDING]
+    previous_rules = [
+        {**rule, "hits": 99, "repos_hit": 7} for rule in payload["rules"]
+    ]
+    if case == "stale_local_rules":
+        previous_rules[0] = {**previous_rules[0], "match": {**RULE.match, "names": ["old_search"]}}
+    report = build_report(
+        payload,
+        {"one": installed},
+        {
+            "domains": {"one": {"status": "affected", "findings": local_findings}},
+            "discovered_versions": {"one": "0.8.0" if case == "scan_version_changed" else installed},
+            "index_generated_utc": "earlier" if case == "new_index_same_rules" else payload["generated_utc"],
+            "rules_fingerprint": rules_fingerprint(previous_rules, "2027.5"),
+        },
+        current_version="2027.5",
+    )
+    assert report["broken_now"] == {"one": "2027.5"}
+    assert report["total_findings"] == len(local_findings)
+    where = describe_links(report["links"]["one"])
+    if case == "different_finding":
+        assert "/a/one/tree/v1.0.0" in where
+        assert {detail["rule_id"] for detail in report["details"] if "release_hint" in detail} == {RULE.id}
+        return
+    if case in ("clean", "new_index_same_rules"):
+        assert "/a/one/tree/v1.0.0" in where
+        assert r"the finding for setup\_scanner" in where
+        assert "still applies to your installed copy" in where
+        assert report["details"][0]["release_hint"]["version"] == "1.0.0"
+        assert report["details"][0]["repository"] == "a/one"
+        updated = build_report(
+            payload, {"one": "1.0.0"},
+            {"domains": {"one": {"status": "clean"}}, "rules_matchable": 1},
+            current_version="2027.5",
+        )
+        assert updated["broken_now"] == {}
+        assert updated["links"] == {}
+    else:
+        assert "Radar did not detect" not in where
+        assert "release_hint" not in report["details"][0]
 
 
 def test_the_pending_floor_reaches_the_upstream_lookup(tmp_path, monkeypatch):

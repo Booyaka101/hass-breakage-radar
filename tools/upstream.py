@@ -51,7 +51,7 @@ TITLE_LIMIT = 256
 FACT_MAX_AGE_DAYS = 7
 
 #: How many repositories one run asks about. At SEARCH_INTERVAL apart this is
-#: about a quarter of an hour of the crawl job's ninety minutes, and up to two
+#: about a quarter of an hour of the crawl job's ninety minutes, and up to three
 #: REST calls each against the token's hourly budget.
 LOOKUP_LIMIT = 400
 
@@ -127,12 +127,14 @@ def relevance(title: str, term: str, *, current_version: str) -> int:
 
 def _report(item: dict[str, Any]) -> dict[str, Any]:
     """The part of an issue the board and a Repairs notice show."""
+    reason = item.get("state_reason")
     return {
         "number": item.get("number"),
         "url": item.get("html_url", ""),
         "state": item.get("state", ""),
         "title": (item.get("title") or "")[:TITLE_LIMIT],
         "reactions": (item.get("reactions") or {}).get("total_count", 0),
+        **({"state_reason": reason} if item.get("state") == "closed" and isinstance(reason, str) else {}),
     }
 
 
@@ -243,11 +245,9 @@ def look_up(
     """Repository facts plus any existing report. Never raises except when the
     rate limit is spent, which the caller uses to stop early.
 
-    ``known`` is the report this repository was already on file for. Whenever
-    the search does not come back with that one, it is asked about by number:
-    the search ranks its own way over ten hits, so the issue drops out of the
-    answer without anything having happened to it, and replacing a real report
-    with an unrelated hit sends everybody off to file a duplicate.
+    ``known`` is the report already on file. Unless search finds a better
+    candidate, confirm it by number: search results can lag changes or drop a
+    relevant issue from the first page.
     """
     token = token or _token()
     if not token:
@@ -255,7 +255,7 @@ def look_up(
     facts = repo_facts(full_name, token=token)
     canonical = facts.pop("canonical", full_name)
 
-    def still_open(report: dict[str, Any]) -> dict[str, Any] | None:
+    def refresh(report: dict[str, Any]) -> dict[str, Any] | None:
         return _confirmed(
             full_name,
             report,
@@ -269,7 +269,7 @@ def look_up(
         # Turning issues off hides the existing ones, and the API answers 404
         # or 410 for them, which is what drops the link. Saying "nowhere to
         # report it" while the report is still there to read would be worse.
-        current = still_open(known)
+        current = refresh(known)
         if current:
             facts["report"] = current
     if facts["issues_enabled"] and not facts["archived"]:
@@ -289,7 +289,7 @@ def look_up(
             # waits its turn like the rest rather than sorting to the front of
             # every run for good.
             LOGGER.debug("search failed for %s: %s", full_name, err)
-            report = known
+            report = None
             # Not part of the fact that gets stored; :func:`annotate` takes it
             # out again, the same way the canonical name is taken out above.
             facts["searched"] = False
@@ -300,12 +300,15 @@ def look_up(
             # the whole budget of them back to back.
             time.sleep(SEARCH_INTERVAL)
         found = _rank(report, term, current_version=current_version)
-        if (
+        if known and (not report or report.get("number") == known.get("number")):
+            # A failed search does not stop the issue endpoint from reporting
+            # a closure or reopen, and search can lag even when it succeeds.
+            report = refresh(known)
+        elif (
             known
-            and (report or {}).get("number") != known.get("number")
             and _rank(known, term, current_version=current_version) >= found
         ):
-            current = still_open(known)
+            current = refresh(known)
             if current and _rank(current, term, current_version=current_version) >= found:
                 report = current
         if report:

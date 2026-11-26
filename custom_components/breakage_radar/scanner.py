@@ -14,6 +14,7 @@ import hashlib
 import json
 import os
 from collections.abc import Callable, Iterator
+from functools import partial
 from typing import Any
 
 from .discovery import IGNORED_DIRECTORIES, _manifest_domain
@@ -34,7 +35,7 @@ UNSCANNED_DIRECTORIES = IGNORED_DIRECTORIES | frozenset(
 )
 
 
-def _rules_fingerprint(rules_payload: list[dict[str, Any]], current_version: str) -> str:
+def rules_fingerprint(rules_payload: list[dict[str, Any]], current_version: str) -> str:
     """Cache key covering everything that can change a scan's outcome.
 
     A rules update, an engine change or a Home Assistant upgrade all invalidate
@@ -42,7 +43,13 @@ def _rules_fingerprint(rules_payload: list[dict[str, Any]], current_version: str
     """
     digest = hashlib.sha256()
     digest.update(f"engine={ENGINE_VERSION};current={current_version};".encode())
-    digest.update(json.dumps(rules_payload, sort_keys=True, default=str).encode())
+    # The public index updates these counts as repositories are rescanned.
+    # They never affect which findings the local scanner returns.
+    rules = [
+        {key: value for key, value in rule.items() if key not in ("hits", "repos_hit")}
+        for rule in rules_payload
+    ]
+    digest.update(json.dumps(rules, sort_keys=True, default=str).encode())
     return digest.hexdigest()[:16]
 
 
@@ -263,7 +270,7 @@ def scan_installed(
     (signature, result), keyed on each file's path and metadata plus the rules
     fingerprint, so a refresh re-parses only what changed.
     """
-    fingerprint = _rules_fingerprint(rules_payload, current_version)
+    fingerprint = rules_fingerprint(rules_payload, current_version)
     rules = [rule for rule in load_rules(rules_payload) if rule.matchable]
 
     domains: dict[str, dict[str, Any]] = {}
@@ -292,7 +299,8 @@ def scan_installed(
             cache,
             domain,
             _signature(files, unreadable_dirs, fingerprint, max_files, max_bytes),
-            lambda: _scan_domain(
+            partial(
+                _scan_domain,
                 entry.name,
                 files,
                 unreadable_dirs,
@@ -422,7 +430,7 @@ def scan_cards(
     name, which is also the repository basename the index's plugin entries
     are joined on.
     """
-    fingerprint = _rules_fingerprint(rules_payload, current_version)
+    fingerprint = rules_fingerprint(rules_payload, current_version)
     rules = [
         rule
         for rule in load_rules(rules_payload)
@@ -457,7 +465,8 @@ def scan_cards(
             # can be named after a domain.
             f"card:{entry.name}",
             _signature(files, unreadable_dirs, fingerprint, max_files, max_bytes),
-            lambda: _scan_card(
+            partial(
+                _scan_card,
                 entry.name,
                 files,
                 unreadable_dirs,

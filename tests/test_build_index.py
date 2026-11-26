@@ -93,6 +93,11 @@ def test_payload_validates_against_schema_1(payload):
     assert validate_index(payload) == []
 
 
+@pytest.mark.parametrize("field", [[], {"example": "tag"}, {"example": ["repo", "tag", 1]}])
+def test_invalid_optional_release_scan_metadata_is_rejected(payload, field):
+    assert validate_index({**payload, "release_scans": field})
+
+
 def test_expired_rules_are_not_published(payload):
     assert [rule["id"] for rule in payload["rules"]] == [
         "legacy-device-tracker-platform"

@@ -7,6 +7,7 @@ scanning in :mod:`.scanner`.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 from datetime import date
 from typing import Any
@@ -18,12 +19,14 @@ from .const import (
     SUPPORTED_SCHEMA,
 )
 from .rules_engine import (
+    MATCHER_TYPES,
     clip,
     is_future,
     parse_version,
     reports_before_removal,
     rule_search_term,
 )
+from .scanner import rules_fingerprint
 
 # describe_when and release_estimated_date are re-exported: the repairs card
 # and the tests reach them through this module.
@@ -33,6 +36,7 @@ from .schedule import describe_when, release_estimated_date  # noqa: F401
 #: An upstream issue title as a Repairs card shows it. The crawler stores the
 #: whole one, because that is what it scores relevance on.
 REPORT_TITLE_CHARS = 140
+PYTHON_MATCHER_TYPES = MATCHER_TYPES - {"js"}
 
 
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -51,9 +55,47 @@ def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
 
 def _shown(report: dict[str, Any]) -> dict[str, Any]:
     """An upstream report with its title cut to what a card can carry."""
-    if not report:
+    if not isinstance(report, dict) or not report.get("number") or not report.get("url"):
         return {}
-    return {**report, "title": clip(report.get("title") or "", REPORT_TITLE_CHARS)}
+    title = report.get("title")
+    return {**report, "title": clip(title if isinstance(title, str) else "", REPORT_TITLE_CHARS)}
+
+
+def _stable_version(value: Any) -> tuple[int, ...]:
+    if not isinstance(value, str) or not re.fullmatch(r"v?[0-9]{1,9}(?:\.[0-9]{1,9}){1,3}", value):
+        return ()
+    parts = tuple(int(part) for part in value.removeprefix("v").split("."))
+    return parts + (0,) * (4 - len(parts))
+
+
+def _release_hint(
+    scan: Any, installed_version: str, entry: dict[str, Any] | None, *, clean: bool
+) -> dict[str, str]:
+    """A comparable, newer tagged source scan, not a compatibility verdict."""
+    if not isinstance(scan, list) or len(scan) != 3:
+        return {}
+    repository, tag, version = scan
+    installed = _stable_version(installed_version)
+    if (
+        not installed
+        or _stable_version(version) <= installed
+        or not _stable_version(tag)
+        or not isinstance(repository, str)
+        or not re.fullmatch(r"[A-Za-z0-9_-]+/[A-Za-z0-9_.-]+", repository)
+        or repository.rsplit("/", 1)[1] in {".", ".."}
+        or (
+            (repository != entry.get("full_name") or f"refs/tags/{tag}" != entry.get("ref"))
+            if entry is not None
+            else not clean
+        )
+    ):
+        return {}
+    return {
+        "repository": repository,
+        "tag": tag,
+        "version": version,
+        "url": f"https://github.com/{repository}/tree/{tag}",
+    }
 
 
 def _index_by_card(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -150,6 +192,9 @@ def build_report(
     affected_by_domain = _index_by_domain(index)
     affected_by_card = _index_by_card(index)
     clean_domains = set(index.get("clean_domains") or [])
+    release_scans = index.get("release_scans")
+    if not isinstance(release_scans, dict):
+        release_scans = {}
     index_clean_cards = set(index.get("clean_cards") or [])
     scanned_locally = (local_scan or {}).get("domains", {})
     rules_in_play = (local_scan or {}).get("rules_matchable", 0)
@@ -191,7 +236,19 @@ def build_report(
     broken_now_cards: dict[str, str] = {}
     imminent_cards: dict[str, dict[str, Any]] = {}
     card_reasons: dict[str, str] = {}
-    links: dict[str, dict[str, str]] = {}
+    links: dict[str, dict[str, Any]] = {}
+    card_links: dict[str, dict[str, Any]] = {}
+    link_ranks: dict[tuple[str, str], tuple[tuple[int, ...], int]] = {}
+    local_versions = (local_scan or {}).get("discovered_versions") or {}
+    scanned_index = (local_scan or {}).get("index_generated_utc")
+    scanned_rules = (local_scan or {}).get("rules_fingerprint")
+    # Today's index need not have different rules from yesterday's. Compare
+    # the scan input, not just the timestamp, when the scanner provides it.
+    comparable_scan = bool(release_scans and local_versions) and (
+        scanned_rules == rules_fingerprint(index.get("rules", []), current_version)
+        if scanned_rules
+        else not scanned_index or scanned_index == index.get("generated_utc")
+    )
 
     def _days_until(release: str) -> int | None:
         if today is None:
@@ -223,6 +280,21 @@ def build_report(
             if domain not in affected:
                 affected.append(domain)
             broken_bucket, imminent_bucket = broken_now, imminent
+        installed_version = installed.get(domain, "") if kind == "integration" else ""
+        candidate = {}
+        if (
+            kind == "integration"
+            and source == "local"
+            and comparable_scan
+            and local_versions.get(domain) == installed_version
+        ):
+            candidate = _release_hint(
+                release_scans.get(domain), installed_version, entry, clean=domain in clean_domains
+            )
+        tagged_hits = {
+            hit.get("rule_id") for hit in (entry or {}).get("findings", [])
+            if isinstance(hit, dict)
+        } if candidate else set()
         for finding in findings:
             release = str(finding.get("breaks_in", ""))
             bucket = by_release.setdefault(release, [])
@@ -230,6 +302,28 @@ def build_report(
                 bucket.append(domain)
             when = _when(release)
             days = _days_until(release)
+            rule = rules.get(finding.get("rule_id"), {})
+            symbol = rule_search_term(rule)
+            upstream = (entry or {}).get("upstream") or {}
+            upstream_report = (
+                _shown(upstream.get("report") or {})
+                if not upstream.get("symbol") or upstream["symbol"] == symbol
+                else {}
+            )
+            scanned_version = (entry or {}).get("version", "")
+            if source == "local":
+                # Discovery may have changed while the background scan ran.
+                # Cards have no discovered version, even if a domain shares their name.
+                scanned_version = (
+                    local_versions.get(domain, installed_version)
+                    if kind == "integration" else ""
+                )
+            release_hint = {**candidate, "symbol": rule.get("symbol") or symbol or ""} if (
+                candidate
+                and rule.get("matchable")
+                and (rule.get("match") or {}).get("type") in PYTHON_MATCHER_TYPES
+                and finding.get("rule_id") not in tagged_hits
+            ) else {}
             if when == "broken_now":
                 previous = broken_bucket.get(domain)
                 if previous is None or parse_version(release) < parse_version(previous):
@@ -243,44 +337,25 @@ def build_report(
                         "release": release,
                         "days": days if days is not None else 0,
                     }
-            if when in ("broken_now", "imminent"):
+            link_key = (kind, domain)
+            link_rank = (parse_version(release), -(2 * bool(release_hint) + bool(upstream_report)))
+            if when in ("broken_now", "imminent") and (
+                link_key not in link_ranks or link_rank < link_ranks[link_key]
+            ):
                 # What the notification needs to point somewhere useful.
-                rule = rules.get(finding.get("rule_id"), {})
-                upstream = (entry or {}).get("upstream") or {}
-                links.setdefault(
-                    domain,
-                    {
-                        "repository": (entry or {}).get("full_name", ""),
-                        "repo_url": (entry or {}).get("repo_url", ""),
-                        # What finds an existing report: the rule's own search
-                        # term if it names one, else the deprecated symbol. A
-                        # vague word like "deprecated" does not, and neither
-                        # does `StateVacuumEntity.battery_level` whole.
-                        "symbol": rule_search_term(rule),
-                        # source_url is a real link; source can be a bare
-                        # "file.py:418" reference for core-derived rules.
-                        "learn_more": (
-                            rule.get("source_url") or rule.get("source") or ""
-                        ),
-                        # What the crawler already found upstream, so nobody
-                        # files a report that exists. The title is stored whole
-                        # because that is what the crawler scores it on, and
-                        # shown short because it goes in a Repairs card.
-                        "archived": bool(upstream.get("archived")),
-                        "issues_enabled": upstream.get("issues_enabled"),
-                        "report": _shown(upstream.get("report") or {}),
-                    },
-                )
-            rule = rules.get(finding.get("rule_id"), {})
-            installed_version = installed.get(domain, "") if kind == "integration" else ""
-            scanned_version = (entry or {}).get("version", "")
-            if source == "local":
-                # Discovery may have changed while the background scan ran.
-                # Cards have no discovered version, even if a domain shares their name.
-                scanned_version = (
-                    (local_scan or {}).get("discovered_versions", {}).get(domain, installed_version)
-                    if kind == "integration" else ""
-                )
+                link_ranks[link_key] = link_rank
+                target_links = card_links if kind == "card" else links
+                target_links[domain] = {
+                    "repository": (entry or {}).get("full_name", ""),
+                    "repo_url": (entry or {}).get("repo_url", ""),
+                    "symbol": symbol,
+                    # source can be a bare "file.py:418" reference.
+                    "learn_more": rule.get("source_url") or rule.get("source") or "",
+                    "archived": bool(upstream.get("archived")),
+                    "issues_enabled": upstream.get("issues_enabled"),
+                    "report": upstream_report,
+                    **({"release_hint": release_hint} if release_hint else {}),
+                }
             detail = {
                 "domain": domain,
                 "kind": kind,
@@ -293,7 +368,7 @@ def build_report(
                 "when": when,
                 "days_until": days,
                 "due": describe_when(release, days),
-                "repository": (entry or {}).get("full_name", ""),
+                "repository": (entry or {}).get("full_name") or release_hint.get("repository", ""),
                 "scanned_version": scanned_version,
                 "installed_version": installed_version,
                 "message": clip(rule.get("message") or "", 300),
@@ -303,6 +378,10 @@ def build_report(
             # consumer never has to decide when two dates are really one.
             if reports_before_removal(rule.get("reports_in"), rule.get("breaks_in", "")):
                 detail["reports_in"] = rule["reports_in"]
+            if upstream_report:
+                detail["upstream_report"] = upstream_report
+            if release_hint:
+                detail["release_hint"] = release_hint
             details.append(detail)
 
     for domain in sorted(installed):
@@ -418,7 +497,8 @@ def build_report(
         "summarised_cards": sorted(
             set(affected_cards) - set(broken_now_cards) - set(imminent_cards)
         ),
-        "links": links,
+        "links": card_links | links,
+        "card_links": card_links,
         "schedule": schedule,
         "summarised_domains": sorted(
             set(affected) - set(broken_now) - set(imminent)

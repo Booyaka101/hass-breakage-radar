@@ -399,12 +399,9 @@ def _search_found_nothing(monkeypatch, issue):
     _searched(monkeypatch, issue)
 
 
-def _search_errored(monkeypatch, slept):
+def _search_errored(monkeypatch, slept, issue=None):
+    _searched(monkeypatch, issue if issue is not None else _http_error(502, {}))
     monkeypatch.setattr("tools.upstream.time.sleep", slept.append)
-    monkeypatch.setattr(
-        "tools.upstream.repo_facts",
-        lambda *a, **k: {"archived": False, "issues_enabled": True},
-    )
 
     def failing_search(*args, **kwargs):
         raise _http_error(502, {})
@@ -434,6 +431,14 @@ def test_a_search_that_fails_keeps_what_the_repository_itself_answered(monkeypat
     assert facts["report"] == ON_FILE
 
 
+def test_issue_state_can_update_during_a_search_outage(monkeypatch):
+    _search_errored(monkeypatch, [], _still_served(state="closed", state_reason="completed"))
+    facts = _look_up()
+    assert facts["searched"] is False
+    assert facts["report"]["state"] == "closed"
+    assert facts["report"]["state_reason"] == "completed"
+
+
 def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
     """The search answers with its own top ten. An issue falling out of that
     is not the issue being gone, and emptying the "already reported" column
@@ -452,6 +457,25 @@ def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
     facts = _look_up()
     assert facts["report"]["state"] == "closed"
     assert facts["report"]["reactions"] == 9
+
+
+@pytest.mark.parametrize("fresh_state", ["open", "closed"])
+def test_a_known_search_hit_is_refreshed_when_search_state_lags(monkeypatch, fresh_state):
+    cached = {
+        **ON_FILE,
+        "state": "closed" if fresh_state == "open" else "open",
+        "state_reason": "completed",
+    }
+    _searched(monkeypatch, _still_served(state=fresh_state, state_reason="not_planned"), found=cached)
+    report = _look_up()["report"]
+    assert report["state"] == fresh_state
+    assert report.get("state_reason") == ("not_planned" if fresh_state == "closed" else None)
+
+
+def test_failed_confirmation_does_not_replace_last_known_issue_state(monkeypatch):
+    stale_hit = {**ON_FILE, "state": "closed", "state_reason": "completed"}
+    _searched(monkeypatch, _http_error(502, {}), found=stale_hit)
+    assert _look_up()["report"] == ON_FILE
 
 
 def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
