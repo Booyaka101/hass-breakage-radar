@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "generated_utc": "2026-11-25T03:23:41Z",
+  "generated_utc": "2026-11-26T03:22:56Z",
   "core_ref": "dev",
-  "core_version": "2026.12",
+  "core_version": "2027.1",
   "latest_release": "2026.11",
-  "rc_release": null,
+  "rc_release": "2026.12",
   "pending_floor": "2026.12",
   "pending_floor_source": "pypi",
-  "core_tarball_sha256": "1505fa04e006b0a93b2920e195488bada7e601e4a3ee74f0c6c1d8b423f17927",
+  "core_tarball_sha256": "c59f1e40c4dda6b8481b9ff3af5774536de027b9befdc82e40c7236ea6ad2b66",
   "core_source": "https://codeload.github.com/home-assistant/core/tar.gz/refs/heads/dev",
   "extractor_python": "3.14",
   "counts": {
-    "total": 169,
-    "future": 154,
+    "total": 170,
+    "future": 155,
     "matchable_future": 75,
-    "core_files_scanned": 11147,
+    "core_files_scanned": 11221,
     "core_files_unparsed": 0,
     "markers_discarded": 2,
     "markers_discarded_pending": 2,
     "retained": 2,
-    "from_core_ast": 142,
+    "from_core_ast": 143,
     "from_manual": 27,
     "from_blog": 0
   },
@@ -156,13 +156,13 @@
       "symbol": "ConfigEntries.async_update_issues",
       "message": "Home Assistant raises a repair issue, and the configuration it reports stops working in Home Assistant 2025.11.",
       "breaks_in": "2025.11",
-      "source": "homeassistant/config_entries.py:3197",
+      "source": "homeassistant/config_entries.py:3202",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3197"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L3202"
     },
     {
       "id": "core-prose-chatlog-async-update-llm-data",
@@ -184,13 +184,13 @@
       "symbol": "creates a config entry when another entry with the same unique ID exists",
       "message": "creates a config entry when another entry with the same unique ID exists",
       "breaks_in": "2026.3",
-      "source": "homeassistant/config_entries.py:1934",
+      "source": "homeassistant/config_entries.py:1939",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": true,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1934"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/config_entries.py#L1939"
     },
     {
       "id": "core-call-async-extract-config-entry-ids",
@@ -402,13 +402,13 @@
       "symbol": "protocol_5_migration",
       "message": "`mqtt` raises the `protocol_5_migration` repair issue, and the configuration it reports stops working in Home Assistant 2027.1.",
       "breaks_in": "2027.1",
-      "source": "homeassistant/components/mqtt/__init__.py:343",
+      "source": "homeassistant/components/mqtt/__init__.py:350",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L343"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/__init__.py#L350"
     },
     {
       "id": "core-issue-saj-deprecated-yaml-2027.1",
@@ -686,13 +686,13 @@
       "symbol": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "message": "sets a `group` attribute on entity {...} which is not a `Group` instance",
       "breaks_in": "2027.2",
-      "source": "homeassistant/helpers/entity.py:1626",
+      "source": "homeassistant/helpers/entity.py:1631",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1626"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/entity.py#L1631"
     },
     {
       "id": "core-prose-sets-an-invalid-entity-id-in-most-cases-entities-should-not-set-entit",
@@ -807,13 +807,13 @@
       "symbol": "deprecated_yaml",
       "message": "`geonetnz_quakes` raises the `deprecated_yaml` repair issue, and the configuration it reports stops working in Home Assistant 2027.4.",
       "breaks_in": "2027.4",
-      "source": "homeassistant/components/geonetnz_quakes/__init__.py:71",
+      "source": "homeassistant/components/geonetnz_quakes/__init__.py:70",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/geonetnz_quakes/__init__.py#L71"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/geonetnz_quakes/__init__.py#L70"
     },
     {
       "id": "core-issue-keyboard-remote-deprecated-yaml-2027.4",
@@ -1077,6 +1077,20 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mastodon/issue.py#L13"
     },
     {
+      "id": "core-issue-meraki-deprecated-cmx-2027.5",
+      "kind": "issue",
+      "symbol": "deprecated_cmx",
+      "message": "`meraki` raises the `deprecated_cmx` repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
+      "breaks_in": "2027.5",
+      "source": "homeassistant/components/meraki/device_tracker.py:57",
+      "origin": "core-ast",
+      "confidence": "medium",
+      "matchable": false,
+      "expired": false,
+      "occurrences": 1,
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/meraki/device_tracker.py#L57"
+    },
+    {
       "id": "core-issue-nfandroidtv-deprecated-notify-action-2027.5",
       "kind": "issue",
       "symbol": "deprecated_notify_action",
@@ -1110,13 +1124,13 @@
       "symbol": "_async_check_deprecated_low_speed_cover",
       "message": "`overkiz` raises a repair issue, and the configuration it reports stops working in Home Assistant 2027.5.",
       "breaks_in": "2027.5",
-      "source": "homeassistant/components/overkiz/cover.py:675",
+      "source": "homeassistant/components/overkiz/cover.py:681",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/overkiz/cover.py#L675"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/overkiz/cover.py#L681"
     },
     {
       "id": "core-issue-prowl-deprecated-notify-action-2027.5",
@@ -1208,13 +1222,13 @@
       "symbol": "calls {...} without passing a step_id",
       "message": "calls {...} without passing a step_id",
       "breaks_in": "2027.5",
-      "source": "homeassistant/data_entry_flow.py:663",
+      "source": "homeassistant/data_entry_flow.py:669",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L663"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L669"
     },
     {
       "id": "core-prose-sets-an-entity-id-with-wrong-domain-expected-domain-is",
@@ -1283,7 +1297,7 @@
       "symbol": "FlowHandler.show_advanced_options",
       "message": "a user friendly way to present additional options in the UI, for example a section",
       "breaks_in": "2027.6",
-      "source": "homeassistant/data_entry_flow.py:706",
+      "source": "homeassistant/data_entry_flow.py:712",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": true,
@@ -1298,7 +1312,7 @@
       },
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L706"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/data_entry_flow.py#L712"
     },
     {
       "id": "core-classbase-infraredentitydescription",
@@ -1614,13 +1628,13 @@
       "symbol": "VeluxCover._velocity_from_speed",
       "message": "`velux` raises a repair issue, and the configuration it reports stops working in Home Assistant 2027.6.",
       "breaks_in": "2027.6",
-      "source": "homeassistant/components/velux/cover.py:135",
+      "source": "homeassistant/components/velux/cover.py:136",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/velux/cover.py#L135"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/velux/cover.py#L136"
     },
     {
       "id": "core-issue-venstar-deprecated-yaml-2027.6",
@@ -1684,13 +1698,13 @@
       "symbol": "that calls the MQTT publish API with `None` for qos or retain. The `qos` argumen...",
       "message": "that calls the MQTT publish API with `None` for qos or retain. The `qos` argument must be an `int`, and the `retain` argument must be a `bool`",
       "breaks_in": "2027.6",
-      "source": "homeassistant/components/mqtt/client.py:200",
+      "source": "homeassistant/components/mqtt/client.py:213",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L200"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/mqtt/client.py#L213"
     },
     {
       "id": "core-call-get-astral-location",
@@ -2815,13 +2829,13 @@
       "symbol": "does not provide device info for its ScannerEntity device tracker, it should pro...",
       "message": "does not provide device info for its ScannerEntity device tracker, it should provide device info with the MAC address of the tracked device in its connections, or an empty DeviceInfo() if the tracker should not have a device",
       "breaks_in": "2027.11",
-      "source": "homeassistant/components/device_tracker/entity.py:610",
+      "source": "homeassistant/components/device_tracker/entity.py:637",
       "origin": "core-ast",
       "confidence": "medium",
       "matchable": false,
       "expired": false,
       "occurrences": 1,
-      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L610"
+      "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/components/device_tracker/entity.py#L637"
     },
     {
       "id": "core-prose-returns-a-json-object-from-a-tool-which-is-deprecated-return-a-toolresult-inst",
@@ -3220,5 +3234,5 @@
       "source_url": "https://github.com/home-assistant/core/blob/dev/homeassistant/helpers/device_registry.py#L160"
     }
   ],
-  "blog_merged_utc": "2026-11-25T03:23:42Z"
+  "blog_merged_utc": "2026-11-26T03:22:56Z"
 }
