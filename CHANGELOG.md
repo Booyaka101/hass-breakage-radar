@@ -6,10 +6,15 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+## 1.21.0 - 2026-11-27
+
 Repairs now distinguishes an upstream issue closure from evidence that a fix
-shipped. When a newer HACS tag was scanned without detecting an installed
-integration's finding, Repairs can link to that tag without clearing the
-warning for the code still installed.
+shipped. When Radar scans a newer tag and does not detect a finding from the
+installed integration, Repairs can link to that tag without clearing the
+installed-copy warning. Tag evidence appears as the crawler revisits repositories.
+
+The README now explains how to install from Marketplace on Home Assistant
+2026.11 and newer, and shows the updated Repairs dialogs.
 
 ## 1.20.0 - 2026-11-24
 
