@@ -241,6 +241,50 @@ def test_the_summary_card_shows_the_schedule(many_releases):
     assert placeholders["count"] == "8"
 
 
+@pytest.mark.parametrize("evidence", ["tag", "closure", "none"])
+def test_future_findings_explain_available_evidence_in_summary(sample_index, evidence):
+    from homeassistant.helpers import issue_registry as ir
+
+    from custom_components.breakage_radar.repairs import async_sync_issue
+
+    if not hasattr(ir, "created"):
+        pytest.skip("real Home Assistant installed; covered by HA's own harness")
+
+    domain = "fixture_tracker"
+    entry = sample_index["integrations"][0]
+    local = None
+    if evidence == "tag":
+        sample_index["integrations"] = []
+        sample_index["clean_domains"].append(domain)
+        sample_index["release_scans"] = {domain: [entry["full_name"], "v0.2.0", "0.2.0"]}
+        local = {
+            "discovered_versions": {domain: "0.1.0"},
+            "domains": {domain: {"status": "affected", "findings": entry["findings"]}},
+        }
+    elif evidence == "closure":
+        entry["upstream"] = {
+            "symbol": "setup_scanner",
+            "report": {"number": 1, "state": "closed", "state_reason": "not_planned",
+                       "url": "https://github.com/example/fixture-tracker/issues/1", "title": "Report"},
+        }
+    report = build_report(
+        sample_index, {domain: "0.1.0"}, local, current_version="2026.9", today=date(2026, 9, 1),
+    )
+    assert report["summarised_domains"] == [domain]
+    ir.created.clear()
+    async_sync_issue(None, report)
+    summary = ir.created[(DOMAIN, ISSUE_ID)]["translation_placeholders"]["resolution_summary"]
+    if evidence == "tag":
+        assert "/tree/v0.2.0" in summary
+    elif evidence == "closure":
+        assert "/issues/1" in summary
+        assert "not planned" in summary
+    else:
+        assert summary == ""
+    if evidence != "none":
+        assert "warnings still apply to the installed copies" in summary
+
+
 # --------------------------------------------------------------------------- #
 # the configurable window
 # --------------------------------------------------------------------------- #

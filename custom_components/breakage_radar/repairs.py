@@ -29,6 +29,7 @@ ALERT_PREFIXES = (BROKEN_ISSUE_PREFIX, IMMINENT_ISSUE_PREFIX)
 #: Keeps the summary description readable when a lot is scheduled.
 MAX_SCHEDULE_LINES = 8
 MAX_DOMAINS_PER_LINE = 6
+MAX_SUMMARY_RESOLUTIONS = 4
 
 # Issue titles are untrusted text inside Markdown link labels, not markup.
 _MARKDOWN_ESCAPES = str.maketrans({char: f"\\{char}" for char in "\\[]()*_`<>"})
@@ -67,6 +68,53 @@ def plural(count: int, singular: str, plural_form: str | None = None) -> str:
     return singular if count == 1 else (plural_form or f"{singular}s")
 
 
+def _release_label(hint: dict) -> str:
+    return f"[tag {hint['tag']}]({hint['url']}) (integration version {hint['version']})"
+
+
+def _closed_issue(report: dict) -> str:
+    title = (report.get("title") or "").translate(_MARKDOWN_ESCAPES)
+    reason = report.get("state_reason")
+    closure = {
+        "completed": "GitHub marks it completed, but that does not confirm a release contains a fix.",
+        "not_planned": "GitHub marks it not planned.",
+        "duplicate": "GitHub marks it as a duplicate. Check the linked issue for progress.",
+    }.get(reason if isinstance(reason, str) else "", "Closure alone does not confirm a fix.")
+    return f"It was reported and closed: [#{report['number']} {title}]({report['url']}). {closure}"
+
+
+def _summary_resolutions(report: dict, integrations: set[str], cards: set[str]) -> str:
+    """Show useful evidence even before a component gets its own Repairs card."""
+    lines = []
+    seen: set[tuple[str, str]] = set()
+    for detail in report.get("details") or []:
+        name = detail["domain"]
+        kind = detail.get("kind", "integration")
+        key = (kind, name)
+        if key in seen or name not in (cards if kind == "card" else integrations):
+            continue
+        hint = detail.get("release_hint")
+        issue = detail.get("upstream_report") or {}
+        if hint:
+            text = f"Radar did not detect one flagged finding in the source for {_release_label(hint)}."
+        elif issue.get("state") == "closed":
+            text = _closed_issue(issue)
+        else:
+            continue
+        seen.add(key)
+        suffix = " card" if kind == "card" else ""
+        lines.append(f"- `{name}`{suffix}: {text}")
+        if len(lines) == MAX_SUMMARY_RESOLUTIONS:
+            break
+    if not lines:
+        return ""
+    return (
+        "\n\n**Upstream updates**\n\n"
+        + "\n".join(lines)
+        + "\n\nThe warnings still apply to the installed copies."
+    )
+
+
 def describe_links(link: dict | None) -> str:
     """Where to go next, as markdown.
 
@@ -89,9 +137,7 @@ def describe_links(link: dict | None) -> str:
     parts: list[str] = []
     if release_hint:
         parts.append(
-            f"Radar did not detect this finding in the source for "
-            f"[tag {release_hint['tag']}]({release_hint['url']}) "
-            f"(integration version {release_hint['version']}). "
+            f"Radar did not detect one flagged finding in the source for {_release_label(release_hint)}. "
             "Check that version in HACS. The warning still applies to your installed copy."
         )
     if not repo_url and not release_hint:
@@ -116,16 +162,7 @@ def describe_links(link: dict | None) -> str:
                 "rather than opening another one."
             )
         elif report and report.get("state") == "closed":
-            reason = report.get("state_reason")
-            closure = {
-                "completed": "GitHub marks it completed, but that does not confirm a release contains a fix.",
-                "not_planned": "GitHub marks it not planned.",
-                "duplicate": "GitHub marks it as a duplicate. Check the linked issue for progress.",
-            }.get(reason if isinstance(reason, str) else "", "Closure alone does not confirm a fix.")
-            parts.append(
-                f"It was reported and closed: [#{report['number']} "
-                f"{title}]({report['url']}). {closure}"
-            )
+            parts.append(_closed_issue(report))
         elif link.get("issues_enabled") is False:
             parts.append(
                 "That repository does not accept issues, so there is nowhere "
@@ -283,6 +320,7 @@ def async_sync_issue(hass: HomeAssistant, report: dict) -> None:
             "earliest": first["release"] if first else "a future release",
             "earliest_due": first["due"] if first else "",
             "schedule": format_schedule(schedule, only=everything),
+            "resolution_summary": _summary_resolutions(report, set(summarised), set(summarised_cards)),
             "window": str(report.get("alert_window_days") or 0),
             "board_url": LEARN_MORE_URL,
         },

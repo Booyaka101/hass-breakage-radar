@@ -442,20 +442,26 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
 
 
 @pytest.mark.parametrize("case", [
-    "clean", "branch", "unparsed", "still_affected", "no_source",
-    "stale_tag", "changed_rules", "ambiguous_domain", "old_index",
-    "same_version", "unknown_version", "prerelease", "scan_version_changed",
+    "clean", "branch", "unparsed", "still_affected", "different_finding", "js_only", "oversized",
+    "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
+    "same_version", "unknown_version", "prerelease", "scan_version_changed", "stale_local_rules",
 ])
 def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_path, monkeypatch, case):
     version = "v1.0.0-beta.1" if case == "prerelease" else "v1.0.0"
     entry = {**CATALOG[0], "last_version": version}
-    rules_path, catalog_path = _write_inputs(tmp_path, catalog=[entry])
+    other = dataclasses.replace(RULE, id="other-rule", match={**RULE.match, "names": ["get_scanner"]})
+    rules_path, catalog_path = _write_inputs(tmp_path, catalog=[entry], rules=(RULE, other))
     files = {"custom_components/one/manifest.json": '{"domain": "one", "version": "1.0.0"}'}
-    if case != "no_source":
+    if case == "js_only":
+        files["custom_components/one/ui.js"] = "const flag = true;\n"
+    else:
         files["custom_components/one/device_tracker.py"] = {
             "unparsed": "def broken(\n",
             "still_affected": TRACKER_SOURCE,
+            "different_finding": TRACKER_SOURCE.replace("setup_scanner", "get_scanner"),
         }.get(case, "VALUE = 1\n")
+    if case == "oversized":
+        files["custom_components/one/skipped.py"] = "#" * (4 * 1024 * 1024 + 1)
     body = _tarball_bytes(files)
 
     def http_get(url, **kwargs):
@@ -475,28 +481,41 @@ def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_pat
         findings_doc["repos"]["other/fork"] = {"domain": "one", "status": "unreachable"}
     if case == "old_index":
         findings_doc["repos"]["a/one"].pop("release_scan")
-    payload = build_payload(rules_doc, findings_doc, {"integrations": [entry]})
+    catalog = [entry]
+    if case == "uncrawled_duplicate":
+        catalog.append({**entry, "full_name": "other/fork"})
+    payload = build_payload(rules_doc, findings_doc, {"integrations": catalog})
     assert validate_index(payload) == []
     if case == "clean":
         assert payload["integrations"] == []
-        assert payload["clean_release_scans"] == {"one": ["a/one", "v1.0.0", "1.0.0"]}
+        assert payload["release_scans"] == {"one": ["a/one", "v1.0.0", "1.0.0"]}
     elif case in {
-        "branch", "unparsed", "still_affected", "no_source",
-        "stale_tag", "changed_rules", "ambiguous_domain", "old_index",
+        "branch", "unparsed", "js_only", "oversized",
+        "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
     }:
-        assert "clean_release_scans" not in payload
+        assert "release_scans" not in payload
 
     installed = {"same_version": "1.0", "unknown_version": ""}.get(case, "0.9.0")
+    local_findings = SAME_FINDING
+    if case == "different_finding":
+        local_findings = [{**SAME_FINDING[0], "rule_id": other.id}, *SAME_FINDING]
     report = build_report(
         payload,
         {"one": installed},
-        {"domains": {"one": {"status": "affected", "findings": SAME_FINDING}},
-         "discovered_versions": {"one": "0.8.0" if case == "scan_version_changed" else installed}},
+        {
+            "domains": {"one": {"status": "affected", "findings": local_findings}},
+            "discovered_versions": {"one": "0.8.0" if case == "scan_version_changed" else installed},
+            "index_generated_utc": "earlier" if case == "stale_local_rules" else payload["generated_utc"],
+        },
         current_version="2027.5",
     )
     assert report["broken_now"] == {"one": "2027.5"}
-    assert report["total_findings"] == 1
+    assert report["total_findings"] == len(local_findings)
     where = describe_links(report["links"]["one"])
+    if case == "different_finding":
+        assert "/a/one/tree/v1.0.0" in where
+        assert {detail["rule_id"] for detail in report["details"] if "release_hint" in detail} == {RULE.id}
+        return
     if case == "clean":
         assert "/a/one/tree/v1.0.0" in where
         assert "still applies to your installed copy" in where

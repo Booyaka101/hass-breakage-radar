@@ -467,6 +467,12 @@ def test_a_known_search_hit_is_refreshed_when_search_state_lags(monkeypatch, fre
     assert report.get("state_reason") == ("not_planned" if fresh_state == "closed" else None)
 
 
+def test_failed_confirmation_does_not_replace_last_known_issue_state(monkeypatch):
+    stale_hit = {**ON_FILE, "state": "closed", "state_reason": "completed"}
+    _searched(monkeypatch, _http_error(502, {}), found=stale_hit)
+    assert _look_up()["report"] == ON_FILE
+
+
 def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
     """GitHub answers for a transferred issue from wherever it went, with that
     repository's numbering. Recording that number here has the next run asking

@@ -842,11 +842,14 @@ the same issue. A closed issue can include GitHub's closure reason, but even
 
 If a local scan still finds a problem in an installed integration, Repairs can
 point to a newer HACS catalog tag whose source Radar scanned without detecting
-the finding. The optional `clean_release_scans` index field maps a domain to
-`[repository, tag, manifest_version]` for these scans. Radar does not use branch
-fallbacks, prerelease version strings, or scans from an outdated rule set as
+the finding. Evidence is specific to that Python finding: other findings can
+still be present in the tag. It appears in individual alerts or in the summary
+for later deadlines. The optional `release_scans` index field maps a domain to
+`[repository, tag, manifest_version]`. Radar does not use branch fallbacks,
+prerelease version strings, incomplete Python scans, or outdated rules as
 upgrade evidence. This is a lead to check in HACS, not a compatibility guarantee
-or a reason to clear the warning for the installed copy.
+or a reason to clear the warning for the installed copy. Tags appear as the
+normal crawler revisits repositories.
 
 A search hit only becomes that report if its **title** says so, by naming the
 deprecated symbol, by using a word like "deprecated" or "removed", or by naming a
@@ -858,9 +861,10 @@ The fact records `checked_utc`, and a crawl re-asks every affected repository wh
 fact is more than a week old, up to a few hundred a run. Facts found under a term
 their rule no longer asks for go first, then the oldest. A repository
 that never cuts another release is never rescanned, so without that its issue link
-would stay published for good, however wrong it had gone. Unless search finds a
-better candidate, the report already on file is fetched by number: a search can
-miss a report or lag a closure or reopening, but a 404 means it is gone. What
+would stay published for good, however wrong it had gone. After a successful
+search, the report already on file is fetched by number unless there is a
+better candidate: a search can miss a report or lag a closure or reopening,
+but a 404 means it is gone. What
 survives a 404 is only what says not to file there, that the repository was archived
 or had issues turned off. The report link goes with the tracker it pointed into.
 

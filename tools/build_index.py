@@ -79,6 +79,15 @@ def validate_index(payload: dict[str, Any]) -> list[str]:
         problems.append("rules must be a list")
     if not isinstance(payload.get("integrations"), list):
         problems.append("integrations must be a list")
+    release_scans = payload.get("release_scans", {})
+    if not isinstance(release_scans, dict):
+        problems.append("release_scans must be an object")
+    else:
+        for domain, scan in release_scans.items():
+            if not domain or not isinstance(scan, list) or len(scan) != 3 or not all(
+                isinstance(value, str) and value for value in scan
+            ):
+                problems.append(f"invalid release scan for {domain!r}")
 
     rule_ids = {r.get("id") for r in payload.get("rules", []) if isinstance(r, dict)}
     for rule in payload.get("rules", []):
@@ -156,7 +165,10 @@ def build_payload(
 
     repos: dict[str, Any] = findings_doc.get("repos", {})
     release_scans: dict[str, list[str]] = {}
-    domain_repos: collections.Counter[str] = collections.Counter()
+    domain_repos: dict[str, set[str]] = collections.defaultdict(set)
+    for name, entry in catalog_by_name.items():
+        if (entry.get("category") or "integration") == "integration" and entry.get("domain"):
+            domain_repos[entry["domain"]].add(name)
     scan_rules_hash = (
         rules_hash(matchable_rules(load_rules(pending_rules), current_version=floor))
         if any(record.get("release_scan") for record in repos.values())
@@ -188,7 +200,9 @@ def build_payload(
         domain = record.get("domain") or catalog_entry.get("domain") or ""
         category = record.get("category") or catalog_entry.get("category") or "integration"
         if category == "integration":
-            domain_repos.update(set(record.get("domains") or []) | ({domain} if domain else set()))
+            for declared in [domain, *(record.get("domains") or [])]:
+                if declared:
+                    domain_repos[declared].add(full_name)
         counts = by_category.setdefault(category, collections.Counter())
         if full_name in catalog_by_name:
             counts["scanned"] += 1
@@ -210,23 +224,24 @@ def build_payload(
                 unreachable.append(domain)
             continue
 
+        release_scan = record.get("release_scan") or {}
+        prefix = "refs/tags/"
+        ref = record.get("ref") or ""
+        catalog_version = catalog_entry.get("last_version")
+        if (
+            category == "integration"
+            and record.get("domains") == [domain]
+            and record.get("status") == "scanned"
+            and scan_rules_hash
+            and release_scan.get("rules_hash") == scan_rules_hash
+            and release_scan.get("version")
+            and catalog_version
+            and ref.startswith(prefix)
+            and ref in candidate_refs(catalog_version)
+        ):
+            release_scans[domain] = [full_name, ref.removeprefix(prefix), release_scan["version"]]
+
         if not findings:
-            release_scan = record.get("release_scan") or {}
-            prefix = "refs/tags/"
-            ref = record.get("ref") or ""
-            catalog_version = catalog_entry.get("last_version")
-            if (
-                category == "integration"
-                and record.get("domains") == [domain]
-                and record.get("status") == "scanned"
-                and scan_rules_hash
-                and release_scan.get("rules_hash") == scan_rules_hash
-                and release_scan.get("version")
-                and catalog_version
-                and ref.startswith(prefix)
-                and ref in candidate_refs(catalog_version)
-            ):
-                release_scans[domain] = [full_name, ref.removeprefix(prefix), release_scan["version"]]
             counts["clean"] += 1
             if domain:
                 clean_domains.append(domain)
@@ -287,7 +302,7 @@ def build_payload(
             by_release[release].append(integration["domain"] or integration["full_name"])
 
     current_release_scans = {
-        domain: scan for domain, scan in release_scans.items() if domain_repos[domain] == 1
+        domain: scan for domain, scan in release_scans.items() if len(domain_repos[domain]) == 1
     }
     return {
         "schema": SCHEMA_VERSION,
@@ -356,7 +371,7 @@ def build_payload(
         },
         "rules": published_rules,
         "integrations": integrations,
-        **({"clean_release_scans": current_release_scans} if current_release_scans else {}),
+        **({"release_scans": current_release_scans} if current_release_scans else {}),
         "clean_domains": sorted(set(clean_domains)),
         "clean_cards": sorted(set(clean_cards)),
         "unreachable_domains": sorted(set(unreachable)),

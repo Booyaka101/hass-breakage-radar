@@ -306,7 +306,7 @@ def look_up(
         ):
             # The search index can lag a closure or a reopen. Read the issue
             # directly even when the search still has the same number.
-            report = refresh(report)
+            report = refresh(known)
         elif (
             known
             and (report or {}).get("number") != known.get("number")

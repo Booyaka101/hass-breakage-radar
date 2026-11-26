@@ -19,6 +19,7 @@ from .const import (
     SUPPORTED_SCHEMA,
 )
 from .rules_engine import (
+    MATCHER_TYPES,
     clip,
     is_future,
     parse_version,
@@ -34,6 +35,7 @@ from .schedule import describe_when, release_estimated_date  # noqa: F401
 #: An upstream issue title as a Repairs card shows it. The crawler stores the
 #: whole one, because that is what it scores relevance on.
 REPORT_TITLE_CHARS = 140
+PYTHON_MATCHER_TYPES = MATCHER_TYPES - {"js"}
 
 
 def _index_by_domain(index: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -65,7 +67,9 @@ def _stable_version(value: Any) -> tuple[int, ...]:
     return parts + (0,) * (4 - len(parts))
 
 
-def _release_hint(scan: Any, installed_version: str) -> dict[str, str]:
+def _release_hint(
+    scan: Any, installed_version: str, entry: dict[str, Any] | None, *, clean: bool
+) -> dict[str, str]:
     """A comparable, newer tagged source scan, not a compatibility verdict."""
     if not isinstance(scan, list) or len(scan) != 3:
         return {}
@@ -78,6 +82,11 @@ def _release_hint(scan: Any, installed_version: str) -> dict[str, str]:
         or not isinstance(repository, str)
         or not re.fullmatch(r"[A-Za-z0-9_-]+/[A-Za-z0-9_.-]+", repository)
         or repository.rsplit("/", 1)[1] in {".", ".."}
+        or (
+            (repository != entry.get("full_name") or f"refs/tags/{tag}" != entry.get("ref"))
+            if entry is not None
+            else not clean
+        )
     ):
         return {}
     return {
@@ -181,9 +190,9 @@ def build_report(
     affected_by_domain = _index_by_domain(index)
     affected_by_card = _index_by_card(index)
     clean_domains = set(index.get("clean_domains") or [])
-    clean_release_scans = index.get("clean_release_scans")
-    if not isinstance(clean_release_scans, dict):
-        clean_release_scans = {}
+    release_scans = index.get("release_scans")
+    if not isinstance(release_scans, dict):
+        release_scans = {}
     index_clean_cards = set(index.get("clean_cards") or [])
     scanned_locally = (local_scan or {}).get("domains", {})
     rules_in_play = (local_scan or {}).get("rules_matchable", 0)
@@ -227,7 +236,9 @@ def build_report(
     card_reasons: dict[str, str] = {}
     links: dict[str, dict[str, Any]] = {}
     card_links: dict[str, dict[str, Any]] = {}
-    link_deadlines: dict[tuple[str, str], str] = {}
+    link_ranks: dict[tuple[str, str], tuple[tuple[int, ...], int]] = {}
+    local_versions = (local_scan or {}).get("discovered_versions") or {}
+    scanned_index = (local_scan or {}).get("index_generated_utc")
 
     def _days_until(release: str) -> int | None:
         if today is None:
@@ -259,6 +270,21 @@ def build_report(
             if domain not in affected:
                 affected.append(domain)
             broken_bucket, imminent_bucket = broken_now, imminent
+        installed_version = installed.get(domain, "") if kind == "integration" else ""
+        candidate = {}
+        if (
+            kind == "integration"
+            and source == "local"
+            and local_versions.get(domain) == installed_version
+            and (not scanned_index or scanned_index == index.get("generated_utc"))
+        ):
+            candidate = _release_hint(
+                release_scans.get(domain), installed_version, entry, clean=domain in clean_domains
+            )
+        tagged_hits = {
+            hit.get("rule_id") for hit in (entry or {}).get("findings", [])
+            if isinstance(hit, dict)
+        } if candidate else set()
         for finding in findings:
             release = str(finding.get("breaks_in", ""))
             bucket = by_release.setdefault(release, [])
@@ -274,24 +300,19 @@ def build_report(
                 if not upstream.get("symbol") or upstream["symbol"] == symbol
                 else {}
             )
-            installed_version = installed.get(domain, "") if kind == "integration" else ""
             scanned_version = (entry or {}).get("version", "")
-            release_hint = {}
             if source == "local":
                 # Discovery may have changed while the background scan ran.
                 # Cards have no discovered version, even if a domain shares their name.
                 scanned_version = (
-                    (local_scan or {}).get("discovered_versions", {}).get(domain, installed_version)
+                    local_versions.get(domain, installed_version)
                     if kind == "integration" else ""
                 )
-                if (
-                    kind == "integration"
-                    and entry is None
-                    and domain in clean_domains
-                    and rule.get("matchable")
-                    and scanned_version == installed_version
-                ):
-                    release_hint = _release_hint(clean_release_scans.get(domain), installed_version)
+            release_hint = candidate if (
+                rule.get("matchable")
+                and (rule.get("match") or {}).get("type") in PYTHON_MATCHER_TYPES
+                and finding.get("rule_id") not in tagged_hits
+            ) else {}
             if when == "broken_now":
                 previous = broken_bucket.get(domain)
                 if previous is None or parse_version(release) < parse_version(previous):
@@ -306,12 +327,12 @@ def build_report(
                         "days": days if days is not None else 0,
                     }
             link_key = (kind, domain)
+            link_rank = (parse_version(release), -(2 * bool(release_hint) + bool(upstream_report)))
             if when in ("broken_now", "imminent") and (
-                link_key not in link_deadlines
-                or parse_version(release) < parse_version(link_deadlines[link_key])
+                link_key not in link_ranks or link_rank < link_ranks[link_key]
             ):
                 # What the notification needs to point somewhere useful.
-                link_deadlines[link_key] = release
+                link_ranks[link_key] = link_rank
                 target_links = card_links if kind == "card" else links
                 target_links[domain] = {
                     "repository": (entry or {}).get("full_name", ""),
