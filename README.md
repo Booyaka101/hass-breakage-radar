@@ -61,7 +61,7 @@ when Radar cannot check for them.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/schedule-summary.png"
-       alt="A Home Assistant repair notification listing which custom integrations break in which release, with dates"
+       alt="A Repairs summary showing a future deadline and a newer tag where Radar did not detect the finding"
        width="760">
 </p>
 
@@ -303,13 +303,14 @@ The summary tells you which integration breaks when, not just how many:
        width="760">
 </p>
 
-Each per-integration notification links to that integration's releases page and to a
-search for an existing report of the same deprecation, so you can add a reaction
-instead of filing a duplicate:
+When Radar knows the upstream repository, an individual notification links to
+releases and to the related issue or an issue search. In this example, GitHub
+marks the issue completed, but that doesn't tell you whether a fix shipped.
+Both Repairs dialogs shown here use test integrations.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Booyaka101/hass-breakage-radar/main/images/integration-notification.png"
-       alt="A notification for a single integration, linking to its releases, to existing reports and to the Home Assistant change"
+       alt="An individual Repairs warning linking to a closed upstream issue without saying that a fix shipped"
        width="760">
 </p>
 

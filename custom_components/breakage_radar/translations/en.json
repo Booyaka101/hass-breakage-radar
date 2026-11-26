@@ -48,7 +48,7 @@
   "issues": {
     "integrations_affected": {
       "title": "{count} custom {noun} will break in a future release",
-      "description": "{count} installed custom {noun} {verb} Home Assistant APIs that are scheduled for removal. Nothing is broken today. The first deadline is {earliest_due}.\n\n**What breaks, and when**\n\n{schedule}{resolution_summary}\n\nFor findings still present in the installed copy, check the repository for an update. Anything breaking within {window} days gets its own notification with a direct link, which you can change in this integration's options.\n\nThe exact file and line for every finding is on `sensor.breakage_radar_affected`, and the full report is under **Download diagnostics** on this integration's page.\n\n[Look up any integration on the public board]({board_url})"
+      "description": "{count} installed custom {noun} {verb} Home Assistant APIs that are scheduled for removal. The first deadline in this summary is {earliest_due}.\n\n**What breaks, and when**\n\n{schedule}{resolution_summary}\n\nCheck the affected repositories for updates. To change when findings get their own notification (currently {window} days before the deadline), open this integration's options.\n\nFor scan results and source locations, use **Download diagnostics** on the integration's page.\n\n[Look up any integration on the public board]({board_url})"
     },
     "integration_imminent": {
       "title": "{domain} breaks in about {days} {day_word}",

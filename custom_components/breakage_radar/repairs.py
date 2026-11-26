@@ -144,7 +144,7 @@ def describe_links(link: dict | None) -> str:
     if release_hint:
         parts.append(
             f"{_release_evidence(release_hint)} "
-            "Check that version in HACS. The warning still applies to your installed copy."
+            "Check that version in Marketplace or HACS. The warning still applies to your installed copy."
         )
     if not repo_url and not release_hint:
         parts.append(

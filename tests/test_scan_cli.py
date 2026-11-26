@@ -446,7 +446,7 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     "clean", "branch", "unparsed", "still_affected", "different_finding", "js_only", "oversized",
     "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
     "same_version", "unknown_version", "prerelease", "scan_version_changed", "stale_local_rules",
-    "new_index_same_rules",
+    "new_index_same_rules", "only_other_component_has_python",
 ])
 def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_path, monkeypatch, case):
     version = "v1.0.0-beta.1" if case == "prerelease" else "v1.0.0"
@@ -456,6 +456,8 @@ def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_pat
     files = {"custom_components/one/manifest.json": '{"domain": "one", "version": "1.0.0"}'}
     if case == "js_only":
         files["custom_components/one/ui.js"] = "const flag = true;\n"
+    elif case == "only_other_component_has_python":
+        files["custom_components/other/__init__.py"] = "VALUE = 1\n"
     else:
         files["custom_components/one/device_tracker.py"] = {
             "unparsed": "def broken(\n",
@@ -492,7 +494,7 @@ def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_pat
         assert payload["integrations"] == []
         assert payload["release_scans"] == {"one": ["a/one", "v1.0.0", "1.0.0"]}
     elif case in {
-        "branch", "unparsed", "js_only", "oversized",
+        "branch", "unparsed", "js_only", "oversized", "only_other_component_has_python",
         "stale_tag", "changed_rules", "ambiguous_domain", "uncrawled_duplicate", "old_index",
     }:
         assert "release_scans" not in payload

@@ -95,7 +95,7 @@ MAX_TARBALL_BYTES = 80 * 1024 * 1024
 VENDOR_MARKERS = tuple(f"/{name}/" for name in sorted(VENDOR_DIRECTORIES))
 
 #: Archive selection changes invalidate crawler results independently of matchers.
-SCAN_VERSION = 3
+SCAN_VERSION = 4
 TEST_DIRECTORIES = frozenset(
     {"test", "tests", "testing", "fixtures", "__tests__", "__fixtures__"}
 )
@@ -230,7 +230,7 @@ def prefetch(
 
 
 def iter_component_python(
-    body: bytes, coverage: dict[str, int] | None = None
+    body: bytes, coverage: dict[str, int] | None = None, *, release_domain: str = ""
 ) -> Iterator[tuple[str, bytes]]:
     """Yield ``(custom_components/... path, source)`` from a repo tarball."""
     with tarfile.open(fileobj=io.BytesIO(body), mode="r:gz") as archive:
@@ -248,10 +248,12 @@ def iter_component_python(
                 if member.isfile() and member.size <= 4 * 1024 * 1024
                 else None
             )
-            if coverage is not None:
-                coverage["read" if handle is not None else "skipped"] += 1
             if handle is None:
+                if coverage is not None:
+                    coverage["skipped"] += 1
                 continue
+            if coverage is not None and path.startswith(f"custom_components/{release_domain}/"):
+                coverage["read"] += 1
             yield path, handle.read()
 
 
@@ -439,8 +441,9 @@ def scan_repo(
         plugin = category == "plugin"
         manifests = [] if plugin else list(iter_component_manifests(body))
         domains = sorted({domain for domain, _ in manifests})
+        release_domain = manifests[0][0] if len(manifests) == 1 else ""
         findings = scan_sources(
-            () if plugin else iter_component_python(body, python_coverage),
+            () if plugin else iter_component_python(body, python_coverage, release_domain=release_domain),
             iter_javascript(body, skipped, whole_repo=plugin),
             rules,
             stats,
