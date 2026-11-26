@@ -3,9 +3,9 @@
 **Which of my custom integrations stop working, and in which Home Assistant release?**
 
 Home Assistant announces API removals a year ahead on the developer blog and marks
-them in code with `breaks_in_ha_version=`. Core integrations get migrated. Custom
-integrations mostly do not — and the author of the integration you installed from HACS
-two years ago may not be reading the developer blog at all.
+them in code with `breaks_in_ha_version=`. Core integrations get migrated.
+Custom integrations don't get those migrations. The maintainer of a community
+integration you installed two years ago may not be reading the developer blog.
 
 Worse, the warning never reaches *you*. In `homeassistant/helpers/frame.py`:
 
@@ -131,16 +131,23 @@ Assistant install.
 
 ## Install (Home Assistant side)
 
-### Via HACS (custom repository)
+### Via Marketplace (Home Assistant 2026.11 and newer)
 
-[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Booyaka101&repository=hass-breakage-radar&category=integration)
+1. Go to **Settings → Marketplace** and search for **Breakage Radar**.
+2. Open the listing and select **Install**. Follow any restart prompt in **Repairs**.
+3. If setup doesn't open automatically, go to **Settings → Devices & services → Add integration** and select **Breakage Radar**.
 
-Or by hand:
+Breakage Radar is in the default catalog, so you don't need to add the repository
+manually or connect a GitHub account. If you already installed it through HACS,
+Home Assistant [migrates your installation automatically](https://www.home-assistant.io/integrations/marketplace/#coming-from-hacs).
 
-1. HACS → ⋮ → **Custom repositories**
-2. URL `https://github.com/Booyaka101/hass-breakage-radar`, category **Integration**
-3. Install **Breakage Radar**, restart Home Assistant
-4. **Settings → Devices & Services → Add Integration → Breakage Radar** → Submit
+### Via HACS (Home Assistant older than 2026.11)
+
+[![Open Breakage Radar in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Booyaka101&repository=hass-breakage-radar&category=integration)
+
+1. Open **HACS** and search for **Breakage Radar**.
+2. Download it and restart Home Assistant.
+3. Go to **Settings → Devices & services → Add integration** and select **Breakage Radar**.
 
 ### Manually
 
@@ -788,10 +795,10 @@ only file was skipped reads as *not analysed*, never as clean. A TypeScript
 card that ships both its source and its bundle is deduplicated to one finding
 per rule, pointing at the source file.
 
-On your own box the integration scans `www/community/**`, where HACS installs
-cards, with the same rules, and raises the same Repairs issues with the card
-name in the title. A card installed only as a minified bundle falls back to
-the index's verdict on its source repository.
+On your own box the integration scans `www/community/**`, where Marketplace
+and HACS install cards. It uses the same rules and raises Repairs issues with
+the card name in the title. A card installed only as a minified bundle falls
+back to the index's verdict on its source repository.
 
 ---
 
@@ -847,9 +854,9 @@ still be present in the tag. It appears in individual alerts or in the summary
 for later deadlines. The optional `release_scans` index field maps a domain to
 `[repository, tag, manifest_version]`. Radar does not use branch fallbacks,
 prerelease version strings, incomplete Python scans, or outdated rules as
-upgrade evidence. This is a lead to check in HACS, not a compatibility guarantee
-or a reason to clear the warning for the installed copy. Tags appear as the
-normal crawler revisits repositories.
+upgrade evidence. Check the tag in Marketplace (or HACS on older versions).
+It is not a compatibility guarantee or a reason to clear the warning for the
+installed copy. Tags appear as the normal crawler revisits repositories.
 
 A search hit only becomes that report if its **title** says so, by naming the
 deprecated symbol, by using a word like "deprecated" or "removed", or by naming a
