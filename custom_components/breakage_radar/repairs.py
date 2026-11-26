@@ -84,19 +84,27 @@ def describe_links(link: dict | None) -> str:
     learn_more = link.get("learn_more") or ""
     report = link.get("report") or {}
     title = (report.get("title") or "").translate(_MARKDOWN_ESCAPES)
+    release_hint = link.get("release_hint")
 
     parts: list[str] = []
-    if not repo_url:
+    if release_hint:
+        parts.append(
+            f"Radar did not detect this finding in the source for "
+            f"[tag {release_hint['tag']}]({release_hint['url']}) "
+            f"(integration version {release_hint['version']}). "
+            "Check that version in HACS. The warning still applies to your installed copy."
+        )
+    if not repo_url and not release_hint:
         parts.append(
             "Check the integration's own repository for a newer release, and "
             "its issue tracker before reporting anything."
         )
-    elif link.get("archived"):
+    elif repo_url and link.get("archived"):
         parts.append(
             f"[{repository}]({repo_url}) is archived, so no fix is coming. "
             "Plan to replace this integration."
         )
-    else:
+    elif repo_url:
         parts.append(
             f"First check [{repository} releases]({repo_url}/releases) for a "
             "version that fixes it."
@@ -107,11 +115,16 @@ def describe_links(link: dict | None) -> str:
                 f"{title}]({report['url']}). Add a reaction there "
                 "rather than opening another one."
             )
-        elif report:
+        elif report and report.get("state") == "closed":
+            reason = report.get("state_reason")
+            closure = {
+                "completed": "GitHub marks it completed, but that does not confirm a release contains a fix.",
+                "not_planned": "GitHub marks it not planned.",
+                "duplicate": "GitHub marks it as a duplicate. Check the linked issue for progress.",
+            }.get(reason if isinstance(reason, str) else "", "Closure alone does not confirm a fix.")
             parts.append(
                 f"It was reported and closed: [#{report['number']} "
-                f"{title}]({report['url']}), so a fix may already "
-                "have shipped."
+                f"{title}]({report['url']}). {closure}"
             )
         elif link.get("issues_enabled") is False:
             parts.append(
@@ -151,6 +164,7 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
     broken_cards: dict[str, str] = report.get("broken_now_cards") or {}
     imminent_cards: dict[str, dict] = report.get("imminent_cards") or {}
     links: dict[str, dict] = report.get("links") or {}
+    card_links: dict[str, dict] = report.get("card_links", links)
     due_by_release = {
         group["release"]: group["due"] for group in report.get("schedule") or []
     }
@@ -160,6 +174,7 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
         (BROKEN_CARD_PREFIX, broken_cards, "card_broken"),
     ):
         for name, release in bucket.items():
+            link = (card_links if prefix == BROKEN_CARD_PREFIX else links).get(name, {})
             ir.async_create_issue(
                 hass,
                 DOMAIN,
@@ -171,9 +186,9 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
                 translation_placeholders={
                     "domain": name,
                     "release": str(release),
-                    "where": describe_links(links.get(name)),
+                    "where": describe_links(link),
                 },
-                learn_more_url=links.get(name, {}).get("repo_url") or LEARN_MORE_URL,
+                learn_more_url=link.get("repo_url") or LEARN_MORE_URL,
             )
 
     for prefix, bucket, key in (
@@ -181,6 +196,7 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
         (IMMINENT_CARD_PREFIX, imminent_cards, "card_imminent"),
     ):
         for name, entry in bucket.items():
+            link = (card_links if prefix == IMMINENT_CARD_PREFIX else links).get(name, {})
             release = str(entry.get("release", ""))
             days = max(int(entry.get("days", 0)), 0)
             ir.async_create_issue(
@@ -197,9 +213,9 @@ def _async_sync_alert_issues(hass: HomeAssistant, report: dict) -> None:
                     "days": str(days),
                     "day_word": plural(days, "day"),
                     "due": due_by_release.get(release, release),
-                    "where": describe_links(links.get(name)),
+                    "where": describe_links(link),
                 },
-                learn_more_url=links.get(name, {}).get("repo_url") or LEARN_MORE_URL,
+                learn_more_url=link.get("repo_url") or LEARN_MORE_URL,
             )
 
     # Anything that dropped out of a level, including an uninstalled component

@@ -507,16 +507,31 @@ def test_report_titles_are_escaped_in_repairs_markdown(sample_index, state, titl
     assert describe_links(link) == text  # Rendering must not double-escape stored data.
 
 
-def test_a_closed_report_points_at_a_probable_fix(sample_index):
+@pytest.mark.parametrize(("reason", "expected"), [
+    (None, "Closure alone does not confirm a fix"),
+    ("completed", "does not confirm a release contains a fix"),
+    ("not_planned", "marks it not planned"),
+    ("duplicate", "marks it as a duplicate"),
+])
+def test_a_closed_report_does_not_promise_a_fix(sample_index, reason, expected):
     from custom_components.breakage_radar.repairs import describe_links
 
     text = describe_links(_links(sample_index, {
         "archived": False, "issues_enabled": True,
         "report": {"number": 320, "state": "closed", "url": "https://github.com/example/x/issues/320",
-                   "title": "Remove deprecated argument (2026.10)"},
+                   "title": "Remove deprecated argument (2026.10)", "state_reason": reason},
     }))
     assert "reported and closed" in text
-    assert "a fix may already have shipped" in text
+    assert expected in text
+    assert "Add a reaction" not in text
+
+
+def test_unrelated_issue_closure_is_not_attached_to_the_finding(sample_index):
+    link = _links(sample_index, {
+        "symbol": "another_symbol",
+        "report": {"number": 41, "state": "closed", "url": "https://github.com/example/x/issues/41"},
+    })
+    assert link["report"] == {}
 
 
 @pytest.mark.parametrize("state", ["open", "closed"])

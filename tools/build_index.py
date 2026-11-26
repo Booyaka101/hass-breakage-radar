@@ -47,9 +47,12 @@ from tools.release import floor_from_payload  # noqa: E402
 from tools.rules_engine import (  # noqa: E402
     clip,
     is_pending,
+    load_rules,
+    matchable_rules,
     parse_version,
     reports_before_removal,
 )
+from tools.scan import candidate_refs, rules_hash  # noqa: E402
 from tools.schedule import (  # noqa: E402
     days_until,
     describe_report,
@@ -152,6 +155,13 @@ def build_payload(
     }
 
     repos: dict[str, Any] = findings_doc.get("repos", {})
+    release_scans: dict[str, list[str]] = {}
+    domain_repos: collections.Counter[str] = collections.Counter()
+    scan_rules_hash = (
+        rules_hash(matchable_rules(load_rules(pending_rules), current_version=floor))
+        if any(record.get("release_scan") for record in repos.values())
+        else ""
+    )
     integrations: list[dict[str, Any]] = []
     clean_domains: list[str] = []
     clean_cards: list[str] = []
@@ -177,6 +187,8 @@ def build_payload(
         catalog_entry = catalog_by_name.get(full_name, {})
         domain = record.get("domain") or catalog_entry.get("domain") or ""
         category = record.get("category") or catalog_entry.get("category") or "integration"
+        if category == "integration":
+            domain_repos.update(set(record.get("domains") or []) | ({domain} if domain else set()))
         counts = by_category.setdefault(category, collections.Counter())
         if full_name in catalog_by_name:
             counts["scanned"] += 1
@@ -199,6 +211,22 @@ def build_payload(
             continue
 
         if not findings:
+            release_scan = record.get("release_scan") or {}
+            prefix = "refs/tags/"
+            ref = record.get("ref") or ""
+            catalog_version = catalog_entry.get("last_version")
+            if (
+                category == "integration"
+                and record.get("domains") == [domain]
+                and record.get("status") == "scanned"
+                and scan_rules_hash
+                and release_scan.get("rules_hash") == scan_rules_hash
+                and release_scan.get("version")
+                and catalog_version
+                and ref.startswith(prefix)
+                and ref in candidate_refs(catalog_version)
+            ):
+                release_scans[domain] = [full_name, ref.removeprefix(prefix), release_scan["version"]]
             counts["clean"] += 1
             if domain:
                 clean_domains.append(domain)
@@ -258,6 +286,9 @@ def build_payload(
         for release in sorted({f["breaks_in"] for f in integration["findings"]}):
             by_release[release].append(integration["domain"] or integration["full_name"])
 
+    current_release_scans = {
+        domain: scan for domain, scan in release_scans.items() if domain_repos[domain] == 1
+    }
     return {
         "schema": SCHEMA_VERSION,
         "generated_utc": generated,
@@ -325,6 +356,7 @@ def build_payload(
         },
         "rules": published_rules,
         "integrations": integrations,
+        **({"clean_release_scans": current_release_scans} if current_release_scans else {}),
         "clean_domains": sorted(set(clean_domains)),
         "clean_cards": sorted(set(clean_cards)),
         "unreachable_domains": sorted(set(unreachable)),

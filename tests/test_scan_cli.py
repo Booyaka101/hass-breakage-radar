@@ -10,7 +10,10 @@ import tarfile
 
 import pytest
 
+from custom_components.breakage_radar.repairs import describe_links
+from custom_components.breakage_radar.report import build_report
 from tools import scan as scan_module
+from tools.build_index import build_payload, validate_index
 from tools.common import NotFound, RateLimited
 from tools.rules_engine import Rule, matchable_rules
 from tools.scan import (
@@ -436,6 +439,78 @@ def test_a_rescan_that_no_longer_trips_the_symbol_drops_the_upstream_report(
     assert "upstream" not in _rescan_one(
         tmp_path, monkeypatch, SAME_FINDING, upstream=other
     )
+
+
+@pytest.mark.parametrize("case", [
+    "clean", "branch", "unparsed", "still_affected", "no_source",
+    "stale_tag", "changed_rules", "ambiguous_domain", "old_index",
+    "same_version", "unknown_version", "prerelease", "scan_version_changed",
+])
+def test_newer_tag_evidence_reaches_repairs_without_clearing_the_warning(tmp_path, monkeypatch, case):
+    version = "v1.0.0-beta.1" if case == "prerelease" else "v1.0.0"
+    entry = {**CATALOG[0], "last_version": version}
+    rules_path, catalog_path = _write_inputs(tmp_path, catalog=[entry])
+    files = {"custom_components/one/manifest.json": '{"domain": "one", "version": "1.0.0"}'}
+    if case != "no_source":
+        files["custom_components/one/device_tracker.py"] = {
+            "unparsed": "def broken(\n",
+            "still_affected": TRACKER_SOURCE,
+        }.get(case, "VALUE = 1\n")
+    body = _tarball_bytes(files)
+
+    def http_get(url, **kwargs):
+        if case == "branch" and "/refs/tags/" in url:
+            raise NotFound(url)
+        return body
+
+    monkeypatch.setattr(scan_module, "http_get", http_get)
+    assert main(_argv(tmp_path, rules_path, catalog_path, "--no-upstream", "--no-tarball-cache")) == 0
+    findings_doc = json.loads((tmp_path / "findings.json").read_text(encoding="utf-8"))
+    rules_doc = json.loads(rules_path.read_text(encoding="utf-8"))
+    if case == "stale_tag":
+        entry["last_version"] = "v2.0.0"
+    if case == "changed_rules":
+        rules_doc["rules"][0]["match"]["names"].append("different_matcher")
+    if case == "ambiguous_domain":
+        findings_doc["repos"]["other/fork"] = {"domain": "one", "status": "unreachable"}
+    if case == "old_index":
+        findings_doc["repos"]["a/one"].pop("release_scan")
+    payload = build_payload(rules_doc, findings_doc, {"integrations": [entry]})
+    assert validate_index(payload) == []
+    if case == "clean":
+        assert payload["integrations"] == []
+        assert payload["clean_release_scans"] == {"one": ["a/one", "v1.0.0", "1.0.0"]}
+    elif case in {
+        "branch", "unparsed", "still_affected", "no_source",
+        "stale_tag", "changed_rules", "ambiguous_domain", "old_index",
+    }:
+        assert "clean_release_scans" not in payload
+
+    installed = {"same_version": "1.0", "unknown_version": ""}.get(case, "0.9.0")
+    report = build_report(
+        payload,
+        {"one": installed},
+        {"domains": {"one": {"status": "affected", "findings": SAME_FINDING}},
+         "discovered_versions": {"one": "0.8.0" if case == "scan_version_changed" else installed}},
+        current_version="2027.5",
+    )
+    assert report["broken_now"] == {"one": "2027.5"}
+    assert report["total_findings"] == 1
+    where = describe_links(report["links"]["one"])
+    if case == "clean":
+        assert "/a/one/tree/v1.0.0" in where
+        assert "still applies to your installed copy" in where
+        assert report["details"][0]["release_hint"]["version"] == "1.0.0"
+        updated = build_report(
+            payload, {"one": "1.0.0"},
+            {"domains": {"one": {"status": "clean"}}, "rules_matchable": 1},
+            current_version="2027.5",
+        )
+        assert updated["broken_now"] == {}
+        assert updated["links"] == {}
+    else:
+        assert "Radar did not detect" not in where
+        assert "release_hint" not in report["details"][0]
 
 
 def test_the_pending_floor_reaches_the_upstream_lookup(tmp_path, monkeypatch):

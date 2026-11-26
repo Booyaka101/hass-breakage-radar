@@ -454,6 +454,19 @@ def test_a_report_the_search_missed_is_asked_for_by_number(monkeypatch):
     assert facts["report"]["reactions"] == 9
 
 
+@pytest.mark.parametrize("fresh_state", ["open", "closed"])
+def test_a_known_search_hit_is_refreshed_when_search_state_lags(monkeypatch, fresh_state):
+    cached = {
+        **ON_FILE,
+        "state": "closed" if fresh_state == "open" else "open",
+        "state_reason": "completed",
+    }
+    _searched(monkeypatch, _still_served(state=fresh_state, state_reason="not_planned"), found=cached)
+    report = _look_up()["report"]
+    assert report["state"] == fresh_state
+    assert report.get("state_reason") == ("not_planned" if fresh_state == "closed" else None)
+
+
 def test_a_report_transferred_to_another_repository_is_not_kept(monkeypatch):
     """GitHub answers for a transferred issue from wherever it went, with that
     repository's numbering. Recording that number here has the next run asking

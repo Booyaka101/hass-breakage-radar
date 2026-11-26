@@ -837,7 +837,16 @@ An affected integration may also carry `upstream`, recording what its own
 repository says: whether it is archived, whether it accepts issues, and the most
 relevant existing report if there is one. That is what lets a notification say
 "already reported, add a reaction there" instead of sending everybody to open
-the same issue. It is optional, so an older index simply lacks it.
+the same issue. A closed issue can include GitHub's closure reason, but even
+“completed” is not evidence that a fix shipped. This metadata is optional.
+
+If a local scan still finds a problem in an installed integration, Repairs can
+point to a newer HACS catalog tag whose source Radar scanned without detecting
+the finding. The optional `clean_release_scans` index field maps a domain to
+`[repository, tag, manifest_version]` for these scans. Radar does not use branch
+fallbacks, prerelease version strings, or scans from an outdated rule set as
+upgrade evidence. This is a lead to check in HACS, not a compatibility guarantee
+or a reason to clear the warning for the installed copy.
 
 A search hit only becomes that report if its **title** says so, by naming the
 deprecated symbol, by using a word like "deprecated" or "removed", or by naming a
@@ -849,9 +858,9 @@ The fact records `checked_utc`, and a crawl re-asks every affected repository wh
 fact is more than a week old, up to a few hundred a run. Facts found under a term
 their rule no longer asks for go first, then the oldest. A repository
 that never cuts another release is never rescanned, so without that its issue link
-would stay published for good, however wrong it had gone. When the search does not
-come back with the report already on file, that issue is fetched by number: an issue
-drops out of a ten-hit search on its own, but a 404 means it is really gone. What
+would stay published for good, however wrong it had gone. Unless search finds a
+better candidate, the report already on file is fetched by number: a search can
+miss a report or lag a closure or reopening, but a 404 means it is gone. What
 survives a 404 is only what says not to file there, that the repository was archived
 or had issues turned off. The report link goes with the tracker it pointed into.
 

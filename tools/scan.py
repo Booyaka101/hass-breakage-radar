@@ -41,9 +41,10 @@ import sys
 import tarfile
 import time
 from collections import deque
+from collections.abc import Iterable, Iterator
 from concurrent.futures import Future, ThreadPoolExecutor
-from pathlib import Path, PurePosixPath
-from typing import Any, Iterable, Iterator
+from pathlib import Path
+from typing import Any
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -94,7 +95,7 @@ MAX_TARBALL_BYTES = 80 * 1024 * 1024
 VENDOR_MARKERS = tuple(f"/{name}/" for name in sorted(VENDOR_DIRECTORIES))
 
 #: Archive selection changes invalidate crawler results independently of matchers.
-SCAN_VERSION = 1
+SCAN_VERSION = 2
 TEST_DIRECTORIES = frozenset(
     {"test", "tests", "testing", "fixtures", "__tests__", "__fixtures__"}
 )
@@ -288,9 +289,8 @@ def iter_javascript(
             yield path, text
 
 
-def iter_manifest_domains(body: bytes) -> list[str]:
-    """Domains declared by ``custom_components/*/manifest.json`` in the tarball."""
-    domains: list[str] = []
+def iter_component_manifests(body: bytes) -> Iterator[tuple[str, str]]:
+    """Domain and version for each readable component manifest."""
     with tarfile.open(fileobj=io.BytesIO(body), mode="r:gz") as archive:
         for member in archive:
             if not member.isfile() or member.size > 512 * 1024:
@@ -310,14 +310,19 @@ def iter_manifest_domains(body: bytes) -> list[str]:
                 payload = json.loads(handle.read().decode("utf-8", "replace"))
             except (json.JSONDecodeError, UnicodeDecodeError):
                 continue
+            if not isinstance(payload, dict):
+                continue
             domain = payload.get("domain")
-            if isinstance(domain, str) and domain:
-                domains.append(domain)
-            else:
-                parts = PurePosixPath(relative[index:]).parts
-                if len(parts) >= 2:
-                    domains.append(parts[1])
-    return sorted(set(domains))
+            version = payload.get("version")
+            yield (
+                domain if isinstance(domain, str) and domain else path.split("/")[1],
+                version if isinstance(domain, str) and domain and isinstance(version, str) else "",
+            )
+
+
+def iter_manifest_domains(body: bytes) -> list[str]:
+    """Domains declared by ``custom_components/*/manifest.json`` in the tarball."""
+    return sorted({domain for domain, _ in iter_component_manifests(body)})
 
 
 def warn_if_older_python(extractor_python: str | None) -> bool:
@@ -425,7 +430,8 @@ def scan_repo(
         # modules inside custom_components/, where they break on the WebSocket
         # rules the same way a standalone card does.
         plugin = category == "plugin"
-        domains = [] if plugin else iter_manifest_domains(body)
+        manifests = [] if plugin else list(iter_component_manifests(body))
+        domains = sorted({domain for domain, _ in manifests})
         findings = scan_sources(
             () if plugin else iter_component_python(body),
             iter_javascript(body, skipped, whole_repo=plugin),
@@ -451,6 +457,16 @@ def scan_repo(
     record["skipped_minified"] = skipped["skipped_minified"]
     record["skipped_vendor"] = skipped["skipped_vendor"]
     record["findings"] = [f.to_dict() for f in findings]
+    if (
+        not findings
+        and len(manifests) == 1
+        and manifests[0][1]
+        and ref.startswith("refs/tags/")
+        and stats.files_scanned
+        and not stats.syntax_errors
+        and not any(skipped.values())
+    ):
+        record["release_scan"] = {"version": manifests[0][1]}
     return record, findings
 
 
@@ -753,6 +769,8 @@ def main(argv: list[str] | None = None) -> int:
         counters["skipped_minified"] += record.get("skipped_minified", 0)
         counters["skipped_vendor"] += record.get("skipped_vendor", 0)
 
+        if "release_scan" in record:
+            record["release_scan"]["rules_hash"] = rhash
         previous = repos.get(full_name)
         if (
             previous

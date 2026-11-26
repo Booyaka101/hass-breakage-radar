@@ -6,6 +6,11 @@ and `pyproject.toml` versions always agree (enforced by a test).
 
 ## Unreleased
 
+Repairs now distinguishes an upstream issue closure from evidence that a fix
+shipped. When a newer HACS tag was scanned without detecting an installed
+integration's finding, Repairs can link to that tag without clearing the
+warning for the code still installed.
+
 ## 1.20.0 - 2026-11-24
 
 The local checker no longer counts files as scanned when the selected rules
